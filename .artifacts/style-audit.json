@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T09:43:48.997Z",
+  "generatedAt": "2026-07-19T09:45:07.761Z",
   "summary": {
-    "cssFiles": 81,
+    "cssFiles": 82,
     "tsxFilesWithInlineStyles": 87,
     "forbiddenLiteralColors": 310,
     "staticInlineStyles": 1068,
@@ -6144,6 +6144,36 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/shared/styles/features/graph-search.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 77,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-activity-system-foreground",
+        "--theme-surfaces-subtle",
+        "--theme-surfaces-base",
+        "--theme-surfaces-interactive",
+        "--theme-activity-other-foreground",
+        "--theme-borders-default",
+        "--theme-shapes-radius-medium",
+        "--theme-surfaces-base",
+        "--theme-shadows-large",
+        "--theme-shapes-radius-small",
+        "--theme-text-primary",
+        "--transition-fast",
+        "--theme-activity-system-foreground",
+        "--theme-accents-primary-background",
+        "--theme-text-primary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/kanban-board.css",
       "layer": "legacy",
       "domain": "shared",
@@ -6333,8 +6363,8 @@
       "path": "src/frontend/shared/styles/index.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 8480,
-      "selectorCount": 1231,
+      "lineCount": 8335,
+      "selectorCount": 1216,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -6442,18 +6472,6 @@
         "--theme-shapes-radius-medium",
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-shapes-radius-large",
-        "--theme-shadows-large",
-        "--theme-borders-default",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-shapes-radius-small",
-        "--transition-fast",
-        "--theme-text-primary",
-        "--theme-surfaces-interactive-hover",
         "--app-footer-height",
         "--theme-shapes-radius-large",
         "--theme-activity-system-foreground",
@@ -6653,22 +6671,6 @@
         "--theme-text-secondary",
         "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-activity-system-foreground",
-        "--theme-surfaces-subtle",
-        "--theme-surfaces-base",
-        "--theme-surfaces-interactive",
-        "--theme-activity-other-foreground",
-        "--theme-borders-default",
-        "--theme-shapes-radius-medium",
-        "--theme-surfaces-base",
-        "--theme-shadows-large",
-        "--theme-shapes-radius-small",
-        "--theme-text-primary",
-        "--transition-fast",
-        "--theme-activity-system-foreground",
-        "--theme-accents-primary-background",
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-secondary",
@@ -8388,7 +8390,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 40,
+      "lineCount": 41,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8412,6 +8414,7 @@
         "src/frontend/shared/styles/features/rules-workspace.css",
         "src/frontend/shared/styles/features/kanban-board.css",
         "src/frontend/shared/styles/features/sidebar-nav.css",
+        "src/frontend/shared/styles/features/graph-search.css",
         "src/frontend/shared/styles/layout/workspace.css",
         "src/frontend/shared/styles/layout/app-shell.css",
         "src/frontend/shared/styles/layout/navigation.css",
@@ -8548,8 +8551,8 @@
       "path": "src/frontend/shared/styles/primitives/dialog.css",
       "layer": "primitive",
       "domain": "shared",
-      "lineCount": 28,
-      "selectorCount": 5,
+      "lineCount": 89,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -8565,6 +8568,18 @@
         "--theme-surfaces-overlay",
         "--theme-borders-overlay",
         "--space-5",
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-shapes-radius-large",
+        "--theme-shadows-large",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-text-secondary",
+        "--theme-shapes-radius-small",
+        "--transition-fast",
+        "--theme-text-primary",
+        "--theme-surfaces-interactive-hover",
         "--theme-borders-default",
         "--theme-borders-default"
       ]
@@ -29307,7 +29322,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:hsl(220, 25%, 96%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 358,
+      "line": 291,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29319,7 +29334,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:hsl(220, 18%, 78%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 376,
+      "line": 309,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29331,7 +29346,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(142, 70, 50, 0.08)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 693,
+      "line": 626,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -29343,7 +29358,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(142, 70, 50, 0.15)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 694,
+      "line": 627,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -29355,7 +29370,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(142, 70, 50, 0.7)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 709,
+      "line": 642,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -29367,7 +29382,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(175, 85, 45, 0.15)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 871,
+      "line": 804,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -29379,7 +29394,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#059669",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1229,
+      "line": 1162,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -29391,7 +29406,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#d97706",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1240,
+      "line": 1173,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -29403,7 +29418,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:red",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1258,
+      "line": 1191,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -29415,7 +29430,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#ef4444",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1262,
+      "line": 1195,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -29427,7 +29442,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#475569",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1273,
+      "line": 1206,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -29439,7 +29454,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:hsl(255, 85%, 60%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1494,
+      "line": 1349,
       "column": 31,
       "severity": "high",
       "status": "temporary",
@@ -29451,7 +29466,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:hsl(255, 85%, 60%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1500,
+      "line": 1355,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -29463,7 +29478,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgb(255 255 255 / 3%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2001,
+      "line": 1856,
       "column": 58,
       "severity": "high",
       "status": "temporary",
@@ -29475,7 +29490,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgb(255 255 255 / 15%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2148,
+      "line": 2003,
       "column": 116,
       "severity": "high",
       "status": "temporary",
@@ -29487,7 +29502,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(10, 12, 20, 0.65)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2231,
+      "line": 2086,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -29499,7 +29514,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#000",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2246,
+      "line": 2101,
       "column": 56,
       "severity": "high",
       "status": "temporary",
@@ -29511,7 +29526,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:hsl(230, 35%, 7%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2348,
+      "line": 2203,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29523,7 +29538,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#2d3748",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2356,
+      "line": 2211,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -29535,7 +29550,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#fef08a",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2359,
+      "line": 2214,
       "column": 34,
       "severity": "high",
       "status": "temporary",
@@ -29547,7 +29562,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:blue",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2360,
+      "line": 2215,
       "column": 7,
       "severity": "high",
       "status": "temporary",
@@ -29559,7 +29574,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#bfdbfe",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2360,
+      "line": 2215,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -29571,7 +29586,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:green",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2361,
+      "line": 2216,
       "column": 7,
       "severity": "high",
       "status": "temporary",
@@ -29583,7 +29598,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#bbf7d0",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2361,
+      "line": 2216,
       "column": 33,
       "severity": "high",
       "status": "temporary",
@@ -29595,7 +29610,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#fbcfe8",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2362,
+      "line": 2217,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -29607,7 +29622,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#e9d5ff",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2363,
+      "line": 2218,
       "column": 34,
       "severity": "high",
       "status": "temporary",
@@ -29619,7 +29634,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#facc15",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2393,
+      "line": 2248,
       "column": 50,
       "severity": "high",
       "status": "temporary",
@@ -29631,7 +29646,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:blue",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2394,
+      "line": 2249,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -29643,7 +29658,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#60a5fa",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2394,
+      "line": 2249,
       "column": 48,
       "severity": "high",
       "status": "temporary",
@@ -29655,7 +29670,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:green",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2395,
+      "line": 2250,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -29667,7 +29682,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#4ade80",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2395,
+      "line": 2250,
       "column": 49,
       "severity": "high",
       "status": "temporary",
@@ -29679,7 +29694,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#f472b6",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2396,
+      "line": 2251,
       "column": 48,
       "severity": "high",
       "status": "temporary",
@@ -29691,7 +29706,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#c084fc",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2397,
+      "line": 2252,
       "column": 50,
       "severity": "high",
       "status": "temporary",
@@ -29703,7 +29718,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#1e293b",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2411,
+      "line": 2266,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29715,7 +29730,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:white",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3009,
+      "line": 2864,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29727,7 +29742,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:hsl(220, 25%, 96%)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3269,
+      "line": 3124,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29739,7 +29754,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:white",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3482,
+      "line": 3337,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29751,7 +29766,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:white",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3521,
+      "line": 3376,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -29763,7 +29778,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(34, 197, 94, 0.08)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5342,
+      "line": 5197,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -29775,7 +29790,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(34, 197, 94, 0.20)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5343,
+      "line": 5198,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -29787,7 +29802,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#0f111a",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5590,
+      "line": 5445,
       "column": 46,
       "severity": "high",
       "status": "temporary",
@@ -29799,7 +29814,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#0a0b0f",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5590,
+      "line": 5445,
       "column": 58,
       "severity": "high",
       "status": "temporary",
@@ -29811,7 +29826,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#f8fafc",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5591,
+      "line": 5446,
       "column": 36,
       "severity": "high",
       "status": "temporary",
@@ -29823,7 +29838,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(16, 18, 27, 0.85)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5699,
+      "line": 5554,
       "column": 42,
       "severity": "high",
       "status": "temporary",
@@ -29835,7 +29850,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(10, 11, 16, 0.95)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5699,
+      "line": 5554,
       "column": 69,
       "severity": "high",
       "status": "temporary",
@@ -29847,7 +29862,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(15, 17, 26, 0.6)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5784,
+      "line": 5639,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -29859,7 +29874,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(8, 10, 18, 0.72)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5917,
+      "line": 5772,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -29871,7 +29886,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(24, 26, 38, 0.96)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5926,
+      "line": 5781,
       "column": 29,
       "severity": "high",
       "status": "temporary",
@@ -29883,7 +29898,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:rgba(13, 16, 26, 0.98)",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5926,
+      "line": 5781,
       "column": 53,
       "severity": "high",
       "status": "temporary",
@@ -29895,7 +29910,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#f59e0b",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 6644,
+      "line": 6499,
       "column": 86,
       "severity": "high",
       "status": "temporary",
@@ -29907,7 +29922,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#060910",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 6936,
+      "line": 6791,
       "column": 44,
       "severity": "high",
       "status": "temporary",
@@ -29919,7 +29934,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#0d1117",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 6980,
+      "line": 6835,
       "column": 42,
       "severity": "high",
       "status": "temporary",
@@ -29931,7 +29946,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#f4b44d",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 7492,
+      "line": 7347,
       "column": 79,
       "severity": "high",
       "status": "temporary",
@@ -29943,7 +29958,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#a8a29e",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 8285,
+      "line": 8140,
       "column": 38,
       "severity": "high",
       "status": "temporary",
@@ -29955,7 +29970,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#0b0f18",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 8286,
+      "line": 8141,
       "column": 63,
       "severity": "high",
       "status": "temporary",
@@ -29967,7 +29982,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/index.css:#a8a29e",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 8329,
+      "line": 8184,
       "column": 38,
       "severity": "high",
       "status": "temporary",
@@ -29979,7 +29994,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 938,
+      "line": 871,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -29991,7 +30006,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1890,
+      "line": 1745,
       "column": 50,
       "severity": "high",
       "status": "temporary",
@@ -30003,7 +30018,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1891,
+      "line": 1746,
       "column": 92,
       "severity": "high",
       "status": "temporary",
@@ -30015,7 +30030,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1895,
+      "line": 1750,
       "column": 51,
       "severity": "high",
       "status": "temporary",
@@ -30027,7 +30042,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1896,
+      "line": 1751,
       "column": 56,
       "severity": "high",
       "status": "temporary",
@@ -30039,7 +30054,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1923,
+      "line": 1778,
       "column": 57,
       "severity": "high",
       "status": "temporary",
@@ -30051,7 +30066,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 1924,
+      "line": 1779,
       "column": 43,
       "severity": "high",
       "status": "temporary",
@@ -30063,7 +30078,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2155,
+      "line": 2010,
       "column": 57,
       "severity": "high",
       "status": "temporary",
@@ -30075,7 +30090,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2156,
+      "line": 2011,
       "column": 172,
       "severity": "high",
       "status": "temporary",
@@ -30087,7 +30102,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2352,
+      "line": 2207,
       "column": 121,
       "severity": "high",
       "status": "temporary",
@@ -30099,7 +30114,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2356,
+      "line": 2211,
       "column": 25,
       "severity": "high",
       "status": "temporary",
@@ -30111,7 +30126,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2451,
+      "line": 2306,
       "column": 57,
       "severity": "high",
       "status": "temporary",
@@ -30123,7 +30138,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2452,
+      "line": 2307,
       "column": 97,
       "severity": "high",
       "status": "temporary",
@@ -30135,7 +30150,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2475,
+      "line": 2330,
       "column": 57,
       "severity": "high",
       "status": "temporary",
@@ -30147,7 +30162,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2476,
+      "line": 2331,
       "column": 24,
       "severity": "high",
       "status": "temporary",
@@ -30159,7 +30174,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2480,
+      "line": 2335,
       "column": 14,
       "severity": "high",
       "status": "temporary",
@@ -30171,7 +30186,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2481,
+      "line": 2336,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -30183,7 +30198,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2482,
+      "line": 2337,
       "column": 61,
       "severity": "high",
       "status": "temporary",
@@ -30195,7 +30210,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2484,
+      "line": 2339,
       "column": 24,
       "severity": "high",
       "status": "temporary",
@@ -30207,7 +30222,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2485,
+      "line": 2340,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -30219,7 +30234,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2490,
+      "line": 2345,
       "column": 80,
       "severity": "high",
       "status": "temporary",
@@ -30231,7 +30246,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2492,
+      "line": 2347,
       "column": 81,
       "severity": "high",
       "status": "temporary",
@@ -30243,7 +30258,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2493,
+      "line": 2348,
       "column": 76,
       "severity": "high",
       "status": "temporary",
@@ -30255,7 +30270,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2494,
+      "line": 2349,
       "column": 77,
       "severity": "high",
       "status": "temporary",
@@ -30267,7 +30282,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2538,
+      "line": 2393,
       "column": 164,
       "severity": "high",
       "status": "temporary",
@@ -30279,7 +30294,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2659,
+      "line": 2514,
       "column": 97,
       "severity": "high",
       "status": "temporary",
@@ -30291,7 +30306,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2660,
+      "line": 2515,
       "column": 94,
       "severity": "high",
       "status": "temporary",
@@ -30303,7 +30318,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2664,
+      "line": 2519,
       "column": 94,
       "severity": "high",
       "status": "temporary",
@@ -30315,7 +30330,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2682,
+      "line": 2537,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30327,7 +30342,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2686,
+      "line": 2541,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30339,7 +30354,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2687,
+      "line": 2542,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -30351,7 +30366,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2688,
+      "line": 2543,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30363,7 +30378,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2689,
+      "line": 2544,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -30375,7 +30390,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2694,
+      "line": 2549,
       "column": 98,
       "severity": "high",
       "status": "temporary",
@@ -30387,7 +30402,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2695,
+      "line": 2550,
       "column": 98,
       "severity": "high",
       "status": "temporary",
@@ -30399,7 +30414,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2696,
+      "line": 2551,
       "column": 37,
       "severity": "high",
       "status": "temporary",
@@ -30411,8 +30426,80 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2700,
+      "line": 2555,
       "column": 99,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/index.css:!important",
+      "path": "src/frontend/shared/styles/index.css",
+      "line": 2556,
+      "column": 99,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/index.css:!important",
+      "path": "src/frontend/shared/styles/index.css",
+      "line": 2557,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/index.css:!important",
+      "path": "src/frontend/shared/styles/index.css",
+      "line": 2561,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/index.css:!important",
+      "path": "src/frontend/shared/styles/index.css",
+      "line": 2562,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/index.css:!important",
+      "path": "src/frontend/shared/styles/index.css",
+      "line": 2563,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/index.css:!important",
+      "path": "src/frontend/shared/styles/index.css",
+      "line": 2614,
+      "column": 21,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -30424,78 +30511,6 @@
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
       "line": 2701,
-      "column": 99,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/index.css:!important",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2702,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/index.css:!important",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2706,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/index.css:!important",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2707,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/index.css:!important",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2708,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/index.css:!important",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2759,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/index.css:!important",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2846,
       "column": 55,
       "severity": "high",
       "status": "temporary",
@@ -30507,7 +30522,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2847,
+      "line": 2702,
       "column": 50,
       "severity": "high",
       "status": "temporary",
@@ -30519,7 +30534,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2881,
+      "line": 2736,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -30531,7 +30546,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2884,
+      "line": 2739,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -30543,7 +30558,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2917,
+      "line": 2772,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30555,7 +30570,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2920,
+      "line": 2775,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30567,7 +30582,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2927,
+      "line": 2782,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -30579,7 +30594,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2930,
+      "line": 2785,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -30591,7 +30606,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2933,
+      "line": 2788,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -30603,7 +30618,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2936,
+      "line": 2791,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30615,7 +30630,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2939,
+      "line": 2794,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -30627,7 +30642,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2943,
+      "line": 2798,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30639,7 +30654,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2946,
+      "line": 2801,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30651,7 +30666,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2950,
+      "line": 2805,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30663,7 +30678,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2953,
+      "line": 2808,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30675,7 +30690,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2956,
+      "line": 2811,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -30687,7 +30702,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2959,
+      "line": 2814,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -30699,7 +30714,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2960,
+      "line": 2815,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -30711,7 +30726,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2961,
+      "line": 2816,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -30723,7 +30738,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2962,
+      "line": 2817,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30735,7 +30750,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2963,
+      "line": 2818,
       "column": 27,
       "severity": "high",
       "status": "temporary",
@@ -30747,7 +30762,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2964,
+      "line": 2819,
       "column": 24,
       "severity": "high",
       "status": "temporary",
@@ -30759,7 +30774,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2965,
+      "line": 2820,
       "column": 25,
       "severity": "high",
       "status": "temporary",
@@ -30771,7 +30786,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2966,
+      "line": 2821,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -30783,7 +30798,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2967,
+      "line": 2822,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -30795,7 +30810,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2972,
+      "line": 2827,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -30807,7 +30822,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2973,
+      "line": 2828,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -30819,7 +30834,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2974,
+      "line": 2829,
       "column": 92,
       "severity": "high",
       "status": "temporary",
@@ -30831,7 +30846,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2977,
+      "line": 2832,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -30843,7 +30858,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2978,
+      "line": 2833,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30855,7 +30870,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2982,
+      "line": 2837,
       "column": 24,
       "severity": "high",
       "status": "temporary",
@@ -30867,7 +30882,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3310,
+      "line": 3165,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -30879,7 +30894,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3321,
+      "line": 3176,
       "column": 94,
       "severity": "high",
       "status": "temporary",
@@ -30891,7 +30906,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3322,
+      "line": 3177,
       "column": 101,
       "severity": "high",
       "status": "temporary",
@@ -30903,7 +30918,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3573,
+      "line": 3428,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30915,7 +30930,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3577,
+      "line": 3432,
       "column": 83,
       "severity": "high",
       "status": "temporary",
@@ -30927,7 +30942,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3581,
+      "line": 3436,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -30939,7 +30954,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3643,
+      "line": 3498,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -30951,7 +30966,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3644,
+      "line": 3499,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -30963,7 +30978,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3645,
+      "line": 3500,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -30975,7 +30990,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3646,
+      "line": 3501,
       "column": 127,
       "severity": "high",
       "status": "temporary",
@@ -30987,7 +31002,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3648,
+      "line": 3503,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -30999,7 +31014,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3704,
+      "line": 3559,
       "column": 93,
       "severity": "high",
       "status": "temporary",
@@ -31011,7 +31026,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3708,
+      "line": 3563,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -31023,7 +31038,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3712,
+      "line": 3567,
       "column": 123,
       "severity": "high",
       "status": "temporary",
@@ -31035,7 +31050,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3906,
+      "line": 3761,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -31047,7 +31062,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4084,
+      "line": 3939,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -31059,7 +31074,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4085,
+      "line": 3940,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -31071,7 +31086,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4089,
+      "line": 3944,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -31083,7 +31098,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4090,
+      "line": 3945,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -31095,7 +31110,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4095,
+      "line": 3950,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -31107,7 +31122,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4099,
+      "line": 3954,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -31119,7 +31134,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4103,
+      "line": 3958,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -31131,7 +31146,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4104,
+      "line": 3959,
       "column": 29,
       "severity": "high",
       "status": "temporary",
@@ -31143,7 +31158,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4105,
+      "line": 3960,
       "column": 12,
       "severity": "high",
       "status": "temporary",
@@ -31155,7 +31170,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4106,
+      "line": 3961,
       "column": 41,
       "severity": "high",
       "status": "temporary",
@@ -31167,7 +31182,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4110,
+      "line": 3965,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -31179,7 +31194,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4114,
+      "line": 3969,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -31191,7 +31206,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4119,
+      "line": 3974,
       "column": 29,
       "severity": "high",
       "status": "temporary",
@@ -31203,7 +31218,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4130,
+      "line": 3985,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -31215,7 +31230,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4153,
+      "line": 4008,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -31227,7 +31242,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4154,
+      "line": 4009,
       "column": 45,
       "severity": "high",
       "status": "temporary",
@@ -31239,7 +31254,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4193,
+      "line": 4048,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -31251,7 +31266,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4638,
+      "line": 4493,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -31263,7 +31278,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4646,
+      "line": 4501,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -31275,7 +31290,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4651,
+      "line": 4506,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -31287,7 +31302,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4652,
+      "line": 4507,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -31299,7 +31314,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5156,
+      "line": 5011,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -31311,7 +31326,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5161,
+      "line": 5016,
       "column": 38,
       "severity": "high",
       "status": "temporary",
@@ -31323,7 +31338,7 @@
     {
       "id": "important:src/frontend/shared/styles/index.css:!important",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 5162,
+      "line": 5017,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -31335,7 +31350,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/index.css:color: var(--theme-text-subtle); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; } .dashboard-section-label > div",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 2028,
+      "line": 1883,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -31347,7 +31362,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/index.css:height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important; min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)); } .main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 3712,
+      "line": 3567,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -31359,7 +31374,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/index.css:height: 7px; overflow: hidden; border-radius: var(--theme-shapes-radius-pill); background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); margin: 8px 0 5px; } .player-resource-meter > div",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4575,
+      "line": 4430,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -31371,7 +31386,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/index.css:display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; } .player-history-header span:first-child",
       "path": "src/frontend/shared/styles/index.css",
-      "line": 4599,
+      "line": 4454,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -31389,7 +31404,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (8480 lines, 1231 selectors)."
+      "reason": "Large stylesheet requires atomization (8335 lines, 1216 selectors)."
     },
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:hsl(37 60% 54%)",
@@ -32592,6 +32607,7 @@
       "src/frontend/shared/styles/features/rules-workspace.css",
       "src/frontend/shared/styles/features/kanban-board.css",
       "src/frontend/shared/styles/features/sidebar-nav.css",
+      "src/frontend/shared/styles/features/graph-search.css",
       "src/frontend/shared/styles/layout/workspace.css",
       "src/frontend/shared/styles/layout/app-shell.css",
       "src/frontend/shared/styles/layout/navigation.css",
