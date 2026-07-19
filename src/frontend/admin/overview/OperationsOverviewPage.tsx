@@ -27,11 +27,11 @@ export function OperationsOverviewPage() {
 
   return (
     <AdminShell>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
+      <div className="admin-overview">
+        <header className="admin-overview__header">
           <div>
-            <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>System Dashboard</h1>
-            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
+            <h1 className="admin-overview__title">System Dashboard</h1>
+            <p className="admin-overview__subtitle">
               Real-time platform metrics and operations monitoring.
             </p>
           </div>
@@ -39,19 +39,7 @@ export function OperationsOverviewPage() {
           <button
             onClick={() => void loadData()}
             disabled={loading}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 16px",
-              borderRadius: "8px",
-              backgroundColor: "var(--theme-surfaces-base)",
-              border: "1px solid var(--theme-borders-default)",
-              color: "inherit",
-              cursor: "pointer",
-              fontSize: "0.85rem",
-              fontWeight: 500,
-            }}
+            className="admin-overview__refresh"
           >
             <RefreshCw size={14} className={loading ? "spin-animation" : ""} />
             <span>Refresh</span>
@@ -59,48 +47,34 @@ export function OperationsOverviewPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
-            <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
+          <div className="admin-overview__error">
+            <p className="admin-overview__zero-margin"><strong>Error:</strong> {error}</p>
           </div>
         )}
 
         {loading && !metrics ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
+          <div className="admin-overview__loading">
             Loading metrics...
           </div>
         ) : metrics ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+          <div className="admin-overview__grid">
             {/* User Statistics Card */}
-            <div style={{
-              backgroundColor: "var(--theme-surfaces-base)",
-              borderRadius: "12px",
-              border: "1px solid var(--theme-borders-default)",
-              padding: "24px",
-              position: "relative",
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-                <div style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}>
-                  <Users size={20} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+            <div className="admin-overview__card">
+              <div className="admin-overview__card-header">
+                <div className="admin-overview__metric-icon">
+                  <Users size={20} />
                 </div>
               </div>
-              <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Total Accounts</span>
-              <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalUsers}</h2>
-              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
+              <span className="admin-overview__metric-label">Total Accounts</span>
+              <h2 className="admin-overview__metric-value">{metrics.totalUsers}</h2>
+              <div className="admin-overview__metric-breakdown">
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Active</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.activeUsers}</p>
+                  <span className="admin-overview__breakdown-label">Active</span>
+                  <p className="admin-overview__breakdown-value">{metrics.activeUsers}</p>
                 </div>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Disabled</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--theme-feedback-danger-foreground)" }}>
+                  <span className="admin-overview__breakdown-label">Disabled</span>
+                  <p className="admin-overview__breakdown-value admin-overview__breakdown-value--danger">
                     {metrics.totalUsers - metrics.activeUsers}
                   </p>
                 </div>
@@ -108,69 +82,43 @@ export function OperationsOverviewPage() {
             </div>
 
             {/* Campaign Statistics Card */}
-            <div style={{
-              backgroundColor: "var(--theme-surfaces-base)",
-              borderRadius: "12px",
-              border: "1px solid var(--theme-borders-default)",
-              padding: "24px",
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-                <div style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}>
-                  <Layers size={20} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+            <div className="admin-overview__card">
+              <div className="admin-overview__card-header">
+                <div className="admin-overview__metric-icon">
+                  <Layers size={20} />
                 </div>
               </div>
-              <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Total Campaigns</span>
-              <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalCampaigns}</h2>
-              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
+              <span className="admin-overview__metric-label">Total Campaigns</span>
+              <h2 className="admin-overview__metric-value">{metrics.totalCampaigns}</h2>
+              <div className="admin-overview__metric-breakdown">
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Active</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.activeCampaigns}</p>
+                  <span className="admin-overview__breakdown-label">Active</span>
+                  <p className="admin-overview__breakdown-value">{metrics.activeCampaigns}</p>
                 </div>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>In Trash</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--theme-accents-primary-foreground)" }}>{metrics.trashedCampaigns}</p>
+                  <span className="admin-overview__breakdown-label">In Trash</span>
+                  <p className="admin-overview__breakdown-value admin-overview__breakdown-value--accent">{metrics.trashedCampaigns}</p>
                 </div>
               </div>
             </div>
 
             {/* Purge Jobs Statistics Card */}
-            <div style={{
-              backgroundColor: "var(--theme-surfaces-base)",
-              borderRadius: "12px",
-              border: "1px solid var(--theme-borders-default)",
-              padding: "24px",
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-                <div style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}>
-                  <ShieldAlert size={20} style={{ color: metrics.failedPurgeJobs > 0 ? "var(--theme-feedback-danger-foreground)" : "var(--theme-accents-primary-foreground)" }} />
+            <div className="admin-overview__card">
+              <div className="admin-overview__card-header">
+                <div className={`admin-overview__metric-icon ${metrics.failedPurgeJobs > 0 ? "admin-overview__metric-icon--danger" : ""}`}>
+                  <ShieldAlert size={20} />
                 </div>
               </div>
-              <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Purge Queue Jobs</span>
-              <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalPurgeJobs}</h2>
-              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
+              <span className="admin-overview__metric-label">Purge Queue Jobs</span>
+              <h2 className="admin-overview__metric-value">{metrics.totalPurgeJobs}</h2>
+              <div className="admin-overview__metric-breakdown">
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Pending</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.pendingPurgeJobs}</p>
+                  <span className="admin-overview__breakdown-label">Pending</span>
+                  <p className="admin-overview__breakdown-value">{metrics.pendingPurgeJobs}</p>
                 </div>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Failed</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: metrics.failedPurgeJobs > 0 ? "var(--theme-feedback-danger-foreground)" : "inherit" }}>
+                  <span className="admin-overview__breakdown-label">Failed</span>
+                  <p className={`admin-overview__breakdown-value ${metrics.failedPurgeJobs > 0 ? "admin-overview__breakdown-value--danger" : ""}`}>
                     {metrics.failedPurgeJobs}
                   </p>
                 </div>

@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 95,
-  "tsxFilesWithInlineStyles": 79,
+  "cssFiles": 96,
+  "tsxFilesWithInlineStyles": 78,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 889,
+  "staticInlineStyles": 847,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -75,6 +75,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
 | `src/frontend/shared/styles/features/admin-audit.css` | legacy | shared | 117 | 46 | 1 |
+| `src/frontend/shared/styles/features/admin-overview.css` | legacy | shared | 28 | 25 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1683 | 259 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
@@ -105,7 +106,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 54 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 55 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -272,48 +273,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:148` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:30` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:31` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:72` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:91` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:99` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:111` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:117` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:130` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:132` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:134` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:139` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:145` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:151` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:165` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:166` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:169` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
