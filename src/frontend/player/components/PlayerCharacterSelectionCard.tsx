@@ -99,7 +99,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
 
           {error && <p role="alert" className="player-character-error">{error}</p>}
           {submittedCharacterId && (
-            <p role="status" aria-live="polite" style={{ margin: 0 }}>
+            <p role="status" aria-live="polite" className="player-character-success">
               <CheckCircle2 size={16} aria-hidden="true" /> {t("playerPortal.character.requestSent")}
             </p>
           )}

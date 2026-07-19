@@ -66,14 +66,13 @@ export function DmHubHero({
           </div>
           <div className="dm-hub-hero__calendar">
             <div className="dm-hub-hero__calendar-date">
-              <Calendar size={13} style={{ color: "var(--theme-accents-primary-foreground)", marginRight: "6px", verticalAlign: "middle" }} />
+              <Calendar className="dm-hub-hero__calendar-icon" size={13} />
               {formattedTodayDate}
             </div>
             <div className="dm-hub-hero__calendar-world">{activeTablesLength > 0 ? `${activeTablesLength} mesa(s) activas ahora` : "Sin mesas activas ahora"}</div>
             <button
               type="button"
-              className="btn btn-secondary btn-sm"
-              style={{ marginTop: "8px", width: "100%" }}
+              className="btn btn-secondary btn-sm dm-hub-hero__timeline-button"
               onClick={activeTablesLength > 0 ? onViewTimeline : undefined}
               disabled={activeTablesLength === 0}
             >

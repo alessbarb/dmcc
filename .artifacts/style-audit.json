@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:39:25.997Z",
+  "generatedAt": "2026-07-19T11:40:40.012Z",
   "summary": {
     "cssFiles": 132,
-    "tsxFilesWithInlineStyles": 22,
+    "tsxFilesWithInlineStyles": 20,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 10,
-    "dynamicInlineStyles": 18,
+    "staticInlineStyles": 8,
+    "dynamicInlineStyles": 17,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -1888,14 +1888,12 @@
       "path": "src/frontend/dm/hub/DmHubHero.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 107,
+      "lineCount": 106,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/hub/DmHubPage.tsx",
@@ -6770,8 +6768,8 @@
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1424,
-      "selectorCount": 225,
+      "lineCount": 1434,
+      "selectorCount": 227,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -6957,6 +6955,7 @@
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground"
       ]
     },
@@ -7606,8 +7605,8 @@
       "path": "src/frontend/shared/styles/features/player-portal.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1019,
-      "selectorCount": 159,
+      "lineCount": 1023,
+      "selectorCount": 160,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12662,32 +12661,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/DmHubHero.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\", marginRight: \"6px\", verticalAlign: \"middle\" }}",
-      "path": "src/frontend/dm/hub/DmHubHero.tsx",
-      "line": 69,
-      "column": 35,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\", marginRight: \"6px\", verticalAlign: \"middle\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/hub/DmHubHero.tsx:style={{ marginTop: \"8px\", width: \"100%\" }}",
-      "path": "src/frontend/dm/hub/DmHubHero.tsx",
-      "line": 76,
-      "column": 15,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ marginTop: \"8px\", width: \"100%\" }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
       "id": "literal-color:src/frontend/dm/layouts/campaign-route-transitions.css:rgb(0 0 0 / 12%)",
       "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
       "line": 48,
@@ -14137,19 +14110,6 @@
       "reason": "Large stylesheet requires atomization (274 lines, 38 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ margin: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 102,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "dynamic-style:src/frontend/shared/components/CampaignTemplateImportDialog.tsx:style={{ width: `${importProgress.percent}%` }}",
       "path": "src/frontend/shared/components/CampaignTemplateImportDialog.tsx",
       "line": 114,
@@ -15506,7 +15466,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1424 lines, 225 selectors)."
+      "reason": "Large stylesheet requires atomization (1434 lines, 227 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",
@@ -15705,7 +15665,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1019 lines, 159 selectors)."
+      "reason": "Large stylesheet requires atomization (1023 lines, 160 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/quick-capture.css:!important",
