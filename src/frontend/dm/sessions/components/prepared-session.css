@@ -30,6 +30,11 @@
   transition: border-color var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
+.prepared-session-card--link {
+  color: inherit;
+  text-decoration: none;
+}
+
 .prepared-session-card:hover,
 .prepared-session-card.is-editing {
   border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 45%, var(--theme-borders-default));

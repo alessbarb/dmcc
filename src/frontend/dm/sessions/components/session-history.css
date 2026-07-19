@@ -22,6 +22,8 @@
   gap: var(--space-4);
   padding: 13px 0;
   border-bottom: 1px solid color-mix(in srgb, var(--theme-borders-default) 70%, transparent);
+  color: inherit;
+  text-decoration: none;
 }
 
 .session-history-item:last-child {
