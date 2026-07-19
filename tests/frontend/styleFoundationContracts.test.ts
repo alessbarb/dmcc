@@ -52,6 +52,7 @@ describe("global style foundation", () => {
       "./features/graph-search.css",
       "./features/timeline.css",
       "./features/landing-legacy.css",
+      "./features/kanban-legacy.css",
       "./primitives/dialog.css",
       "./primitives/overlay.css",
       "./primitives/tabs.css",

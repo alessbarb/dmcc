@@ -39,3 +39,4 @@
 
 /* Transitional domain slices retain legacy cascade order during migration. */
 @import "./features/landing-legacy.css";
+@import "./features/kanban-legacy.css";

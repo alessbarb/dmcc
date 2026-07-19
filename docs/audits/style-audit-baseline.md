@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 84,
+  "cssFiles": 85,
   "tsxFilesWithInlineStyles": 87,
   "forbiddenLiteralColors": 310,
   "staticInlineStyles": 1067,
@@ -76,6 +76,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | legacy | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
+| `src/frontend/shared/styles/features/kanban-legacy.css` | legacy | shared | 142 | 21 | 1 |
 | `src/frontend/shared/styles/features/landing-legacy.css` | legacy | shared | 892 | 140 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | legacy | shared | 15 | 2 | 1 |
@@ -86,7 +87,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
-| `src/frontend/shared/styles/index.css` | legacy | shared | 7228 | 1039 | 0 |
+| `src/frontend/shared/styles/index.css` | legacy | shared | 7087 | 1018 | 0 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2641 | 392 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 108 | 13 | 1 |
@@ -95,7 +96,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 42 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 43 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -1728,6 +1729,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:41` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/features/kanban-legacy.css:55` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/features/kanban-legacy.css:66` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/features/kanban-legacy.css:84` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/features/kanban-legacy.css:88` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/features/kanban-legacy.css:99` | Literal visual color outside a registered theme package. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/landing-legacy.css:1` | Large stylesheet requires atomization (892 lines, 140 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/landing-legacy.css:75` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/features/landing-legacy.css:93` | Literal visual color outside a registered theme package. |
@@ -1739,173 +1745,168 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | mixed-responsibility | `src/frontend/shared/styles/features/timeline.css:1` | Large stylesheet requires atomization (217 lines, 37 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/timeline.css:89` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (7228 lines, 1039 selectors). |
-| high | literal-color | `src/frontend/shared/styles/index.css:55` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:66` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:84` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:88` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:99` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:242` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:248` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:638` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:639` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:643` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:644` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:671` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:672` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:749` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:776` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/shared/styles/index.css:896` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:903` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:904` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:979` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:994` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1096` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (7087 lines, 1018 selectors). |
+| high | literal-color | `src/frontend/shared/styles/index.css:101` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:107` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:497` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:498` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:502` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:503` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:530` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:531` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:608` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:635` | Selector depends on another component's DOM structure. |
+| high | literal-color | `src/frontend/shared/styles/index.css:755` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:762` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:763` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:838` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:853` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:955` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:959` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:963` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:963` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:966` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:967` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:967` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:968` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:968` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:969` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:970` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1000` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1001` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1001` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1002` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1002` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1003` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1004` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1018` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:1058` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1059` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1082` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1083` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1087` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1088` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1089` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1091` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1092` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1097` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1099` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:1100` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1104` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:1104` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1107` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1108` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1108` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1109` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1109` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1110` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1111` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1141` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1142` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1142` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1144` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1145` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1159` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:1199` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1200` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1223` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1224` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1228` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1229` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1230` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1232` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1233` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1238` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1240` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1241` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1242` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1286` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1407` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1408` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1412` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1430` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1434` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1435` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1436` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1437` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1442` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1443` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1444` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1448` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1449` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1450` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1101` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1145` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1266` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1267` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1271` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1289` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1293` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1294` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1295` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1296` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1301` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1302` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1303` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1307` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1308` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1309` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1313` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1314` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1315` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1366` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1453` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:1454` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1455` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1456` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1507` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1594` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1595` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1629` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1632` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1665` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1668` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1675` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1678` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1681` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1684` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1687` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1691` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1694` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1698` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1701` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1704` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1707` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1708` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1709` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1710` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1711` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1712` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1713` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1714` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1715` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1720` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1721` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1722` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1725` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1726` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:1730` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1757` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2017` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2058` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2069` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2070` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2230` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2269` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2321` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2325` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2329` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2391` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2392` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2393` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2394` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2396` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2452` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2456` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2460` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:2460` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/index.css:2654` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2832` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2833` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2837` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2838` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2843` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2847` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2851` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2852` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2853` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2854` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2858` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2862` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2867` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2878` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2901` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2902` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2941` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:3323` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:3347` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/index.css:3386` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3394` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3399` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3400` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3904` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3909` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3910` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4090` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4091` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4338` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4338` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4339` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4447` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4447` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4532` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4665` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4674` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4674` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5392` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5684` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5728` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6240` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7033` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7034` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7077` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:1488` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1491` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1524` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1527` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1534` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1537` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1540` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1543` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1546` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1550` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1553` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1557` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1560` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1563` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1566` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1567` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1568` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1569` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1570` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1571` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1572` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1573` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1574` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1579` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1580` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1581` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1584` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1585` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1589` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1616` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1876` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:1917` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1928` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1929` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2089` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2128` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:2180` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2184` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2188` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2250` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2251` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2252` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2253` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2255` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2311` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2315` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2319` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:2319` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/index.css:2513` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2691` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2692` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2696` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2697` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2702` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2706` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2710` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2711` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2712` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2713` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2717` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2721` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2726` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2737` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2760` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2761` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2800` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:3182` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:3206` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/index.css:3245` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3253` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3258` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3259` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3763` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3768` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3769` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:3949` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:3950` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4197` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4197` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4198` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4306` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4306` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4391` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4524` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4533` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:4533` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5251` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5543` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5587` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6099` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6892` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6893` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6936` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2641 lines, 392 selectors). |
 | high | literal-color | `src/frontend/shared/styles/landing.css:13` | Literal visual color outside a registered theme package. |
