@@ -6,11 +6,11 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 126,
-  "tsxFilesWithInlineStyles": 38,
+  "cssFiles": 127,
+  "tsxFilesWithInlineStyles": 37,
   "forbiddenLiteralColors": 212,
-  "staticInlineStyles": 139,
-  "dynamicInlineStyles": 26,
+  "staticInlineStyles": 115,
+  "dynamicInlineStyles": 22,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -105,6 +105,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1371 | 215 | 1 |
 | `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
+| `src/frontend/shared/styles/features/dm-onboarding.css` | legacy | shared | 20 | 19 | 1 |
 | `src/frontend/shared/styles/features/entity-create.css` | legacy | shared | 32 | 6 | 1 |
 | `src/frontend/shared/styles/features/entity-relations.css` | legacy | shared | 51 | 47 | 1 |
 | `src/frontend/shared/styles/features/entity-trace.css` | legacy | shared | 23 | 18 | 1 |
@@ -136,7 +137,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 85 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 86 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -585,34 +586,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:101` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Selector depends on another component's DOM structure. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:44` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/pages/OnboardingPage.tsx:45` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/pages/OnboardingPage.tsx:77` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/pages/OnboardingPage.tsx:86` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/dm/pages/OnboardingPage.tsx:95` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:109` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:122` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:129` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:136` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:146` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:148` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/pages/rulesPage.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:77` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:79` | Static or mixed inline style must move to an atomized stylesheet. |

@@ -41,58 +41,49 @@ export function OnboardingPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--theme-surfaces-canvas)", padding: "24px" }}>
-      <div style={{ width: "100%", maxWidth: "480px" }}>
+    <div className="dm-onboarding">
+      <div className="dm-onboarding__content">
         {/* Step dots */}
-        <div style={{ display: "flex", gap: "8px", marginBottom: "32px", justifyContent: "center" }}>
+        <div className="dm-onboarding__steps">
           {([1, 2, 3] as const).map(n => (
             <div
               key={n}
-              style={{
-                width: "32px",
-                height: "4px",
-                borderRadius: "2px",
-                background: n <= step ? "var(--theme-accents-primary-foreground)" : "var(--theme-borders-default)",
-                transition: "background 0.2s"
-              }}
+              className={`dm-onboarding__step ${n <= step ? "is-complete" : ""}`}
             />
           ))}
         </div>
 
         {step === 1 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div className="dm-onboarding__panel">
             <div>
-              <h1 style={{ fontSize: "1.5rem", fontWeight: "700", marginBottom: "8px" }}>{t("onboarding.step1Title")}</h1>
-              <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem" }}>{t("onboarding.step1Desc")}</p>
+              <h1 className="dm-onboarding__title">{t("onboarding.step1Title")}</h1>
+              <p className="dm-onboarding__description">{t("onboarding.step1Desc")}</p>
             </div>
             <div>
-              <label style={{ display: "block", marginBottom: "6px", fontWeight: "600", fontSize: "0.9rem" }}>{t("onboarding.nameLabel")}</label>
+              <label className="dm-onboarding__label">{t("onboarding.nameLabel")}</label>
               <input
-                className="input"
+                className="input dm-onboarding__input"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder={t("onboarding.namePlaceholder")}
                 onKeyDown={e => e.key === "Enter" && title.trim() && setStep(2)}
                 autoFocus
-                style={{ width: "100%", boxSizing: "border-box" }}
               />
             </div>
             <div>
-              <label style={{ display: "block", marginBottom: "6px", fontWeight: "600", fontSize: "0.9rem" }}>{t("onboarding.systemLabel")}</label>
+              <label className="dm-onboarding__label">{t("onboarding.systemLabel")}</label>
               <select
-                className="input"
+                className="input dm-onboarding__input"
                 value={system}
                 onChange={e => setSystem(e.target.value)}
-                style={{ width: "100%", boxSizing: "border-box" }}
               >
                 {SYSTEMS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
             </div>
             <button
-              className="btn btn-primary"
               disabled={!title.trim()}
               onClick={() => setStep(2)}
-              style={{ width: "100%" }}
+              className="btn btn-primary dm-onboarding__full-button"
             >
               {t("onboarding.next")}
             </button>
@@ -100,42 +91,34 @@ export function OnboardingPage() {
         )}
 
         {step === 2 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <h1 style={{ fontSize: "1.5rem", fontWeight: "700" }}>{t("onboarding.step2Title")}</h1>
+          <div className="dm-onboarding__panel">
+            <h1 className="dm-onboarding__title">{t("onboarding.step2Title")}</h1>
             {(["empty", "starter"] as const).map(tpl => (
               <button
                 key={tpl}
                 onClick={() => setTemplate(tpl)}
-                style={{
-                  textAlign: "left",
-                  cursor: "pointer",
-                  border: `2px solid ${template === tpl ? "var(--theme-accents-primary-foreground)" : "var(--theme-borders-default)"}`,
-                  padding: "16px",
-                  borderRadius: "8px",
-                  background: template === tpl ? "var(--theme-surfaces-canvas)" : "transparent",
-                  transition: "border-color 0.15s"
-                }}
+                className={`dm-onboarding__template ${template === tpl ? "is-selected" : ""}`}
               >
-                <div style={{ fontWeight: "700", marginBottom: "4px" }}>
+                <div className="dm-onboarding__template-title">
                   {t(tpl === "empty" ? "onboarding.templateEmpty" : "onboarding.templateStarter")}
                 </div>
-                <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
+                <div className="dm-onboarding__template-description">
                   {t(tpl === "empty" ? "onboarding.templateEmptyDesc" : "onboarding.templateStarterDesc")}
                 </div>
               </button>
             ))}
-            <div style={{ display: "flex", gap: "12px" }}>
-              <button className="btn btn-secondary" onClick={() => setStep(1)} style={{ flex: 1 }}>{t("onboarding.back")}</button>
-              <button className="btn btn-primary" onClick={() => setStep(3)} style={{ flex: 1 }}>{t("onboarding.next")}</button>
+            <div className="dm-onboarding__navigation">
+              <button className="btn btn-secondary dm-onboarding__navigation-button" onClick={() => setStep(1)}>{t("onboarding.back")}</button>
+              <button className="btn btn-primary dm-onboarding__navigation-button" onClick={() => setStep(3)}>{t("onboarding.next")}</button>
             </div>
           </div>
         )}
 
         {step === 3 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <h1 style={{ fontSize: "1.5rem", fontWeight: "700" }}>{t("onboarding.step3Title")}</h1>
-            <div className="card" style={{ padding: "16px", borderRadius: "8px" }}>
-              <p style={{ fontSize: "0.9rem" }}>
+          <div className="dm-onboarding__panel">
+            <h1 className="dm-onboarding__title">{t("onboarding.step3Title")}</h1>
+            <div className="card dm-onboarding__summary">
+              <p className="dm-onboarding__summary-text">
                 {t("onboarding.step3Summary", {
                   title,
                   system: SYSTEMS.find(s => s.value === system)?.label ?? system,
@@ -143,14 +126,13 @@ export function OnboardingPage() {
                 })}
               </p>
             </div>
-            {error && <p style={{ color: "var(--theme-feedback-danger-foreground)", fontSize: "0.85rem" }}>{error}</p>}
-            <div style={{ display: "flex", gap: "12px" }}>
-              <button className="btn btn-secondary" onClick={() => setStep(2)} style={{ flex: 1 }}>{t("onboarding.back")}</button>
+            {error && <p className="dm-onboarding__error">{error}</p>}
+            <div className="dm-onboarding__navigation">
+              <button className="btn btn-secondary dm-onboarding__navigation-button" onClick={() => setStep(2)}>{t("onboarding.back")}</button>
               <button
-                className="btn btn-primary"
-                disabled={creating}
+              disabled={creating}
                 onClick={() => void handleCreate()}
-                style={{ flex: 1 }}
+                className="btn btn-primary dm-onboarding__navigation-button"
               >
                 {creating ? "…" : t("onboarding.createBtn")}
               </button>
