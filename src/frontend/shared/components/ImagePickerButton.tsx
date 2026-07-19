@@ -68,7 +68,7 @@ export function ImagePickerButton({
                 src={displaySrc}
                 alt="Previsualización de la entidad"
                 className="image-picker-button__entity-image"
-                style={{ objectPosition: imageFocalPointToObjectPosition(focalPoint) }}
+                style={{ "--image-focal-point": imageFocalPointToObjectPosition(focalPoint) } as React.CSSProperties}
               />
             ) : (
               <button

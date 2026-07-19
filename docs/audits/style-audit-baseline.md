@@ -7,9 +7,9 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 133,
-  "tsxFilesWithInlineStyles": 17,
+  "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
-  "staticInlineStyles": 5,
+  "staticInlineStyles": 3,
   "dynamicInlineStyles": 17,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -46,7 +46,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 16 | 1 |
 | `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 293 | 50 | 1 |
 | `src/frontend/dm/map/mapWorkspace.css` | feature | map | 94 | 14 | 1 |
-| `src/frontend/dm/map/network/networkFlow.css` | feature | map | 828 | 116 | 1 |
+| `src/frontend/dm/map/network/networkFlow.css` | feature | map | 829 | 116 | 1 |
 | `src/frontend/dm/onboarding/campaign-guided-tour.css` | feature | onboarding | 226 | 32 | 1 |
 | `src/frontend/dm/onboarding/campaign-starter-hub.css` | feature | onboarding | 419 | 58 | 1 |
 | `src/frontend/dm/pages/campaignMessagesPage.css` | feature | pages | 113 | 22 | 1 |
@@ -386,27 +386,26 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/dm/library/boards/entityBoards.css:1` | Large stylesheet requires atomization (243 lines, 37 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
-| high | static-inline | `src/frontend/dm/map/network/NetworkFilterBar.tsx:165` | Static or mixed inline style must move to an atomized stylesheet. |
-| critical | mixed-responsibility | `src/frontend/dm/map/network/networkFlow.css:1` | Large stylesheet requires atomization (828 lines, 116 selectors). |
+| critical | mixed-responsibility | `src/frontend/dm/map/network/networkFlow.css:1` | Large stylesheet requires atomization (829 lines, 116 selectors). |
 | high | cross-component-selector | `src/frontend/dm/map/network/networkFlow.css:28` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:436` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:438` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:442` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:451` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:437` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:439` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:443` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:452` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:453` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:456` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:463` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:454` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:457` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:464` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:469` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:478` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:485` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:465` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:470` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:479` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:486` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:490` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:487` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:491` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:492` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:493` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:708` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:494` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/networkFlow.css:709` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:43` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:66` | Runtime style requires review and CSS custom-property preference. |
@@ -523,7 +522,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:294` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:295` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:325` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-announcements.css:1` | Large stylesheet requires atomization (37 lines, 37 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/admin-audit.css:1` | Large stylesheet requires atomization (117 lines, 46 selectors). |

@@ -25,6 +25,8 @@ export const STYLE_AUDIT_CONFIG = {
     "--timeline-event-",
     "--network-node-accent",
   "--network-inspector-accent",
+  "--network-filter-accent",
+  "--image-focal-point",
   "--resource-node-accent",
     "--consequence-",
     "--narrative-",

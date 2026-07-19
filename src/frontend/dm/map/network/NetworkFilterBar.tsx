@@ -162,7 +162,10 @@ export function NetworkFilterBar({ entities, typeFilter, onChangeTypeFilter, onS
                     className={`network-filter-option ${active ? "is-active" : ""}`}
                     onClick={() => toggleType(type)}
                   >
-                    <span className="network-filter-option__dot" style={{ background: config.accent }} />
+                    <span
+                      className="network-filter-option__dot"
+                      style={{ "--network-filter-accent": config.accent } as React.CSSProperties}
+                    />
                     <span>{t(config.labelKey)}</span>
                     {active && <Check size={15} />}
                   </button>

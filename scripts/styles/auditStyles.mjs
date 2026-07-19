@@ -72,7 +72,10 @@ function isImportantAllowed(source, index) {
 }
 
 function classifyInlineStyle(body) {
-  const containsDynamic = /\$\{|\b(?:props|state|value|index|progress|width|height|top|left|right|bottom|x|y|focus|position|transform)\b/.test(body);
+  if (/--[a-zA-Z0-9_-]+\s*:/.test(body) && !/\b(?:background|backgroundColor|color|border|borderRadius|boxShadow|fontSize|fontFamily|fontWeight|padding|margin|display|grid|flex|gap|alignItems|justifyContent|position|overflow)\s*:/.test(body)) {
+    return "dynamic";
+  }
+  const containsDynamic = /\$\{|--[a-zA-Z0-9_-]+|\b(?:props|state|value|index|progress|width|height|top|left|right|bottom|x|y|focus|position|transform)\b/.test(body);
   const containsStaticProperty = /\b(?:background|backgroundColor|color|border|borderRadius|boxShadow|fontSize|fontFamily|fontWeight|padding|margin|display|grid|flex|gap|alignItems|justifyContent|position|overflow)\s*:/.test(body);
   if (containsDynamic && containsStaticProperty) return "mixed";
   if (containsDynamic) return "dynamic";
