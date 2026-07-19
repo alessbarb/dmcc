@@ -6,15 +6,15 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 94,
-  "tsxFilesWithInlineStyles": 80,
+  "cssFiles": 95,
+  "tsxFilesWithInlineStyles": 79,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 941,
+  "staticInlineStyles": 889,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 29,
+  "mixedResponsibilityFiles": 30,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -74,6 +74,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 154 | 27 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
+| `src/frontend/shared/styles/features/admin-audit.css` | legacy | shared | 117 | 46 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1683 | 259 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
@@ -104,7 +105,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 53 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 54 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -157,58 +158,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:261` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:266` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:36` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:40` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:84` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:91` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:110` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:124` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:125` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:139` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:140` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:142` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:150` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:157` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:165` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:167` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:169` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:177` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:195` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:207` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:209` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:210` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:214` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:217` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:222` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:223` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:227` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:231` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:237` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:240` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:241` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:242` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:256` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:75` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1618,6 +1567,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:166` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:167` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:171` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/admin-audit.css:1` | Large stylesheet requires atomization (117 lines, 46 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-canvas.css:1` | Large stylesheet requires atomization (1683 lines, 259 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:497` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:498` | Important declarations bypass the intended cascade. |
