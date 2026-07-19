@@ -14,9 +14,10 @@ describe("ImagePickerModal", () => {
 
   it("renders through a document.body portal above parent modals", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    const styles = read("src/frontend/shared/styles/features/image-picker-modal.css");
     expect(src).toContain('import { createPortal } from "react-dom"');
     expect(src).toContain("return createPortal(modal, document.body)");
-    expect(src).toContain("zIndex: 2147483647");
+    expect(styles).toContain("z-index: 2147483647");
   });
 
   it("supports the all catalog type for current and future asset catalogs", () => {
@@ -46,22 +47,21 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("Volver a catálogos");
   });
 
-  it("uses inline critical layout for the picker shell and scroll regions", () => {
+  it("uses the shared stylesheet for the picker shell and scroll regions", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("const overlayStyle: CSSProperties");
-    expect(src).toContain("const sheetBaseStyle: CSSProperties");
-    expect(src).toContain("const scrollStyle: CSSProperties");
-    expect(src).toContain('overflowY: "auto"');
-    expect(src).toContain('WebkitOverflowScrolling: "touch"');
-    expect(src).toContain('touchAction: "pan-y"');
+    const styles = read("src/frontend/shared/styles/features/image-picker-modal.css");
+    expect(src).toContain('className="image-picker-modal__body"');
+    expect(styles).toContain("overflow-y: auto");
+    expect(styles).toContain("-webkit-overflow-scrolling: touch");
+    expect(styles).toContain("touch-action: pan-y");
   });
 
   it("renders stable two-column mobile grids with fixed tile heights", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("const mobileTileHeight = 168");
-    expect(src).toContain('gridTemplateColumns: isMobile ? "repeat(2, minmax(0, 1fr))"');
-    expect(src).toContain("gridAutoRows: isMobile ? `${mobileTileHeight}px` : undefined");
-    expect(src).toContain("height: isMobile ? mobileTileHeight : undefined");
+    const styles = read("src/frontend/shared/styles/features/image-picker-modal.css");
+    expect(styles).toContain("grid-template-columns: repeat(2, minmax(0, 1fr))");
+    expect(styles).toContain("grid-auto-rows: 168px");
+    expect(styles).toContain("height: 168px");
     expect(src).toContain("isMobile={isMobilePicker}");
   });
 
