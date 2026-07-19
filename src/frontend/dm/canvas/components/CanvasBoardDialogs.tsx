@@ -39,13 +39,13 @@ export function CanvasBoardDialogs({
       {/* Create Board Modal Overlay */}
       {isCreateBoardOpen && (
         <div className="modal-overlay" onClick={() => setIsCreateBoardOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "400px" }}>
+          <div className="modal-content canvas-dialog canvas-dialog--create" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Crear nuevo tablero visual</h2>
               <button onClick={() => setIsCreateBoardOpen(false)} className="modal-close-btn"><X size={16} /></button>
             </div>
             <form onSubmit={handleCreateBoard}>
-              <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="modal-body canvas-dialog__body canvas-dialog__body--create">
                 <div className="form-group">
                   <label>Nombre del tablero</label>
                   <input
@@ -105,15 +105,15 @@ export function CanvasBoardDialogs({
       {/* Import Text Modal Overlay */}
       {isImportOpen && (
         <div className="modal-overlay" onClick={() => setIsImportOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "500px" }}>
+          <div className="modal-content canvas-dialog canvas-dialog--import" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>✏️ Importación rápida por texto</h2>
               <button onClick={() => setIsImportOpen(false)} className="modal-close-btn">
                 <X size={16} />
               </button>
             </div>
-            <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <p style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", lineHeight: "1.4" }}>
+            <div className="modal-body canvas-dialog__body">
+              <p className="canvas-dialog__description">
                 Escribe o pega texto estructurado. Usa <code># Grupo</code> para agrupar, <code>[Tipo] Nombre</code> para declarar entidades y <code>Origen -&gt; Relación -&gt; Destino</code> para enlazarlas.
               </p>
               <textarea
@@ -121,10 +121,9 @@ export function CanvasBoardDialogs({
                 onChange={(e) => setImportText(e.target.value)}
                 placeholder={t("canvas.page.importExampleContent")}
                 rows={10}
-                className="form-textarea"
-                style={{ fontFamily: "monospace", fontSize: "0.82rem", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "10px" }}
+                className="form-textarea canvas-dialog__import-textarea"
               />
-              <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>
+              <div className="canvas-dialog__hint">
                 Tipos de entidad: NPC (pnj), PC (pj), Lugar, Faccion, Pista, Secreto, Mision, Objeto, Criatura, Escena, Consecuencia, Rumor, Nota.
               </div>
             </div>
@@ -147,47 +146,47 @@ export function CanvasBoardDialogs({
       {/* Legend Modal Overlay */}
       {isLegendOpen && (
         <div className="modal-overlay" onClick={() => setIsLegendOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "320px" }}>
+          <div className="modal-content canvas-dialog canvas-dialog--legend" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>📖 Leyenda del Canvas</h2>
-              <button onClick={() => setIsLegendOpen(false)} className="modal-close-btn" style={{ background: "none", border: "none", color: "var(--theme-text-secondary)", cursor: "pointer" }}>
+              <button onClick={() => setIsLegendOpen(false)} className="modal-close-btn canvas-dialog__close">
                 <X size={16} />
               </button>
             </div>
-            <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", color: "var(--theme-accents-primary-foreground)" }}>VISIBILIDAD</div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <span style={{ fontSize: "12px" }}>🔒</span>
+            <div className="modal-body canvas-dialog__body canvas-dialog__legend-body">
+              <div className="canvas-dialog__legend-heading">VISIBILIDAD</div>
+              <div className="canvas-dialog__legend-row">
+                <span className="canvas-dialog__legend-icon">🔒</span>
                 <div><strong>Secreto DM</strong>: Visible solo para el DM.</div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <span style={{ fontSize: "12px" }}>🕯</span>
+              <div className="canvas-dialog__legend-row">
+                <span className="canvas-dialog__legend-icon">🕯</span>
                 <div><strong>Parcial</strong>: Revelado parcialmente.</div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <span style={{ fontSize: "12px" }}>👁</span>
+              <div className="canvas-dialog__legend-row">
+                <span className="canvas-dialog__legend-icon">👁</span>
                 <div><strong>Revelado</strong>: Visible públicamente para jugadores.</div>
               </div>
 
-              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", marginTop: "8px", color: "var(--theme-accents-primary-foreground)" }}>ENTIDADES</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "11px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><UserCheck size={12} color="var(--theme-entities-npc-foreground)" /> <span>🎭 PNJ</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><User size={12} color="var(--theme-entities-player-foreground)" /> <span>👤 PJ</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><MapPin size={12} color="var(--theme-entities-location-foreground)" /> <span>📍 Lugar</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Shield size={12} color="var(--theme-entities-faction-foreground)" /> <span>🏛 Facción</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><HelpCircle size={12} color="var(--theme-entities-clue-foreground)" /> <span>🧩 Pista</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Key size={12} color="var(--theme-entities-secret-foreground)" /> <span>🔑 Secreto</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Award size={12} color="var(--theme-entities-quest-foreground)" /> <span>🏆 Misión</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Film size={12} color="var(--theme-entities-scene-foreground)" /> <span>🎬 Escena</span></div>
+              <div className="canvas-dialog__legend-heading canvas-dialog__legend-heading--spaced">ENTIDADES</div>
+              <div className="canvas-dialog__entity-grid">
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--npc"><UserCheck size={12} /> <span>🎭 PNJ</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--player"><User size={12} /> <span>👤 PJ</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--location"><MapPin size={12} /> <span>📍 Lugar</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--faction"><Shield size={12} /> <span>🏛 Facción</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--clue"><HelpCircle size={12} /> <span>🧩 Pista</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--secret"><Key size={12} /> <span>🔑 Secreto</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--quest"><Award size={12} /> <span>🏆 Misión</span></div>
+                <div className="canvas-dialog__entity-row canvas-dialog__entity-row--scene"><Film size={12} /> <span>🎬 Escena</span></div>
               </div>
 
-              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", marginTop: "8px", color: "var(--theme-accents-primary-foreground)" }}>RELACIONES</div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <div style={{ width: "24px", height: "2px", backgroundColor: "var(--theme-graph-edge-critical)", borderStyle: "dashed" }} />
+              <div className="canvas-dialog__legend-heading canvas-dialog__legend-heading--spaced">RELACIONES</div>
+              <div className="canvas-dialog__legend-row">
+                <div className="canvas-dialog__relation-line canvas-dialog__relation-line--critical" />
                 <div><strong>Línea Roja Punteada</strong>: Secreto DM.</div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <div style={{ width: "24px", height: "2px", backgroundColor: "color-mix(in srgb, var(--theme-narrative-secret-foreground) 60%, transparent)", borderStyle: "dashed" }} />
+              <div className="canvas-dialog__legend-row">
+                <div className="canvas-dialog__relation-line canvas-dialog__relation-line--secret" />
                 <div><strong>Línea Violeta Punteada</strong>: Ancla de secreto.</div>
               </div>
             </div>

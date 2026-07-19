@@ -1,0 +1,27 @@
+.canvas-dialog--create { max-width: 400px; }
+.canvas-dialog--import { max-width: 500px; }
+.canvas-dialog--legend { max-width: 320px; }
+.canvas-dialog__body { display: flex; flex-direction: column; gap: 12px; }
+.canvas-dialog__body--create { gap: 16px; }
+.canvas-dialog__description { margin: 0; color: var(--theme-text-secondary); font-size: 0.85rem; line-height: 1.4; }
+.canvas-dialog__import-textarea { padding: 10px; border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-small); background: var(--theme-surfaces-interactive); color: var(--theme-text-primary); font-family: monospace; font-size: 0.82rem; }
+.canvas-dialog__hint { color: var(--theme-text-secondary); font-size: 11px; }
+.canvas-dialog__close { border: 0; background: none; color: var(--theme-text-secondary); cursor: pointer; }
+.canvas-dialog__legend-body { gap: 12px; font-size: 11px; }
+.canvas-dialog__legend-heading { padding-bottom: 4px; border-bottom: 1px solid var(--theme-borders-default); color: var(--theme-accents-primary-foreground); font-weight: 700; }
+.canvas-dialog__legend-heading--spaced { margin-top: 8px; }
+.canvas-dialog__legend-row { display: flex; align-items: center; gap: 8px; }
+.canvas-dialog__legend-icon { font-size: 12px; }
+.canvas-dialog__entity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.canvas-dialog__entity-row { display: flex; align-items: center; gap: 6px; }
+.canvas-dialog__entity-row--npc { color: var(--theme-entities-npc-foreground); }
+.canvas-dialog__entity-row--player { color: var(--theme-entities-player-foreground); }
+.canvas-dialog__entity-row--location { color: var(--theme-entities-location-foreground); }
+.canvas-dialog__entity-row--faction { color: var(--theme-entities-faction-foreground); }
+.canvas-dialog__entity-row--clue { color: var(--theme-entities-clue-foreground); }
+.canvas-dialog__entity-row--secret { color: var(--theme-entities-secret-foreground); }
+.canvas-dialog__entity-row--quest { color: var(--theme-entities-quest-foreground); }
+.canvas-dialog__entity-row--scene { color: var(--theme-entities-scene-foreground); }
+.canvas-dialog__relation-line { width: 24px; height: 2px; border-style: dashed; }
+.canvas-dialog__relation-line--critical { background: var(--theme-graph-edge-critical); }
+.canvas-dialog__relation-line--secret { background: color-mix(in srgb, var(--theme-narrative-secret-foreground) 60%, transparent); }

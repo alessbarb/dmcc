@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 103,
-  "tsxFilesWithInlineStyles": 71,
+  "cssFiles": 104,
+  "tsxFilesWithInlineStyles": 70,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 614,
+  "staticInlineStyles": 582,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -84,6 +84,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1683 | 259 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
+| `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
 | `src/frontend/shared/styles/features/canvas-page-header.css` | legacy | shared | 18 | 17 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1347 | 191 | 1 |
@@ -113,7 +114,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 62 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 63 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -201,38 +202,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:221` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:241` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:262` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:108` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:115` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:116` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:125` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:150` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:157` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:159` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:167` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:175` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:176` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:177` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:178` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:179` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:180` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:185` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:189` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:190` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBulkActionsBar.tsx:56` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
