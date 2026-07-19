@@ -12,7 +12,7 @@ import type { SessionProjectionCandidate, SessionProjectionRule, SessionProjecti
 // has no kind for an objective (only story steps get "open_thread"). Rather than invent a
 // kind the spec doesn't define, objective bindings are left out of this rule set.
 
-const CONTENT_ROLE_TO_NODE_KIND: Record<SessionPlanContentRole, SessionProjectionNodeKind> = {
+export const CONTENT_ROLE_TO_NODE_KIND: Record<SessionPlanContentRole, SessionProjectionNodeKind> = {
   available_clue: "clue",
   secret_at_risk: "secret",
   expected_consequence: "consequence",
@@ -21,7 +21,7 @@ const CONTENT_ROLE_TO_NODE_KIND: Record<SessionPlanContentRole, SessionProjectio
   clock_in_play: "clock",
 };
 
-function entityLabel(input: SessionProjectionRuleInput, entityId: string): string {
+export function entityLabel(input: SessionProjectionRuleInput, entityId: string): string {
   return input.campaignState.entities.get(entityId)?.title ?? entityId;
 }
 
