@@ -1,0 +1,75 @@
+
+
+.people-invitation-card__meta {
+  gap: 14px;
+  flex-wrap: wrap;
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+}
+
+.people-invitation-card__meta span,
+.people-invitation-card__meta time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.people-status-badge {
+  display: inline-flex;
+  margin-top: 5px;
+  padding: 3px 8px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 999px;
+  color: var(--theme-text-secondary);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.people-status-badge.is-active {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
+  color: var(--theme-accents-primary-foreground);
+}
+
+.people-status-badge.is-exhausted {
+  border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 55%, transparent);
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent);
+  color: var(--theme-feedback-success-foreground);
+}
+
+.people-status-badge.is-expired {
+  border-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 55%, transparent);
+  background: color-mix(in srgb, var(--theme-feedback-warning-foreground) 10%, transparent);
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.people-status-badge.is-revoked {
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 55%, transparent);
+  background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent);
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.people-knowledge-toolbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.people-knowledge-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.people-search-field {
+  display: flex;
+  min-width: min(100%, 320px);
+  flex: 1 1 320px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  background: var(--theme-surfaces-base);
+  color: var(--theme-text-secondary);
+}

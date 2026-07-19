@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 231,
+  "cssFiles": 280,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 24,
+  "mixedResponsibilityFiles": 14,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -31,7 +31,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/account/account-styles/account-styles-04.css` | feature | account | 171 | 27 | 1 |
 | `src/frontend/account/account-styles/account-styles-05.css` | feature | account | 114 | 18 | 1 |
 | `src/frontend/account/account.css` | feature | account | 6 | 0 | 1 |
-| `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css` | feature | canvas | 265 | 34 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 2 | 0 | 1 |
 | `src/frontend/dm/entities/entity-card-parts/entity-card-parts-01.css` | feature | entities | 104 | 14 | 1 |
 | `src/frontend/dm/entities/entity-card-parts/entity-card-parts-02.css` | feature | entities | 78 | 12 | 1 |
 | `src/frontend/dm/entities/entity-card-parts/entity-card-parts-03.css` | feature | entities | 103 | 12 | 1 |
@@ -92,8 +93,22 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/pages/campaignMessagesPage.css` | feature | pages | 113 | 22 | 1 |
 | `src/frontend/dm/pages/rulesPage.css` | feature | pages | 179 | 32 | 1 |
 | `src/frontend/dm/pages/settingsPage.css` | feature | pages | 135 | 21 | 1 |
-| `src/frontend/dm/people/group/groupWorkspace.css` | feature | people | 631 | 93 | 1 |
-| `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 394 | 61 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-01.css` | feature | people | 85 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-02.css` | feature | people | 69 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-03.css` | feature | people | 75 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-04.css` | feature | people | 85 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-05.css` | feature | people | 72 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-06.css` | feature | people | 70 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-07.css` | feature | people | 66 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-08.css` | feature | people | 116 | 23 | 1 |
+| `src/frontend/dm/people/group/groupWorkspace.css` | feature | people | 9 | 0 | 1 |
+| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-01.css` | feature | people | 73 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-02.css` | feature | people | 76 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-03.css` | feature | people | 75 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-04.css` | feature | people | 67 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-05.css` | feature | people | 72 | 14 | 1 |
+| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-06.css` | feature | people | 36 | 7 | 1 |
+| `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 7 | 0 | 1 |
 | `src/frontend/dm/sessions/components/active-session-prep.css` | feature | sessions | 140 | 24 | 1 |
 | `src/frontend/dm/sessions/components/prepared-session.css` | feature | sessions | 136 | 22 | 2 |
 | `src/frontend/dm/sessions/components/quick-capture.css` | feature | sessions | 46 | 6 | 1 |
@@ -136,16 +151,36 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 174 | 30 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
-| `src/frontend/shared/styles/features/admin-announcements.css` | feature | shared | 37 | 37 | 1 |
-| `src/frontend/shared/styles/features/admin-audit.css` | feature | shared | 117 | 46 | 1 |
-| `src/frontend/shared/styles/features/admin-campaigns.css` | feature | shared | 36 | 36 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-04.css` | feature | shared | 8 | 7 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements.css` | feature | shared | 5 | 0 | 1 |
+| `src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-01.css` | feature | shared | 52 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-02.css` | feature | shared | 30 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-03.css` | feature | shared | 15 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-04.css` | feature | shared | 23 | 16 | 1 |
+| `src/frontend/shared/styles/features/admin-audit.css` | feature | shared | 5 | 0 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-04.css` | feature | shared | 7 | 6 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/admin-game-systems.css` | feature | shared | 24 | 23 | 1 |
 | `src/frontend/shared/styles/features/admin-invitations.css` | feature | shared | 27 | 26 | 1 |
 | `src/frontend/shared/styles/features/admin-overview.css` | feature | shared | 28 | 25 | 1 |
-| `src/frontend/shared/styles/features/admin-purge.css` | feature | shared | 41 | 37 | 1 |
+| `src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-02.css` | feature | shared | 12 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-04.css` | feature | shared | 11 | 7 | 1 |
+| `src/frontend/shared/styles/features/admin-purge.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/admin-security.css` | feature | shared | 16 | 15 | 1 |
 | `src/frontend/shared/styles/features/admin-template-settings.css` | feature | shared | 25 | 24 | 1 |
-| `src/frontend/shared/styles/features/admin-users.css` | feature | shared | 67 | 42 | 1 |
+| `src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-01.css` | feature | shared | 32 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-04.css` | feature | shared | 16 | 12 | 1 |
+| `src/frontend/shared/styles/features/admin-users.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/auth.css` | feature | shared | 60 | 15 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-01.css` | feature | shared | 206 | 25 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-02.css` | feature | shared | 181 | 24 | 1 |
@@ -162,7 +197,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css` | feature | shared | 161 | 22 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | feature | shared | 11 | 0 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging.css` | feature | shared | 39 | 38 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-04.css` | feature | shared | 10 | 8 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | feature | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | feature | shared | 28 | 27 | 1 |
 | `src/frontend/shared/styles/features/canvas-bulk-actions.css` | feature | shared | 7 | 1 | 1 |
@@ -177,13 +216,23 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-palette.css` | feature | shared | 195 | 30 | 1 |
 | `src/frontend/shared/styles/features/canvas-presentation.css` | feature | shared | 11 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-toolbar.css` | feature | shared | 24 | 5 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview.css` | feature | shared | 49 | 46 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-04.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-05.css` | feature | shared | 10 | 6 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview.css` | feature | shared | 6 | 0 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | feature | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | feature | shared | 1434 | 227 | 1 |
 | `src/frontend/shared/styles/features/dm-hub.css` | feature | shared | 589 | 73 | 1 |
 | `src/frontend/shared/styles/features/dm-onboarding.css` | feature | shared | 20 | 19 | 1 |
 | `src/frontend/shared/styles/features/entity-create.css` | feature | shared | 32 | 6 | 1 |
-| `src/frontend/shared/styles/features/entity-relations.css` | feature | shared | 51 | 47 | 1 |
+| `src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-03.css` | feature | shared | 12 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-04.css` | feature | shared | 12 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-05.css` | feature | shared | 9 | 7 | 1 |
+| `src/frontend/shared/styles/features/entity-relations.css` | feature | shared | 6 | 0 | 1 |
 | `src/frontend/shared/styles/features/entity-trace.css` | feature | shared | 23 | 18 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | feature | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/image-picker-button.css` | feature | shared | 12 | 11 | 1 |
@@ -261,16 +310,16 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | Severity | Category | Location | Reason |
 |---|---|---|---|
-| high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:162` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:213` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:214` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:215` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:216` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:221` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:241` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:262` | Important declarations bypass the intended cascade. |
+| high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:31` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:162` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:213` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:214` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:215` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:216` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:221` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:241` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:262` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:203` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:11` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:22` | Important declarations bypass the intended cascade. |
@@ -535,8 +584,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Selector depends on another component's DOM structure. |
 | high | mixed-responsibility | `src/frontend/dm/pages/rulesPage.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
-| critical | mixed-responsibility | `src/frontend/dm/people/group/groupWorkspace.css:1` | Large stylesheet requires atomization (631 lines, 93 selectors). |
-| critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (394 lines, 61 selectors). |
 | info | dynamic-style | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:2` | Important declarations bypass the intended cascade. |
@@ -609,11 +656,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:295` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:325` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
-| high | mixed-responsibility | `src/frontend/shared/styles/features/admin-announcements.css:1` | Large stylesheet requires atomization (37 lines, 37 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/admin-audit.css:1` | Large stylesheet requires atomization (117 lines, 46 selectors). |
-| high | mixed-responsibility | `src/frontend/shared/styles/features/admin-campaigns.css:1` | Large stylesheet requires atomization (36 lines, 36 selectors). |
-| high | mixed-responsibility | `src/frontend/shared/styles/features/admin-purge.css:1` | Large stylesheet requires atomization (41 lines, 37 selectors). |
-| high | mixed-responsibility | `src/frontend/shared/styles/features/admin-users.css:1` | Large stylesheet requires atomization (67 lines, 42 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:112` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:113` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:117` | Important declarations bypass the intended cascade. |
@@ -675,16 +717,13 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:8` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:9` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:13` | Important declarations bypass the intended cascade. |
-| high | mixed-responsibility | `src/frontend/shared/styles/features/campaign-messaging.css:1` | Large stylesheet requires atomization (39 lines, 38 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-template.css:1` | Large stylesheet requires atomization (729 lines, 105 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:441` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:446` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:447` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/dashboard-overview.css:1` | Large stylesheet requires atomization (49 lines, 46 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-dashboard.css:1` | Large stylesheet requires atomization (507 lines, 71 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1434 lines, 227 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (589 lines, 73 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/entity-relations.css:1` | Large stylesheet requires atomization (51 lines, 47 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/landing-archive.css:1` | Large stylesheet requires atomization (874 lines, 138 selectors). |
 | high | important | `src/frontend/shared/styles/features/landing-archive.css:628` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/player-campaign.css:1` | Large stylesheet requires atomization (38 lines, 37 selectors). |

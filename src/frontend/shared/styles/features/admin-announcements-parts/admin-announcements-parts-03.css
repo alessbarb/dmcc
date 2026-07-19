@@ -1,0 +1,11 @@
+
+.admin-announcements__card--maintenance { border-left-color: var(--theme-feedback-danger-foreground); }
+.admin-announcements__card--archived { opacity: 0.5; }
+.admin-announcements__content { flex: 1; min-width: 0; }
+.admin-announcements__card-heading { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.admin-announcements__card-title { font-size: 0.95rem; }
+.admin-announcements__kind { color: var(--theme-accents-primary-foreground); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+.admin-announcements__kind--warning { color: var(--theme-feedback-warning-foreground); }
+.admin-announcements__kind--maintenance { color: var(--theme-feedback-danger-foreground); }
+.admin-announcements__archived, .admin-announcements__body { color: var(--theme-text-secondary); }
+.admin-announcements__archived { font-size: 0.7rem; }

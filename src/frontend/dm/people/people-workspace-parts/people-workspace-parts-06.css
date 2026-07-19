@@ -1,0 +1,35 @@
+
+
+@media (max-width: 560px) {
+  .people-invitations-hero,
+  .people-knowledge-toolbar {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .people-invitations-hero__icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .people-invitations-hero > .btn,
+  .people-knowledge-toolbar > .btn {
+    width: 100%;
+  }
+
+  .people-invite-share__value,
+  .people-knowledge-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .people-filter-group .btn {
+    flex: 1 1 auto;
+  }
+
+  .people-invitation-card {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 14px;
+  }
+}

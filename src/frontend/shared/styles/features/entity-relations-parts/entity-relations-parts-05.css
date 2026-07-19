@@ -1,0 +1,8 @@
+
+.entity-relations-toolbar__view-toggle { display: flex; gap: 6px; flex-wrap: wrap; }
+.entity-relations-neighbor-count { margin: 0; font-size: 0.76rem; color: var(--theme-text-secondary); }
+.entity-relations-inline-filters { display: flex; flex-direction: column; gap: 8px; }
+.entity-relations-graph-content { display: flex; flex-direction: column; gap: 10px; }
+.entity-relations-graph-content--fullscreen { height: 100%; }
+.entity-relations-graph--active { flex: 1; min-height: 0; }
+.entity-relations-missing { color: var(--theme-text-secondary); font-size: 0.78rem; margin: 0; }

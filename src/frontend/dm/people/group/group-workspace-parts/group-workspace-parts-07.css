@@ -1,0 +1,66 @@
+
+
+.group-view-status-badge--accent {
+  color: var(--theme-accents-primary-foreground);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, var(--theme-borders-default));
+}
+
+.group-view-status-badge--danger {
+  color: var(--theme-feedback-danger-foreground);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, var(--theme-borders-default));
+}
+
+.group-view-portal-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 17px;
+}
+
+.group-view-portal-list li {
+  color: var(--theme-text-primary);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* Proposals */
+
+.group-view-proposal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.group-view-proposal-card {
+  padding: 11px;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-medium);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, var(--theme-surfaces-interactive));
+}
+
+.group-view-proposal-card__kind {
+  margin-bottom: 6px;
+  color: var(--theme-text-primary);
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.group-view-proposal-card__detail {
+  margin-bottom: 8px;
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+}
+
+.group-view-proposal-card__fields {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 9px;
+  color: var(--theme-text-secondary);
+  font-size: 0.77rem;
+}
+
+.group-view-proposal-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

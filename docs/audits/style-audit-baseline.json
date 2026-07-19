@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T12:00:19.329Z",
+  "generatedAt": "2026-07-19T12:04:40.343Z",
   "summary": {
-    "cssFiles": 231,
+    "cssFiles": 280,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 24,
+    "mixedResponsibilityFiles": 14,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -957,14 +957,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "layer": "feature",
       "domain": "canvas",
       "lineCount": 265,
       "selectorCount": 34,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/canvas/components/CanvasToolbar.tsx"
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -1011,6 +1011,21 @@
         "--theme-surfaces-interactive",
         "--theme-surfaces-canvas"
       ]
+    },
+    {
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "layer": "feature",
+      "domain": "canvas",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/canvas/components/CanvasToolbar.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
@@ -2676,7 +2691,7 @@
       "path": "src/frontend/dm/map/network/NetworkFilterBar.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 186,
+      "lineCount": 188,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -3077,7 +3092,7 @@
       "path": "src/frontend/dm/map/shared/ResourceNodeFrame.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 28,
+      "lineCount": 30,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -3767,14 +3782,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/people/group/groupWorkspace.css",
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-01.css",
       "layer": "feature",
       "domain": "people",
-      "lineCount": 631,
-      "selectorCount": 93,
+      "lineCount": 85,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/people/group/GroupView.tsx"
+        "src/frontend/dm/people/group/groupWorkspace.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3794,7 +3809,21 @@
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-shapes-radius-pill",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-02.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 69,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
@@ -3803,7 +3832,21 @@
         "--theme-accents-primary-foreground",
         "--theme-surfaces-base",
         "--theme-text-primary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-03.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 75,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
@@ -3820,7 +3863,21 @@
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-surfaces-base",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-04.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 85,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-base",
         "--transition-fast",
@@ -3834,7 +3891,21 @@
         "--theme-surfaces-interactive",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-05.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 72,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-subtle",
         "--theme-text-secondary",
@@ -3845,7 +3916,21 @@
         "--theme-accents-primary-foreground",
         "--theme-surfaces-interactive",
         "--theme-text-primary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-06.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 70,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-base",
         "--transition-fast",
@@ -3861,7 +3946,21 @@
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-shapes-radius-pill",
-        "--theme-surfaces-interactive",
+        "--theme-surfaces-interactive"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-07.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 66,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
@@ -3876,7 +3975,21 @@
         "--theme-surfaces-interactive",
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-08.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 116,
+      "selectorCount": 23,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/group/groupWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
@@ -3884,6 +3997,28 @@
         "--theme-text-primary",
         "--theme-borders-default"
       ]
+    },
+    {
+      "path": "src/frontend/dm/people/group/groupWorkspace.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 9,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-01.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-02.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-03.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-04.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-05.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-06.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-07.css",
+        "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-08.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/people/group/GroupView.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/people/group/playerCharacterAssociations.ts",
@@ -3919,14 +4054,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
+      "path": "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-01.css",
       "layer": "feature",
       "domain": "people",
-      "lineCount": 394,
-      "selectorCount": 61,
+      "lineCount": 73,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/people/PeopleWorkspacePage.tsx"
+        "src/frontend/dm/people/peopleWorkspace.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3943,7 +4078,21 @@
         "--theme-borders-default",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-success-foreground",
-        "--theme-borders-default",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-02.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 76,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/peopleWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-success-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
@@ -3951,7 +4100,21 @@
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
         "--theme-text-on-media",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-03.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 75,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/peopleWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-secondary",
@@ -3970,14 +4133,42 @@
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-surfaces-base",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-04.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 67,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/peopleWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-text-secondary",
-        "--theme-surfaces-base",
+        "--theme-surfaces-base"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-05.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 72,
+      "selectorCount": 14,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/peopleWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-base",
         "--theme-text-primary",
@@ -3987,6 +4178,39 @@
         "--theme-text-secondary",
         "--theme-text-secondary"
       ]
+    },
+    {
+      "path": "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-06.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 36,
+      "selectorCount": 7,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/people/peopleWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/people/peopleWorkspace.css",
+      "layer": "feature",
+      "domain": "people",
+      "lineCount": 7,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-01.css",
+        "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-02.css",
+        "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-03.css",
+        "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-04.css",
+        "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-05.css",
+        "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-06.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/people/PeopleWorkspacePage.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/sessions/SessionDetailPage.tsx",
@@ -5977,7 +6201,7 @@
       "path": "src/frontend/shared/components/ImagePickerButton.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 170,
+      "lineCount": 172,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -6075,7 +6299,7 @@
       "path": "src/frontend/shared/components/ToastContainer.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 33,
+      "lineCount": 35,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -6374,14 +6598,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-announcements.css",
+      "path": "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 37,
-      "selectorCount": 37,
+      "lineCount": 10,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/admin-announcements.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -6394,7 +6618,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-borders-default",
-        "--theme-surfaces-base",
+        "--theme-surfaces-base"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-announcements.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
@@ -6407,12 +6645,40 @@
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
         "--theme-surfaces-base",
-        "--theme-feedback-warning-foreground",
+        "--theme-feedback-warning-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-announcements.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-accents-primary-foreground",
         "--theme-feedback-warning-foreground",
         "--theme-feedback-danger-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 8,
+      "selectorCount": 7,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-announcements.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
@@ -6422,14 +6688,32 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-audit.css",
+      "path": "src/frontend/shared/styles/features/admin-announcements.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 117,
-      "selectorCount": 46,
-      "imports": [],
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-01.css",
+        "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-02.css",
+        "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-03.css",
+        "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-04.css"
+      ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 52,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-audit.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -6441,7 +6725,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-shapes-radius-medium",
         "--theme-feedback-danger-foreground",
-        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 30,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-audit.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
@@ -6455,28 +6753,74 @@
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 15,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-audit.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 23,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-audit.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-surfaces-canvas"
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-campaigns.css",
+      "path": "src/frontend/shared/styles/features/admin-audit.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 36,
-      "selectorCount": 36,
-      "imports": [],
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-01.css",
+        "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-02.css",
+        "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-03.css",
+        "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-04.css"
+      ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 10,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-campaigns.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -6485,7 +6829,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-borders-default",
-        "--theme-surfaces-base",
+        "--theme-surfaces-base"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-campaigns.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-surfaces-canvas",
@@ -6498,12 +6856,40 @@
         "--theme-surfaces-base",
         "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-surfaces-base",
+        "--theme-surfaces-base"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-campaigns.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-borders-default",
         "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 7,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-campaigns.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
@@ -6513,6 +6899,24 @@
         "--theme-text-secondary",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-campaigns.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-01.css",
+        "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-02.css",
+        "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-03.css",
+        "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/admin-game-systems.css",
@@ -6634,14 +7038,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-purge.css",
+      "path": "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 41,
-      "selectorCount": 37,
+      "lineCount": 10,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/admin-purge.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -6659,7 +7063,21 @@
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 12,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-purge.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
@@ -6674,17 +7092,63 @@
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-borders-default",
-        "--theme-surfaces-interactive-hover",
+        "--theme-surfaces-interactive-hover"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-purge.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-success-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
         "--theme-text-secondary",
-        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 7,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-purge.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-purge.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-01.css",
+        "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-02.css",
+        "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-03.css",
+        "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/admin-security.css",
@@ -6754,14 +7218,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-users.css",
+      "path": "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 67,
-      "selectorCount": 42,
+      "lineCount": 32,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/admin-users.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -6770,7 +7234,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-borders-default",
-        "--theme-surfaces-base",
+        "--theme-surfaces-base"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-users.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-surfaces-canvas",
@@ -6780,13 +7258,41 @@
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-surfaces-base",
+        "--theme-surfaces-base"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-users.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-borders-default",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 16,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/admin-users.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-on-media",
@@ -6800,6 +7306,24 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/admin-users.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-01.css",
+        "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-02.css",
+        "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-03.css",
+        "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/auth.css",
@@ -7364,20 +7888,83 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-messaging.css",
+      "path": "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 39,
-      "selectorCount": 38,
+      "lineCount": 10,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/campaign-messaging.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-surfaces-raised",
+        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-messaging.css"
       ],
       "variableDefinitions": [
         "--campaign-message-accent",
+        "--campaign-message-accent"
+      ],
+      "variableReferences": [
+        "--theme-text-secondary",
         "--campaign-message-accent",
         "--campaign-message-accent",
+        "--theme-surfaces-raised",
         "--campaign-message-accent",
+        "--theme-borders-default",
+        "--campaign-message-accent",
+        "--theme-text-secondary",
+        "--theme-accents-primary-foreground",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-messaging.css"
+      ],
+      "variableDefinitions": [
+        "--campaign-message-accent",
+        "--campaign-message-accent"
+      ],
+      "variableReferences": [
+        "--theme-shadows-medium",
+        "--theme-borders-default",
+        "--theme-feedback-danger-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 10,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-messaging.css"
+      ],
+      "variableDefinitions": [
         "--campaign-message-accent",
         "--campaign-message-accent",
         "--campaign-message-accent",
@@ -7388,25 +7975,6 @@
         "--campaign-message-accent"
       ],
       "variableReferences": [
-        "--theme-borders-default",
-        "--theme-surfaces-raised",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--campaign-message-accent",
-        "--campaign-message-accent",
-        "--theme-surfaces-raised",
-        "--campaign-message-accent",
-        "--theme-borders-default",
-        "--campaign-message-accent",
-        "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
-        "--theme-feedback-danger-foreground",
-        "--theme-shadows-medium",
-        "--theme-borders-default",
-        "--theme-feedback-danger-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-secondary-foreground",
         "--theme-narrative-rumor-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-warning-foreground",
@@ -7416,6 +7984,24 @@
         "--theme-feedback-info-foreground",
         "--theme-narrative-canon-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-messaging.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-01.css",
+        "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-02.css",
+        "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-03.css",
+        "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/campaign-template.css",
@@ -7802,14 +8388,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dashboard-overview.css",
+      "path": "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 49,
-      "selectorCount": 46,
+      "lineCount": 10,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/dashboard-overview.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -7822,13 +8408,55 @@
         "--theme-feedback-warning-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dashboard-overview.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-feedback-danger-foreground",
         "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dashboard-overview.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-feedback-success-foreground",
+        "--theme-feedback-success-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dashboard-overview.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-warning-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-shapes-radius-medium",
@@ -7837,12 +8465,45 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-shapes-radius-medium",
+        "--theme-shapes-radius-medium"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 10,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dashboard-overview.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-primary"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dashboard-overview.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 6,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-01.css",
+        "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-02.css",
+        "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-03.css",
+        "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-04.css",
+        "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-05.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/dm-dashboard.css",
@@ -8275,14 +8936,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/entity-relations.css",
+      "path": "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 51,
-      "selectorCount": 47,
+      "lineCount": 11,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/entity-relations.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8299,7 +8960,21 @@
         "--theme-feedback-danger-background",
         "--theme-feedback-danger-foreground",
         "--theme-narrative-theory-background",
-        "--theme-narrative-theory-foreground",
+        "--theme-narrative-theory-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/entity-relations.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-warning-background",
         "--theme-feedback-warning-foreground",
         "--theme-accents-secondary-background",
@@ -8307,21 +8982,82 @@
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 12,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/entity-relations.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-interactive",
         "--theme-shapes-radius-small",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-feedback-warning-background",
         "--theme-feedback-warning-border",
-        "--theme-feedback-warning-foreground",
+        "--theme-feedback-warning-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 12,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/entity-relations.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-surfaces-interactive",
         "--theme-shapes-radius-small",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 9,
+      "selectorCount": 7,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/entity-relations.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/entity-relations.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 6,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css",
+        "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-02.css",
+        "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-03.css",
+        "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-04.css",
+        "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-05.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/entity-trace.css",
@@ -11134,8 +11870,8 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 31,
       "column": 19,
       "severity": "high",
@@ -11146,8 +11882,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 213,
       "column": 22,
       "severity": "high",
@@ -11158,8 +11894,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 214,
       "column": 22,
       "severity": "high",
@@ -11170,8 +11906,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 215,
       "column": 22,
       "severity": "high",
@@ -11182,8 +11918,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 216,
       "column": 81,
       "severity": "high",
@@ -11194,8 +11930,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 221,
       "column": 14,
       "severity": "high",
@@ -11206,8 +11942,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 262,
       "column": 19,
       "severity": "high",
@@ -11218,8 +11954,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 162,
       "column": 5,
       "severity": "high",
@@ -11230,8 +11966,8 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 241,
       "column": 5,
       "severity": "high",
@@ -11242,8 +11978,8 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
+      "id": "mixed-responsibility:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
@@ -14418,28 +15154,6 @@
       "reason": "Large stylesheet requires atomization (179 lines, 32 selectors)."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/people/group/groupWorkspace.css",
-      "path": "src/frontend/dm/people/group/groupWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (631 lines, 93 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/dm/people/peopleWorkspace.css",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (394 lines, 61 selectors)."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:style={{ \"--consequence-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"consequence-chain-list__kind\">{t(`sessio",
       "path": "src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx",
       "line": 55,
@@ -15246,61 +15960,6 @@
       "reason": "Large stylesheet requires atomization (329 lines, 42 selectors)."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/admin-announcements.css",
-      "path": "src/frontend/shared/styles/features/admin-announcements.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (37 lines, 37 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/admin-audit.css",
-      "path": "src/frontend/shared/styles/features/admin-audit.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (117 lines, 46 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/admin-campaigns.css",
-      "path": "src/frontend/shared/styles/features/admin-campaigns.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (36 lines, 36 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/admin-purge.css",
-      "path": "src/frontend/shared/styles/features/admin-purge.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (41 lines, 37 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/admin-users.css",
-      "path": "src/frontend/shared/styles/features/admin-users.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (67 lines, 42 selectors)."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
       "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
       "line": 112,
@@ -16033,17 +16692,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/campaign-messaging.css",
-      "path": "src/frontend/shared/styles/features/campaign-messaging.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (39 lines, 38 selectors)."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/campaign-template.css:!important",
       "path": "src/frontend/shared/styles/features/campaign-template.css",
       "line": 441,
@@ -16091,17 +16739,6 @@
       "reason": "Large stylesheet requires atomization (729 lines, 105 selectors)."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/dashboard-overview.css",
-      "path": "src/frontend/shared/styles/features/dashboard-overview.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (49 lines, 46 selectors)."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-dashboard.css",
       "path": "src/frontend/shared/styles/features/dm-dashboard.css",
       "line": 1,
@@ -16133,17 +16770,6 @@
       "severity": "critical",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (589 lines, 73 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/entity-relations.css",
-      "path": "src/frontend/shared/styles/features/entity-relations.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (51 lines, 47 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/landing-archive.css:!important",
@@ -16919,6 +17545,9 @@
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
     ],
+    "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css": [
+      "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css"
+    ],
     "src/frontend/dm/entities/EntityDetailModal.tsx": [
       "src/frontend/dm/entities/entity-detail-modal.css",
       "src/frontend/dm/entities/entityDetailHeroActions.css",
@@ -17036,6 +17665,24 @@
     "src/frontend/dm/people/group/GroupView.tsx": [
       "src/frontend/dm/people/group/groupWorkspace.css"
     ],
+    "src/frontend/dm/people/group/groupWorkspace.css": [
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-01.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-02.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-03.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-04.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-05.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-06.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-07.css",
+      "src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-08.css"
+    ],
+    "src/frontend/dm/people/peopleWorkspace.css": [
+      "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-01.css",
+      "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-02.css",
+      "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-03.css",
+      "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-04.css",
+      "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-05.css",
+      "src/frontend/dm/people/people-workspace-parts/people-workspace-parts-06.css"
+    ],
     "src/frontend/dm/sessions/SessionDetailPage.tsx": [
       "src/frontend/dm/sessions/session-workspace.css",
       "src/frontend/dm/sessions/components/session-idle.css",
@@ -17142,6 +17789,36 @@
     "src/frontend/shared/components/Watermark.tsx": [
       "src/frontend/shared/components/watermark.css"
     ],
+    "src/frontend/shared/styles/features/admin-announcements.css": [
+      "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-01.css",
+      "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-02.css",
+      "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-03.css",
+      "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-04.css"
+    ],
+    "src/frontend/shared/styles/features/admin-audit.css": [
+      "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-01.css",
+      "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-02.css",
+      "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-03.css",
+      "src/frontend/shared/styles/features/admin-audit-parts/admin-audit-parts-04.css"
+    ],
+    "src/frontend/shared/styles/features/admin-campaigns.css": [
+      "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-01.css",
+      "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-02.css",
+      "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-03.css",
+      "src/frontend/shared/styles/features/admin-campaigns-parts/admin-campaigns-parts-04.css"
+    ],
+    "src/frontend/shared/styles/features/admin-purge.css": [
+      "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-01.css",
+      "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-02.css",
+      "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-03.css",
+      "src/frontend/shared/styles/features/admin-purge-parts/admin-purge-parts-04.css"
+    ],
+    "src/frontend/shared/styles/features/admin-users.css": [
+      "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-01.css",
+      "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-02.css",
+      "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-03.css",
+      "src/frontend/shared/styles/features/admin-users-parts/admin-users-parts-04.css"
+    ],
     "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css": [
       "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css",
       "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
@@ -17159,6 +17836,26 @@
       "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
       "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css",
       "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css"
+    ],
+    "src/frontend/shared/styles/features/campaign-messaging.css": [
+      "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-01.css",
+      "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-02.css",
+      "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-03.css",
+      "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-04.css"
+    ],
+    "src/frontend/shared/styles/features/dashboard-overview.css": [
+      "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-01.css",
+      "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-02.css",
+      "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-03.css",
+      "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-04.css",
+      "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-05.css"
+    ],
+    "src/frontend/shared/styles/features/entity-relations.css": [
+      "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css",
+      "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-02.css",
+      "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-03.css",
+      "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-04.css",
+      "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-05.css"
     ],
     "src/frontend/shared/styles/landing/landing-05.css": [
       "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",

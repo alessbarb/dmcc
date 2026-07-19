@@ -1,0 +1,12 @@
+
+.entity-relations-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.entity-relations-list__item { width: 100%; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; padding: 10px 12px; background: var(--theme-surfaces-interactive); border: none; border-radius: var(--theme-shapes-radius-small); cursor: pointer; text-align: left; }
+.entity-relations-list__title { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.88rem; }
+.entity-relations-list__type { font-weight: 400; color: var(--theme-text-secondary); font-size: 0.76rem; }
+.entity-relations-list__relations { display: flex; flex-direction: column; gap: 2px; }
+.entity-relations-list__relation { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--theme-text-secondary); }
+.relation-create-modal__title { font-weight: 700; }
+.relation-create-modal__type-fields { display: flex; gap: 10px; flex-direction: column; }
+.relation-create-modal__duplicate-warning { padding: 10px 16px; background: var(--theme-feedback-warning-background); border-top: 1px solid var(--theme-feedback-warning-border); display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+.relation-create-modal__warning-icon,
+.relation-create-modal__warning-copy { color: var(--theme-feedback-warning-foreground); }

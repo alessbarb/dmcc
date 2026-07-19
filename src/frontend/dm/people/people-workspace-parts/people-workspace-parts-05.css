@@ -1,0 +1,72 @@
+
+
+.people-knowledge-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, var(--theme-surfaces-base));
+}
+
+.people-knowledge-table__target strong,
+.people-knowledge-table__target span {
+  display: block;
+}
+
+.people-knowledge-table__target strong {
+  color: var(--theme-text-primary);
+}
+
+.people-knowledge-table__target span {
+  margin-top: 3px;
+  color: var(--theme-text-secondary);
+  font-size: 0.74rem;
+}
+
+.people-player-column {
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.people-knowledge-cell {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 999px;
+}
+
+.people-knowledge-cell.is-visible {
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 12%, transparent);
+  color: var(--theme-feedback-success-foreground);
+}
+
+.people-knowledge-cell.is-hidden {
+  color: var(--theme-text-secondary);
+  opacity: 0.45;
+}
+
+.people-loading-state {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  color: var(--theme-text-secondary);
+}
+
+@media (max-width: 820px) {
+  .people-invitations-hero,
+  .people-knowledge-toolbar {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .people-invitations-hero > .btn,
+  .people-knowledge-toolbar > .btn {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .people-invitation-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .people-invitation-card__meta {
+    grid-column: 1 / -1;
+  }
+}

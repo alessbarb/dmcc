@@ -1,0 +1,7 @@
+
+.admin-announcements__body { margin: 0; font-size: 0.85rem; }
+.admin-announcements__actions { display: flex; flex-shrink: 0; gap: 8px; }
+.admin-announcements__action { padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; }
+.admin-announcements__action--enabled { border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent); color: var(--theme-feedback-success-foreground); }
+.admin-announcements__action--archive { border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent); color: var(--theme-feedback-danger-foreground); }
+@media (max-width: 720px) { .admin-announcements__header, .admin-announcements__card { flex-direction: column; } .admin-announcements__actions { width: 100%; } }

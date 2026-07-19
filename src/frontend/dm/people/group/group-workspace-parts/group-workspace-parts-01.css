@@ -1,0 +1,85 @@
+.group-view-workspace {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: clamp(18px, 2vw, 26px);
+}
+
+.group-view-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: clamp(18px, 2.4vw, 26px);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent), transparent 32%),
+    color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent);
+}
+
+.group-view-summary__identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 14px;
+}
+
+.group-view-summary__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-large);
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, var(--theme-surfaces-interactive));
+  box-shadow: inset 0 0 18px color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
+}
+
+.group-view-summary__eyebrow,
+.group-view-section__eyebrow {
+  margin: 0 0 5px;
+  color: var(--theme-text-subtle, var(--theme-text-secondary));
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.group-view-summary__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  color: var(--theme-text-secondary);
+  font-size: 0.84rem;
+}
+
+.group-view-summary__metrics span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.group-view-summary__metrics strong {
+  color: var(--theme-text-primary);
+  font-size: 1rem;
+}
+
+.group-view-summary__pending {
+  min-width: 1.8rem;
+  justify-content: center;
+  padding: 3px 8px;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 38%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-pill);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
+}
+
+.group-view-overview {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(18px, 2vw, 26px);
+}
