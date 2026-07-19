@@ -6,15 +6,15 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 98,
-  "tsxFilesWithInlineStyles": 76,
+  "cssFiles": 99,
+  "tsxFilesWithInlineStyles": 75,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 765,
+  "staticInlineStyles": 727,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 32,
+  "mixedResponsibilityFiles": 33,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -75,6 +75,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
 | `src/frontend/shared/styles/features/admin-audit.css` | legacy | shared | 117 | 46 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns.css` | legacy | shared | 36 | 36 | 1 |
 | `src/frontend/shared/styles/features/admin-overview.css` | legacy | shared | 28 | 25 | 1 |
 | `src/frontend/shared/styles/features/admin-purge.css` | legacy | shared | 41 | 37 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
@@ -108,7 +109,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 57 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 58 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -161,44 +162,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:261` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:266` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:75` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:76` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:88` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:105` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:122` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:123` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:124` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:130` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:169` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:175` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:176` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:183` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:188` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:190` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:198` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:199` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:225` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:244` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:249` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:59` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:61` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1447,6 +1410,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:167` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:171` | Literal visual color outside a registered theme package. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/admin-audit.css:1` | Large stylesheet requires atomization (117 lines, 46 selectors). |
+| high | mixed-responsibility | `src/frontend/shared/styles/features/admin-campaigns.css:1` | Large stylesheet requires atomization (36 lines, 36 selectors). |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-purge.css:1` | Large stylesheet requires atomization (41 lines, 37 selectors). |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-users.css:1` | Large stylesheet requires atomization (67 lines, 42 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-canvas.css:1` | Large stylesheet requires atomization (1683 lines, 259 selectors). |
