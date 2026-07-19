@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 121,
+  "cssFiles": 122,
   "tsxFilesWithInlineStyles": 46,
   "forbiddenLiteralColors": 246,
-  "staticInlineStyles": 374,
+  "staticInlineStyles": 351,
   "dynamicInlineStyles": 28,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -109,6 +109,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
+| `src/frontend/shared/styles/features/player-campaign.css` | legacy | shared | 18 | 17 | 1 |
 | `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 988 | 153 | 1 |
 | `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
@@ -131,7 +132,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 80 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 81 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -858,55 +859,32 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:87` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:109` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:110` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:121` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:123` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:129` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:133` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:144` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:167` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:176` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:183` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:189` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:253` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:254` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:260` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:259` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:263` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:264` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:265` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:278` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:393` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:277` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:392` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:394` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:395` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:396` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:397` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:398` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:399` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:400` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:401` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:412` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:411` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:413` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:415` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:416` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:417` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:422` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:422` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:424` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:426` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:432` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:442` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:442` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:450` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:418` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:421` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:421` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:425` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:431` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:441` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:441` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:449` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:36` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |

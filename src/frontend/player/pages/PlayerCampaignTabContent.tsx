@@ -36,7 +36,7 @@ function errorMessage(err: unknown): string {
 }
 
 function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <section className="card" style={{ padding: 16, ...style }}>{children}</section>;
+  return <section className="card player-campaign-card" style={style}>{children}</section>;
 }
 
 function hasDmOnlyVisibility(value: unknown): boolean {
@@ -106,8 +106,8 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
 
   return (
     <Card>
-      <label htmlFor="player-memory-search" style={{ display: "grid", gap: 8 }}>
-        <span style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--theme-text-secondary)", fontSize: 13 }}>
+      <label htmlFor="player-memory-search" className="player-search-label">
+        <span className="player-search-label__text">
           <Search size={15} /> {t("playerPortal.search.label")}
         </span>
         <input
@@ -118,19 +118,18 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
           placeholder={t("playerPortal.search.placeholder")}
         />
       </label>
-      {error && <p role="alert" style={{ color: "var(--theme-feedback-danger-foreground)", marginBottom: 0 }}>{error}</p>}
+      {error && <p role="alert" className="player-campaign-error">{error}</p>}
       {results.length > 0 && (
-        <section aria-label={t("playerPortal.search.resultsLabel")} style={{ display: "grid", gap: 8, marginTop: 12 }}>
+        <section aria-label={t("playerPortal.search.resultsLabel")} className="player-search-results">
           {results.map((result) => (
             <button
               key={`${result.type}-${result.item.id}`}
               type="button"
-              className="card"
-              style={{ padding: 10, textAlign: "left", color: "inherit", cursor: "pointer" }}
+              className="card player-search-result"
               onClick={() => setSelectedResult(result)}
             >
               <strong>{result.item.title ?? result.type}</strong>
-              <span style={{ display: "block", marginTop: 4, color: "var(--theme-text-secondary)", fontSize: 13 }}>
+              <span className="player-search-result__summary">
                 {result.item.summary ?? t("playerPortal.empty.noVisibleSummary")}
               </span>
             </button>
@@ -138,10 +137,10 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
         </section>
       )}
       {selectedResult && (
-        <article style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--theme-borders-default)" }}>
+        <article className="player-search-selection">
           <span className="badge badge-default">{selectedResult.type}</span>
           <h3>{selectedResult.item.title ?? selectedResult.item.id}</h3>
-          <p style={{ color: "var(--theme-text-secondary)", whiteSpace: "pre-wrap" }}>
+          <p className="player-search-selection__summary">
             {selectedResult.item.summary ?? t("playerPortal.empty.noVisibleContent")}
           </p>
         </article>
@@ -155,43 +154,43 @@ function renderMemory(memory: PlayerPortalTabPayload, t: (key: TranslationKey) =
   const facts = memory.facts ?? [];
   const relations = memory.relations ?? [];
   return (
-    <div style={{ display: "grid", gap: 14 }}>
+    <div className="player-memory-layout">
       <Card>
-        <h2 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownMemory")}</h2>
-        <p style={{ color: "var(--theme-text-secondary)" }}>
+        <h2 className="player-campaign-heading">{t("playerPortal.memory.knownMemory")}</h2>
+        <p className="player-campaign-secondary">
           {t("playerPortal.memory.visibilityHint")}
         </p>
       </Card>
       {Object.entries(groups).map(([group, items]) => (
         <Card key={group}>
-          <h3 style={{ marginTop: 0, textTransform: "capitalize" }}>{group}</h3>
-          <div style={{ display: "grid", gap: 8 }}>
+          <h3 className="player-campaign-heading player-campaign-heading--capitalize">{group}</h3>
+          <div className="player-memory-items">
             {items.length > 0 ? items.map((item) => (
-              <article key={item.entityId} style={{ border: "1px solid var(--theme-borders-default)", borderRadius: 12, padding: 12 }}>
+              <article key={item.entityId} className="player-memory-item">
                 <strong>{item.title}</strong>
-                <p style={{ margin: "5px 0 0", color: "var(--theme-text-secondary)" }}>
+                <p className="player-campaign-secondary player-memory-item__summary">
                   {item.summary ?? item.status ?? t("playerPortal.empty.noVisibleSummary")}
                 </p>
               </article>
-            )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.nothingYet")}</p>}
+            )) : <p className="player-campaign-secondary">{t("playerPortal.empty.nothingYet")}</p>}
           </div>
         </Card>
       ))}
       <Card>
-        <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownFacts")}</h3>
+        <h3 className="player-campaign-heading">{t("playerPortal.memory.knownFacts")}</h3>
         {facts.length > 0 ? facts.map((fact) => (
-          <p key={fact.factId} style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: 8 }}>
+          <p key={fact.factId} className="player-memory-line">
             {fact.statement}
           </p>
-        )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noVisibleFacts")}</p>}
+        )) : <p className="player-campaign-secondary">{t("playerPortal.empty.noVisibleFacts")}</p>}
       </Card>
       <Card>
-        <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownRelations")}</h3>
+        <h3 className="player-campaign-heading">{t("playerPortal.memory.knownRelations")}</h3>
         {relations.length > 0 ? relations.map((relation) => (
-          <p key={relation.relationId} style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: 8 }}>
+          <p key={relation.relationId} className="player-memory-line">
             <strong>{relation.label}</strong>: {relation.description ?? t("playerPortal.memory.knownRelation")}
           </p>
-        )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noVisibleRelations")}</p>}
+        )) : <p className="player-campaign-secondary">{t("playerPortal.empty.noVisibleRelations")}</p>}
       </Card>
     </div>
   );
