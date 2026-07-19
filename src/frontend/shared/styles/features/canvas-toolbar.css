@@ -1,0 +1,23 @@
+.canvas-toolbar__option {
+  background: var(--theme-surfaces-base);
+  color: var(--theme-text-primary);
+}
+
+.canvas-toolbar__option--placeholder {
+  color: var(--theme-text-secondary);
+}
+
+.canvas-toolbar__group--menu {
+  position: relative;
+}
+
+.canvas-toolbar__menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: transparent;
+}
+
+.canvas-toolbar-panel--desktop-offset {
+  margin-top: 8px;
+}

@@ -320,9 +320,9 @@ export function CanvasToolbar({
           className="canvas-toolbar__select"
           title={t("canvas.toolbar.focusGroup")}
         >
-          <option value="" style={{ background: "var(--theme-surfaces-base)", color: "var(--theme-text-secondary)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
+          <option value="" className="canvas-toolbar__option canvas-toolbar__option--placeholder">{t("canvas.toolbar.focusPlaceholder")}</option>
           {groups.map(g => (
-            <option key={g.id} value={g.id} style={{ background: "var(--theme-surfaces-base)", color: "var(--theme-text-primary)" }}>
+            <option key={g.id} value={g.id} className="canvas-toolbar__option">
               {typeof g.data?.title === "string" ? g.data.title : t("canvas.toolbar.groupFallback")}
             </option>
           ))}
@@ -372,7 +372,7 @@ export function CanvasToolbar({
         {groupFocusSelect}
       </div>
       <div className="canvas-toolbar__divider" />
-      <div className="canvas-toolbar__group" style={{ position: "relative" }}>
+      <div className="canvas-toolbar__group canvas-toolbar__group--menu">
         <button
           className={`canvas-toolbar__btn ${isLayoutMenuOpen ? "canvas-toolbar__btn--active" : ""}`}
           onClick={() => setIsLayoutMenuOpen((prev) => !prev)}
@@ -384,15 +384,7 @@ export function CanvasToolbar({
         {isLayoutMenuOpen && (
           <>
             <div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                zIndex: 999,
-                background: "transparent",
-              }}
+              className="canvas-toolbar__menu-backdrop"
               onClick={() => setIsLayoutMenuOpen(false)}
             />
             <div className="canvas-layout-popover">
@@ -548,7 +540,7 @@ export function CanvasToolbar({
 
   return (
     <>
-      <Panel position="top-center" className="canvas-toolbar-panel canvas-toolbar-panel--desktop" style={{ marginTop: "8px" }}>{desktopToolbarContent}</Panel>
+      <Panel position="top-center" className="canvas-toolbar-panel canvas-toolbar-panel--desktop canvas-toolbar-panel--desktop-offset">{desktopToolbarContent}</Panel>
       <Panel position="top-center" className="canvas-mobile-mode-panel">
         <div className={`canvas-mobile-mode-pill canvas-mobile-mode-pill--${touchMode}`}>
           {touchMode === "connect" && <Link2 size={13} />}

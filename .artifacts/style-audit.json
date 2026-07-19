@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:45:02.664Z",
+  "generatedAt": "2026-07-19T10:45:38.963Z",
   "summary": {
-    "cssFiles": 111,
-    "tsxFilesWithInlineStyles": 63,
+    "cssFiles": 112,
+    "tsxFilesWithInlineStyles": 62,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 501,
+    "staticInlineStyles": 496,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -862,19 +862,14 @@
       "path": "src/frontend/dm/canvas/components/CanvasToolbar.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 577,
+      "lineCount": 569,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-base",
-        "--theme-text-secondary",
-        "--theme-surfaces-base",
-        "--theme-text-primary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
@@ -6665,6 +6660,23 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-toolbar.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 24,
+      "selectorCount": 5,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-surfaces-base",
+        "--theme-text-primary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/dm-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8672,7 +8684,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 70,
+      "lineCount": 71,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8736,7 +8748,8 @@
         "src/frontend/shared/styles/features/canvas-narrative-lint.css",
         "src/frontend/shared/styles/features/canvas-bulk-actions.css",
         "src/frontend/shared/styles/features/canvas-group-hulls.css",
-        "src/frontend/shared/styles/features/session-prep-form.css"
+        "src/frontend/shared/styles/features/session-prep-form.css",
+        "src/frontend/shared/styles/features/canvas-toolbar.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10450,71 +10463,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ maxWidth: \"450px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasToolbar.tsx:style={{ background: \"var(--theme-surfaces-base)\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasToolbar.tsx",
-      "line": 323,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ background: \"var(--theme-surfaces-base)\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasToolbar.tsx:style={{ background: \"var(--theme-surfaces-base)\", color: \"var(--theme-text-primary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasToolbar.tsx",
-      "line": 325,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ background: \"var(--theme-surfaces-base)\", color: \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasToolbar.tsx:style={{ position: \"relative\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasToolbar.tsx",
-      "line": 375,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ position: \"relative\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasToolbar.tsx:style={{ position: \"fixed\", top: 0, left: 0, right: 0, bottom: 0, zIndex: 999, background: \"transparent\", }}",
-      "path": "src/frontend/dm/canvas/components/CanvasToolbar.tsx",
-      "line": 387,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                position: \"fixed\",\n                top: 0,\n                left: 0,\n                right: 0,\n                bottom: 0,\n                zIndex: 999,\n                background: \"transparent\",\n              }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasToolbar.tsx:style={{ marginTop: \"8px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasToolbar.tsx",
-      "line": 551,
-      "column": 99,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"8px\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -25018,7 +24966,8 @@
       "src/frontend/shared/styles/features/canvas-narrative-lint.css",
       "src/frontend/shared/styles/features/canvas-bulk-actions.css",
       "src/frontend/shared/styles/features/canvas-group-hulls.css",
-      "src/frontend/shared/styles/features/session-prep-form.css"
+      "src/frontend/shared/styles/features/session-prep-form.css",
+      "src/frontend/shared/styles/features/canvas-toolbar.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"
