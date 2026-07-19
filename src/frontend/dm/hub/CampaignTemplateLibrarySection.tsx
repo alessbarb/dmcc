@@ -25,11 +25,11 @@ export function CampaignTemplateLibrarySection({
     <section id="campaign-template-library-section" className="dm-panel">
       <div className="dm-panel__header">
         <div className="dm-panel__title-group">
-          <Sparkles size={17} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+          <Sparkles size={17} className="dm-campaign-template-library__icon" />
           <h2 className="dm-panel__title">Aventuras preparadas</h2>
         </div>
       </div>
-      <p className="dm-muted-text" style={{ marginTop: 0, marginBottom: "20px" }}>
+      <p className="dm-muted-text dm-campaign-template-library__description">
         {t("landing.campaignTemplateDescription")}
       </p>
       {templates.length === 0 ? (
@@ -51,7 +51,7 @@ export function CampaignTemplateLibrarySection({
                 <div className="dm-campaign-template-card__meta">
                   <span>{t("landing.campaignTemplateDifficulty", { difficulty: template.difficulty })}</span>
                   {copies.length > 0 && (
-                    <span style={{ color: "var(--theme-accents-primary-foreground)" }}>
+                    <span className="dm-campaign-template-card__copies">
                       {t("landing.campaignTemplateExistingCopies", { count: String(copies.length) })}
                     </span>
                   )}
@@ -68,19 +68,17 @@ export function CampaignTemplateLibrarySection({
                 <div className="dm-campaign-template-card__actions">
                   <button
                     type="button"
-                    className="btn btn-secondary btn-sm"
                     onClick={() => onExplore(template.templateId)}
-                    style={{ flex: 1 }}
+                    className="btn btn-secondary btn-sm dm-campaign-template-card__action"
                   >
                     <Eye size={12} />
                     {t("landing.campaignTemplateExploreButton")}
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary btn-sm"
                     onClick={() => onImport(template.templateId)}
                     disabled={loading || importingTemplateId === template.templateId}
-                    style={{ flex: 1 }}
+                    className="btn btn-primary btn-sm dm-campaign-template-card__action"
                   >
                     {importingTemplateId === template.templateId ? "…" : t("landing.campaignTemplateImportButton")}
                   </button>

@@ -1343,4 +1343,8 @@
     flex-direction: row;
   }
 }
-
+.dm-campaign-template-library__icon,
+.dm-hub-campaigns__icon { color: var(--theme-accents-primary-foreground); }
+.dm-campaign-template-library__description { margin-top: 0; margin-bottom: 20px; }
+.dm-campaign-template-card__copies { color: var(--theme-accents-primary-foreground); }
+.dm-campaign-template-card__action { flex: 1; }

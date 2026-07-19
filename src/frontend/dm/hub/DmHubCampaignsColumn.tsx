@@ -68,7 +68,7 @@ export function DmHubCampaignsColumn({
             <section id="dm-campaigns-section" className="dm-panel dm-panel--campaigns">
               <div className="dm-panel__header dm-panel__header--campaigns">
                 <div className="dm-panel__title-group">
-                  <FolderOpen size={17} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+                <FolderOpen size={17} className="dm-hub-campaigns__icon" />
                   <h2 className="dm-panel__title">Tus campañas</h2>
                 </div>
                 <div className="dm-panel__controls">

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:00:03.574Z",
+  "generatedAt": "2026-07-19T11:01:28.865Z",
   "summary": {
     "cssFiles": 122,
-    "tsxFilesWithInlineStyles": 46,
+    "tsxFilesWithInlineStyles": 45,
     "forbiddenLiteralColors": 246,
-    "staticInlineStyles": 351,
+    "staticInlineStyles": 345,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -1883,15 +1883,12 @@
       "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 96,
+      "lineCount": 94,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/hub/DmHubCampaignModals.tsx",
@@ -1925,7 +1922,6 @@
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
-        "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -6837,8 +6833,8 @@
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1347,
-      "selectorCount": 191,
+      "lineCount": 1351,
+      "selectorCount": 195,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7003,7 +6999,9 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-text-primary"
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
       ]
     },
     {
@@ -13057,71 +13055,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
-      "line": 28,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:style={{ marginTop: 0, marginBottom: \"20px\" }}",
-      "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
-      "line": 32,
-      "column": 36,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: 0, marginBottom: \"20px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
-      "line": 54,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
-      "line": 73,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
-      "line": 83,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "literal-color:src/frontend/dm/hub/DmHubCampaignModals.tsx:rgba(0,0,0,0.7)",
       "path": "src/frontend/dm/hub/DmHubCampaignModals.tsx",
       "line": 95,
@@ -13646,19 +13579,6 @@
       "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
       "line": 51,
       "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 71,
-      "column": 41,
       "severity": "high",
       "status": "temporary",
       "sourceType": "tsx-inline",
@@ -21290,7 +21210,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1347 lines, 191 selectors)."
+      "reason": "Large stylesheet requires atomization (1351 lines, 195 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",
