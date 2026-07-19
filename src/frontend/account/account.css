@@ -537,6 +537,25 @@
   background: color-mix(in srgb, var(--theme-accents-primary-foreground) 14%, transparent);
 }
 
+.account-preview {
+  padding: 1rem;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-panel);
+  background: var(--theme-surfaces-base);
+  color: var(--theme-text-primary);
+  box-shadow: var(--theme-shadows-medium);
+  font-family: var(--font-sans);
+  font-size: calc(1rem * var(--typography-scale, 1));
+}
+
+.account-preview-title {
+  font-family: var(--font-display);
+}
+
+.account-preview-copy {
+  color: var(--theme-text-secondary);
+}
+
 .account-preview-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

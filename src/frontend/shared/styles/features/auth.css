@@ -1,0 +1,53 @@
+.auth-page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-surfaces-canvas);
+}
+
+.auth-page-content {
+  flex: 1;
+}
+
+.auth-page-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--theme-surfaces-canvas);
+  color: var(--theme-text-secondary);
+}
+
+.auth-page-title {
+  font-size: 1.3rem;
+}
+
+.auth-page-subtitle {
+  color: var(--theme-text-secondary);
+  margin: 4px 0 0;
+}
+
+.auth-page-subtitle--compact {
+  font-size: 0.85rem;
+}
+
+.auth-password-toggle {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.auth-page-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.auth-page-action {
+  width: 100%;
+}
+
+.auth-back-icon {
+  margin-right: 6px;
+}

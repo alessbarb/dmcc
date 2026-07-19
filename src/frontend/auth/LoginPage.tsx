@@ -59,15 +59,15 @@ export function LoginPage() {
   const secondsLeft = Math.ceil(retryAfterMs / 1000);
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
+    <div className="auth-page-shell">
       <PortalTopBar />
-      <div className="join-portal-container" style={{ flex: 1 }}>
+      <div className="join-portal-container auth-page-content">
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
         <div className="join-portal-card">
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><UserRound className="join-portal-icon" size={32} /><div className="join-portal-icon-glow" /></div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("auth.login.title")}</h1>
-            <p style={{ color: "var(--theme-text-secondary)", margin: "4px 0 0" }}>{t("auth.login.subtitle")}</p>
+            <h1 className="join-portal-title auth-page-title">{t("auth.login.title")}</h1>
+            <p className="auth-page-subtitle">{t("auth.login.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="join-portal-form">
@@ -79,7 +79,7 @@ export function LoginPage() {
               <label className="form-label" htmlFor="password">{t("auth.login.passwordLabel")}</label>
               <div className="access-code-input-wrapper">
                 <input id="password" type={showPassword ? "text" : "password"} className="form-input join-portal-input" value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" disabled={isBlocked} />
-                <button type="button" className="input-icon" aria-label={showPassword ? t("auth.login.hidePasswordLabel") : t("auth.login.showPasswordLabel")} style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }} onClick={() => setShowPassword((value) => !value)}>
+                <button type="button" className="input-icon auth-password-toggle" aria-label={showPassword ? t("auth.login.hidePasswordLabel") : t("auth.login.showPasswordLabel")} onClick={() => setShowPassword((value) => !value)}>
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
@@ -90,9 +90,9 @@ export function LoginPage() {
             </button>
           </form>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => void navigate({ to: "/auth/register" })}><Plus size={14} /> {t("auth.login.createAccountBtn")}</button>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => void navigate({ to: "/" })}><ArrowLeft size={14} /> {t("auth.login.backBtn")}</button>
+          <div className="auth-page-actions">
+            <button type="button" className="btn btn-secondary auth-page-action" onClick={() => void navigate({ to: "/auth/register" })}><Plus size={14} /> {t("auth.login.createAccountBtn")}</button>
+            <button type="button" className="btn btn-secondary auth-page-action" onClick={() => void navigate({ to: "/" })}><ArrowLeft size={14} /> {t("auth.login.backBtn")}</button>
           </div>
         </div>
       </div>

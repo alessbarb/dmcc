@@ -46,6 +46,7 @@
 @import "./features/kanban.css";
 @import "./features/campaign-canvas.css";
 @import "./features/player-portal.css";
+@import "./features/auth.css";
 @import "./features/campaign-template.css";
 @import "./features/dm-dashboard.css";
 @import "./features/dm-hub.css";

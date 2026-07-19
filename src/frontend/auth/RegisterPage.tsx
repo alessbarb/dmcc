@@ -51,19 +51,19 @@ export function RegisterPage() {
   };
 
   if (checkingSession) {
-    return <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", background: "var(--theme-surfaces-canvas)", color: "var(--theme-text-secondary)" }}>{t("common.loading")}</div>;
+    return <div className="auth-page-loading">{t("common.loading")}</div>;
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
+    <div className="auth-page-shell">
       <PortalTopBar />
-      <div className="join-portal-container" style={{ flex: 1 }}>
+      <div className="join-portal-container auth-page-content">
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
         <div className="join-portal-card">
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><UserPlus className="join-portal-icon" size={32} /><div className="join-portal-icon-glow" /></div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("auth.register.title")}</h1>
-            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", margin: "4px 0 0" }}>{t("auth.register.subtitle")}</p>
+            <h1 className="join-portal-title auth-page-title">{t("auth.register.title")}</h1>
+            <p className="auth-page-subtitle auth-page-subtitle--compact">{t("auth.register.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="join-portal-form">
@@ -79,7 +79,7 @@ export function RegisterPage() {
               <label className="form-label" htmlFor="password">{t("auth.register.passwordLabel")}</label>
               <div className="access-code-input-wrapper">
                 <input id="password" type={showPassword ? "text" : "password"} className="form-input join-portal-input" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={MIN_PASSWORD_LENGTH} maxLength={128} autoComplete="new-password" />
-                <button type="button" className="input-icon" aria-label={showPassword ? t("auth.login.hidePasswordLabel") : t("auth.login.showPasswordLabel")} style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }} onClick={() => setShowPassword((value) => !value)}>{showPassword ? <EyeOff size={14} /> : <Eye size={14} />}</button>
+                <button type="button" className="input-icon auth-password-toggle" aria-label={showPassword ? t("auth.login.hidePasswordLabel") : t("auth.login.showPasswordLabel")} onClick={() => setShowPassword((value) => !value)}>{showPassword ? <EyeOff size={14} /> : <Eye size={14} />}</button>
               </div>
             </div>
             <div className="form-group">
@@ -90,7 +90,7 @@ export function RegisterPage() {
             <button type="submit" className="btn btn-primary join-portal-btn" disabled={loading || !email || !password || !confirmPassword}>{loading ? t("auth.register.submittingBtn") : t("auth.register.submitBtn")}</button>
           </form>
 
-          <button type="button" className="join-portal-back-btn" onClick={() => void navigate({ to: "/auth/login" })}><ArrowLeft size={14} style={{ marginRight: 6 }} /> {t("auth.register.backToLoginBtn")}</button>
+          <button type="button" className="join-portal-back-btn" onClick={() => void navigate({ to: "/auth/login" })}><ArrowLeft className="auth-back-icon" size={14} /> {t("auth.register.backToLoginBtn")}</button>
         </div>
       </div>
     </div>

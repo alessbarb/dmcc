@@ -146,21 +146,11 @@ export function PreferencesPanel({
       <div
         ref={previewElementRef}
         className="account-preview"
-        style={{
-          padding: "1rem",
-          border: "1px solid var(--theme-borders-default)",
-          borderRadius: "var(--theme-shapes-radius-panel)",
-          background: "var(--theme-surfaces-base)",
-          color: "var(--theme-text-primary)",
-          boxShadow: "var(--theme-shadows-medium)",
-          fontFamily: "var(--font-sans)",
-          fontSize: "calc(1rem * var(--typography-scale, 1))",
-        }}
       >
-        <strong style={{ fontFamily: "var(--font-display)" }}>
+        <strong className="account-preview-title">
           {t("account.appearance.livePreview")}
         </strong>
-        <p style={{ color: "var(--theme-text-secondary)" }}>
+        <p className="account-preview-copy">
           {t("account.appearance.previewText")}
         </p>
       </div>
