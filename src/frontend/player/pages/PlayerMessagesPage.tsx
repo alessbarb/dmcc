@@ -30,7 +30,7 @@ export function PlayerMessagesPage() {
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--theme-surfaces-canvas)", paddingBottom: "calc(5.25rem + env(safe-area-inset-bottom))" }}>
+    <div className="player-messages-page">
       <PortalTopBar actions={(
         <button
           type="button"
@@ -40,7 +40,7 @@ export function PlayerMessagesPage() {
           <ArrowLeft size={15} /> {t("playerPortal.messaging.backToPortal")}
         </button>
       )} />
-      <main style={{ width: "min(1100px, calc(100% - 24px))", margin: "0 auto", padding: "18px 0 32px" }}>
+      <main className="player-messages-page__main">
         <CampaignMessagingPanel campaignId={campaignId} />
       </main>
       <MobileDock

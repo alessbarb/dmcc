@@ -39,7 +39,7 @@ export function AccountHomePage() {
   const playerUnavailable = user !== null && !roles.includes("player");
 
   return (
-    <div className="smart-landing" style={{ minHeight: "100vh" }}>
+    <div className="smart-landing">
       <div className="smart-landing__background" aria-hidden="true"><RpgPortalBackground /></div>
       <div className="smart-landing__glow" aria-hidden="true" />
       <PortalTopBar />
@@ -57,7 +57,7 @@ export function AccountHomePage() {
           {!user && !error && <div className="smart-landing-loading"><div className="loading-spinner-glow" /><span>{t("accountHome.loading")}</span></div>}
 
           {user && (
-            <div className="smart-landing__grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
+            <div className="smart-landing__grid smart-landing__grid--portals">
               {availablePortals.map((portal) => {
                 const Icon = portal.icon;
                 return (
@@ -94,7 +94,7 @@ export function AccountHomePage() {
             </div>
           )}
 
-          <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
+          <div className="account-home__actions">
             <button type="button" className="btn btn-secondary" onClick={() => void navigate({ to: "/account" })}>{t("accountHome.manageAccountBtn")}</button>
             <button type="button" className="btn btn-secondary" onClick={() => void logout().then(() => window.location.assign("/"))}>
               <LogOut size={15} /> {t("accountHome.signOutBtn")}

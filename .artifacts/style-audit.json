@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:37:25.329Z",
+  "generatedAt": "2026-07-19T11:38:35.402Z",
   "summary": {
-    "cssFiles": 131,
-    "tsxFilesWithInlineStyles": 27,
+    "cssFiles": 132,
+    "tsxFilesWithInlineStyles": 23,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 25,
+    "staticInlineStyles": 16,
     "dynamicInlineStyles": 18,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -4727,9 +4727,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/player/pages/playerCampaignShell.css",
@@ -5079,21 +5077,12 @@
       "path": "src/frontend/shared/components/PwaUpdateBanner.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 58,
+      "lineCount": 32,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-base",
-        "--theme-borders-interactive-hover",
-        "--theme-shapes-radius-large",
-        "--theme-shadows-large",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-shapes-radius-medium"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/components/RpgPortalBackground.tsx",
@@ -7617,8 +7606,8 @@
       "path": "src/frontend/shared/styles/features/player-portal.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1008,
-      "selectorCount": 157,
+      "lineCount": 1019,
+      "selectorCount": 159,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7771,7 +7760,8 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--theme-surfaces-canvas"
       ]
     },
     {
@@ -7786,6 +7776,28 @@
       ],
       "variableDefinitions": [],
       "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/pwa-update-banner.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 30,
+      "selectorCount": 2,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-interactive-hover",
+        "--theme-shapes-radius-large",
+        "--theme-surfaces-base",
+        "--theme-shadows-large",
+        "--theme-text-primary",
+        "--theme-shapes-radius-medium",
+        "--theme-accents-primary-foreground",
+        "--theme-text-primary"
+      ]
     },
     {
       "path": "src/frontend/shared/styles/features/quick-capture.css",
@@ -8138,8 +8150,8 @@
       "path": "src/frontend/shared/styles/landing.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 2641,
-      "selectorCount": 392,
+      "lineCount": 2658,
+      "selectorCount": 395,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -9017,7 +9029,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 90,
+      "lineCount": 91,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -9086,6 +9098,7 @@
         "src/frontend/shared/styles/features/system-announcements.css",
         "src/frontend/shared/styles/features/shortcuts-panel.css",
         "src/frontend/shared/styles/features/player-profile-modal.css",
+        "src/frontend/shared/styles/features/pwa-update-banner.css",
         "src/frontend/shared/styles/features/dm-onboarding.css",
         "src/frontend/shared/styles/features/entity-trace.css",
         "src/frontend/shared/styles/features/canvas-page-header.css",
@@ -14165,45 +14178,6 @@
       "reason": "Large stylesheet requires atomization (276 lines, 96 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/home/AccountHomePage.tsx:style={{ minHeight: \"100vh\" }}",
-      "path": "src/frontend/home/AccountHomePage.tsx",
-      "line": 42,
-      "column": 36,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/home/AccountHomePage.tsx:style={{ gridTemplateColumns: \"repeat(auto-fit, minmax(240px, 1fr))\" }}",
-      "path": "src/frontend/home/AccountHomePage.tsx",
-      "line": 60,
-      "column": 50,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ gridTemplateColumns: \"repeat(auto-fit, minmax(240px, 1fr))\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/home/AccountHomePage.tsx:style={{ display: \"flex\", justifyContent: \"center\", gap: 10, marginTop: 24, flexWrap: \"wrap\" }}",
-      "path": "src/frontend/home/AccountHomePage.tsx",
-      "line": 97,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", justifyContent: \"center\", gap: 10, marginTop: 24, flexWrap: \"wrap\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/institutional/institutional.css",
       "path": "src/frontend/institutional/institutional.css",
       "line": 1,
@@ -14225,58 +14199,6 @@
       "category": "static-inline",
       "value": "style={{ margin: 0 }}",
       "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerCampaignsPage.tsx:style={{ minHeight: \"100vh\" }}",
-      "path": "src/frontend/player/pages/PlayerCampaignsPage.tsx",
-      "line": 24,
-      "column": 36,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerCampaignsPage.tsx:style={{ width: \"min(760px, 100%)\", margin: \"0 auto\" }}",
-      "path": "src/frontend/player/pages/PlayerCampaignsPage.tsx",
-      "line": 54,
-      "column": 51,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ width: \"min(760px, 100%)\", margin: \"0 auto\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerMessagesPage.tsx:style={{ minHeight: \"100vh\", background: \"var(--theme-surfaces-canvas)\", paddingBottom: \"calc(5.25rem + env(safe-area-inset-bottom))\" }}",
-      "path": "src/frontend/player/pages/PlayerMessagesPage.tsx",
-      "line": 33,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", background: \"var(--theme-surfaces-canvas)\", paddingBottom: \"calc(5.25rem + env(safe-area-inset-bottom))\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerMessagesPage.tsx:style={{ width: \"min(1100px, calc(100% - 24px))\", margin: \"0 auto\", padding: \"18px 0 32px\" }}",
-      "path": "src/frontend/player/pages/PlayerMessagesPage.tsx",
-      "line": 43,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ width: \"min(1100px, calc(100% - 24px))\", margin: \"0 auto\", padding: \"18px 0 32px\" }}",
-      "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
@@ -14302,32 +14224,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ objectPosition: imageFocalPointToObjectPosition(focalPoint) }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/components/PwaUpdateBanner.tsx:style={{ position: \"fixed\", bottom: \"calc(80px + env(safe-area-inset-bottom))\", left: \"50%\", transform: \"translateX(-50%)\", zIndex: 9999, display: \"flex\", alignItems: \"center\",",
-      "path": "src/frontend/shared/components/PwaUpdateBanner.tsx",
-      "line": 18,
-      "column": 7,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n        position: \"fixed\",\n        bottom: \"calc(80px + env(safe-area-inset-bottom))\",\n        left: \"50%\",\n        transform: \"translateX(-50%)\",\n        zIndex: 9999,\n        display: \"flex\",\n        alignItems: \"center\",\n       ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/components/PwaUpdateBanner.tsx:style={{ background: \"var(--theme-accents-primary-foreground)\", color: \"var(--theme-text-primary)\", border: \"none\", borderRadius: \"var(--theme-shapes-radius-medium)\", padding: \"5px 12px\",",
-      "path": "src/frontend/shared/components/PwaUpdateBanner.tsx",
-      "line": 42,
-      "column": 9,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n          background: \"var(--theme-accents-primary-foreground)\",\n          color: \"var(--theme-text-primary)\",\n          border: \"none\",\n          borderRadius: \"var(--theme-shapes-radius-medium)\",\n          padding: \"5px 12px\",\n  ",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -15887,7 +15783,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1008 lines, 157 selectors)."
+      "reason": "Large stylesheet requires atomization (1019 lines, 159 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/quick-capture.css:!important",
@@ -16491,7 +16387,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(239, 68, 68, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2284,
+      "line": 2296,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -16503,7 +16399,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(239, 68, 68, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2285,
+      "line": 2297,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -16515,7 +16411,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#ef4444",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2286,
+      "line": 2298,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -16527,7 +16423,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(59, 130, 246, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2290,
+      "line": 2302,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -16539,7 +16435,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(59, 130, 246, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2291,
+      "line": 2303,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -16551,7 +16447,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#3b82f6",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2292,
+      "line": 2304,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -16563,7 +16459,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(34, 197, 94, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2296,
+      "line": 2308,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -16575,7 +16471,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(34, 197, 94, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2297,
+      "line": 2309,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -16587,7 +16483,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#22c55e",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2298,
+      "line": 2310,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -16599,7 +16495,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(168, 85, 247, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2302,
+      "line": 2314,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -16611,7 +16507,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(168, 85, 247, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2303,
+      "line": 2315,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -16623,7 +16519,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#a855f7",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2304,
+      "line": 2316,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -16833,7 +16729,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (2641 lines, 392 selectors)."
+      "reason": "Large stylesheet requires atomization (2658 lines, 395 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
@@ -17541,6 +17437,7 @@
       "src/frontend/shared/styles/features/system-announcements.css",
       "src/frontend/shared/styles/features/shortcuts-panel.css",
       "src/frontend/shared/styles/features/player-profile-modal.css",
+      "src/frontend/shared/styles/features/pwa-update-banner.css",
       "src/frontend/shared/styles/features/dm-onboarding.css",
       "src/frontend/shared/styles/features/entity-trace.css",
       "src/frontend/shared/styles/features/canvas-page-header.css",

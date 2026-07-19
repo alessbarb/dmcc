@@ -2031,6 +2031,18 @@ body:has(.rl-root) .watermark {
   text-align: left;
 }
 
+.smart-landing__grid--portals {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.account-home__actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
 .smart-column-wrapper {
   display: flex;
   flex-direction: column;
@@ -2417,6 +2429,11 @@ body:has(.rl-root) .watermark {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.player-profiles-list--centered {
+  width: min(760px, 100%);
+  margin: 0 auto;
 }
 
 .player-profile-row-card {

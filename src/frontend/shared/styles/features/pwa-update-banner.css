@@ -1,0 +1,29 @@
+.pwa-update-banner {
+  position: fixed;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  transform: translateX(-50%);
+  border: 1px solid var(--theme-borders-interactive-hover);
+  border-radius: var(--theme-shapes-radius-large);
+  background: var(--theme-surfaces-base);
+  box-shadow: var(--theme-shadows-large);
+  color: var(--theme-text-primary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.pwa-update-banner__action {
+  padding: 5px 12px;
+  border: none;
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-accents-primary-foreground);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+}

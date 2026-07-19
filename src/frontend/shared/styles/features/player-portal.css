@@ -1005,3 +1005,14 @@
   font-size: 0.78rem;
   line-height: 1.45;
 }
+.player-messages-page {
+  min-height: 100vh;
+  background: var(--theme-surfaces-canvas);
+  padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+}
+
+.player-messages-page__main {
+  width: min(1100px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 18px 0 32px;
+}

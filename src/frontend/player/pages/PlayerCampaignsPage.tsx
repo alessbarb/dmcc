@@ -21,7 +21,7 @@ export function PlayerCampaignsPage() {
   }, []);
 
   return (
-    <div className="smart-landing" style={{ minHeight: "100vh" }}>
+    <div className="smart-landing">
       <div className="smart-landing__background" aria-hidden="true"><RpgPortalBackground /></div>
       <div className="smart-landing__glow" aria-hidden="true" />
       <PortalTopBar />
@@ -51,7 +51,7 @@ export function PlayerCampaignsPage() {
           )}
 
           {!loading && campaigns.length > 0 && (
-            <div className="player-profiles-list" style={{ width: "min(760px, 100%)", margin: "0 auto" }}>
+            <div className="player-profiles-list player-profiles-list--centered">
               {campaigns.map((campaign) => (
                 <button
                   key={`${campaign.campaignId}-${campaign.playerId ?? "player"}`}

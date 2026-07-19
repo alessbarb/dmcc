@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 131,
-  "tsxFilesWithInlineStyles": 27,
+  "cssFiles": 132,
+  "tsxFilesWithInlineStyles": 23,
   "forbiddenLiteralColors": 124,
-  "staticInlineStyles": 25,
+  "staticInlineStyles": 16,
   "dynamicInlineStyles": 18,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -116,8 +116,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
 | `src/frontend/shared/styles/features/player-campaign.css` | legacy | shared | 38 | 37 | 1 |
-| `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 1008 | 157 | 1 |
+| `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 1019 | 159 | 1 |
 | `src/frontend/shared/styles/features/player-profile-modal.css` | legacy | shared | 18 | 4 | 1 |
+| `src/frontend/shared/styles/features/pwa-update-banner.css` | legacy | shared | 30 | 2 | 1 |
 | `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/session-prep-form.css` | legacy | shared | 53 | 9 | 1 |
@@ -131,7 +132,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
-| `src/frontend/shared/styles/landing.css` | legacy | shared | 2641 | 392 | 1 |
+| `src/frontend/shared/styles/landing.css` | legacy | shared | 2658 | 395 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 24 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 744 | 97 | 1 |
@@ -141,7 +142,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1023 | 152 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 90 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 91 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -541,9 +542,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:258` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/home/AccountHomePage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/home/AccountHomePage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/home/AccountHomePage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/institutional/institutional.css:1` | Large stylesheet requires atomization (274 lines, 38 selectors). |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:92` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:95` | Runtime style requires review and CSS custom-property preference. |
@@ -551,10 +549,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/MainLanding.tsx:101` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:104` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerMessagesPage.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerMessagesPage.tsx:43` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Large stylesheet requires atomization (329 lines, 42 selectors). |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:11` | Literal visual color outside a registered theme package. |
@@ -589,8 +583,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:295` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:325` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/shared/components/RpgPortalBackground.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/RpgPortalBackground.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -679,7 +671,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/landing-archive.css:1` | Large stylesheet requires atomization (864 lines, 136 selectors). |
 | high | important | `src/frontend/shared/styles/features/landing-archive.css:628` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/player-campaign.css:1` | Large stylesheet requires atomization (38 lines, 37 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/player-portal.css:1` | Large stylesheet requires atomization (1008 lines, 157 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/player-portal.css:1` | Large stylesheet requires atomization (1019 lines, 159 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/player-portal.css:293` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/features/player-portal.css:334` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/player-portal.css:345` | Important declarations bypass the intended cascade. |
@@ -695,7 +687,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/features/timeline.css:89` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2641 lines, 392 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2658 lines, 395 selectors). |
 | high | literal-color | `src/frontend/shared/styles/landing.css:13` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:14` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:15` | Literal visual color outside a registered theme package. |
@@ -757,18 +749,18 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:859` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:860` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:1815` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2284` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2285` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2286` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2290` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2291` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2292` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2296` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2297` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2298` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2302` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2303` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2304` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2308` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2309` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2310` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2314` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2315` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2316` | Literal visual color outside a registered theme package. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/layout/campaign-navigation.css:1` | Large stylesheet requires atomization (744 lines, 97 selectors). |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:160` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:164` | Important declarations bypass the intended cascade. |
