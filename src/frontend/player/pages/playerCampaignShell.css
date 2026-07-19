@@ -24,6 +24,26 @@
   font-size: clamp(1.15rem, 3vw, 1.65rem);
 }
 
+.player-portal-header__title {
+  min-width: 0;
+  flex: 1;
+}
+
+.player-portal-header__eyebrow {
+  margin: 0 0 3px;
+  color: var(--theme-text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.player-portal-header__campaign-title {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .player-portal-header .form-select {
   min-width: min(16rem, 32vw);
 }

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:36:01.405Z",
+  "generatedAt": "2026-07-19T11:37:25.329Z",
   "summary": {
     "cssFiles": 131,
-    "tsxFilesWithInlineStyles": 28,
+    "tsxFilesWithInlineStyles": 27,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 28,
+    "staticInlineStyles": 25,
     "dynamicInlineStyles": 18,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -4672,9 +4672,7 @@
       ],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/player/pages/PlayerCampaignTabContent.tsx",
@@ -4737,8 +4735,8 @@
       "path": "src/frontend/player/pages/playerCampaignShell.css",
       "layer": "feature",
       "domain": "player",
-      "lineCount": 154,
-      "selectorCount": 27,
+      "lineCount": 174,
+      "selectorCount": 30,
       "imports": [],
       "importedBy": [
         "src/frontend/player/pages/PlayerCampaignShell.tsx"
@@ -4751,6 +4749,7 @@
         "--space-3",
         "--theme-borders-default",
         "--theme-surfaces-canvas",
+        "--theme-text-secondary",
         "--space-2",
         "--space-3",
         "--theme-borders-default",
@@ -14225,45 +14224,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerCampaignShell.tsx:style={{ minWidth: 0, flex: 1 }}",
-      "path": "src/frontend/player/pages/PlayerCampaignShell.tsx",
-      "line": 85,
-      "column": 54,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minWidth: 0, flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerCampaignShell.tsx:style={{ margin: \"0 0 3px\", color: \"var(--theme-text-secondary)\", fontSize: 11, textTransform: \"uppercase\", letterSpacing: \".12em\" }}",
-      "path": "src/frontend/player/pages/PlayerCampaignShell.tsx",
-      "line": 86,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: \"0 0 3px\", color: \"var(--theme-text-secondary)\", fontSize: 11, textTransform: \"uppercase\", letterSpacing: \".12em\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerCampaignShell.tsx:style={{ margin: 0, overflow: \"hidden\", textOverflow: \"ellipsis\", whiteSpace: \"nowrap\" }}",
-      "path": "src/frontend/player/pages/PlayerCampaignShell.tsx",
-      "line": 87,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: 0, overflow: \"hidden\", textOverflow: \"ellipsis\", whiteSpace: \"nowrap\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
