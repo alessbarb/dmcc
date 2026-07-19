@@ -88,13 +88,13 @@
 }
 
 .consequence-chain-diagnostics__item--warning {
-  border-color: color-mix(in srgb, var(--theme-status-warning, orange) 45%, var(--theme-borders-default));
-  color: var(--theme-status-warning, orange);
+  border-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 45%, var(--theme-borders-default));
+  color: var(--theme-feedback-warning-foreground);
 }
 
 .consequence-chain-diagnostics__item--error {
-  border-color: color-mix(in srgb, var(--theme-status-danger, red) 45%, var(--theme-borders-default));
-  color: var(--theme-status-danger, red);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 45%, var(--theme-borders-default));
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .consequence-chain-diagnostics__item--info {

@@ -290,7 +290,7 @@
   font-weight: 850;
   line-height: 1.2;
   letter-spacing: -0.025em;
-  color: hsl(220, 25%, 96%);
+  color: var(--theme-text-primary);
 }
 
 .join-portal-title span {

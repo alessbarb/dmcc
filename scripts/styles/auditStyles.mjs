@@ -90,15 +90,18 @@ function auditCss(pathname, source) {
 
   if (!isColorAllowed(pathname)) {
     const colorPattern = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla|oklch|lab|lch)\([^)]*\)|\b(?:white|black|red|green|blue)\b(?!-space)/g;
-    for (const match of collectRegex(source, colorPattern)) {
-      findings.push(finding(pathname, source, match.index, {
-        sourceType: "css",
-        category: "literal-color",
-        severity: "high",
-        status: "temporary",
-        value: match[0],
-        reason: "Literal visual color outside a registered theme package.",
-      }));
+    const sourceWithoutComments = source.replace(/\/\*[\s\S]*?\*\//g, (comment) => " ".repeat(comment.length));
+    for (const block of collectRegex(sourceWithoutComments, /\{([^{}]*)\}/g)) {
+      for (const match of collectRegex(block[1], colorPattern)) {
+        findings.push(finding(pathname, source, block.index + 1 + match.index, {
+          sourceType: "css",
+          category: "literal-color",
+          severity: "high",
+          status: "temporary",
+          value: match[0],
+          reason: "Literal visual color outside a registered theme package.",
+        }));
+      }
     }
   }
 
@@ -165,6 +168,15 @@ function auditCode(pathname, source) {
   if (!isColorAllowed(pathname)) {
     const colorPattern = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla|oklch|lab|lch)\([^)]*\)|["'`](?:white|black|red|green|blue)["'`]/g;
     for (const match of collectRegex(source, colorPattern)) {
+      const isNamedColor = /^["'`](?:white|black|red|green|blue)["'`]$/.test(match[0]);
+      if (isNamedColor) {
+        const lineStart = source.lastIndexOf("\n", match.index) + 1;
+        const lineEnd = source.indexOf("\n", match.index);
+        const line = source.slice(lineStart, lineEnd === -1 ? source.length : lineEnd);
+        if (!/style\s*[=:]|(?:background|border|text|fill|stroke|shadow|accent)Color\s*:/.test(line)) {
+          continue;
+        }
+      }
       findings.push(finding(pathname, source, match.index, {
         sourceType: pathname.endsWith(".svg") ? "svg" : "tsx-style-object",
         category: "literal-color",

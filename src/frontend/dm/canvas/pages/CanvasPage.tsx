@@ -522,9 +522,9 @@ export function CanvasPage() {
           const ctx = canvasObj.getContext('2d');
           if (ctx) {
             const themeBackground = getComputedStyle(document.documentElement)
-              .getPropertyValue("--theme-canvas-background")
+              .getPropertyValue("--theme-surfaces-canvas")
               .trim();
-            ctx.fillStyle = themeBackground || "hsl(230, 28%, 10%)";
+            ctx.fillStyle = themeBackground || "transparent";
             ctx.fillRect(0, 0, canvasObj.width, canvasObj.height);
             ctx.scale(scale, scale);
             ctx.drawImage(img, 0, 0);

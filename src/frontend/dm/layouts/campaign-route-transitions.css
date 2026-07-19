@@ -45,7 +45,7 @@
 @keyframes campaignHeaderEnter {
   from {
     border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, var(--theme-borders-default));
-    box-shadow: 0 10px 28px rgb(0 0 0 / 12%);
+    box-shadow: var(--theme-shadows-medium);
   }
   to {
     border-color: var(--theme-borders-default);

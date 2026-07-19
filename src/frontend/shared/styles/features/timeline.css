@@ -86,7 +86,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
 }
-.timeline-event-phase { border-color: var(--theme-text-subtle); background: rgb(148 163 184 / 10%); color: var(--theme-text-subtle); font-size: 0.75rem; }
+.timeline-event-phase { border-color: var(--theme-text-subtle); background: color-mix(in srgb, var(--theme-text-subtle) 10%, transparent); color: var(--theme-text-subtle); font-size: 0.75rem; }
 .timeline-event-phase--live { border-color: var(--theme-narrative-consequence-foreground); background: var(--theme-narrative-consequence-background); color: var(--theme-narrative-consequence-foreground); }
 .timeline-event-description { margin-top: var(--space-3); padding: var(--space-1) 0; }
 .timeline-event-footer { margin-top: var(--space-3); padding-top: 10px; border-top: 1px solid var(--theme-borders-default); }
@@ -212,5 +212,4 @@
   color: var(--theme-text-secondary);
   font-weight: 500;
 }
-
 

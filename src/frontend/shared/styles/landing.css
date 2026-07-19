@@ -2,50 +2,6 @@ body:has(.rl-root) .watermark {
   display: none;
 }
 
-/* The public landing page is a standalone marketing surface with its own
-   fixed cinematic identity — it must not follow the visitor's light/dark
-   app preference. Pinning the theme tokens it consumes to their dark
-   values here, scoped to .rl-root, keeps every rule below written in
-   terms of the same semantic --theme-* names (so the palette stays
-   auditable and consistent with the rest of the codebase) without
-   inheriting the switchable global theme. */
-.rl-root {
-  --theme-accents-primary-active: hsl(37 60% 54%);
-  --theme-accents-primary-background: hsl(38 66% 62% / 0.14);
-  --theme-accents-primary-foreground: hsl(38 66% 62%);
-  --theme-accents-primary-hover: hsl(39 76% 70%);
-  --theme-accents-primary-on-accent: hsl(228 36% 8%);
-  --theme-accents-secondary-active: hsl(270 44% 60%);
-  --theme-accents-secondary-background: hsl(270 52% 70% / 0.14);
-  --theme-accents-secondary-foreground: hsl(270 52% 70%);
-  --theme-accents-secondary-hover: hsl(270 60% 78%);
-  --theme-accents-secondary-on-accent: hsl(228 36% 8%);
-  --theme-activity-system-foreground: hsl(255 85% 65%);
-  --theme-activity-tag-foreground: hsl(175 85% 45%);
-  --theme-borders-default: hsl(36 20% 28%);
-  --theme-borders-strong: hsl(37 26% 36%);
-  --theme-canvas-selection: hsl(38 66% 62% / 0.12);
-  --theme-entities-faction-foreground: hsl(230 70% 68%);
-  --theme-entities-location-foreground: hsl(158 52% 58%);
-  --theme-entities-npc-foreground: hsl(255 70% 72%);
-  --theme-entities-quest-foreground: hsl(43 85% 60%);
-  --theme-feedback-danger-foreground: hsl(3 72% 68%);
-  --theme-feedback-info-foreground: hsl(204 66% 68%);
-  --theme-feedback-success-foreground: hsl(145 48% 61%);
-  --theme-feedback-warning-foreground: hsl(44 78% 65%);
-  --theme-narrative-rumor-foreground: hsl(193 55% 65%);
-  --theme-narrative-secret-foreground: hsl(277 58% 72%);
-  --theme-surfaces-base: hsl(226 25% 10%);
-  --theme-surfaces-canvas: hsl(228 36% 6%);
-  --theme-surfaces-interactive-hover: hsl(222 20% 20%);
-  --theme-surfaces-raised: hsl(224 20% 17%);
-  --theme-surfaces-subtle: hsl(224 21% 14%);
-  --theme-text-disabled: hsl(32 9% 52%);
-  --theme-text-on-media: hsl(0 0% 100%);
-  --theme-text-primary: hsl(42 30% 94%);
-  --theme-text-secondary: hsl(35 18% 78%);
-  --theme-text-subtle: hsl(32 12% 66%);
-}
 
 /* ═══════════════════════════════════════════════════════════════
    ROOT NetworkDING (MainLanding) — Cinematic H2+H3 Hybrid
@@ -203,12 +159,11 @@ body:has(.rl-root) .watermark {
   line-height: 1.1;
   margin: 0 0 20px;
   letter-spacing: -0.02em;
-  /* Stone-in-moonlight: cool near-white at top fades to warm parchment edge */
   background: linear-gradient(
     168deg,
-    hsl(210 14% 90%) 0%,
-    hsl(36 14% 80%) 60%,
-    hsl(34 18% 68%) 100%
+    var(--theme-text-primary) 0%,
+    var(--theme-text-secondary) 60%,
+    var(--theme-text-subtle) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1812,7 +1767,7 @@ body:has(.rl-root) .watermark {
 
 .smart-role-card--dm .smart-role-card__cta {
   border: none;
-  color: #fff;
+  color: var(--theme-text-on-media);
   background: linear-gradient(135deg, var(--theme-accents-primary-foreground), var(--theme-activity-system-foreground));
   box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-activity-system-foreground) 25%, transparent);
 }
@@ -2293,27 +2248,27 @@ body:has(.rl-root) .watermark {
 }
 
 .system-tag.system-dnd_5e {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  color: #ef4444;
+  background: var(--theme-feedback-danger-background);
+  border: 1px solid var(--theme-feedback-danger-border);
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .system-tag.system-pathfinder_2e {
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  color: #3b82f6;
+  background: var(--theme-feedback-info-background);
+  border: 1px solid var(--theme-feedback-info-border);
+  color: var(--theme-feedback-info-foreground);
 }
 
 .system-tag.system-shadowdark {
-  background: rgba(34, 197, 94, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.25);
-  color: #22c55e;
+  background: var(--theme-feedback-success-background);
+  border: 1px solid var(--theme-feedback-success-border);
+  color: var(--theme-feedback-success-foreground);
 }
 
 .system-tag.system-custom {
-  background: rgba(168, 85, 247, 0.12);
-  border: 1px solid rgba(168, 85, 247, 0.25);
-  color: #a855f7;
+  background: var(--theme-accents-secondary-background);
+  border: 1px solid var(--theme-accents-secondary-border);
+  color: var(--theme-accents-secondary-foreground);
 }
 
 .campaign-id-tag {

@@ -16,7 +16,11 @@ export function NetworkFactNode({ data, selected }: NetworkFactNodeProps) {
   const { fact, relatedCount } = data;
 
   return (
-    <ResourceNodeFrame selected={selected} accentColor="#dc2626" style={{ width: "220px" }}>
+    <ResourceNodeFrame
+      selected={selected}
+      accentColor="var(--theme-feedback-danger-foreground)"
+      className="network-fact-node"
+    >
       <Handle type="target" position={Position.Top} />
       <FactNodeContent
         statement={fact.statement}
