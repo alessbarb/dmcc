@@ -1,0 +1,48 @@
+
+
+@media (max-width: 380px) {
+  .portal-topbar {
+    padding-inline: 10px;
+  }
+
+  .portal-topbar__brand {
+    gap: 6px;
+    font-size: 0.82rem;
+  }
+
+  .portal-topbar__brand-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .language-pill__btn {
+    padding: 5px 6px;
+    font-size: 0.62rem;
+  }
+
+  .smart-landing__main {
+    padding-inline: 12px;
+  }
+
+  .smart-landing__title {
+    font-size: 1.9rem;
+  }
+
+  .smart-role-card {
+    padding: 16px;
+  }
+}
+
+/* ==========================================================================
+   Smart Landing Midnight & Gold Styles
+   ========================================================================== */
+
+.smart-landing__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 48px;
+  text-align: left;
+}

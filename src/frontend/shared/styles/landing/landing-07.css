@@ -1,0 +1,152 @@
+/* Memory illustration */
+.rl-illus-memory {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.rl-mem-card {
+  padding: 14px 18px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 80%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rl-mem-card:last-child { border-bottom: none; }
+
+.rl-mem-card__badge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.badge--canon   { background: var(--theme-canvas-selection); color: var(--theme-accents-primary-foreground); border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent); }
+.badge--secret  { background: color-mix(in srgb, var(--theme-narrative-secret-foreground) 12%, transparent); color: var(--theme-narrative-secret-foreground); border: 1px solid color-mix(in srgb, var(--theme-narrative-secret-foreground) 25%, transparent); }
+.badge--rumor   { background: color-mix(in srgb, var(--theme-narrative-rumor-foreground) 12%, transparent); color: var(--theme-narrative-rumor-foreground); border: 1px solid color-mix(in srgb, var(--theme-narrative-rumor-foreground) 25%, transparent); }
+
+.rl-mem-card__text {
+  font-size: 0.76rem;
+  color: var(--theme-text-primary);
+  line-height: 1.5;
+}
+
+.rl-mem-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.62rem;
+  color: var(--theme-text-subtle);
+}
+
+/* Web sharing illustration */
+.rl-illus-network {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+  align-items: start;
+}
+
+.rl-network-dm {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.rl-network-dm__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+  border: 2px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-accents-primary-foreground);
+}
+
+.rl-network-dm span {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--theme-accents-primary-foreground);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rl-network-pulse {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--theme-feedback-success-foreground);
+  animation: rl-pulse 2s ease infinite;
+}
+
+.rl-network-players {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rl-network-player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-surfaces-raised) 60%, transparent);
+}
+
+.rl-network-player__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rl-network-player--connected .rl-network-player__avatar {
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 15%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
+}
+.rl-network-player--offline .rl-network-player__avatar {
+  background: var(--theme-surfaces-raised);
+  color: var(--theme-text-subtle);
+  border: 1px solid var(--theme-surfaces-interactive-hover);
+}
+
+.rl-network-player span {
+  font-size: 0.68rem;
+  color: var(--theme-text-secondary);
+  flex: 1;
+}
+
+.rl-network-player--offline span { color: var(--theme-text-subtle); }
+
+.rl-network-player__status {
+  display: flex;
+  align-items: center;
+}
+.status--online  { color: var(--theme-feedback-success-foreground); }
+.status--offline { color: var(--theme-borders-strong); }
+

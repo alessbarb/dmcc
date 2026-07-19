@@ -1,0 +1,152 @@
+.rl-showcase__lead {
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ── Feature Blocks ───────────────────────────────────────── */
+
+.rl-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  max-width: min(92vw, 1300px);
+  margin: 0 auto;
+  padding: 72px 24px;
+  align-items: center;
+  gap: 64px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 60%, transparent);
+}
+
+.rl-block--reversed {
+  direction: rtl;
+}
+.rl-block--reversed > * {
+  direction: ltr;
+}
+
+.rl-block__text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rl-block__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.rl-block__desc {
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.75;
+}
+
+.rl-block__bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.rl-block__bullets li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--theme-text-secondary);
+  line-height: 1.5;
+}
+
+.rl-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rl-dot--purple  { background: var(--theme-accents-secondary-foreground); }
+.rl-dot--gold    { background: var(--theme-accents-primary-foreground); }
+.rl-dot--amethyst{ background: var(--theme-accents-secondary-foreground); }
+.rl-dot--blue    { background: var(--theme-feedback-info-foreground); }
+.rl-dot--green   { background: var(--theme-entities-location-foreground); }
+.rl-dot--teal    { background: var(--theme-narrative-rumor-foreground); }
+
+/* ── Illustration containers ──────────────────────────────── */
+
+.rl-block__illus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rl-illus {
+  width: 100%;
+  max-width: 480px;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-surfaces-raised) 70%, transparent);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+/* Canvas illustration */
+.rl-illus-canvas {
+  height: 280px;
+  padding: 16px;
+}
+
+.rl-illus-canvas__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rl-cn-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 2;
+  backdrop-filter: blur(6px);
+}
+
+.rl-cn-node--npc {
+  background: color-mix(in srgb, var(--theme-entities-npc-foreground) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-entities-npc-foreground) 30%, transparent);
+  color: var(--theme-entities-npc-foreground);
+}
+.rl-cn-node--secret {
+  background: color-mix(in srgb, var(--theme-narrative-secret-foreground) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-narrative-secret-foreground) 30%, transparent);
+  color: var(--theme-narrative-secret-foreground);
+}
+.rl-cn-node--faction {
+  background: color-mix(in srgb, var(--theme-entities-faction-foreground) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-entities-faction-foreground) 30%, transparent);
+  color: var(--theme-entities-faction-foreground);
+}
+.rl-cn-node--location {
+  background: color-mix(in srgb, var(--theme-entities-location-foreground) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-entities-location-foreground) 30%, transparent);
+  color: var(--theme-entities-location-foreground);
+}
+.rl-cn-node--quest {
+  background: color-mix(in srgb, var(--theme-entities-quest-foreground) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-entities-quest-foreground) 30%, transparent);
+  color: var(--theme-entities-quest-foreground);
+}
+

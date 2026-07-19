@@ -1,0 +1,146 @@
+.smart-landing__grid--portals {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.account-home__actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.smart-column-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  padding-bottom: 12px;
+}
+
+.column-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.dm-theme .column-header h2,
+.dm-theme .section-label-gold {
+  color: var(--theme-accents-primary-foreground);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent);
+}
+
+.player-theme .column-header h2,
+.player-theme .section-label-amethyst {
+  color: var(--theme-accents-secondary-foreground);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--theme-accents-secondary-foreground) 20%, transparent);
+}
+
+.gold-glow {
+  color: var(--theme-accents-primary-foreground);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent));
+}
+
+.amethyst-glow {
+  color: var(--theme-accents-secondary-foreground);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--theme-accents-secondary-foreground) 40%, transparent));
+}
+
+.glass-card {
+  position: relative;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 70%, transparent);
+  border-radius: var(--theme-shapes-radius-large, 12px);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+.dm-theme .glass-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent), 0 20px 40px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+.player-theme .glass-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 35%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent), 0 20px 40px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-body.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--theme-accents-primary-foreground) 0%, var(--theme-accents-primary-active) 100%);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
+  color: var(--theme-accents-primary-on-accent);
+  font-weight: 700;
+  font-family: var(--font-sans);
+  padding: 12px 24px;
+  border-radius: var(--theme-shapes-radius-medium, 8px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-accents-primary-foreground) 15%, transparent);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--theme-accents-primary-hover) 0%, var(--theme-accents-primary-active) 100%);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
+  transform: translateY(-1px);
+}
+
+.btn-amethyst {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--theme-accents-secondary-foreground) 0%, var(--theme-accents-secondary-active) 100%);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
+  color: var(--theme-accents-secondary-on-accent);
+  font-weight: 700;
+  font-family: var(--font-sans);
+  padding: 12px 24px;
+  border-radius: var(--theme-shapes-radius-medium, 8px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-accents-secondary-foreground) 15%, transparent);
+}
+

@@ -1,0 +1,206 @@
+.rl-local {
+  background: var(--theme-surfaces-canvas);
+  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  padding: 100px 24px;
+}
+
+.rl-local__inner {
+  max-width: min(88vw, 680px);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.rl-local__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-accents-primary-foreground);
+  margin-bottom: 8px;
+}
+
+.rl-local__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  letter-spacing: 0.01em;
+}
+
+.rl-local__body {
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.8;
+}
+
+.rl-local__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.rl-local__pill {
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
+  color: var(--theme-accents-primary-hover);
+  letter-spacing: 0.02em;
+}
+
+/* ── Final CTA Section ────────────────────────────────────── */
+
+.rl-final-cta {
+  background: var(--theme-surfaces-canvas);
+  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  padding: 120px 24px;
+}
+
+.rl-final-cta__inner {
+  max-width: min(88vw, 640px);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.rl-final-cta__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  letter-spacing: 0.01em;
+}
+
+.rl-final-cta__sub {
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.7;
+}
+
+.rl-final-cta__buttons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .rl-nav {
+    padding-inline: 14px;
+  }
+
+  .rl-nav__actions {
+    gap: 8px;
+  }
+
+  .rl-nav__login {
+    display: none;
+  }
+
+  .rl-hero {
+    min-height: auto;
+    padding: 86px 16px 48px;
+  }
+
+  .rl-hero__content {
+    max-width: none;
+    padding: 56px 20px 32px;
+    text-align: left;
+  }
+
+  .rl-hero__title {
+    font-size: clamp(2.35rem, 12vw, 3.4rem);
+    line-height: 0.98;
+  }
+
+  .rl-hero__subtitle {
+    font-size: 1rem;
+  }
+
+  .rl-hero__ctas {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .rl-preview-wrapper {
+    width: 100%;
+    margin-top: 28px;
+    padding: 0 16px;
+    transform: none;
+  }
+
+  .rl-preview-frame {
+    max-width: 100%;
+    transform: none;
+    height: 260px;
+  }
+
+  .rl-block,
+  .rl-block--reversed {
+    grid-template-columns: 1fr;
+  }
+
+  .rl-features__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rl-pain,
+  .rl-audience,
+  .rl-local,
+  .rl-final-cta {
+    padding: 64px 20px;
+  }
+
+  .rl-final-cta__buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* Shared portal chrome reused by AccountHomePage, PlayerCampaignsPage, and PlayerCampaignShell. */
+
+/* Smart Landing / Main Portal */
+
+.smart-landing {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  background-color: var(--theme-surfaces-canvas);
+  overflow-x: hidden;
+}
+
+.smart-landing-loading {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-secondary);
+}
+
+.smart-landing__background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.52;
+}
+

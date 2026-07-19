@@ -1,0 +1,152 @@
+.btn-amethyst:hover {
+  background: linear-gradient(135deg, var(--theme-accents-secondary-hover) 0%, var(--theme-accents-secondary-active) 100%);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
+  transform: translateY(-1px);
+}
+
+.btn-amethyst-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 25%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  font-weight: 600;
+  font-family: var(--font-sans);
+  padding: 12px 24px;
+  border-radius: var(--theme-shapes-radius-medium, 8px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-amethyst-outline:hover {
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 12%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 45%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  transform: translateY(-1px);
+}
+
+.featured-campaign-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-label-gold,
+.section-label-amethyst {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.section-label-gold-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--theme-text-secondary);
+  text-transform: uppercase;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.featured-campaign-cover {
+  position: relative;
+  height: 140px;
+  background-position: center;
+  background-size: cover;
+}
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 75%, transparent) 100%);
+}
+
+.active-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 40%, transparent);
+  color: var(--theme-feedback-success-foreground);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--theme-feedback-success-foreground);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--theme-feedback-success-foreground);
+}
+
+.campaign-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.campaign-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.system-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--theme-shapes-radius-small, 4px);
+  text-transform: uppercase;
+}
+
+.system-tag.system-dnd_5e {
+  background: var(--theme-feedback-danger-background);
+  border: 1px solid var(--theme-feedback-danger-border);
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.system-tag.system-pathfinder_2e {
+  background: var(--theme-feedback-info-background);
+  border: 1px solid var(--theme-feedback-info-border);
+  color: var(--theme-feedback-info-foreground);
+}
+
+.system-tag.system-shadowdark {
+  background: var(--theme-feedback-success-background);
+  border: 1px solid var(--theme-feedback-success-border);
+  color: var(--theme-feedback-success-foreground);
+}
+
+.system-tag.system-custom {
+  background: var(--theme-accents-secondary-background);
+  border: 1px solid var(--theme-accents-secondary-border);
+  color: var(--theme-accents-secondary-foreground);
+}
+
+.campaign-id-tag {
+  font-size: 0.7rem;
+  color: var(--theme-text-secondary);
+  font-family: monospace;
+}
+
+.campaign-stats-mini {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+

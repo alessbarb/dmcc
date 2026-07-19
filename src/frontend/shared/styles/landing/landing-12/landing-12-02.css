@@ -1,0 +1,156 @@
+
+
+.smart-role-card--player:hover .smart-role-card__cta,
+.smart-role-card--player:focus-visible .smart-role-card__cta {
+  background: color-mix(in srgb, var(--theme-activity-tag-foreground) 12%, transparent);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-activity-tag-foreground) 20%, transparent);
+}
+
+/* Mobile landing */
+
+@media (max-width: 720px) {
+  .portal-topbar {
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .portal-topbar__brand-full {
+    display: none;
+  }
+
+  .portal-topbar__brand-short {
+    display: inline;
+  }
+
+  .portal-topbar__actions {
+    gap: 8px;
+  }
+
+  .language-pill {
+    padding: 3px;
+    gap: 1px;
+  }
+
+  .language-pill__btn {
+    padding: 5px 8px;
+    font-size: 0.66rem;
+  }
+
+  .smart-landing__background {
+    opacity: 0.42;
+  }
+
+  .smart-landing__main {
+    min-height: calc(100vh - 49px);
+    min-height: calc(100svh - 49px);
+    padding: 26px 16px 24px;
+  }
+
+  .smart-landing__hero {
+    flex: 0 1 auto;
+    justify-content: flex-start;
+    max-width: 480px;
+  }
+
+  .smart-landing__badge {
+    margin-bottom: 14px;
+    padding: 5px 10px;
+    font-size: 0.64rem;
+    letter-spacing: 0.055em;
+  }
+
+  .smart-landing__title {
+    font-size: clamp(2rem, 10vw, 2.55rem);
+    line-height: 0.98;
+  }
+
+  .smart-landing__subtitle {
+    max-width: 340px;
+    margin-top: 12px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .smart-landing__roles {
+    max-width: 480px;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 30px;
+  }
+
+  .smart-landing__dm-stack,
+  .smart-role-card,
+  .smart-role-card--player {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    flex: none;
+  }
+
+  .smart-landing__dm-stack {
+    gap: 6px;
+  }
+
+  .smart-role-card {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    grid-template-areas:
+      "icon copy"
+      "cta cta";
+    align-items: center;
+    gap: 14px 16px;
+    padding: 18px;
+    text-align: left;
+    border-radius: 18px;
+  }
+
+  .smart-role-card:hover {
+    transform: none;
+  }
+
+  .smart-role-card__icon-wrapper {
+    grid-area: icon;
+    width: 54px;
+    height: 54px;
+    margin: 0;
+  }
+
+  .smart-role-card__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .smart-role-card__copy {
+    grid-area: copy;
+  }
+
+  .smart-role-card__title {
+    margin-bottom: 4px;
+    font-size: 1.04rem;
+    line-height: 1.15;
+  }
+
+  .smart-role-card__desc,
+  .smart-role-card--player .smart-role-card__desc {
+    max-width: none;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .smart-role-card__cta {
+    grid-area: cta;
+    min-height: 46px;
+    margin-top: 0;
+    padding: 10px 14px;
+    font-size: 0.86rem;
+  }
+
+  .smart-landing__sign-out {
+    font-size: 0.72rem;
+  }
+
+  .smart-landing__footer {
+    padding-top: 22px;
+    font-size: 0.68rem;
+  }
+}

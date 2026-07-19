@@ -1,0 +1,173 @@
+body:has(.rl-root) .watermark {
+  display: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ROOT NetworkDING (MainLanding) — Cinematic H2+H3 Hybrid
+═══════════════════════════════════════════════════════════════ */
+
+.rl-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-surfaces-canvas);
+  overflow-x: hidden;
+}
+
+/* ── Nav ──────────────────────────────────────────────────── */
+
+.rl-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 75%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-raised) 50%, transparent);
+}
+
+.rl-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-accents-primary-foreground);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.rl-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rl-nav__login {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.rl-nav__login:hover {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive-hover) 50%, transparent);
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+
+.rl-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 56px; /* nav height */
+}
+
+.rl-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Scenic background image — slow Ken Burns */
+.rl-hero__scenic {
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/ui/portal_background.png');
+  background-size: cover;
+  background-position: center 15%;
+  opacity: 0.45;
+  animation: rl-kenburns 28s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes rl-kenburns {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: scale(1.07) translateY(-12px); }
+}
+
+/* Push d20 SVG to lower third (behind preview, not behind CTAs) */
+.rl-hero .rpg-portal-background {
+  transform: translateY(30%);
+  opacity: 0.5;
+}
+
+/* Central golden spotlight */
+.rl-hero__spotlight {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 38%,
+      color-mix(in srgb, var(--theme-accents-primary-foreground) 9%, transparent) 0%,
+      color-mix(in srgb, var(--theme-accents-secondary-foreground) 5%, transparent) 45%,
+      transparent 70%
+    );
+  z-index: 2;
+}
+
+.rl-hero__bg-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent) 0%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent) 38%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 65%, transparent) 78%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 100%, transparent) 100%
+    );
+  z-index: 3;
+}
+
+.rl-hero__content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 860px;
+  padding: 72px 24px 40px;
+}
+
+.rl-hero__badge {
+  margin-bottom: 24px;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
+}
+
+.rl-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 20px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    168deg,
+    var(--theme-text-primary) 0%,
+    var(--theme-text-secondary) 60%,
+    var(--theme-text-subtle) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent));
+}
+

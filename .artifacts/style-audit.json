@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:51:58.639Z",
+  "generatedAt": "2026-07-19T11:56:14.589Z",
   "summary": {
-    "cssFiles": 133,
+    "cssFiles": 155,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 38,
+    "mixedResponsibilityFiles": 37,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -8199,31 +8199,16 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/landing.css",
+      "path": "src/frontend/shared/styles/landing/landing-01.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 2613,
-      "selectorCount": 394,
+      "lineCount": 174,
+      "selectorCount": 19,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/landing.css"
       ],
-      "variableDefinitions": [
-        "--dm",
-        "--dm",
-        "--player",
-        "--player",
-        "--dm",
-        "--dm",
-        "--player",
-        "--player",
-        "--player",
-        "--player",
-        "--dm",
-        "--dm",
-        "--player",
-        "--player"
-      ],
+      "variableDefinitions": [],
       "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
@@ -8245,7 +8230,21 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-subtle",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-02.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 129,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-borders-default",
@@ -8272,7 +8271,21 @@
         "--theme-surfaces-canvas",
         "--theme-accents-primary-hover",
         "--font-sans",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-03.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 169,
+      "selectorCount": 21,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -8296,7 +8309,21 @@
         "--theme-feedback-success-foreground",
         "--theme-surfaces-canvas",
         "--font-display",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-04.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 151,
+      "selectorCount": 23,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
@@ -8325,14 +8352,72 @@
         "--theme-accents-secondary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 50,
+      "selectorCount": 18,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing/landing-05.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-narrative-rumor-foreground",
         "--theme-narrative-rumor-foreground",
-        "--theme-narrative-rumor-foreground",
+        "--theme-narrative-rumor-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 70,
+      "selectorCount": 22,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing/landing-05.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
         "--font-display",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-05.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+        "src/frontend/shared/styles/landing/landing-05/landing-05-02.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-06.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 153,
+      "selectorCount": 26,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-surfaces-subtle",
         "--font-display",
@@ -8362,7 +8447,21 @@
         "--theme-entities-location-foreground",
         "--theme-entities-quest-foreground",
         "--theme-entities-quest-foreground",
-        "--theme-entities-quest-foreground",
+        "--theme-entities-quest-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-07.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 153,
+      "selectorCount": 24,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-subtle",
         "--theme-canvas-selection",
         "--theme-accents-primary-foreground",
@@ -8391,7 +8490,21 @@
         "--theme-text-secondary",
         "--theme-text-subtle",
         "--theme-feedback-success-foreground",
-        "--theme-borders-strong",
+        "--theme-borders-strong"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-08.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 176,
+      "selectorCount": 23,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-subtle",
         "--theme-text-secondary",
         "--theme-text-subtle",
@@ -8416,7 +8529,21 @@
         "--theme-surfaces-subtle",
         "--font-display",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-09.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 207,
+      "selectorCount": 30,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-subtle",
         "--theme-accents-primary-foreground",
@@ -8434,7 +8561,21 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-10.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 202,
+      "selectorCount": 21,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
         "--theme-accents-primary-foreground",
@@ -8453,7 +8594,32 @@
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
-        "--font-sans",
+        "--font-sans"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-11.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 152,
+      "selectorCount": 21,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [
+        "--dm",
+        "--dm",
+        "--player",
+        "--player",
+        "--dm",
+        "--dm",
+        "--player",
+        "--player",
+        "--player",
+        "--player"
+      ],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-background",
         "--theme-surfaces-canvas",
@@ -8480,12 +8646,104 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-activity-system-foreground",
+        "--theme-activity-system-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-12/landing-12-01.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 2,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing/landing-12.css"
+      ],
+      "variableDefinitions": [
+        "--dm",
+        "--dm"
+      ],
+      "variableReferences": [
         "--theme-activity-system-foreground",
-        "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-12/landing-12-02.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 156,
+      "selectorCount": 27,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing/landing-12.css"
+      ],
+      "variableDefinitions": [
+        "--player",
+        "--player"
+      ],
+      "variableReferences": [
         "--theme-activity-tag-foreground",
-        "--theme-activity-tag-foreground",
+        "--theme-activity-tag-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-12/landing-12-03.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 48,
+      "selectorCount": 9,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing/landing-12.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-12/landing-12-04.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing/landing-12.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-12.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/landing/landing-12/landing-12-01.css",
+        "src/frontend/shared/styles/landing/landing-12/landing-12-02.css",
+        "src/frontend/shared/styles/landing/landing-12/landing-12-03.css",
+        "src/frontend/shared/styles/landing/landing-12/landing-12-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-13.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 147,
+      "selectorCount": 20,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -8523,7 +8781,21 @@
         "--theme-accents-secondary-on-accent",
         "--font-sans",
         "--theme-shapes-radius-medium",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-14.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 153,
+      "selectorCount": 19,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-secondary-hover",
         "--theme-accents-secondary-active",
         "--theme-accents-secondary-foreground",
@@ -8557,7 +8829,21 @@
         "--theme-accents-secondary-background",
         "--theme-accents-secondary-border",
         "--theme-accents-secondary-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-15.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 197,
+      "selectorCount": 28,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-shapes-radius-medium",
@@ -8583,7 +8869,21 @@
         "--theme-text-secondary",
         "--theme-accents-secondary-foreground",
         "--theme-text-on-media",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing/landing-16.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 131,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/landing.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-hover",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
@@ -8604,6 +8904,36 @@
         "--theme-accents-secondary-foreground",
         "--theme-text-secondary"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/landing.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 17,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/landing/landing-01.css",
+        "src/frontend/shared/styles/landing/landing-02.css",
+        "src/frontend/shared/styles/landing/landing-03.css",
+        "src/frontend/shared/styles/landing/landing-04.css",
+        "src/frontend/shared/styles/landing/landing-05.css",
+        "src/frontend/shared/styles/landing/landing-06.css",
+        "src/frontend/shared/styles/landing/landing-07.css",
+        "src/frontend/shared/styles/landing/landing-08.css",
+        "src/frontend/shared/styles/landing/landing-09.css",
+        "src/frontend/shared/styles/landing/landing-10.css",
+        "src/frontend/shared/styles/landing/landing-11.css",
+        "src/frontend/shared/styles/landing/landing-12.css",
+        "src/frontend/shared/styles/landing/landing-13.css",
+        "src/frontend/shared/styles/landing/landing-14.css",
+        "src/frontend/shared/styles/landing/landing-15.css",
+        "src/frontend/shared/styles/landing/landing-16.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/layout/admin-shell.css",
@@ -15010,8 +15340,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:body:has(.rl-root) .watermark",
-      "path": "src/frontend/shared/styles/landing.css",
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-01.css:body:has(.rl-root) .watermark",
+      "path": "src/frontend/shared/styles/landing/landing-01.css",
       "line": 1,
       "column": 1,
       "severity": "high",
@@ -15022,9 +15352,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-place-in 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-cn-node:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 651,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:animation: rl-place-in 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-cn-node:nth-child(1)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 32,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -15034,9 +15364,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 655,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(2)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 36,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15046,9 +15376,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 656,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(3)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 37,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15058,9 +15388,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(4)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 657,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(4)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 38,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15070,9 +15400,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(5)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 658,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(5)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 39,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15082,9 +15412,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-slide-up 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-mem-card:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 662,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:animation: rl-slide-up 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-mem-card:nth-child(1)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 43,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -15094,9 +15424,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-mem-card:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 666,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-mem-card:nth-child(2)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 47,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15106,9 +15436,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-mem-card:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 667,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-mem-card:nth-child(3)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "line": 48,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15118,9 +15448,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-slide-right 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-player:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 671,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:animation: rl-slide-right 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-player:nth-child(1)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 3,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -15130,9 +15460,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-player:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 675,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-player:nth-child(2)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 7,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15142,9 +15472,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-player:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 676,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-player:nth-child(3)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 8,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15154,9 +15484,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-slide-right 0.34s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-vis-row:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 680,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:animation: rl-slide-right 0.34s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-vis-row:nth-child(1)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 12,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -15166,9 +15496,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-vis-row:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 684,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-vis-row:nth-child(2)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 16,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15178,9 +15508,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-vis-row:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 685,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-vis-row:nth-child(3)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 17,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15190,9 +15520,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-vis-row:nth-child(4)",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 686,
+      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-vis-row:nth-child(4)",
+      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
+      "line": 18,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -15200,17 +15530,6 @@
       "category": "cross-component-selector",
       "selectorOrComponent": ".rl-animate--visible .rl-network-vis-row:nth-child(4)",
       "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/landing.css",
-      "path": "src/frontend/shared/styles/landing.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (2613 lines, 394 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
@@ -15742,6 +16061,34 @@
     ],
     "src/frontend/shared/components/Watermark.tsx": [
       "src/frontend/shared/components/watermark.css"
+    ],
+    "src/frontend/shared/styles/landing/landing-05.css": [
+      "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
+      "src/frontend/shared/styles/landing/landing-05/landing-05-02.css"
+    ],
+    "src/frontend/shared/styles/landing/landing-12.css": [
+      "src/frontend/shared/styles/landing/landing-12/landing-12-01.css",
+      "src/frontend/shared/styles/landing/landing-12/landing-12-02.css",
+      "src/frontend/shared/styles/landing/landing-12/landing-12-03.css",
+      "src/frontend/shared/styles/landing/landing-12/landing-12-04.css"
+    ],
+    "src/frontend/shared/styles/landing.css": [
+      "src/frontend/shared/styles/landing/landing-01.css",
+      "src/frontend/shared/styles/landing/landing-02.css",
+      "src/frontend/shared/styles/landing/landing-03.css",
+      "src/frontend/shared/styles/landing/landing-04.css",
+      "src/frontend/shared/styles/landing/landing-05.css",
+      "src/frontend/shared/styles/landing/landing-06.css",
+      "src/frontend/shared/styles/landing/landing-07.css",
+      "src/frontend/shared/styles/landing/landing-08.css",
+      "src/frontend/shared/styles/landing/landing-09.css",
+      "src/frontend/shared/styles/landing/landing-10.css",
+      "src/frontend/shared/styles/landing/landing-11.css",
+      "src/frontend/shared/styles/landing/landing-12.css",
+      "src/frontend/shared/styles/landing/landing-13.css",
+      "src/frontend/shared/styles/landing/landing-14.css",
+      "src/frontend/shared/styles/landing/landing-15.css",
+      "src/frontend/shared/styles/landing/landing-16.css"
     ],
     "src/frontend/shared/styles/main.css": [
       "src/frontend/shared/styles/foundation/fonts.css",

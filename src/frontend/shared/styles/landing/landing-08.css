@@ -1,0 +1,175 @@
+.rl-network-visibility {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 80%, transparent);
+  padding-top: 12px;
+}
+
+.rl-network-vis-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.65rem;
+  padding: 4px 6px;
+  border-radius: 5px;
+}
+
+.vis--visible { color: var(--theme-text-secondary); background: transparent; }
+.vis--hidden  { color: var(--theme-text-subtle); background: color-mix(in srgb, var(--theme-surfaces-base) 50%, transparent); text-decoration: none; }
+.vis--hidden span { text-decoration: line-through; opacity: 0.6; }
+
+/* ── Footer ───────────────────────────────────────────────── */
+
+.rl-footer {
+  background: var(--theme-surfaces-canvas);
+  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-base) 60%, transparent);
+  padding: 20px 24px;
+}
+
+.rl-footer__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.rl-footer__identity {
+  display: grid;
+  gap: 5px;
+}
+
+.rl-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  color: var(--theme-text-disabled);
+  letter-spacing: 0.05em;
+}
+
+.rl-footer__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--theme-text-disabled);
+}
+
+.rl-footer__nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px 14px;
+  flex-wrap: wrap;
+}
+
+.rl-footer__link {
+  color: var(--theme-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.rl-footer__link:hover,
+.rl-footer__link:focus-visible {
+  color: var(--theme-accents-primary-hover);
+  outline: none;
+}
+
+/* ── Hero fine print ──────────────────────────────────────── */
+
+.rl-hero__fine {
+  font-size: 0.72rem;
+  color: var(--theme-text-disabled);
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* ── Pain Section ─────────────────────────────────────────── */
+
+.rl-pain {
+  background: var(--theme-surfaces-canvas);
+  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  padding: 100px 24px;
+}
+
+.rl-pain__inner {
+  max-width: min(88vw, 760px);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rl-pain__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.rl-pain__body {
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.8;
+}
+
+.rl-pain__answer {
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  color: var(--theme-accents-primary-foreground);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* ── Audience Section ─────────────────────────────────────── */
+
+.rl-audience {
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent), transparent 42%),
+    var(--theme-surfaces-canvas);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  padding: 96px 24px;
+}
+
+.rl-audience__inner {
+  max-width: min(88vw, 720px);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.rl-audience__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  line-height: 1.18;
+  letter-spacing: 0.01em;
+}
+
+.rl-audience__body {
+  font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+/* ── Local-first Section ──────────────────────────────────── */
+

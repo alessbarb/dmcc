@@ -1,0 +1,128 @@
+.rl-hero__subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  color: var(--theme-text-secondary);
+  line-height: 1.65;
+  margin: 0 0 36px;
+  max-width: 600px;
+}
+
+.rl-hero__ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100vw;
+  padding: 28px 24px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 30%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-borders-default) 30%, transparent);
+}
+
+/* ── Cinematic CTA Button ────────────────────────── */
+
+.rl-cta-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 260px;
+  padding: 18px 44px;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--theme-accents-primary-foreground);
+  cursor: pointer;
+  overflow: hidden;
+
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 65%, transparent);
+  border-radius: 3px;
+
+  box-shadow:
+    0 0 24px color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent),
+    0 0 60px color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent),
+    inset 0 0 16px color-mix(in srgb, var(--theme-accents-primary-foreground) 4%, transparent),
+    0 8px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 70%, transparent);
+
+  text-shadow:
+    0 0 16px color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent),
+    0 1px 2px color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent);
+
+  transition: color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+/* Corner accents */
+.rl-cta-primary::before,
+.rl-cta-primary::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 70%, transparent);
+  border-style: solid;
+  transition: border-color 0.3s;
+}
+.rl-cta-primary::before { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+.rl-cta-primary::after  { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+.rl-cta-primary__shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent) 50%,
+    transparent 70%
+  );
+  animation: rl-cta-sweep 4s ease infinite;
+}
+
+@keyframes rl-cta-sweep {
+  0%   { transform: translateX(-100%); }
+  55%  { transform: translateX(200%); }
+  100% { transform: translateX(200%); }
+}
+
+.rl-cta-primary__text {
+  position: relative;
+  z-index: 1;
+}
+
+.rl-cta-primary:hover {
+  color: var(--theme-accents-primary-hover);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 85%, transparent);
+  box-shadow:
+    0 0 40px color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, transparent),
+    0 0 80px color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent),
+    inset 0 0 24px color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent),
+    0 8px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 70%, transparent);
+  text-shadow:
+    0 0 24px color-mix(in srgb, var(--theme-accents-primary-foreground) 80%, transparent),
+    0 1px 2px color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent);
+  transform: translateY(-2px);
+}
+
+.rl-cta-primary:hover::before,
+.rl-cta-primary:hover::after {
+  border-color: var(--theme-accents-primary-hover);
+}
+
+.rl-cta-primary:active {
+  transform: translateY(0);
+}
+
+.rl-cta-secondary {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--theme-text-secondary);
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+

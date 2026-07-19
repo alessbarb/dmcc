@@ -1,0 +1,49 @@
+.rl-feature-icon--teal {
+  background: color-mix(in srgb, var(--theme-narrative-rumor-foreground) 10%, transparent);
+  color: var(--theme-narrative-rumor-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-narrative-rumor-foreground) 20%, transparent);
+}
+
+/* ── Scroll entrance animations ──────────────────────────── */
+
+/* Spring easing: slight overshoot → settles = "piece placed" feel */
+.rl-animate {
+  opacity: 0;
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.34, 1.28, 0.64, 1);
+}
+
+.rl-animate--from-bottom { transform: translateY(36px); }
+.rl-animate--from-left   { transform: translateX(-52px) rotate(-1deg); }
+.rl-animate--from-right  { transform: translateX(52px) rotate(1deg); }
+.rl-animate--pop         { transform: scale(0.86) translateY(10px); }
+.rl-animate--drop        { transform: translateY(-20px) scale(0.9) rotate(-3deg); }
+
+.rl-animate--visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Child stagger inside visible blocks ─────────────────── */
+
+/* Canvas nodes: placed one by one when their container appears */
+.rl-animate--visible .rl-cn-node {
+  animation: rl-place-in 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) both;
+  animation-play-state: running;
+}
+.rl-animate--visible .rl-cn-node:nth-child(1) { animation-delay: 0.08s; }
+.rl-animate--visible .rl-cn-node:nth-child(2) { animation-delay: 0.18s; }
+.rl-animate--visible .rl-cn-node:nth-child(3) { animation-delay: 0.28s; }
+.rl-animate--visible .rl-cn-node:nth-child(4) { animation-delay: 0.36s; }
+.rl-animate--visible .rl-cn-node:nth-child(5) { animation-delay: 0.44s; }
+
+/* Memory cards: slide in sequentially */
+.rl-animate--visible .rl-mem-card {
+  animation: rl-slide-up 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+  animation-play-state: running;
+}
+.rl-animate--visible .rl-mem-card:nth-child(1) { animation-delay: 0.1s; }
+.rl-animate--visible .rl-mem-card:nth-child(2) { animation-delay: 0.22s; }
+.rl-animate--visible .rl-mem-card:nth-child(3) { animation-delay: 0.34s; }
+

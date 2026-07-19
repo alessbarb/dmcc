@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 133,
+  "cssFiles": 155,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 38,
+  "mixedResponsibilityFiles": 37,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -133,7 +133,29 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
-| `src/frontend/shared/styles/landing.css` | legacy | shared | 2613 | 394 | 1 |
+| `src/frontend/shared/styles/landing/landing-01.css` | legacy | shared | 174 | 19 | 1 |
+| `src/frontend/shared/styles/landing/landing-02.css` | legacy | shared | 129 | 16 | 1 |
+| `src/frontend/shared/styles/landing/landing-03.css` | legacy | shared | 169 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-04.css` | legacy | shared | 151 | 23 | 1 |
+| `src/frontend/shared/styles/landing/landing-05/landing-05-01.css` | legacy | shared | 50 | 18 | 1 |
+| `src/frontend/shared/styles/landing/landing-05/landing-05-02.css` | legacy | shared | 70 | 22 | 1 |
+| `src/frontend/shared/styles/landing/landing-05.css` | legacy | shared | 3 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-06.css` | legacy | shared | 153 | 26 | 1 |
+| `src/frontend/shared/styles/landing/landing-07.css` | legacy | shared | 153 | 24 | 1 |
+| `src/frontend/shared/styles/landing/landing-08.css` | legacy | shared | 176 | 23 | 1 |
+| `src/frontend/shared/styles/landing/landing-09.css` | legacy | shared | 207 | 30 | 1 |
+| `src/frontend/shared/styles/landing/landing-10.css` | legacy | shared | 202 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-11.css` | legacy | shared | 152 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-01.css` | legacy | shared | 11 | 2 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-02.css` | legacy | shared | 156 | 27 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-03.css` | legacy | shared | 48 | 9 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-04.css` | legacy | shared | 3 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-12.css` | legacy | shared | 5 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-13.css` | legacy | shared | 147 | 20 | 1 |
+| `src/frontend/shared/styles/landing/landing-14.css` | legacy | shared | 153 | 19 | 1 |
+| `src/frontend/shared/styles/landing/landing-15.css` | legacy | shared | 197 | 28 | 1 |
+| `src/frontend/shared/styles/landing/landing-16.css` | legacy | shared | 131 | 25 | 1 |
+| `src/frontend/shared/styles/landing.css` | legacy | shared | 17 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 24 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 744 | 97 | 1 |
@@ -616,23 +638,22 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/timeline.css:1` | Large stylesheet requires atomization (216 lines, 37 selectors). |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2613 lines, 394 selectors). |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:651` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:655` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:656` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:657` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:658` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:662` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:666` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:667` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:671` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:675` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:676` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:680` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:684` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:685` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:686` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-01.css:1` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:32` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:36` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:37` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:38` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:39` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:43` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:47` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-01.css:48` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:3` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:7` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:8` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:12` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:16` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:17` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:18` | Selector depends on another component's DOM structure. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/layout/campaign-navigation.css:1` | Large stylesheet requires atomization (744 lines, 97 selectors). |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:160` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:164` | Important declarations bypass the intended cascade. |
