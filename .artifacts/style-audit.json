@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:46:41.488Z",
+  "generatedAt": "2026-07-19T10:47:41.855Z",
   "summary": {
-    "cssFiles": 113,
-    "tsxFilesWithInlineStyles": 62,
+    "cssFiles": 114,
+    "tsxFilesWithInlineStyles": 59,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 493,
+    "staticInlineStyles": 472,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -875,9 +875,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
@@ -908,9 +906,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
@@ -6516,6 +6512,21 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-dialog-forms.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 65,
+      "selectorCount": 13,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-entity-node.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8699,7 +8710,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 72,
+      "lineCount": 73,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8765,7 +8776,8 @@
         "src/frontend/shared/styles/features/canvas-group-hulls.css",
         "src/frontend/shared/styles/features/session-prep-form.css",
         "src/frontend/shared/styles/features/canvas-toolbar.css",
-        "src/frontend/shared/styles/features/canvas-flow.css"
+        "src/frontend/shared/styles/features/canvas-flow.css",
+        "src/frontend/shared/styles/features/canvas-dialog-forms.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10431,97 +10443,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasSessionPrepDialog.tsx:style={{ maxWidth: \"450px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasSessionPrepDialog.tsx",
-      "line": 44,
-      "column": 73,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxWidth: \"450px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:style={{ maxWidth: \"450px\" }}",
-      "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
-      "line": 66,
-      "column": 75,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxWidth: \"450px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
-      "line": 69,
-      "column": 30,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
-      "line": 78,
-      "column": 39,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:style={{ display: \"flex\", gap: \"16px\", marginTop: \"4px\" }}",
-      "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
-      "line": 128,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"16px\", marginTop: \"4px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
-      "line": 129,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx",
-      "line": 138,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ display: \"flex\", gap: \"8px\", marginBottom: \"12px\", fontSize: \"0.8rem\" }}",
       "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
       "line": 49,
@@ -10635,188 +10556,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ padding: 0, marginTop: \"6px\", fontSize: \"10px\", color: \"var(--theme-accents-primary-foreground)\", border: \"none\", background: \"transparent\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ maxWidth: \"400px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 205,
-      "column": 75,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxWidth: \"400px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 208,
-      "column": 34,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 217,
-      "column": 39,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", gap: \"10px\", flexDirection: \"column\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 220,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"10px\", flexDirection: \"column\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", marginTop: \"4px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 248,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", marginTop: \"4px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 249,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ marginTop: \"3px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 257,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"3px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ fontSize: \"11px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 261,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 267,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ marginTop: \"3px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 274,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"3px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ fontSize: \"11px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 278,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", gap: \"16px\", marginTop: \"4px\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 321,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"16px\", marginTop: \"4px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 322,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/RelationshipTypePopover.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
-      "line": 331,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -24945,7 +24684,8 @@
       "src/frontend/shared/styles/features/canvas-group-hulls.css",
       "src/frontend/shared/styles/features/session-prep-form.css",
       "src/frontend/shared/styles/features/canvas-toolbar.css",
-      "src/frontend/shared/styles/features/canvas-flow.css"
+      "src/frontend/shared/styles/features/canvas-flow.css",
+      "src/frontend/shared/styles/features/canvas-dialog-forms.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

@@ -1,0 +1,64 @@
+.canvas-modal-content--convert,
+.canvas-modal-content--session {
+  max-width: 450px;
+}
+
+.canvas-modal-content--relation {
+  max-width: 400px;
+}
+
+.canvas-dialog__accent-icon {
+  color: var(--theme-accents-primary-foreground);
+}
+
+.canvas-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.canvas-dialog-radio-group {
+  display: flex;
+  margin-top: 4px;
+}
+
+.canvas-dialog-radio-group--wide {
+  gap: 16px;
+}
+
+.canvas-dialog-radio-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.canvas-dialog-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.canvas-dialog-radio-label--top {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.canvas-dialog-radio-input {
+  margin-top: 3px;
+}
+
+.canvas-dialog-help {
+  font-size: 11px;
+}
+
+.canvas-dialog-field-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-dialog-field-stack--tight {
+  gap: 10px;
+}

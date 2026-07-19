@@ -41,7 +41,7 @@ export function CanvasSessionPrepDialog({
 
   return (
   <div className="modal-overlay" onClick={() => setIsOpen(false)}>
-    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "450px" }}>
+    <div className="modal-content canvas-modal-content--session" onClick={(e) => e.stopPropagation()}>
       <div className="modal-header">
         <h2>{t("sessionPage.prepareSessionFromSelectionTitle")}</h2>
         <button onClick={() => setIsOpen(false)} className="modal-close-btn"><X size={16} /></button>

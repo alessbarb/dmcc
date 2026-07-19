@@ -202,10 +202,10 @@ export function RelationshipTypePopover({
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "400px" }}>
+      <div className="modal-content canvas-modal-content--relation" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>
-            <GitCommit size={18} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+            <GitCommit size={18} className="canvas-dialog__accent-icon" />
             {t("canvas.relationPopover.createConnection")}
           </h2>
           <button onClick={onCancel} className="modal-close-btn">
@@ -214,10 +214,10 @@ export function RelationshipTypePopover({
         </div>
 
         <form onSubmit={handleSubmit} className="dialog-form">
-          <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div className="modal-body canvas-dialog-body">
             <div className="form-group">
               <label>{t("canvas.relationPopover.connectionType")}</label>
-              <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+              <div className="canvas-dialog-field-stack canvas-dialog-field-stack--tight">
                 <select
                   value={relationType}
                   onChange={(e) => setRelationType(e.target.value)}
@@ -245,8 +245,8 @@ export function RelationshipTypePopover({
 
             <div className="form-group">
               <label>{t("canvas.relationPopover.relationLevel")}</label>
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
-                <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
+              <div className="canvas-dialog-radio-stack">
+                <label className="canvas-dialog-radio-label canvas-dialog-radio-label--top">
                   <input
                     type="radio"
                     name="relStatus"
@@ -254,28 +254,28 @@ export function RelationshipTypePopover({
                     disabled={!canBeDomainRelation}
                     checked={status === "domain"}
                     onChange={() => setStatus("domain")}
-                    style={{ marginTop: "3px" }}
+                    className="canvas-dialog-radio-input"
                   />
                   <div>
                     <strong>{t("canvas.relationPopover.realRelation")}</strong>
-                    <div className="text-muted" style={{ fontSize: "11px" }}>
+                    <div className="text-muted canvas-dialog-help">
                       {t("canvas.relationPopover.realRelationDesc")}
                     </div>
                   </div>
                 </label>
                 
-                <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
+                <label className="canvas-dialog-radio-label canvas-dialog-radio-label--top">
                   <input
                     type="radio"
                     name="relStatus"
                     value="draft"
                     checked={status === "draft"}
                     onChange={() => setStatus("draft")}
-                    style={{ marginTop: "3px" }}
+                    className="canvas-dialog-radio-input"
                   />
                   <div>
                     <strong>{t("canvas.relationPopover.visualDraft")}</strong>
-                    <div className="text-muted" style={{ fontSize: "11px" }}>
+                    <div className="text-muted canvas-dialog-help">
                       {t("canvas.relationPopover.visualDraftDesc")}
                     </div>
                   </div>
@@ -318,8 +318,8 @@ export function RelationshipTypePopover({
 
                 <div className="form-group">
                   <label>{t("canvas.relationPopover.relationVisibility")}</label>
-                  <div style={{ display: "flex", gap: "16px", marginTop: "4px" }}>
-                    <label style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "normal", cursor: "pointer" }}>
+                  <div className="canvas-dialog-radio-group canvas-dialog-radio-group--wide">
+                    <label className="canvas-dialog-radio-label">
                       <input
                         type="radio"
                         name="relVisibility"
@@ -328,7 +328,7 @@ export function RelationshipTypePopover({
                       />
                       {t("canvas.relationPopover.dmOnly")}
                     </label>
-                    <label style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "normal", cursor: "pointer" }}>
+                    <label className="canvas-dialog-radio-label">
                       <input
                         type="radio"
                         name="relVisibility"

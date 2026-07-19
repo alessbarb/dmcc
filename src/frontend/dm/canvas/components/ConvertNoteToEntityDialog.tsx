@@ -63,10 +63,10 @@ export function ConvertNoteToEntityDialog({
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "450px" }}>
+      <div className="modal-content canvas-modal-content--convert" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>
-            <Wand2 size={18} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+            <Wand2 size={18} className="canvas-dialog__accent-icon" />
             Convertir nota en entidad
           </h2>
           <button onClick={onClose} className="modal-close-btn">
@@ -75,7 +75,7 @@ export function ConvertNoteToEntityDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="dialog-form">
-          <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div className="modal-body canvas-dialog-body">
             <div className="form-group">
               <label>Tipo de entidad de campaña</label>
               <select
@@ -125,8 +125,8 @@ export function ConvertNoteToEntityDialog({
 
             <div className="form-group">
               <label>Visibilidad inicial</label>
-              <div style={{ display: "flex", gap: "16px", marginTop: "4px" }}>
-                <label style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "normal", cursor: "pointer" }}>
+              <div className="canvas-dialog-radio-group canvas-dialog-radio-group--wide">
+                <label className="canvas-dialog-radio-label">
                   <input
                     type="radio"
                     name="visibility"
@@ -135,7 +135,7 @@ export function ConvertNoteToEntityDialog({
                   />
                   Solo DM (Oculto)
                 </label>
-                <label style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "normal", cursor: "pointer" }}>
+                <label className="canvas-dialog-radio-label">
                   <input
                     type="radio"
                     name="visibility"
