@@ -55,6 +55,8 @@ describe("global style foundation", () => {
       "./features/kanban.css",
       "./features/campaign-canvas.css",
       "./features/player-portal.css",
+      "./features/campaign-template.css",
+      "./features/dm-dashboard.css",
       "./features/application-domains.css",
       "./layout/campaign-navigation.css",
       "./features/quick-capture.css",
