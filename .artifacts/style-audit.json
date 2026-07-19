@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:33:41.417Z",
+  "generatedAt": "2026-07-19T11:35:02.610Z",
   "summary": {
-    "cssFiles": 130,
-    "tsxFilesWithInlineStyles": 30,
+    "cssFiles": 131,
+    "tsxFilesWithInlineStyles": 29,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 39,
+    "staticInlineStyles": 32,
     "dynamicInlineStyles": 19,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -7780,6 +7780,19 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/player-profile-modal.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 18,
+      "selectorCount": 4,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/shared/styles/features/quick-capture.css",
       "layer": "legacy",
       "domain": "shared",
@@ -9009,7 +9022,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 89,
+      "lineCount": 90,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -9077,6 +9090,7 @@
         "src/frontend/shared/styles/features/image-picker-modal.css",
         "src/frontend/shared/styles/features/system-announcements.css",
         "src/frontend/shared/styles/features/shortcuts-panel.css",
+        "src/frontend/shared/styles/features/player-profile-modal.css",
         "src/frontend/shared/styles/features/dm-onboarding.css",
         "src/frontend/shared/styles/features/entity-trace.css",
         "src/frontend/shared/styles/features/canvas-page-header.css",
@@ -13589,97 +13603,6 @@
       "reason": "Large stylesheet requires atomization (179 lines, 32 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ maxWidth: \"500px\" }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 77,
-      "column": 83,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxWidth: \"500px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ fontWeight: \"700\" }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 79,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: \"700\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 85,
-      "column": 39,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ marginBottom: 0 }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 86,
-      "column": 41,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ marginBottom: 0 }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 98,
-      "column": 41,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ marginBottom: 0 }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 108,
-      "column": 41,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/people/group/components/PlayerProfileModal.tsx:style={{ marginBottom: 0 }}",
-      "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
-      "line": 119,
-      "column": 41,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/dm/people/group/groupWorkspace.css",
       "path": "src/frontend/dm/people/group/groupWorkspace.css",
       "line": 1,
@@ -17726,6 +17649,7 @@
       "src/frontend/shared/styles/features/image-picker-modal.css",
       "src/frontend/shared/styles/features/system-announcements.css",
       "src/frontend/shared/styles/features/shortcuts-panel.css",
+      "src/frontend/shared/styles/features/player-profile-modal.css",
       "src/frontend/shared/styles/features/dm-onboarding.css",
       "src/frontend/shared/styles/features/entity-trace.css",
       "src/frontend/shared/styles/features/canvas-page-header.css",

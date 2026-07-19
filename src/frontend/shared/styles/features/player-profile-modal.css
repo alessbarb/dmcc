@@ -1,0 +1,17 @@
+.player-profile-modal {
+  max-width: 500px;
+}
+
+.player-profile-modal__title {
+  font-weight: 700;
+}
+
+.player-profile-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.player-profile-modal__field {
+  margin-bottom: 0;
+}

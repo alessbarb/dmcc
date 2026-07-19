@@ -74,16 +74,16 @@ export function PlayerProfileModal({
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(event) => event.stopPropagation()} style={{ maxWidth: "500px" }}>
+      <div className="modal-content player-profile-modal" onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
-          <h3 style={{ fontWeight: "700" }}>{editingPlayer ? t("players.editProfile") : t("players.addPlayer")}</h3>
+          <h3 className="player-profile-modal__title">{editingPlayer ? t("players.editProfile") : t("players.addPlayer")}</h3>
           <button type="button" className="btn btn-icon btn-secondary" onClick={onClose} aria-label={t("common.close")}>
             <X size={16} />
           </button>
         </div>
         <form onSubmit={(event) => { void handleSubmit(event); }}>
-          <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+          <div className="modal-body player-profile-modal__body">
+            <div className="form-group player-profile-modal__field">
               <label className="form-label" htmlFor="player-name">{t("players.realNameLabel")}</label>
               <input
                 id="player-name"
@@ -95,7 +95,7 @@ export function PlayerProfileModal({
                 autoFocus
               />
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group player-profile-modal__field">
               <label className="form-label" htmlFor="player-display-name">{t("players.displayNameLabel")}</label>
               <input
                 id="player-display-name"
@@ -105,7 +105,7 @@ export function PlayerProfileModal({
                 placeholder={t("players.displayNamePlaceholder")}
               />
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group player-profile-modal__field">
               <label className="form-label" htmlFor="player-email">{t("players.emailLabel")}</label>
               <input
                 id="player-email"
@@ -116,7 +116,7 @@ export function PlayerProfileModal({
                 placeholder={t("players.emailPlaceholder")}
               />
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group player-profile-modal__field">
               <label className="form-label">{t("players.avatarLabel")}</label>
               <ImagePickerButton
                 value={form.imageUrl || form.avatarUrl || ""}
