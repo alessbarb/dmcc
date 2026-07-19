@@ -407,7 +407,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             onDragStart={(e) => {
               e.dataTransfer.setData("palette/kind", "note");
               e.dataTransfer.effectAllowed = "copy";
-              const ghost = makeDragGhost("📝 Nota", "#ca8a04");
+              const ghost = makeDragGhost("📝 Nota", "var(--theme-feedback-warning-foreground)");
               e.dataTransfer.setDragImage(ghost, 50, 18);
               requestAnimationFrame(() => document.body.removeChild(ghost));
             }}
@@ -423,7 +423,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             onDragStart={(e) => {
               e.dataTransfer.setData("palette/kind", "group");
               e.dataTransfer.effectAllowed = "copy";
-              const ghost = makeDragGhost("▭ Grupo", "#7c3aed");
+              const ghost = makeDragGhost("▭ Grupo", "var(--theme-narrative-secret-foreground)");
               e.dataTransfer.setDragImage(ghost, 50, 18);
               requestAnimationFrame(() => document.body.removeChild(ghost));
             }}
@@ -540,13 +540,13 @@ function paletteItemStyle(color: string, colorSoft?: string): PaletteItemStyle {
 
 function getFactKindConfig(t: (key: string) => string): FactKindConfig {
   return {
-    canon:         { label: t("canvas.factNode.kindCanonShort"),     color: "#10b981", Icon: CheckCircle2 },
-    dm_secret:     { label: t("canvas.factNode.kindDmSecretShort"), color: "#dc2626", Icon: Lock },
-    rumor:         { label: t("canvas.factNode.kindRumorShort"),     color: "#d97706", Icon: MessageSquare },
-    lie:           { label: t("canvas.factNode.kindLieShort"),       color: "#ea580c", Icon: XCircle },
-    player_theory: { label: t("canvas.factNode.kindTheoryShort"),    color: "#6366f1", Icon: Lightbulb },
-    mistake:       { label: t("canvas.factNode.kindMistakeShort"),   color: "#64748b", Icon: AlertTriangle },
-    retcon:        { label: t("canvas.factNode.kindRetconShort"),    color: "#8b5cf6", Icon: RefreshCw },
+    canon:         { label: t("canvas.factNode.kindCanonShort"),     color: "var(--theme-feedback-success-foreground)", Icon: CheckCircle2 },
+    dm_secret:     { label: t("canvas.factNode.kindDmSecretShort"), color: "var(--theme-feedback-danger-foreground)", Icon: Lock },
+    rumor:         { label: t("canvas.factNode.kindRumorShort"),     color: "var(--theme-feedback-warning-foreground)", Icon: MessageSquare },
+    lie:           { label: t("canvas.factNode.kindLieShort"),       color: "var(--theme-activity-system-foreground)", Icon: XCircle },
+    player_theory: { label: t("canvas.factNode.kindTheoryShort"),    color: "var(--theme-accents-secondary-foreground)", Icon: Lightbulb },
+    mistake:       { label: t("canvas.factNode.kindMistakeShort"),   color: "var(--theme-text-secondary)", Icon: AlertTriangle },
+    retcon:        { label: t("canvas.factNode.kindRetconShort"),    color: "var(--theme-narrative-secret-foreground)", Icon: RefreshCw },
   };
 }
 

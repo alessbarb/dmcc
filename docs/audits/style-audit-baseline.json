@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:41:26.003Z",
+  "generatedAt": "2026-07-19T11:42:31.889Z",
   "summary": {
     "cssFiles": 133,
     "tsxFilesWithInlineStyles": 19,
-    "forbiddenLiteralColors": 124,
+    "forbiddenLiteralColors": 106,
     "staticInlineStyles": 6,
     "dynamicInlineStyles": 18,
     "unknownCssVariables": 0,
@@ -650,6 +650,7 @@
         "--theme-narrative-secret-foreground",
         "--theme-graph-edge-label-background",
         "--theme-canvas-grid",
+        "--theme-feedback-warning-foreground",
         "--theme-accents-secondary-foreground",
         "--theme-canvas-toolbar-border",
         "--theme-canvas-minimap-mask"
@@ -710,7 +711,16 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": []
+      "variableReferences": [
+        "--theme-narrative-secret-foreground",
+        "--theme-feedback-info-foreground",
+        "--theme-feedback-success-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-activity-relation-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-activity-system-foreground"
+      ]
     },
     {
       "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
@@ -790,6 +800,15 @@
       "variableReferences": [
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
+        "--theme-feedback-warning-foreground",
+        "--theme-narrative-secret-foreground",
+        "--theme-feedback-success-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-activity-system-foreground",
+        "--theme-accents-secondary-foreground",
+        "--theme-text-secondary",
+        "--theme-narrative-secret-foreground",
         "--theme-text-on-media",
         "--theme-surfaces-canvas"
       ]
@@ -9635,114 +9654,6 @@
       "reason": "Large stylesheet requires atomization (823 lines, 124 selectors)."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:#fef08a",
-      "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1282,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#fef08a",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#7c3aed",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 108,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#7c3aed",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#2563eb",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 109,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#2563eb",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#059669",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 110,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#059669",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#d97706",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 111,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#d97706",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#db2777",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 112,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#db2777",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#dc2626",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 113,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#dc2626",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#ea580c",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 114,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#ea580c",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:#0d9488",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 115,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#0d9488",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})` }}",
       "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
       "line": 203,
@@ -9897,114 +9808,6 @@
       "sourceType": "tsx-style-object",
       "category": "literal-color",
       "value": "\"green\"",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#ca8a04",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 410,
-      "column": 55,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#ca8a04",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#7c3aed",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 426,
-      "column": 55,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#7c3aed",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#10b981",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 543,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#10b981",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#dc2626",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 544,
-      "column": 77,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#dc2626",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#d97706",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 545,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#d97706",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#ea580c",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 546,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#ea580c",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#6366f1",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 547,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#6366f1",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#64748b",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 548,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#64748b",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/canvas/components/CanvasPalette.tsx:#8b5cf6",
-      "path": "src/frontend/dm/canvas/components/CanvasPalette.tsx",
-      "line": 549,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#8b5cf6",
       "reason": "Literal visual color outside a registered theme package."
     },
     {

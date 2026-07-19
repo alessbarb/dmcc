@@ -8,7 +8,7 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 133,
   "tsxFilesWithInlineStyles": 19,
-  "forbiddenLiteralColors": 124,
+  "forbiddenLiteralColors": 106,
   "staticInlineStyles": 6,
   "dynamicInlineStyles": 18,
   "unknownCssVariables": 0,
@@ -164,7 +164,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | Severity | Category | Location | Reason |
 |---|---|---|---|
 | critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (823 lines, 124 selectors). |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1282` | Literal visual color outside a registered theme package. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:162` | Selector depends on another component's DOM structure. |
@@ -175,14 +174,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:221` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:241` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:262` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:108` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:109` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:110` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:111` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:112` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:113` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:114` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:115` | Literal visual color outside a registered theme package. |
 | info | dynamic-style | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:203` | Runtime style requires review and CSS custom-property preference. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:18` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:18` | Literal visual color outside a registered theme package. |
@@ -196,15 +187,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasNoteNode.tsx:72` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasNoteNode.tsx:86` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasNoteNode.tsx:86` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:410` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:426` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:543` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:544` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:545` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:546` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:547` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:548` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:549` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:527` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/cityTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |

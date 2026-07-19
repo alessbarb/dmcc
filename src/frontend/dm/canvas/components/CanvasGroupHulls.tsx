@@ -105,14 +105,14 @@ const DEFAULT_W = 162;
 const DEFAULT_H = 190;
 
 const GROUP_COLORS: Record<string, string> = {
-  purple: "#7c3aed",
-  blue:   "#2563eb",
-  green:  "#059669",
-  yellow: "#d97706",
-  pink:   "#db2777",
-  red:    "#dc2626",
-  orange: "#ea580c",
-  teal:   "#0d9488",
+  purple: "var(--theme-narrative-secret-foreground)",
+  blue:   "var(--theme-feedback-info-foreground)",
+  green:  "var(--theme-feedback-success-foreground)",
+  yellow: "var(--theme-feedback-warning-foreground)",
+  pink:   "var(--theme-activity-relation-foreground)",
+  red:    "var(--theme-feedback-danger-foreground)",
+  orange: "var(--theme-feedback-warning-foreground)",
+  teal:   "var(--theme-activity-system-foreground)",
 };
 const COLOR_CYCLE = Object.values(GROUP_COLORS);
 
