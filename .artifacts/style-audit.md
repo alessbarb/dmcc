@@ -8,9 +8,9 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 126,
   "tsxFilesWithInlineStyles": 38,
-  "forbiddenLiteralColors": 225,
-  "staticInlineStyles": 164,
-  "dynamicInlineStyles": 25,
+  "forbiddenLiteralColors": 212,
+  "staticInlineStyles": 139,
+  "dynamicInlineStyles": 26,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -103,7 +103,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-toolbar.css` | legacy | shared | 24 | 5 | 1 |
 | `src/frontend/shared/styles/features/dashboard-overview.css` | legacy | shared | 49 | 46 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
-| `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1351 | 195 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1371 | 215 | 1 |
 | `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
 | `src/frontend/shared/styles/features/entity-create.css` | legacy | shared | 32 | 6 | 1 |
 | `src/frontend/shared/styles/features/entity-relations.css` | legacy | shared | 51 | 47 | 1 |
@@ -415,44 +415,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:114` | Selector depends on another component's DOM structure. |
 | info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:99` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:541` | Runtime style requires review and CSS custom-property preference. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:95` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:144` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:171` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:182` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:185` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:204` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:232` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:232` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:237` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:266` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:274` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:274` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:293` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:327` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:353` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:353` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:355` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:362` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:365` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:371` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:376` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:377` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:384` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:384` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:385` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:385` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:392` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:393` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:396` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:400` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignModals.tsx:367` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -914,7 +877,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:447` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dashboard-overview.css:1` | Large stylesheet requires atomization (49 lines, 46 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-dashboard.css:1` | Large stylesheet requires atomization (507 lines, 71 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1351 lines, 195 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1371 lines, 215 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (589 lines, 73 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/entity-relations.css:1` | Large stylesheet requires atomization (51 lines, 47 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/kanban.css:84` | Literal visual color outside a registered theme package. |
