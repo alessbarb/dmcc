@@ -64,6 +64,7 @@
 @import "./features/admin-game-systems.css";
 @import "./features/admin-security.css";
 @import "./features/entity-relations.css";
+@import "./features/entity-trace.css";
 @import "./features/canvas-page-header.css";
 @import "./features/canvas-board-dialogs.css";
 @import "./features/canvas-palette.css";

@@ -113,26 +113,23 @@ export function TrazabilidadTab({
   const { locale, t } = useTranslation();
   const entries = buildTrazabilidad(entity, relations, facts, sessions, t, locale);
 
-  const kindStyles: Record<
-    TraceEntry["kind"],
-    { accentColor: string; label: string }
-  > = {
-    creacion: { accentColor: "var(--theme-activity-entity-foreground)", label: t("entityModal.tabCreation") },
-    visibilidad: { accentColor: "var(--theme-activity-visibility-foreground)", label: t("entityModal.tabVisibility") },
-    relacion: { accentColor: "var(--theme-activity-relation-foreground)", label: t("entityModal.tabRelation") },
-    hecho: { accentColor: "var(--theme-activity-fact-foreground)", label: "Hecho" },
+  const kindStyles: Record<TraceEntry["kind"], { label: string }> = {
+    creacion: { label: t("entityModal.tabCreation") },
+    visibilidad: { label: t("entityModal.tabVisibility") },
+    relacion: { label: t("entityModal.tabRelation") },
+    hecho: { label: "Hecho" },
   };
 
   if (entries.length === 0) {
     return (
-      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", padding: "8px 0" }}>
+      <p className="entity-trace-empty">
         Sin datos de trazabilidad disponibles.
       </p>
     );
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+    <div className="entity-trace-list">
       {/* Timeline vertical line container */}
       {entries.map((entry, idx) => {
         const style = kindStyles[entry.kind];
@@ -140,89 +137,46 @@ export function TrazabilidadTab({
         return (
           <div
             key={idx}
-            style={{ display: "flex", gap: "12px", position: "relative" }}
+            className="entity-trace-entry"
           >
             {/* Dot + vertical line */}
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                flexShrink: 0,
-                width: "20px",
-              }}
+              className="entity-trace-marker-column"
             >
               <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor: style.accentColor,
-                  marginTop: "14px",
-                  flexShrink: 0,
-                }}
+                className={`entity-trace-dot entity-trace-dot--${entry.kind}`}
               />
               {!isLast && (
                 <div
-                  style={{
-                    width: "2px",
-                    flex: "1",
-                    minHeight: "16px",
-                    backgroundColor: "var(--theme-borders-default)",
-                    marginTop: "2px",
-                  }}
+                  className="entity-trace-line"
                 />
               )}
             </div>
 
             {/* Content */}
             <div
-              style={{
-                padding: "10px 0",
-                paddingBottom: isLast ? "0" : "14px",
-                flex: 1,
-              }}
+              className={`entity-trace-content ${isLast ? "entity-trace-content--last" : ""}`}
             >
               <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "8px",
-                  flexWrap: "wrap",
-                }}
+                className="entity-trace-meta"
               >
                 <span
-                  style={{
-                    fontSize: "0.72rem",
-                    fontWeight: "700",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    color: style.accentColor,
-                  }}
+                  className={`entity-trace-kind entity-trace-kind--${entry.kind}`}
                 >
                   {style.label}
                 </span>
-                <span style={{ fontSize: "0.76rem", color: "var(--theme-text-secondary)" }}>
+                <span className="entity-trace-date">
                   {formatDate(entry.at, locale)}
                 </span>
               </div>
               <p
-                style={{
-                  margin: "2px 0 0",
-                  fontSize: "0.87rem",
-                  color: "var(--theme-text-primary)",
-                  lineHeight: "1.4",
-                }}
+                className="entity-trace-label"
               >
                 {entry.label}
               </p>
               {entry.detail && (
                 <p
-                  style={{
-                    margin: "2px 0 0",
-                    fontSize: "0.8rem",
-                    color: "var(--theme-text-secondary)",
-                  }}
+                  className="entity-trace-detail"
                 >
                   {entry.detail}
                 </p>
@@ -234,4 +188,3 @@ export function TrazabilidadTab({
     </div>
   );
 }
-

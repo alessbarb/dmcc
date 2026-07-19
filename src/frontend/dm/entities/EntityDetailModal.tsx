@@ -184,9 +184,8 @@ function StandardEntityDetailModal({
   return (
     <div className={`modal-overlay entity-detail-dialog${isEditingEntity ? " entity-detail-dialog--editing" : ""}`} onClick={onClose}>
       <div
-        className={`modal-content entity-detail-dialog${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}${isEditingEntity ? " entity-detail-dialog--editing" : ""}`}
         onClick={(e) => e.stopPropagation()}
-        style={isRelationsExpanded ? undefined : { maxWidth: "700px" }}
+        className={`modal-content entity-detail-dialog${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}${isEditingEntity ? " entity-detail-dialog--editing" : ""}${isRelationsExpanded ? "" : " entity-detail-dialog--compact"}`}
       >
         {/* Hero image */}
         <div className="entity-detail-hero">
