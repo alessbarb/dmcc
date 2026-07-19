@@ -1105,6 +1105,13 @@ small.canvas-navigator-result-action {
   flex-shrink: 0;
   background: var(--fact-color, var(--theme-accents-secondary-foreground));
 }
+.fact-node__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
 .fact-node__body {
   flex: 1;
   padding: 8px 10px 4px;

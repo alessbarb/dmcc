@@ -1,6 +1,6 @@
 import React from "react";
-import { CheckCircle2, Lock, MessageSquare, XCircle, Lightbulb, AlertTriangle, RefreshCw, HelpCircle } from "lucide-react";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { CONFIDENCE_DOTS, getFactKindPresentation } from "./factNodePresentation.js";
 
 export interface FactNodeContentProps {
   statement: string;
@@ -9,13 +9,7 @@ export interface FactNodeContentProps {
   relatedCount: number;
 }
 
-const CONFIDENCE_DOTS: Record<string, { dots: number; label: string }> = {
-  unconfirmed: { dots: 1, label: "Sin confirmar" },
-  suspected:   { dots: 2, label: "Sospechado" },
-  likely:      { dots: 3, label: "Probable" },
-  confirmed:   { dots: 3, label: "Confirmado" },
-  false:       { dots: 0, label: "Falso" },
-};
+type FactNodeStyle = React.CSSProperties & { "--fact-color": string };
 
 export function FactNodeContent({
   statement,
@@ -25,91 +19,43 @@ export function FactNodeContent({
 }: FactNodeContentProps) {
   const { t } = useTranslation();
 
-  const KIND_CONFIG: Record<string, { label: string; color: string; Icon: React.ElementType }> = {
-    canon:         { label: "CANON",                         color: "#10b981", Icon: CheckCircle2 },
-    dm_secret:     { label: "SECRETO DM",                    color: "#dc2626", Icon: Lock },
-    rumor:         { label: "RUMOR",                         color: "#d97706", Icon: MessageSquare },
-    lie:           { label: "MENTIRA",                       color: "#ea580c", Icon: XCircle },
-    player_theory: { label: t("canvas.factNode.kindTheory"), color: "#6366f1", Icon: Lightbulb },
-    mistake:       { label: "ERROR",                         color: "#64748b", Icon: AlertTriangle },
-    retcon:        { label: "RETCON",                        color: "#8b5cf6", Icon: RefreshCw },
-    unknown:       { label: "DESCONOCIDO",                   color: "#94a3b8", Icon: HelpCircle },
-  };
+  const KIND_CONFIG = getFactKindPresentation(kind, t("canvas.factNode.kindTheory"));
 
   const cfg = KIND_CONFIG[kind] ?? KIND_CONFIG.unknown;
   const { color, label, Icon } = cfg;
   const conf = CONFIDENCE_DOTS[confidence] ?? CONFIDENCE_DOTS.unconfirmed;
+  const factNodeStyle: FactNodeStyle = { "--fact-color": color };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%", position: "relative" }}>
+    <div className="fact-node__content" style={factNodeStyle}>
       {/* Banner */}
       <div
         className="fact-node__banner"
-        style={{
-          background: color,
-          color: "#fff",
-          padding: "4px 12px",
-          fontSize: "0.7rem",
-          fontWeight: "700",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px"
-        }}
       >
         <Icon size={11} strokeWidth={2.5} />
         <span>{label}</span>
       </div>
 
       {/* Statement Body */}
-      <div className="fact-node__body" style={{ padding: "12px", flex: 1, display: "flex", flexDirection: "column" }}>
-        <p
-          className="fact-node__statement"
-          style={{
-            margin: 0,
-            fontSize: "0.85rem",
-            color: "var(--theme-text-primary)",
-            lineHeight: 1.4,
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden"
-          }}
-        >
+      <div className="fact-node__body">
+        <p className="fact-node__statement">
           {statement}
         </p>
       </div>
 
       {/* Footer */}
-      <div
-        className="fact-node__footer"
-        style={{
-          padding: "8px 12px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          fontSize: "0.75rem",
-          color: "var(--theme-text-secondary)",
-          borderTop: "1px solid var(--theme-borders-default)"
-        }}
-      >
-        <span className="fact-node__confidence" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+      <div className="fact-node__footer">
+        <span className="fact-node__confidence">
           {Array.from({ length: 3 }, (_, i) => (
             <span
               key={i}
-              className="fact-node__dot"
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: color,
-                opacity: i < conf.dots ? 1 : 0.2
-              }}
+              className={`fact-node__dot${i < conf.dots ? "" : " fact-node__dot--muted"}`}
             />
           ))}
           <span>{conf.label}</span>
         </span>
         {relatedCount > 0 && (
-          <span className="fact-node__linked" style={{ background: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)", padding: "2px 6px", borderRadius: "4px" }}>
+          <span className="fact-node__linked">
             {relatedCount} ent.
           </span>
         )}
