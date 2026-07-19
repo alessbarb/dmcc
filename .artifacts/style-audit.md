@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 155,
+  "cssFiles": 160,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 37,
+  "mixedResponsibilityFiles": 36,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -25,7 +25,12 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | File | Layer | Domain | Lines | Selectors | Importers |
 |---|---:|---:|---:|---:|---:|
-| `src/frontend/account/account.css` | legacy | account | 823 | 124 | 1 |
+| `src/frontend/account/account-styles/account-styles-01.css` | feature | account | 171 | 22 | 1 |
+| `src/frontend/account/account-styles/account-styles-02.css` | feature | account | 189 | 29 | 1 |
+| `src/frontend/account/account-styles/account-styles-03.css` | feature | account | 182 | 28 | 1 |
+| `src/frontend/account/account-styles/account-styles-04.css` | feature | account | 171 | 27 | 1 |
+| `src/frontend/account/account-styles/account-styles-05.css` | feature | account | 114 | 18 | 1 |
+| `src/frontend/account/account.css` | feature | account | 6 | 0 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
 | `src/frontend/dm/entities/entity-card.css` | feature | entities | 394 | 54 | 1 |
 | `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 216 | 25 | 2 |
@@ -74,88 +79,88 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 174 | 30 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
-| `src/frontend/shared/styles/features/admin-announcements.css` | legacy | shared | 37 | 37 | 1 |
-| `src/frontend/shared/styles/features/admin-audit.css` | legacy | shared | 117 | 46 | 1 |
-| `src/frontend/shared/styles/features/admin-campaigns.css` | legacy | shared | 36 | 36 | 1 |
-| `src/frontend/shared/styles/features/admin-game-systems.css` | legacy | shared | 24 | 23 | 1 |
-| `src/frontend/shared/styles/features/admin-invitations.css` | legacy | shared | 27 | 26 | 1 |
-| `src/frontend/shared/styles/features/admin-overview.css` | legacy | shared | 28 | 25 | 1 |
-| `src/frontend/shared/styles/features/admin-purge.css` | legacy | shared | 41 | 37 | 1 |
-| `src/frontend/shared/styles/features/admin-security.css` | legacy | shared | 16 | 15 | 1 |
-| `src/frontend/shared/styles/features/admin-template-settings.css` | legacy | shared | 25 | 24 | 1 |
-| `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
-| `src/frontend/shared/styles/features/auth.css` | legacy | shared | 60 | 15 | 1 |
-| `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1696 | 261 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging.css` | legacy | shared | 39 | 38 | 1 |
-| `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
-| `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
-| `src/frontend/shared/styles/features/canvas-bulk-actions.css` | legacy | shared | 7 | 1 | 1 |
-| `src/frontend/shared/styles/features/canvas-dialog-forms.css` | legacy | shared | 65 | 13 | 1 |
-| `src/frontend/shared/styles/features/canvas-entity-node.css` | legacy | shared | 131 | 23 | 1 |
-| `src/frontend/shared/styles/features/canvas-flow.css` | legacy | shared | 35 | 5 | 1 |
-| `src/frontend/shared/styles/features/canvas-group-hulls.css` | legacy | shared | 23 | 3 | 1 |
-| `src/frontend/shared/styles/features/canvas-inspector.css` | legacy | shared | 93 | 14 | 1 |
-| `src/frontend/shared/styles/features/canvas-mystery-health.css` | legacy | shared | 76 | 13 | 1 |
-| `src/frontend/shared/styles/features/canvas-narrative-lint.css` | legacy | shared | 80 | 14 | 1 |
-| `src/frontend/shared/styles/features/canvas-page-header.css` | legacy | shared | 18 | 17 | 1 |
-| `src/frontend/shared/styles/features/canvas-palette.css` | legacy | shared | 195 | 30 | 1 |
-| `src/frontend/shared/styles/features/canvas-presentation.css` | legacy | shared | 11 | 1 | 1 |
-| `src/frontend/shared/styles/features/canvas-toolbar.css` | legacy | shared | 24 | 5 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview.css` | legacy | shared | 49 | 46 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
-| `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1434 | 227 | 1 |
-| `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
-| `src/frontend/shared/styles/features/dm-onboarding.css` | legacy | shared | 20 | 19 | 1 |
-| `src/frontend/shared/styles/features/entity-create.css` | legacy | shared | 32 | 6 | 1 |
-| `src/frontend/shared/styles/features/entity-relations.css` | legacy | shared | 51 | 47 | 1 |
-| `src/frontend/shared/styles/features/entity-trace.css` | legacy | shared | 23 | 18 | 1 |
-| `src/frontend/shared/styles/features/graph-search.css` | legacy | shared | 77 | 8 | 1 |
-| `src/frontend/shared/styles/features/image-picker-button.css` | legacy | shared | 12 | 11 | 1 |
-| `src/frontend/shared/styles/features/image-picker-modal.css` | legacy | shared | 215 | 28 | 1 |
-| `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 177 | 27 | 1 |
-| `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
-| `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 874 | 138 | 1 |
-| `src/frontend/shared/styles/features/player-campaign.css` | legacy | shared | 38 | 37 | 1 |
-| `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 1023 | 160 | 1 |
-| `src/frontend/shared/styles/features/player-profile-modal.css` | legacy | shared | 18 | 4 | 1 |
-| `src/frontend/shared/styles/features/pwa-update-banner.css` | legacy | shared | 30 | 2 | 1 |
-| `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
-| `src/frontend/shared/styles/features/relation-edge-label.css` | legacy | shared | 19 | 2 | 1 |
-| `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
-| `src/frontend/shared/styles/features/session-prep-form.css` | legacy | shared | 53 | 9 | 1 |
-| `src/frontend/shared/styles/features/shortcuts-panel.css` | legacy | shared | 66 | 11 | 1 |
-| `src/frontend/shared/styles/features/sidebar-nav.css` | legacy | shared | 15 | 2 | 1 |
-| `src/frontend/shared/styles/features/system-announcements.css` | legacy | shared | 91 | 12 | 1 |
-| `src/frontend/shared/styles/features/timeline.css` | legacy | shared | 216 | 37 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements.css` | feature | shared | 37 | 37 | 1 |
+| `src/frontend/shared/styles/features/admin-audit.css` | feature | shared | 117 | 46 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns.css` | feature | shared | 36 | 36 | 1 |
+| `src/frontend/shared/styles/features/admin-game-systems.css` | feature | shared | 24 | 23 | 1 |
+| `src/frontend/shared/styles/features/admin-invitations.css` | feature | shared | 27 | 26 | 1 |
+| `src/frontend/shared/styles/features/admin-overview.css` | feature | shared | 28 | 25 | 1 |
+| `src/frontend/shared/styles/features/admin-purge.css` | feature | shared | 41 | 37 | 1 |
+| `src/frontend/shared/styles/features/admin-security.css` | feature | shared | 16 | 15 | 1 |
+| `src/frontend/shared/styles/features/admin-template-settings.css` | feature | shared | 25 | 24 | 1 |
+| `src/frontend/shared/styles/features/admin-users.css` | feature | shared | 67 | 42 | 1 |
+| `src/frontend/shared/styles/features/auth.css` | feature | shared | 60 | 15 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas.css` | feature | shared | 1696 | 261 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging.css` | feature | shared | 39 | 38 | 1 |
+| `src/frontend/shared/styles/features/campaign-template.css` | feature | shared | 729 | 105 | 1 |
+| `src/frontend/shared/styles/features/canvas-board-dialogs.css` | feature | shared | 28 | 27 | 1 |
+| `src/frontend/shared/styles/features/canvas-bulk-actions.css` | feature | shared | 7 | 1 | 1 |
+| `src/frontend/shared/styles/features/canvas-dialog-forms.css` | feature | shared | 65 | 13 | 1 |
+| `src/frontend/shared/styles/features/canvas-entity-node.css` | feature | shared | 131 | 23 | 1 |
+| `src/frontend/shared/styles/features/canvas-flow.css` | feature | shared | 35 | 5 | 1 |
+| `src/frontend/shared/styles/features/canvas-group-hulls.css` | feature | shared | 23 | 3 | 1 |
+| `src/frontend/shared/styles/features/canvas-inspector.css` | feature | shared | 93 | 14 | 1 |
+| `src/frontend/shared/styles/features/canvas-mystery-health.css` | feature | shared | 76 | 13 | 1 |
+| `src/frontend/shared/styles/features/canvas-narrative-lint.css` | feature | shared | 80 | 14 | 1 |
+| `src/frontend/shared/styles/features/canvas-page-header.css` | feature | shared | 18 | 17 | 1 |
+| `src/frontend/shared/styles/features/canvas-palette.css` | feature | shared | 195 | 30 | 1 |
+| `src/frontend/shared/styles/features/canvas-presentation.css` | feature | shared | 11 | 1 | 1 |
+| `src/frontend/shared/styles/features/canvas-toolbar.css` | feature | shared | 24 | 5 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview.css` | feature | shared | 49 | 46 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard.css` | feature | shared | 507 | 71 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-dashboard.css` | feature | shared | 1434 | 227 | 1 |
+| `src/frontend/shared/styles/features/dm-hub.css` | feature | shared | 589 | 73 | 1 |
+| `src/frontend/shared/styles/features/dm-onboarding.css` | feature | shared | 20 | 19 | 1 |
+| `src/frontend/shared/styles/features/entity-create.css` | feature | shared | 32 | 6 | 1 |
+| `src/frontend/shared/styles/features/entity-relations.css` | feature | shared | 51 | 47 | 1 |
+| `src/frontend/shared/styles/features/entity-trace.css` | feature | shared | 23 | 18 | 1 |
+| `src/frontend/shared/styles/features/graph-search.css` | feature | shared | 77 | 8 | 1 |
+| `src/frontend/shared/styles/features/image-picker-button.css` | feature | shared | 12 | 11 | 1 |
+| `src/frontend/shared/styles/features/image-picker-modal.css` | feature | shared | 215 | 28 | 1 |
+| `src/frontend/shared/styles/features/kanban-board.css` | feature | shared | 177 | 27 | 1 |
+| `src/frontend/shared/styles/features/kanban.css` | feature | shared | 104 | 17 | 1 |
+| `src/frontend/shared/styles/features/landing-archive.css` | feature | shared | 874 | 138 | 1 |
+| `src/frontend/shared/styles/features/player-campaign.css` | feature | shared | 38 | 37 | 1 |
+| `src/frontend/shared/styles/features/player-portal.css` | feature | shared | 1023 | 160 | 1 |
+| `src/frontend/shared/styles/features/player-profile-modal.css` | feature | shared | 18 | 4 | 1 |
+| `src/frontend/shared/styles/features/pwa-update-banner.css` | feature | shared | 30 | 2 | 1 |
+| `src/frontend/shared/styles/features/quick-capture.css` | feature | shared | 142 | 19 | 1 |
+| `src/frontend/shared/styles/features/relation-edge-label.css` | feature | shared | 19 | 2 | 1 |
+| `src/frontend/shared/styles/features/rules-workspace.css` | feature | shared | 73 | 11 | 1 |
+| `src/frontend/shared/styles/features/session-prep-form.css` | feature | shared | 53 | 9 | 1 |
+| `src/frontend/shared/styles/features/shortcuts-panel.css` | feature | shared | 66 | 11 | 1 |
+| `src/frontend/shared/styles/features/sidebar-nav.css` | feature | shared | 15 | 2 | 1 |
+| `src/frontend/shared/styles/features/system-announcements.css` | feature | shared | 91 | 12 | 1 |
+| `src/frontend/shared/styles/features/timeline.css` | feature | shared | 216 | 37 | 1 |
 | `src/frontend/shared/styles/foundation/accessibility.css` | foundation | shared | 8 | 2 | 1 |
 | `src/frontend/shared/styles/foundation/color-scheme.css` | foundation | shared | 12 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/fonts.css` | foundation | shared | 16 | 1 | 1 |
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
-| `src/frontend/shared/styles/landing/landing-01.css` | legacy | shared | 174 | 19 | 1 |
-| `src/frontend/shared/styles/landing/landing-02.css` | legacy | shared | 129 | 16 | 1 |
-| `src/frontend/shared/styles/landing/landing-03.css` | legacy | shared | 169 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-04.css` | legacy | shared | 151 | 23 | 1 |
-| `src/frontend/shared/styles/landing/landing-05/landing-05-01.css` | legacy | shared | 50 | 18 | 1 |
-| `src/frontend/shared/styles/landing/landing-05/landing-05-02.css` | legacy | shared | 70 | 22 | 1 |
-| `src/frontend/shared/styles/landing/landing-05.css` | legacy | shared | 3 | 0 | 1 |
-| `src/frontend/shared/styles/landing/landing-06.css` | legacy | shared | 153 | 26 | 1 |
-| `src/frontend/shared/styles/landing/landing-07.css` | legacy | shared | 153 | 24 | 1 |
-| `src/frontend/shared/styles/landing/landing-08.css` | legacy | shared | 176 | 23 | 1 |
-| `src/frontend/shared/styles/landing/landing-09.css` | legacy | shared | 207 | 30 | 1 |
-| `src/frontend/shared/styles/landing/landing-10.css` | legacy | shared | 202 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-11.css` | legacy | shared | 152 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-01.css` | legacy | shared | 11 | 2 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-02.css` | legacy | shared | 156 | 27 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-03.css` | legacy | shared | 48 | 9 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-04.css` | legacy | shared | 3 | 0 | 1 |
-| `src/frontend/shared/styles/landing/landing-12.css` | legacy | shared | 5 | 0 | 1 |
-| `src/frontend/shared/styles/landing/landing-13.css` | legacy | shared | 147 | 20 | 1 |
-| `src/frontend/shared/styles/landing/landing-14.css` | legacy | shared | 153 | 19 | 1 |
-| `src/frontend/shared/styles/landing/landing-15.css` | legacy | shared | 197 | 28 | 1 |
-| `src/frontend/shared/styles/landing/landing-16.css` | legacy | shared | 131 | 25 | 1 |
-| `src/frontend/shared/styles/landing.css` | legacy | shared | 17 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-01.css` | feature | shared | 174 | 19 | 1 |
+| `src/frontend/shared/styles/landing/landing-02.css` | feature | shared | 129 | 16 | 1 |
+| `src/frontend/shared/styles/landing/landing-03.css` | feature | shared | 169 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-04.css` | feature | shared | 151 | 23 | 1 |
+| `src/frontend/shared/styles/landing/landing-05/landing-05-01.css` | feature | shared | 50 | 18 | 1 |
+| `src/frontend/shared/styles/landing/landing-05/landing-05-02.css` | feature | shared | 70 | 22 | 1 |
+| `src/frontend/shared/styles/landing/landing-05.css` | feature | shared | 3 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-06.css` | feature | shared | 153 | 26 | 1 |
+| `src/frontend/shared/styles/landing/landing-07.css` | feature | shared | 153 | 24 | 1 |
+| `src/frontend/shared/styles/landing/landing-08.css` | feature | shared | 176 | 23 | 1 |
+| `src/frontend/shared/styles/landing/landing-09.css` | feature | shared | 207 | 30 | 1 |
+| `src/frontend/shared/styles/landing/landing-10.css` | feature | shared | 202 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-11.css` | feature | shared | 152 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-01.css` | feature | shared | 11 | 2 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-02.css` | feature | shared | 156 | 27 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-03.css` | feature | shared | 48 | 9 | 1 |
+| `src/frontend/shared/styles/landing/landing-12/landing-12-04.css` | feature | shared | 3 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-12.css` | feature | shared | 5 | 0 | 1 |
+| `src/frontend/shared/styles/landing/landing-13.css` | feature | shared | 147 | 20 | 1 |
+| `src/frontend/shared/styles/landing/landing-14.css` | feature | shared | 153 | 19 | 1 |
+| `src/frontend/shared/styles/landing/landing-15.css` | feature | shared | 197 | 28 | 1 |
+| `src/frontend/shared/styles/landing/landing-16.css` | feature | shared | 131 | 25 | 1 |
+| `src/frontend/shared/styles/landing.css` | feature | shared | 17 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 24 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 744 | 97 | 1 |
@@ -185,7 +190,6 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | Severity | Category | Location | Reason |
 |---|---|---|---|
-| critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (823 lines, 124 selectors). |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:162` | Selector depends on another component's DOM structure. |

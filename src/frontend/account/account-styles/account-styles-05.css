@@ -1,0 +1,113 @@
+.account-modal-shell {
+  width: min(1180px, 100%);
+  max-height: min(92vh, 980px);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, var(--theme-borders-default));
+  border-radius: clamp(18px, 2vw, 28px);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--theme-text-on-media) 7%, transparent), color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent)),
+    var(--theme-surfaces-canvas);
+  box-shadow: 0 30px 110px color-mix(in srgb, var(--theme-surfaces-canvas) 58%, transparent), inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+}
+
+.account-center.account-center--modal {
+  min-height: auto;
+  max-height: min(92vh, 980px);
+  overflow: auto;
+  padding: clamp(1rem, 2.2vw, 1.75rem);
+  scrollbar-width: thin;
+}
+
+.account-center.account-center--modal .account-page-header,
+.account-center.account-center--modal .account-overview-card,
+.account-center.account-center--modal .account-layout {
+  max-width: none;
+}
+
+.account-center.account-center--modal .account-page-header {
+  position: sticky;
+  top: calc(-1 * clamp(1rem, 2.2vw, 1.75rem));
+  z-index: 3;
+  padding-top: clamp(1rem, 2.2vw, 1.75rem);
+  padding-bottom: 1rem;
+  background:
+    linear-gradient(180deg, var(--theme-surfaces-canvas) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 84%, transparent 16%) 76%, transparent 100%);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.account-modal-close {
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.account-modal-close:hover,
+.account-modal-close:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+  outline: none;
+}
+
+@keyframes account-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 920px) {
+  .account-modal-backdrop {
+    align-items: stretch;
+    padding: 0.65rem;
+  }
+
+  .account-modal-shell,
+  .account-center.account-center--modal {
+    max-height: calc(100dvh - 1.3rem);
+  }
+
+  .account-center.account-center--modal .account-page-header {
+    align-items: flex-start;
+  }
+}
+
+
+@media (max-width: 700px) {
+  .account-modal-backdrop {
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .account-modal-shell {
+    width: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .account-center.account-center--modal {
+    max-height: 100dvh;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  .account-nav {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: var(--theme-surfaces-canvas);
+    padding-block: 0.5rem;
+  }
+}

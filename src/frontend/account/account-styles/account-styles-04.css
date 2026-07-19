@@ -1,0 +1,170 @@
+.account-preview {
+  padding: 1rem;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-panel);
+  background: var(--theme-surfaces-base);
+  color: var(--theme-text-primary);
+  box-shadow: var(--theme-shadows-medium);
+  font-family: var(--font-sans);
+  font-size: calc(1rem * var(--typography-scale, 1));
+}
+
+.account-preview-title {
+  font-family: var(--font-display);
+}
+
+.account-preview-copy {
+  color: var(--theme-text-secondary);
+}
+
+.account-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.account-preview-item {
+  padding: 0.85rem;
+  border-radius: var(--theme-shapes-radius-medium);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.account-preview-item dt {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.account-preview-item dd {
+  margin: 0;
+}
+
+.account-security-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.account-recovery-codes {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+}
+
+.account-recovery-codes ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.55rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-recovery-codes li {
+  padding: 0.6rem 0.7rem;
+  border-radius: var(--theme-shapes-radius-medium);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.account-session-list.cards {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.account-session-list.cards li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.account-session-list.cards li div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.account-session-list.cards li span {
+  color: var(--theme-text-secondary);
+  font-size: 0.92rem;
+}
+
+.account-session-list.cards li.is-current {
+  border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 25%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .account-overview-card,
+  .account-split-hero,
+  .account-security-grid,
+  .account-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-page-header {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .account-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .account-nav button {
+    min-width: max-content;
+  }
+
+  .account-preview-grid,
+  .account-form-grid,
+  .account-profile-footer-grid,
+  .account-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .account-profile-field,
+  .account-overview-identity,
+  .account-profile-preview-card,
+  .account-card,
+  .account-session-list.cards li {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .account-checkbox-card {
+    align-items: start;
+  }
+}
+
+.account-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  background:
+    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, transparent), transparent 34%),
+    radial-gradient(circle at 82% 82%, color-mix(in srgb, var(--theme-accents-secondary-foreground) 12%, transparent), transparent 30%),
+    color-mix(in srgb, var(--theme-surfaces-canvas) 72%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(18px) saturate(130%);
+  animation: account-modal-fade-in 160ms ease-out;
+}
+

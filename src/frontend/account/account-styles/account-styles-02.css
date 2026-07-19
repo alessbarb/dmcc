@@ -1,0 +1,188 @@
+.account-quick-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+}
+
+.account-quick-link {
+  min-height: 36px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  color: var(--theme-text-primary);
+}
+
+.account-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.account-stat-card {
+  padding: 0.95rem;
+  border-radius: var(--theme-shapes-radius-medium);
+  border: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent);
+  display: grid;
+  gap: 0.2rem;
+}
+
+.account-stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.account-stat-label {
+  font-size: 0.9rem;
+  color: var(--theme-text-secondary);
+}
+
+.account-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.account-sidebar {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.account-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.account-nav button {
+  min-height: 48px;
+  padding: 0.8rem 0.95rem;
+  text-align: left;
+  border: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  color: var(--theme-text-primary);
+  border-radius: var(--theme-shapes-radius-medium);
+}
+
+.account-nav button[aria-current="page"] {
+  border-color: var(--theme-accents-primary-foreground);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, transparent), color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent));
+}
+
+.account-sidebar-card,
+.account-layout main {
+  padding: 1.25rem;
+}
+
+.account-main-shell {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-module-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+}
+
+.account-mini-list,
+.account-session-list,
+.account-card-list,
+.account-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-mini-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.account-mini-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.94rem;
+}
+
+.account-mini-list.surfaced li {
+  padding: 0.75rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.account-section-stack,
+.account-panel-card,
+.account-profile-editor,
+.account-danger-zone {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-split-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+  gap: 1rem;
+}
+
+.account-helper-card,
+.account-profile-preview-card,
+.account-panel-card {
+  padding: 1rem;
+}
+
+.account-helper-card.muted {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--theme-text-on-media) 3.5%, transparent), color-mix(in srgb, var(--theme-text-on-media) 1%, transparent)),
+    color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent);
+}
+
+.account-bullet-list {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--theme-text-secondary);
+}
+
+.account-bullet-list.compact {
+  gap: 0.3rem;
+}
+
+.account-bullet-list.danger {
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.account-form-grid,
+.account-profile-grid,
+.account-profile-field,
+.account-profile-footer-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-form-grid,
+.account-profile-footer-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.account-profile-grid {
+  grid-template-columns: 1fr;
+}
+
+.account-profile-field {
+  grid-template-columns: minmax(0, 1.7fr) minmax(220px, 0.9fr);
+  align-items: start;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+}
+

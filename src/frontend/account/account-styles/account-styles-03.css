@@ -1,0 +1,181 @@
+.account-form-card {
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: var(--theme-shapes-radius-large);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.account-layout label,
+.account-inline-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.account-layout input,
+.account-layout select,
+.account-layout textarea,
+.account-inline-field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.7rem 0.85rem;
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+}
+
+.account-layout textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.account-field-span-2 {
+  grid-column: 1 / -1;
+}
+
+.account-checkbox {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.account-checkbox input {
+  width: auto;
+  min-height: auto;
+}
+
+.account-checkbox-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.account-checkbox-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.account-checkbox-card input {
+  width: 18px;
+  height: 18px;
+}
+
+.account-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.account-form-actions.split {
+  justify-content: space-between;
+}
+
+.account-subsection {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+}
+
+.account-card-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.account-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.account-card:hover {
+  border-color: var(--theme-accents-primary-background);
+  background: color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  transform: translateY(-1px);
+}
+
+.account-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.account-card-topline {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.account-card-meta {
+  font-size: 0.875rem;
+  color: var(--theme-text-secondary);
+}
+
+.account-card-meta.italic {
+  font-style: italic;
+}
+
+.account-card.archived {
+  opacity: 0.78;
+}
+
+.account-empty-state {
+  text-align: center;
+  padding: 2rem;
+  border: 2px dashed var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large);
+  color: var(--theme-text-secondary);
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.account-empty-state.compact {
+  padding: 1rem;
+}
+
+.account-editor-header {
+  margin-bottom: 0.25rem;
+}
+
+.account-danger-zone {
+  padding: 1.1rem;
+  border-color: var(--theme-feedback-danger-foreground);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--theme-feedback-danger-foreground) 5%, transparent), color-mix(in srgb, var(--theme-feedback-danger-foreground) 1.5%, transparent)),
+    var(--theme-surfaces-base);
+}
+
+.account-audience-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.account-audience-tabs button {
+  min-height: 38px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  color: var(--theme-text-primary);
+}
+
+.account-audience-tabs button.is-active {
+  border-color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 14%, transparent);
+}
+

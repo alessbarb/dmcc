@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:56:09.398Z",
+  "generatedAt": "2026-07-19T11:56:51.808Z",
   "summary": {
-    "cssFiles": 155,
+    "cssFiles": 160,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 37,
+    "mixedResponsibilityFiles": 36,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -148,14 +148,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/account/account.css",
-      "layer": "legacy",
+      "path": "src/frontend/account/account-styles/account-styles-01.css",
+      "layer": "feature",
       "domain": "account",
-      "lineCount": 823,
-      "selectorCount": 124,
+      "lineCount": 171,
+      "selectorCount": 22,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/account/account.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -183,7 +183,21 @@
         "--theme-feedback-success-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
-        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/account/account-styles/account-styles-02.css",
+      "layer": "feature",
+      "domain": "account",
+      "lineCount": 189,
+      "selectorCount": 29,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/account/account.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-text-primary",
@@ -209,7 +223,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-text-on-media",
         "--theme-text-on-media",
-        "--theme-shapes-radius-medium",
+        "--theme-shapes-radius-medium"
+      ]
+    },
+    {
+      "path": "src/frontend/account/account-styles/account-styles-03.css",
+      "layer": "feature",
+      "domain": "account",
+      "lineCount": 182,
+      "selectorCount": 28,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/account/account.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-shapes-radius-large",
         "--theme-text-on-media",
@@ -238,7 +266,21 @@
         "--theme-text-on-media",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/account/account-styles/account-styles-04.css",
+      "layer": "feature",
+      "domain": "account",
+      "lineCount": 171,
+      "selectorCount": 27,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/account/account.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-shapes-radius-panel",
         "--theme-surfaces-base",
@@ -263,7 +305,21 @@
         "--theme-feedback-success-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/account/account-styles/account-styles-05.css",
+      "layer": "feature",
+      "domain": "account",
+      "lineCount": 114,
+      "selectorCount": 18,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/account/account.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-text-on-media",
@@ -281,6 +337,25 @@
         "--theme-text-on-media",
         "--theme-surfaces-canvas"
       ]
+    },
+    {
+      "path": "src/frontend/account/account.css",
+      "layer": "feature",
+      "domain": "account",
+      "lineCount": 6,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/account/account-styles/account-styles-01.css",
+        "src/frontend/account/account-styles/account-styles-02.css",
+        "src/frontend/account/account-styles/account-styles-03.css",
+        "src/frontend/account/account-styles/account-styles-04.css",
+        "src/frontend/account/account-styles/account-styles-05.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/account/accountClient.ts",
@@ -5449,7 +5524,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-announcements.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 37,
       "selectorCount": 37,
@@ -5497,7 +5572,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-audit.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 117,
       "selectorCount": 46,
@@ -5544,7 +5619,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-campaigns.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 36,
       "selectorCount": 36,
@@ -5590,7 +5665,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-game-systems.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 24,
       "selectorCount": 23,
@@ -5627,7 +5702,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-invitations.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 27,
       "selectorCount": 26,
@@ -5673,7 +5748,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-overview.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 28,
       "selectorCount": 25,
@@ -5709,7 +5784,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-purge.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 41,
       "selectorCount": 37,
@@ -5762,7 +5837,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-security.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 16,
       "selectorCount": 15,
@@ -5790,7 +5865,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-template-settings.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 25,
       "selectorCount": 24,
@@ -5829,7 +5904,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/admin-users.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 67,
       "selectorCount": 42,
@@ -5877,7 +5952,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/auth.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 60,
       "selectorCount": 15,
@@ -5896,7 +5971,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 1696,
       "selectorCount": 261,
@@ -6228,7 +6303,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/campaign-messaging.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 39,
       "selectorCount": 38,
@@ -6282,7 +6357,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/campaign-template.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 729,
       "selectorCount": 105,
@@ -6375,7 +6450,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-board-dialogs.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 28,
       "selectorCount": 27,
@@ -6408,7 +6483,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-bulk-actions.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 7,
       "selectorCount": 1,
@@ -6421,7 +6496,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-dialog-forms.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 65,
       "selectorCount": 13,
@@ -6436,7 +6511,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-entity-node.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 131,
       "selectorCount": 23,
@@ -6465,7 +6540,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-flow.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 35,
       "selectorCount": 5,
@@ -6485,7 +6560,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-group-hulls.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 23,
       "selectorCount": 3,
@@ -6498,7 +6573,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-inspector.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 93,
       "selectorCount": 14,
@@ -6521,7 +6596,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-mystery-health.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 76,
       "selectorCount": 13,
@@ -6546,7 +6621,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-narrative-lint.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 80,
       "selectorCount": 14,
@@ -6572,7 +6647,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-page-header.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 18,
       "selectorCount": 17,
@@ -6603,7 +6678,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-palette.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 195,
       "selectorCount": 30,
@@ -6634,7 +6709,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-presentation.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
       "selectorCount": 1,
@@ -6649,7 +6724,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-toolbar.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 24,
       "selectorCount": 5,
@@ -6666,7 +6741,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/dashboard-overview.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 49,
       "selectorCount": 46,
@@ -6709,7 +6784,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/dm-dashboard.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 507,
       "selectorCount": 71,
@@ -6798,7 +6873,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 1434,
       "selectorCount": 227,
@@ -6993,7 +7068,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/dm-hub.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 589,
       "selectorCount": 73,
@@ -7100,7 +7175,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/dm-onboarding.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 20,
       "selectorCount": 19,
@@ -7123,7 +7198,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/entity-create.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 32,
       "selectorCount": 6,
@@ -7139,7 +7214,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/entity-relations.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 51,
       "selectorCount": 47,
@@ -7188,7 +7263,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/entity-trace.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 23,
       "selectorCount": 18,
@@ -7215,7 +7290,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/graph-search.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 77,
       "selectorCount": 8,
@@ -7245,7 +7320,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/image-picker-button.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 12,
       "selectorCount": 11,
@@ -7272,7 +7347,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/image-picker-modal.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 215,
       "selectorCount": 28,
@@ -7305,7 +7380,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/kanban-board.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 177,
       "selectorCount": 27,
@@ -7362,7 +7437,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/kanban.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 104,
       "selectorCount": 17,
@@ -7422,7 +7497,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/landing-archive.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 874,
       "selectorCount": 138,
@@ -7608,7 +7683,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/player-campaign.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 38,
       "selectorCount": 37,
@@ -7636,7 +7711,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 1023,
       "selectorCount": 160,
@@ -7799,7 +7874,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/player-profile-modal.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 18,
       "selectorCount": 4,
@@ -7812,7 +7887,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/pwa-update-banner.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 30,
       "selectorCount": 2,
@@ -7834,7 +7909,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/quick-capture.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 142,
       "selectorCount": 19,
@@ -7871,7 +7946,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/relation-edge-label.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 19,
       "selectorCount": 2,
@@ -7889,7 +7964,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/rules-workspace.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 73,
       "selectorCount": 11,
@@ -7914,7 +7989,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/session-prep-form.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 53,
       "selectorCount": 9,
@@ -7933,7 +8008,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/shortcuts-panel.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 66,
       "selectorCount": 11,
@@ -7953,7 +8028,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/sidebar-nav.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 15,
       "selectorCount": 2,
@@ -7973,7 +8048,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/system-announcements.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 91,
       "selectorCount": 12,
@@ -8009,7 +8084,7 @@
     },
     {
       "path": "src/frontend/shared/styles/features/timeline.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 216,
       "selectorCount": 37,
@@ -8200,7 +8275,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-01.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 174,
       "selectorCount": 19,
@@ -8235,7 +8310,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-02.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 129,
       "selectorCount": 16,
@@ -8276,7 +8351,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-03.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 169,
       "selectorCount": 21,
@@ -8314,7 +8389,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-04.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 151,
       "selectorCount": 23,
@@ -8357,7 +8432,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 50,
       "selectorCount": 18,
@@ -8374,7 +8449,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 70,
       "selectorCount": 22,
@@ -8392,7 +8467,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-05.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 3,
       "selectorCount": 0,
@@ -8408,7 +8483,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-06.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 153,
       "selectorCount": 26,
@@ -8452,7 +8527,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-07.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 153,
       "selectorCount": 24,
@@ -8495,7 +8570,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-08.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 176,
       "selectorCount": 23,
@@ -8534,7 +8609,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-09.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 207,
       "selectorCount": 30,
@@ -8566,7 +8641,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-10.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 202,
       "selectorCount": 21,
@@ -8599,7 +8674,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-11.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 152,
       "selectorCount": 21,
@@ -8651,7 +8726,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-12/landing-12-01.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
       "selectorCount": 2,
@@ -8671,7 +8746,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-12/landing-12-02.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 156,
       "selectorCount": 27,
@@ -8690,7 +8765,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-12/landing-12-03.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 48,
       "selectorCount": 9,
@@ -8703,7 +8778,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-12/landing-12-04.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 3,
       "selectorCount": 0,
@@ -8716,7 +8791,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-12.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 5,
       "selectorCount": 0,
@@ -8734,7 +8809,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-13.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 147,
       "selectorCount": 20,
@@ -8786,7 +8861,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-14.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 153,
       "selectorCount": 19,
@@ -8834,7 +8909,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-15.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 197,
       "selectorCount": 28,
@@ -8874,7 +8949,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing/landing-16.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 131,
       "selectorCount": 25,
@@ -8907,7 +8982,7 @@
     },
     {
       "path": "src/frontend/shared/styles/landing.css",
-      "layer": "legacy",
+      "layer": "feature",
       "domain": "shared",
       "lineCount": 17,
       "selectorCount": 0,
@@ -9982,17 +10057,6 @@
       "value": "style={{ bottom: '16%', right: '12%' }}",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/account/account.css",
-      "path": "src/frontend/account/account.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (823 lines, 124 selectors)."
     },
     {
       "id": "dynamic-style:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})` }}",
@@ -15915,6 +15979,13 @@
     }
   ],
   "importGraph": {
+    "src/frontend/account/account.css": [
+      "src/frontend/account/account-styles/account-styles-01.css",
+      "src/frontend/account/account-styles/account-styles-02.css",
+      "src/frontend/account/account-styles/account-styles-03.css",
+      "src/frontend/account/account-styles/account-styles-04.css",
+      "src/frontend/account/account-styles/account-styles-05.css"
+    ],
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
     ],

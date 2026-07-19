@@ -1,0 +1,170 @@
+.account-center {
+  min-height: 100vh;
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+
+.account-page-header,
+.account-overview-card,
+.account-layout {
+  max-width: 1320px;
+  margin-inline: auto;
+}
+
+.account-page-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.account-page-eyebrow,
+.account-module-eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--theme-text-secondary);
+}
+
+.account-page-header h1,
+.account-module-header h2 {
+  margin: 0;
+}
+
+.account-page-subtitle,
+.account-module-header p {
+  margin: 0.45rem 0 0;
+  max-width: 70ch;
+  color: var(--theme-text-secondary);
+}
+
+.account-header-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.account-overview-card,
+.account-layout main,
+.account-sidebar-card,
+.account-panel-card,
+.account-danger-zone,
+.account-helper-card,
+.account-profile-preview-card {
+  border: 1px solid var(--theme-borders-default);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--theme-text-on-media) 4%, transparent), color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent)),
+    var(--theme-surfaces-base);
+  border-radius: var(--theme-shapes-radius-large);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--theme-surfaces-canvas) 18%, transparent);
+}
+
+.account-overview-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr);
+  gap: 1.25rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.account-overview-identity,
+.account-profile-preview-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.account-avatar-shell {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 45%, var(--theme-borders-default));
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--theme-text-on-media) 8%, transparent), color-mix(in srgb, var(--theme-text-on-media) 2%, transparent));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.account-avatar-shell.large {
+  width: 88px;
+  height: 88px;
+}
+
+.account-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account-avatar-fallback {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.account-overview-copy,
+.account-profile-preview-copy {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.account-overview-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.account-overview-copy h2,
+.account-profile-preview-copy h2,
+.account-helper-card h3,
+.account-panel-card h2,
+.account-panel-card h3 {
+  margin: 0;
+}
+
+.account-overview-copy p,
+.account-profile-preview-copy p,
+.account-helper-card p,
+.account-panel-card p,
+.account-panel-card small {
+  margin: 0;
+  color: var(--theme-text-secondary);
+}
+
+.account-role-pill,
+.account-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 14%, transparent);
+  color: var(--theme-accents-primary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 22%, transparent);
+}
+
+.account-card-badge.pending {
+  background: color-mix(in srgb, var(--theme-text-secondary) 14%, transparent);
+  color: var(--theme-text-secondary);
+  border-color: color-mix(in srgb, var(--theme-text-secondary) 25%, transparent);
+}
+
+.account-card-badge.ready {
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 14%, transparent);
+  color: var(--theme-feedback-success-foreground);
+  border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 25%, transparent);
+}
+
+.account-card-badge.danger {
+  background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 14%, transparent);
+  color: var(--theme-feedback-danger-foreground);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 25%, transparent);
+}
+
