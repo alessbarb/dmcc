@@ -236,4 +236,66 @@ describe("session web routes", () => {
     const sessionEventRecorded = events.find((event) => event.type === "SessionEventRecorded");
     expect(sessionEventRecorded?.context).toEqual({ origin: "session_live", sessionId });
   });
+
+  it("builds a narrative map with an opening node and a scene node from the plan", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const sessionId = createId("sess");
+    const sceneEntityId = createId("ent");
+
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/entities`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { entityId: sceneEntityId, entityType: "scene", title: "Cragmaw Cave" },
+    });
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/planned`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { sessionId, title: "La emboscada" },
+    });
+    await server.inject({
+      method: "PUT",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/plan`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: {
+        expectedRevision: 0,
+        title: "La emboscada",
+        plan: {
+          version: 2,
+          state: "ready",
+          openingPrompt: "The party arrives at dusk.",
+          goals: [],
+          checklist: [],
+          flowItems: [{ id: "spi_scene1", kind: "scene", sceneEntityId, order: 0 }],
+          contentLinks: [],
+          transitions: [],
+          bindings: [],
+        },
+      },
+    });
+
+    const response = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/narrative-map`,
+      headers,
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json() as { narrativeMap: { nodes: Array<{ id: string; kind: string; label: string }>; basis: string } };
+    expect(body.narrativeMap.basis).toBe("planned");
+    expect(body.narrativeMap.nodes.find((node) => node.kind === "opening")?.label).toBe("The party arrives at dusk.");
+    expect(body.narrativeMap.nodes.find((node) => node.id === "spi_scene1")).toMatchObject({ kind: "scene", label: "Cragmaw Cave" });
+  });
+
+  it("returns 404 for a narrative map of a session that doesn't exist", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const response = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/sess_missing/narrative-map`,
+      headers,
+    });
+    expect(response.statusCode).toBe(404);
+  });
 });
