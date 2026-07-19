@@ -1,0 +1,75 @@
+
+
+.modal-content.entity-detail-dialog > .modal-header {
+  padding: 18px 28px 16px !important;
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
+}
+
+.modal-content.entity-detail-dialog > .modal-header h2 {
+  font-size: clamp(1.55rem, 2vw, 2rem) !important;
+  line-height: 1.08;
+}
+
+.modal-content.entity-detail-dialog > .modal-body {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding: clamp(22px, 2.5vw, 34px) !important;
+  gap: 24px !important;
+  scrollbar-gutter: stable;
+}
+
+.modal-content.entity-detail-dialog > .modal-footer {
+  position: relative !important;
+  z-index: 3;
+  flex-wrap: wrap;
+  gap: 14px !important;
+  padding: 16px 24px !important;
+  border-top: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 98%, var(--theme-surfaces-canvas));
+  box-shadow: 0 -14px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
+}
+
+.modal-content.entity-detail-dialog > .modal-footer > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modal-content.entity-detail-dialog > .modal-footer > div:last-child {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.modal-content.entity-detail-dialog > .modal-footer > div:last-child > span {
+  order: -1;
+}
+
+/* Editing is a working surface, not a narrow form. */
+.modal-content.entity-detail-dialog .modal-body .grid.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.modal-content.entity-detail-dialog .modal-body .form-group {
+  min-width: 0;
+}
+
+.modal-content.entity-detail-dialog .modal-body .form-input,
+.modal-content.entity-detail-dialog .modal-body .form-select,
+.modal-content.entity-detail-dialog .modal-body .form-textarea {
+  width: 100%;
+  min-height: 44px;
+}
+
+.modal-content.entity-detail-dialog .modal-body .form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.modal-content.entity-detail-dialog .modal-body fieldset,
+.modal-content.entity-detail-dialog .modal-body [class*="metadata"] {
+  min-width: 0;
+}

@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 174,
+  "cssFiles": 190,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 35,
+  "mixedResponsibilityFiles": 31,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -32,24 +32,40 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/account/account-styles/account-styles-05.css` | feature | account | 114 | 18 | 1 |
 | `src/frontend/account/account.css` | feature | account | 6 | 0 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
-| `src/frontend/dm/entities/entity-card.css` | feature | entities | 394 | 54 | 1 |
+| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-01.css` | feature | entities | 104 | 14 | 1 |
+| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-02.css` | feature | entities | 78 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-03.css` | feature | entities | 103 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-04.css` | feature | entities | 99 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-05.css` | feature | entities | 14 | 4 | 1 |
+| `src/frontend/dm/entities/entity-card.css` | feature | entities | 6 | 0 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css` | feature | entities | 125 | 12 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css` | feature | entities | 75 | 12 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css` | feature | entities | 98 | 12 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css` | feature | entities | 100 | 21 | 1 |
 | `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 216 | 25 | 2 |
 | `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 3 | 1 |
 | `src/frontend/dm/entities/entity-list-toolbar.css` | feature | entities | 97 | 17 | 1 |
 | `src/frontend/dm/entities/entity-summary-character-sheet.css` | feature | entities | 179 | 26 | 1 |
 | `src/frontend/dm/entities/entity-summary.css` | feature | entities | 144 | 23 | 1 |
-| `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 395 | 57 | 2 |
+| `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 5 | 0 | 2 |
 | `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 2 |
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 18 | 2 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 145 | 21 | 1 |
 | `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 154 | 25 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 19 | 1 |
-| `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 243 | 37 | 1 |
+| `src/frontend/dm/library/boards/entity-board-parts/entity-board-parts-01.css` | feature | library | 75 | 10 | 1 |
+| `src/frontend/dm/library/boards/entity-board-parts/entity-board-parts-02.css` | feature | library | 82 | 10 | 1 |
+| `src/frontend/dm/library/boards/entity-board-parts/entity-board-parts-03.css` | feature | library | 88 | 17 | 1 |
+| `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 4 | 0 | 1 |
 | `src/frontend/dm/library/list/entity-list-toolbar-controls.css` | feature | library | 118 | 17 | 1 |
 | `src/frontend/dm/library/list/entity-list-view.css` | feature | library | 117 | 18 | 1 |
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 16 | 1 |
-| `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 293 | 50 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-01.css` | feature | library | 56 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-02.css` | feature | library | 63 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-03.css` | feature | library | 79 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-04.css` | feature | library | 98 | 20 | 1 |
+| `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 5 | 0 | 1 |
 | `src/frontend/dm/map/mapWorkspace.css` | feature | map | 94 | 14 | 1 |
 | `src/frontend/dm/map/network/networkFlow.css` | feature | map | 829 | 116 | 1 |
 | `src/frontend/dm/onboarding/campaign-guided-tour.css` | feature | onboarding | 226 | 32 | 1 |
@@ -215,7 +231,112 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:241` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:262` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:203` | Runtime style requires review and CSS custom-property preference. |
-| critical | mixed-responsibility | `src/frontend/dm/entities/entity-card.css:1` | Large stylesheet requires atomization (394 lines, 54 selectors). |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:11` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:22` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:23` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:24` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:25` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:38` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:39` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:40` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:43` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:44` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:47` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:55` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:59` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:60` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:62` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:63` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:64` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:65` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:70` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:79` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:90` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:95` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:99` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:100` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:104` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:108` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:108` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:113` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:114` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:115` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:124` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:18` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:24` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:24` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:27` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:28` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:35` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:42` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:23` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:24` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:25` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:28` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:45` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:45` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:46` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:51` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:65` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:70` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:71` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:72` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:81` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:8` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:14` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:18` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:39` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:55` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:62` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:72` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:73` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:79` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:86` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:86` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:133` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:142` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:154` | Important declarations bypass the intended cascade. |
@@ -247,113 +368,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:211` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:212` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:213` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/dm/entities/entityDetailDialog.css:1` | Large stylesheet requires atomization (395 lines, 57 selectors). |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:22` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:23` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:24` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:25` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:26` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:30` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:36` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:38` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:39` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:40` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:42` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:43` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:44` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:47` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:51` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:52` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:53` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:55` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:56` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:58` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:59` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:60` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:62` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:63` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:64` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:65` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:70` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:77` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:79` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:80` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:90` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:95` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:99` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:100` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:104` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:108` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:108` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:113` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:114` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:115` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:124` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:128` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:134` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:139` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:140` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:142` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:143` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:148` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:148` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:151` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:152` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:159` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:166` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:217` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:221` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:222` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:223` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:224` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:226` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:231` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:235` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:239` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:243` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:243` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:244` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:249` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:251` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:255` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:259` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:263` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:266` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:268` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:269` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:270` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:276` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:279` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:303` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:309` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:313` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:314` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:328` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:329` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:330` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:334` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:346` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:350` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:351` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:352` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:353` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:357` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:367` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:368` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:372` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:373` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:374` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:375` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:381` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:381` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailHeroActions.css:22` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailHeroActions.css:30` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailHeroActions.css:43` | Important declarations bypass the intended cascade. |
@@ -424,8 +438,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignModals.tsx:367` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:152` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
-| high | mixed-responsibility | `src/frontend/dm/library/boards/entityBoards.css:1` | Large stylesheet requires atomization (243 lines, 37 selectors). |
-| critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/map/network/networkFlow.css:1` | Large stylesheet requires atomization (829 lines, 116 selectors). |
 | high | cross-component-selector | `src/frontend/dm/map/network/networkFlow.css:28` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:437` | Important declarations bypass the intended cascade. |

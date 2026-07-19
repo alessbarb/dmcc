@@ -1,0 +1,75 @@
+.campaign-workspace__content [role="tablist"][aria-label] {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding: 2px 2px 4px;
+  scrollbar-width: none;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label]::-webkit-scrollbar {
+  display: none;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label] .btn {
+  min-height: 38px;
+  flex: 0 0 auto;
+  border-radius: var(--theme-shapes-radius-pill);
+  box-shadow: none;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label] + .card {
+  display: flex;
+  gap: 8px 14px;
+  align-items: center;
+  padding: 10px 14px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  border-color: color-mix(in srgb, var(--theme-borders-default) 74%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 72%, transparent);
+  box-shadow: none;
+  scrollbar-width: thin;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label] + .card > span {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.kanban-scroll {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding: 4px 2px 18px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, transparent) transparent;
+  scroll-padding-inline: 2px;
+  scroll-snap-type: x proximity;
+}
+
+.kanban-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+
+.kanban-scroll::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 72%, transparent);
+}
+
+.kanban-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 52%, var(--theme-borders-default));
+  background-clip: padding-box;
+}
+
+.kanban-board {
+  display: grid;
+  width: max-content;
+  min-width: 100%;
+  grid-auto-columns: clamp(280px, 23vw, 340px);
+  grid-auto-flow: column;
+  align-items: start;
+  gap: 16px;
+}

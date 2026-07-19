@@ -1,0 +1,13 @@
+
+
+@media (max-width: 1024px) {
+  .entity-compact-row__summary {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .entity-compact-row__right .entity-type-badge {
+    display: none;
+  }
+}

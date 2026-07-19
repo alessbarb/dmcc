@@ -1,0 +1,104 @@
+/* Custom Entity Card styling using entityVisuals tokens */
+.entity-card {
+  --card-accent: var(--theme-accents-primary-foreground);
+  --card-accent-soft: var(--theme-accents-primary-background);
+
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid var(--theme-borders-default);
+  background: linear-gradient(160deg, var(--theme-surfaces-raised) 0%, var(--theme-surfaces-base) 100%);
+  box-shadow: var(--theme-shadows-medium), inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  color: inherit;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+              border-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.entity-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-accent);
+  box-shadow: var(--theme-shadows-large), 0 0 0 1px color-mix(in srgb, var(--card-accent) 40%, transparent);
+}
+
+/* Border patterns */
+.entity-card--border-dashed {
+  border-style: dashed;
+}
+.entity-card--border-double {
+  border-style: double;
+  border-width: 3px;
+}
+
+/* DM-only override: soft indigo/violet instead of an alarm tone */
+.entity-card--dm-only {
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 35%, transparent);
+  box-shadow: var(--theme-shadows-medium), 0 0 10px color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent);
+}
+.entity-card--dm-only:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-hover) 65%, transparent);
+  box-shadow: var(--theme-shadows-large), 0 0 10px color-mix(in srgb, var(--theme-accents-secondary-hover) 25%, transparent);
+}
+
+.entity-card__dm-only-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 85%, var(--theme-surfaces-canvas));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
+  color: var(--theme-text-on-media);
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 4px;
+  z-index: 2;
+  box-shadow: var(--theme-shadows-small);
+}
+
+/* Shape: veiled (used for secrets/rumors) */
+.entity-card--shape-veiled {
+  background:
+    linear-gradient(135deg, var(--card-accent-soft), transparent 45%),
+    linear-gradient(160deg, var(--theme-surfaces-raised), var(--theme-surfaces-base));
+}
+
+/* Importance - Critical / High visual hierarchy */
+.entity-card--critical {
+  animation: entity-critical-pulse 2.4s ease-in-out infinite;
+}
+@keyframes entity-critical-pulse {
+  0%, 100% { border-color: color-mix(in srgb, var(--card-accent) 60%, transparent); }
+  50% {
+    border-color: var(--card-accent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--card-accent) 90%, transparent),
+                var(--theme-shadows-overlay),
+                0 0 16px color-mix(in srgb, var(--card-accent) 45%, transparent);
+  }
+}
+
+.entity-card--high {
+  box-shadow: var(--theme-shadows-medium), 0 0 12px color-mix(in srgb, var(--card-accent) 30%, transparent);
+}
+
+/* Hero wrapper */
+.entity-card__hero {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: var(--theme-surfaces-subtle);
+  transition: background-color 0.2s, height 0.2s;
+}

@@ -1,0 +1,82 @@
+
+
+.kanban-column {
+  width: auto;
+  min-width: 0;
+  min-height: 380px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: var(--theme-shapes-radius-large);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent);
+  box-shadow: var(--theme-shadows-medium);
+  scroll-snap-align: start;
+}
+
+.kanban-column--drag-over {
+  border-color: var(--theme-accents-primary-hover);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-base));
+  box-shadow: var(--theme-focus-ring), var(--theme-shadows-large);
+}
+
+.kanban-column__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 52px;
+  margin: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-borders-default) 80%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
+}
+
+.kanban-column__header strong {
+  overflow: hidden;
+  color: var(--theme-text-primary);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kanban-column__count {
+  min-width: 24px;
+  margin-left: auto;
+  padding: 3px 7px;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 80%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 82%, transparent);
+  color: var(--theme-text-secondary);
+}
+
+.kanban-column__body {
+  min-height: 326px;
+  padding: 14px;
+  gap: 12px;
+}
+
+.kanban-column__empty {
+  min-height: 88px;
+  padding: 16px;
+  border-color: color-mix(in srgb, var(--theme-borders-default) 72%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 35%, transparent);
+  line-height: 1.45;
+}
+
+.kanban-card {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 86%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-base);
+  box-shadow: var(--theme-shadows-medium);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.kanban-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, var(--theme-borders-default));
+  box-shadow: var(--theme-shadows-large);
+  transform: translateY(-1px);
+}
+
+.kanban-card[aria-busy="true"] {
+  cursor: wait;
+  opacity: 0.62;
+}

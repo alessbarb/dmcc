@@ -1,0 +1,99 @@
+
+
+.entity-compact-row {
+  --card-accent: var(--theme-accents-primary-foreground);
+  --card-accent-soft: var(--theme-accents-primary-background);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--theme-surfaces-subtle);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  text-align: left;
+  color: inherit;
+  width: 100%;
+}
+
+.entity-compact-row:hover {
+  transform: translateX(4px);
+  border-color: var(--card-accent);
+  box-shadow: var(--theme-shadows-small);
+}
+
+.entity-compact-row--dm-only {
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 40%, transparent);
+}
+
+.entity-compact-row--critical {
+  border-left: 3px solid var(--card-accent);
+}
+
+.entity-compact-row__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.entity-compact-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: var(--card-accent-soft);
+  color: var(--card-accent);
+  flex-shrink: 0;
+}
+
+.entity-compact-row__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.entity-compact-row__title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.entity-compact-row__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--theme-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entity-compact-row__subtitle {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entity-compact-row__summary {
+  font-size: 0.85rem;
+  color: var(--theme-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+}
+
+.entity-compact-row__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}

@@ -1,0 +1,63 @@
+
+
+.notebook-detail-panel {
+  padding: clamp(20px, 2vw, 28px);
+}
+
+.notebook-detail-header {
+  gap: 18px;
+}
+
+.notebook-detail-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.notebook-items-section {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.notebook-items-list {
+  gap: 12px;
+}
+
+.notebook-item-card {
+  min-height: 74px;
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 72%, var(--theme-surfaces-base));
+}
+
+.notebook-item-actions .btn {
+  width: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+}
+
+.notebooks-empty-actionable,
+.notebook-placeholder {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 320px;
+  padding: clamp(28px, 5vw, 56px);
+  text-align: center;
+}
+
+.notebooks-empty-actionable .subtext,
+.notebook-placeholder p {
+  max-width: 56ch;
+  color: var(--theme-text-secondary);
+  line-height: 1.55;
+}
+
+.notebooks-empty-actionable .action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}

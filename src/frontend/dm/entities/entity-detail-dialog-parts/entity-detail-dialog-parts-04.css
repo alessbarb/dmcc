@@ -1,0 +1,100 @@
+
+
+.modal-content.entity-detail-dialog--editing .entity-summary__edit-metadata {
+  grid-column: 1 / -1;
+}
+
+.modal-content.entity-detail-dialog--editing .form-textarea {
+  min-height: 150px;
+}
+
+.modal-content.entity-detail-dialog--editing > .modal-footer > .entity-detail-modal__footer-group--actions,
+.modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > span,
+.modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > button:last-child {
+  display: none !important;
+}
+
+.modal-content.entity-detail-dialog--editing > .modal-footer {
+  min-height: 68px;
+  justify-content: flex-end !important;
+}
+
+.modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child {
+  margin-left: auto;
+}
+
+.modal-content.entity-detail-dialog--editing > .modal-footer .btn {
+  min-width: 132px;
+  min-height: 42px;
+}
+
+@media (max-width: 1000px) {
+  .modal-content.entity-detail-dialog--editing {
+    width: calc(100vw - 16px) !important;
+    height: calc(100dvh - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+  }
+
+  .modal-content.entity-detail-dialog--editing .entity-summary__edit-panel {
+    display: flex !important;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .modal-content.entity-detail-dialog--editing .entity-summary__edit-panel > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .modal-overlay.entity-detail-dialog {
+    padding: 12px !important;
+  }
+
+  .modal-content.entity-detail-dialog {
+    width: calc(100vw - 24px) !important;
+    height: calc(100dvh - 24px) !important;
+    max-height: calc(100dvh - 24px) !important;
+    border-radius: 14px !important;
+  }
+
+  .modal-content.entity-detail-dialog > .entity-detail-hero {
+    height: clamp(180px, 27dvh, 250px) !important;
+  }
+
+  .modal-content.entity-detail-dialog .modal-body .grid.grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .modal-overlay.entity-detail-dialog {
+    place-items: end stretch !important;
+    padding: 0 !important;
+  }
+
+  .modal-content.entity-detail-dialog {
+    width: 100vw !important;
+    height: min(94dvh, 920px) !important;
+    max-height: 94dvh !important;
+    border-radius: 18px 18px 0 0 !important;
+  }
+
+  .modal-content.entity-detail-dialog > .modal-header,
+  .modal-content.entity-detail-dialog > .modal-body,
+  .modal-content.entity-detail-dialog > .modal-footer {
+    padding-inline: 16px !important;
+  }
+
+  .modal-content.entity-detail-dialog > .modal-footer,
+  .modal-content.entity-detail-dialog > .modal-footer > div,
+  .modal-content.entity-detail-dialog > .modal-footer > div:last-child {
+    width: 100%;
+    margin-left: 0;
+    justify-content: stretch;
+  }
+
+  .modal-content.entity-detail-dialog > .modal-footer .btn {
+    flex: 1 1 140px;
+  }
+}

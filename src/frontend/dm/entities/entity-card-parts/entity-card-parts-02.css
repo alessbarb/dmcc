@@ -1,0 +1,78 @@
+
+
+.entity-card__hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.2s;
+}
+
+.entity-card__hero-img--dm-only {
+  filter: grayscale(20%) brightness(85%);
+}
+
+/* Fallback graphic styles based on shapes & typography */
+.entity-card__hero--no-img {
+  background:
+    radial-gradient(circle at 50% 50%, var(--card-accent-soft) 0%, transparent 80%),
+    repeating-linear-gradient(45deg, color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent) 0px, color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent) 1px, transparent 1px, transparent 6px),
+    linear-gradient(180deg, var(--theme-surfaces-raised) 0%, var(--theme-surfaces-canvas) 100%);
+  box-shadow: inset 0 -15px 30px color-mix(in srgb, var(--theme-surfaces-canvas) 35%, transparent);
+}
+
+.entity-card__hero-icon {
+  color: var(--card-accent);
+  opacity: 0.85;
+  transition: transform 0.2s;
+}
+
+.entity-card:hover .entity-card__hero-icon {
+  transform: scale(1.1);
+}
+
+/* Shape specific styling in hero graphic */
+.entity-card__hero-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Portrait Shape (Characters, NPCs) Medallion */
+.entity-card__hero--style-portrait .entity-card__hero-icon-wrapper {
+  box-sizing: content-box;
+  padding: 16px;
+  border: 2px solid var(--card-accent);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--card-accent-soft), color-mix(in srgb, var(--theme-text-on-media) 2%, transparent));
+  box-shadow: var(--theme-shadows-medium), inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 15%, transparent);
+}
+
+/* Faction Emblem Medallion */
+.entity-card__hero--type-faction .entity-card__hero-icon-wrapper {
+  border-radius: 8px 8px 16px 16px; /* Shield shape! */
+  padding: 16px;
+  border: 2px solid var(--card-accent);
+  background: linear-gradient(180deg, var(--card-accent-soft) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent) 100%);
+  box-shadow: var(--theme-shadows-medium), inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 10%, transparent);
+}
+
+/* Panorama Style (Locations, Scenes) */
+.entity-card__hero--style-panorama {
+  height: 120px;
+}
+.entity-card__hero--style-panorama .entity-card__hero-icon-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.entity-card__hero--style-panorama .entity-card__hero-icon {
+  transform: scale(1.2);
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px var(--card-accent));
+}
+
+/* Compact Style (Clues, Secrets, Clocks) */
+.entity-card__hero--style-compact {
+  height: 90px;
+}

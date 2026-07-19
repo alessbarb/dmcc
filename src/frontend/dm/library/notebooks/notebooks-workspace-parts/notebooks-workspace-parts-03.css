@@ -1,0 +1,79 @@
+
+
+.notebooks-link-modal {
+  width: min(760px, calc(100vw - 32px));
+  max-height: min(780px, calc(100dvh - 48px));
+}
+
+.notebooks-link-modal .modal-body {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.notebooks-link-modal .search-control {
+  position: relative;
+}
+
+.notebooks-link-modal .search-control input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px 10px 40px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+}
+
+.notebooks-link-modal .search-control .search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  color: var(--theme-text-secondary);
+  transform: translateY(-50%);
+}
+
+.notebooks-link-modal .filter-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.notebooks-link-modal .tab-btn {
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-pill);
+  color: var(--theme-text-secondary);
+  background: var(--theme-surfaces-interactive);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.notebooks-link-modal .tab-btn.active {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 48%, var(--theme-borders-default));
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, var(--theme-surfaces-interactive));
+}
+
+.notebooks-link-modal .candidates-list {
+  min-height: 180px;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 70%, transparent);
+}
+
+.notebooks-link-modal .candidate-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 10px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-borders-default) 70%, transparent);
+  cursor: pointer;
+}

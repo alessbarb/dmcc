@@ -1,0 +1,56 @@
+.notebooks-workspace {
+  min-height: clamp(560px, calc(100dvh - 310px), 820px);
+  align-items: stretch;
+  gap: 20px;
+}
+
+.notebooks-sidebar {
+  flex-basis: 310px;
+  width: 310px;
+  padding: 18px;
+  border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
+  box-shadow: var(--theme-shadows-large);
+}
+
+.notebooks-sidebar__header {
+  min-height: 40px;
+}
+
+.notebooks-sidebar__header .btn {
+  width: 38px;
+  min-width: 38px;
+  padding: 0;
+}
+
+.notebooks-tree-container {
+  padding: 2px 2px 8px 0;
+}
+
+.notebook-tree-item {
+  min-height: 40px;
+  padding-block: 9px;
+  border: 1px solid transparent;
+}
+
+.notebook-tree-item:hover {
+  border-color: color-mix(in srgb, var(--theme-borders-default) 72%, transparent);
+}
+
+.notebook-tree-item.selected {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-base));
+}
+
+.notebook-content-area {
+  display: flex;
+  min-height: 0;
+}
+
+.notebook-detail-panel,
+.notebook-placeholder {
+  width: 100%;
+  min-height: 100%;
+  border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
+}

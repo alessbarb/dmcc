@@ -1,0 +1,87 @@
+
+
+.kanban-card__open {
+  padding: 14px 14px 11px;
+  text-align: left;
+}
+
+.kanban-card__title {
+  color: var(--theme-text-primary);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.kanban-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.kanban-card__move {
+  display: grid;
+  gap: 6px;
+  padding: 10px 14px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 72%, transparent);
+  color: var(--theme-text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.kanban-card__move .form-select {
+  min-height: 36px;
+  padding-block: 6px;
+  font-size: 0.78rem;
+  text-transform: none;
+}
+
+@media (min-width: 1440px) {
+  .kanban-board {
+    grid-auto-columns: clamp(286px, 20vw, 330px);
+  }
+}
+
+@media (max-width: 900px) {
+  .kanban-board {
+    grid-auto-columns: min(82vw, 330px);
+  }
+
+  .kanban-column {
+    min-height: 340px;
+  }
+
+  .kanban-column__body {
+    min-height: 286px;
+  }
+}
+
+@media (max-width: 640px) {
+  .campaign-workspace__content [role="tablist"][aria-label] + .card {
+    margin-inline: -4px;
+    padding-inline: 10px;
+  }
+
+  .kanban-scroll {
+    margin-inline: -4px;
+    padding-inline: 4px;
+  }
+
+  .kanban-board {
+    grid-auto-columns: min(88vw, 310px);
+    gap: 12px;
+  }
+
+  .kanban-column__header {
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+
+  .kanban-column__body {
+    padding: 12px;
+  }
+}
