@@ -1,0 +1,81 @@
+
+
+.network-filter-option:hover {
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
+}
+
+.network-filter-option.is-active {
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 36%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 11%, transparent);
+  color: var(--theme-text-primary);
+}
+
+.network-filter-option__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--network-filter-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.network-filter-clear {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.network-flow-path {
+  top: 72px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: min(620px, calc(100% - 28px));
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 40%, var(--theme-borders-default));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 93%, transparent);
+  color: var(--theme-feedback-success-foreground);
+  font-size: 0.76rem;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 24%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.network-flow-state {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  min-height: 320px;
+  padding: 24px;
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.network-flow-state--error {
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.network-flow-state--error strong {
+  color: var(--theme-text-primary);
+}
+
+.network-entity-node {
+  width: 166px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--network-node-accent) 45%, var(--theme-borders-default));
+  border-radius: 11px;
+  background: var(--theme-surfaces-base);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
+  transform-origin: center;
+  transition: opacity 160ms ease, filter 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.network-entity-node:hover {
+  z-index: 3;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--theme-surfaces-canvas) 32%, transparent), 0 0 0 1px color-mix(in srgb, var(--network-node-accent) 48%, transparent);
+}

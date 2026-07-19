@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 190,
+  "cssFiles": 209,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 31,
+  "mixedResponsibilityFiles": 28,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -67,9 +67,28 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-04.css` | feature | library | 98 | 20 | 1 |
 | `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 5 | 0 | 1 |
 | `src/frontend/dm/map/mapWorkspace.css` | feature | map | 94 | 14 | 1 |
-| `src/frontend/dm/map/network/networkFlow.css` | feature | map | 829 | 116 | 1 |
-| `src/frontend/dm/onboarding/campaign-guided-tour.css` | feature | onboarding | 226 | 32 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub.css` | feature | onboarding | 419 | 58 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css` | feature | map | 82 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-02.css` | feature | map | 75 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-03.css` | feature | map | 101 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-04.css` | feature | map | 88 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-05.css` | feature | map | 81 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css` | feature | map | 66 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css` | feature | map | 90 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-08.css` | feature | map | 80 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css` | feature | map | 60 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-10.css` | feature | map | 115 | 26 | 1 |
+| `src/frontend/dm/map/network/networkFlow.css` | feature | map | 11 | 0 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-01.css` | feature | onboarding | 68 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css` | feature | onboarding | 88 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css` | feature | onboarding | 72 | 12 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour.css` | feature | onboarding | 4 | 0 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-01.css` | feature | onboarding | 84 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-02.css` | feature | onboarding | 77 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-03.css` | feature | onboarding | 72 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-04.css` | feature | onboarding | 66 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-05.css` | feature | onboarding | 85 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-06.css` | feature | onboarding | 40 | 8 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub.css` | feature | onboarding | 7 | 0 | 1 |
 | `src/frontend/dm/pages/campaignMessagesPage.css` | feature | pages | 113 | 22 | 1 |
 | `src/frontend/dm/pages/rulesPage.css` | feature | pages | 179 | 32 | 1 |
 | `src/frontend/dm/pages/settingsPage.css` | feature | pages | 135 | 21 | 1 |
@@ -438,38 +457,35 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignModals.tsx:367` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:152` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
-| critical | mixed-responsibility | `src/frontend/dm/map/network/networkFlow.css:1` | Large stylesheet requires atomization (829 lines, 116 selectors). |
-| high | cross-component-selector | `src/frontend/dm/map/network/networkFlow.css:28` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:437` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:439` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:443` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:452` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:453` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:454` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:457` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:464` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:465` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:470` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:479` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:486` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:487` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:491` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:492` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:493` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:494` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/networkFlow.css:709` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css:28` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:17` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:21` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:31` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:32` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:43` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:48` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:64` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:65` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:6` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:7` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css:54` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:43` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:66` | Runtime style requires review and CSS custom-property preference. |
-| high | mixed-responsibility | `src/frontend/dm/onboarding/campaign-guided-tour.css:1` | Large stylesheet requires atomization (226 lines, 32 selectors). |
-| high | cross-component-selector | `src/frontend/dm/onboarding/campaign-guided-tour.css:129` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:144` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:145` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:204` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:205` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:206` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:207` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/dm/onboarding/campaign-starter-hub.css:1` | Large stylesheet requires atomization (419 lines, 58 selectors). |
+| high | cross-component-selector | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:62` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:53` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:504` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Selector depends on another component's DOM structure. |

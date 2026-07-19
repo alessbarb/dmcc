@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:58:11.883Z",
+  "generatedAt": "2026-07-19T11:58:47.236Z",
   "summary": {
-    "cssFiles": 190,
+    "cssFiles": 209,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 31,
+    "mixedResponsibilityFiles": 28,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -2767,14 +2767,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/map/network/networkFlow.css",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css",
       "layer": "feature",
       "domain": "map",
-      "lineCount": 829,
-      "selectorCount": 116,
+      "lineCount": 82,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/map/network/NetworkView.tsx"
+        "src/frontend/dm/map/network/networkFlow.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2786,14 +2786,42 @@
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
         "--resource-node-accent",
-        "--resource-node-accent",
+        "--resource-node-accent"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-02.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 75,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-03.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 101,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
@@ -2808,14 +2836,42 @@
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-04.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 88,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-interactive-hover",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-05.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-interactive-hover",
         "--theme-text-primary",
         "--theme-accents-secondary-foreground",
@@ -2836,7 +2892,21 @@
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
-        "--network-node-accent",
+        "--network-node-accent"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 66,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--network-node-accent",
         "--network-node-accent",
         "--theme-surfaces-canvas",
@@ -2845,7 +2915,21 @@
         "--network-node-accent",
         "--theme-surfaces-base",
         "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 90,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--network-node-accent",
         "--theme-text-on-media",
         "--network-node-accent",
@@ -2860,7 +2944,21 @@
         "--theme-surfaces-interactive-hover",
         "--theme-text-primary",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-08.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 80,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-secondary",
         "--theme-text-secondary",
@@ -2871,7 +2969,21 @@
         "--network-inspector-accent",
         "--theme-borders-default",
         "--theme-surfaces-interactive-hover",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 60,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
@@ -2884,11 +2996,49 @@
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-10.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 115,
+      "selectorCount": 26,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/map/network/networkFlow.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-base",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/dm/map/network/networkFlow.css",
+      "layer": "feature",
+      "domain": "map",
+      "lineCount": 11,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-02.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-03.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-04.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-05.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-08.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css",
+        "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-10.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/map/network/NetworkView.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
@@ -3060,14 +3210,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-01.css",
       "layer": "feature",
       "domain": "onboarding",
-      "lineCount": 226,
-      "selectorCount": 32,
+      "lineCount": 68,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/onboarding/CampaignGuidedTour.tsx"
+        "src/frontend/dm/onboarding/campaign-guided-tour.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3087,7 +3237,21 @@
         "--theme-text-on-media",
         "--transition-normal",
         "--transition-normal",
-        "--transition-normal",
+        "--transition-normal"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 88,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-guided-tour.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--theme-text-primary",
         "--theme-borders-default",
@@ -3104,7 +3268,21 @@
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-accents-secondary-foreground",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 72,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-guided-tour.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--transition-fast",
         "--transition-fast",
@@ -3115,14 +3293,31 @@
       ]
     },
     {
-      "path": "src/frontend/dm/onboarding/campaign-starter-hub.css",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
       "layer": "feature",
       "domain": "onboarding",
-      "lineCount": 419,
-      "selectorCount": 58,
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-01.css",
+        "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
+        "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/onboarding/CampaignGuidedTour.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-01.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 84,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/onboarding/CampaignStarterHub.tsx"
+        "src/frontend/dm/onboarding/campaign-starter-hub.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3135,7 +3330,21 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-02.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-starter-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-borders-default",
@@ -3149,7 +3358,21 @@
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
-        "--transition-normal",
+        "--transition-normal"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-03.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 72,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-starter-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-raised",
         "--theme-feedback-success-foreground",
@@ -3159,10 +3382,38 @@
         "--theme-feedback-success-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--theme-borders-default",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-04.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 66,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-starter-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-05.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 85,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-starter-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--transition-fast",
@@ -3178,6 +3429,39 @@
         "--theme-feedback-success-foreground",
         "--theme-accents-secondary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-06.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 40,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/onboarding/campaign-starter-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/onboarding/campaign-starter-hub.css",
+      "layer": "feature",
+      "domain": "onboarding",
+      "lineCount": 7,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-01.css",
+        "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-02.css",
+        "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-03.css",
+        "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-04.css",
+        "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-05.css",
+        "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-06.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/onboarding/CampaignStarterHub.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/onboarding/campaignGuidedTourStorage.ts",
@@ -13157,224 +13441,8 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 437,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 439,
-      "column": 146,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 443,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 452,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 453,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 454,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 457,
-      "column": 81,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 464,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 465,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 470,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 479,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 486,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 487,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 491,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 492,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 493,
-      "column": 100,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 494,
-      "column": 42,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 709,
-      "column": 44,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/map/network/networkFlow.css:height: 100%; min-height: 0; } body:has(.campaign-workspace--network) .app-footer, body:has(.campaign-workspace--network) footer.site-footer, body:has(.campaign-workspace--network) .watermark",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
+      "id": "cross-component-selector:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css:height: 100%; min-height: 0; } body:has(.campaign-workspace--network) .app-footer, body:has(.campaign-workspace--network) footer.site-footer, body:has(.campaign-workspace--network) .watermark",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css",
       "line": 28,
       "column": 3,
       "severity": "high",
@@ -13385,15 +13453,220 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/map/network/networkFlow.css",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 15,
+      "column": 16,
+      "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (829 lines, 116 selectors)."
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 17,
+      "column": 146,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 21,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 30,
+      "column": 12,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 31,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 32,
+      "column": 13,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 35,
+      "column": 81,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 42,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 43,
+      "column": 12,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 48,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 57,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 64,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "line": 65,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+      "line": 4,
+      "column": 14,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+      "line": 5,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+      "line": 6,
+      "column": 100,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+      "line": 7,
+      "column": 42,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css:!important",
+      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css",
+      "line": 54,
+      "column": 44,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "dynamic-style:src/frontend/dm/map/shared/EntityNodeContent.tsx:style={{ \"--rg-accent\": cfg.accent } as React.CSSProperties & Record<`--${string}`, string>} > {isTableHidden && ( <button type=\"button\" className=\"rg-card__privacy-cover entity-node-content__privacy-co",
@@ -13422,9 +13695,9 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour.css:!important",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 144,
+      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:!important",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
+      "line": 77,
       "column": 103,
       "severity": "high",
       "status": "temporary",
@@ -13434,9 +13707,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour.css:!important",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 145,
+      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:!important",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
+      "line": 78,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -13446,57 +13719,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour.css:!important",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 204,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour.css:!important",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 205,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour.css:!important",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 206,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour.css:!important",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 207,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/onboarding/campaign-guided-tour.css:margin: 0; color: var(--theme-text-secondary); font-size: 0.9rem; line-height: 1.55; } .campaign-tour__content p:first-child",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 129,
+      "id": "cross-component-selector:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:margin: 0; color: var(--theme-text-secondary); font-size: 0.9rem; line-height: 1.55; } .campaign-tour__content p:first-child",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
+      "line": 62,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -13506,26 +13731,52 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
+      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:!important",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css",
+      "line": 50,
+      "column": 15,
       "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (226 lines, 32 selectors)."
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/onboarding/campaign-starter-hub.css",
-      "path": "src/frontend/dm/onboarding/campaign-starter-hub.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
+      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:!important",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css",
+      "line": 51,
+      "column": 16,
+      "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (419 lines, 58 selectors)."
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:!important",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css",
+      "line": 52,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:!important",
+      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css",
+      "line": 53,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "important:src/frontend/dm/pages/campaignMessagesPage.css:!important",
@@ -16455,11 +16706,36 @@
     "src/frontend/dm/map/network/NetworkView.tsx": [
       "src/frontend/dm/map/network/networkFlow.css"
     ],
+    "src/frontend/dm/map/network/networkFlow.css": [
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-02.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-03.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-04.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-05.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-08.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css",
+      "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-10.css"
+    ],
     "src/frontend/dm/onboarding/CampaignGuidedTour.tsx": [
       "src/frontend/dm/onboarding/campaign-guided-tour.css"
     ],
     "src/frontend/dm/onboarding/CampaignStarterHub.tsx": [
       "src/frontend/dm/onboarding/campaign-starter-hub.css"
+    ],
+    "src/frontend/dm/onboarding/campaign-guided-tour.css": [
+      "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-01.css",
+      "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
+      "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css"
+    ],
+    "src/frontend/dm/onboarding/campaign-starter-hub.css": [
+      "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-01.css",
+      "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-02.css",
+      "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-03.css",
+      "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-04.css",
+      "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-05.css",
+      "src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-06.css"
     ],
     "src/frontend/dm/pages/CampaignMessagesPage.tsx": [
       "src/frontend/dm/pages/campaignMessagesPage.css"

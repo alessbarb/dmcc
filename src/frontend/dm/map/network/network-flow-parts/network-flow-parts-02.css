@@ -1,0 +1,75 @@
+
+
+.network-explorer-topbar {
+  display: grid;
+  grid-template-columns: minmax(150px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.network-explorer-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.network-explorer-heading h2 {
+  margin: 0;
+  color: var(--theme-text-primary);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.network-explorer-heading span {
+  color: var(--theme-text-secondary);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.network-explorer-modes {
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+  gap: 6px;
+}
+
+.network-explorer-modes .btn {
+  max-width: min(300px, 34vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.network-flow-layout-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.network-flow-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 25%, color-mix(in srgb, var(--theme-accents-secondary-foreground) 4%, transparent), transparent 42%),
+    var(--theme-surfaces-canvas);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent), 0 18px 48px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
+}
+
+.network-flow-canvas {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.network-flow-overlay {
+  position: absolute;
+  z-index: 15;
+}

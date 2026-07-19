@@ -1,0 +1,39 @@
+
+
+.guided-inline-callout div {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .guided-start--compact,
+  .guided-start__footer,
+  .guided-start__progress-row,
+  .guided-inline-callout {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .guided-start__compact-side,
+  .guided-start__level {
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .guided-start__level label {
+    justify-content: space-between;
+  }
+
+  .guided-start-recipes {
+    grid-template-columns: 1fr;
+  }
+
+  .guided-start-step {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .guided-start-step .btn {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}

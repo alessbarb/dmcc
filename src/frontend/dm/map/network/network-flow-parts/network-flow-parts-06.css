@@ -1,0 +1,66 @@
+
+
+.network-entity-node.is-selected {
+  z-index: 4;
+  border-color: var(--network-node-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--network-node-accent) 45%, transparent), 0 18px 42px color-mix(in srgb, var(--theme-surfaces-canvas) 34%, transparent);
+}
+
+.network-entity-node.is-dimmed {
+  opacity: 0.18;
+  filter: saturate(0.45);
+}
+
+.network-entity-node .rg-card__hero {
+  height: 34px !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--network-node-accent) 28%, var(--theme-borders-default));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--network-node-accent) 18%, var(--theme-surfaces-base)), var(--theme-surfaces-base)) !important;
+}
+
+.network-entity-node .rg-card__hero--img {
+  height: 48px !important;
+}
+
+.network-entity-node .rg-card__hero-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.network-entity-node .rg-card__type-badge {
+  top: 7px !important;
+  bottom: auto !important;
+  left: 8px !important;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 74%, transparent) !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.network-entity-node .rg-card__body {
+  min-height: 54px;
+  padding: 8px 10px !important;
+  gap: 2px !important;
+}
+
+.network-entity-node .rg-card__name {
+  overflow: hidden;
+  font-size: 0.78rem !important;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.network-entity-node .rg-card__sub {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.66rem !important;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.network-entity-node .rg-card__status-strip {
+  padding: 3px 9px !important;
+  font-size: 0.62rem !important;
+}

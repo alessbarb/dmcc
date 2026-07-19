@@ -1,0 +1,101 @@
+
+
+.network-flow-overlay--filters {
+  top: 14px;
+  left: 14px;
+  max-width: min(620px, calc(100% - 28px));
+}
+
+.network-explorer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 92%, transparent);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.graph-search {
+  position: relative;
+  flex: 1 1 320px;
+  min-width: 220px;
+}
+
+.graph-search__icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  z-index: 1;
+  color: var(--theme-text-secondary);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.graph-search__input {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 34px 8px 34px;
+  border-color: transparent;
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 86%, transparent);
+  font-size: 0.82rem;
+}
+
+.graph-search__input:focus {
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 55%, var(--theme-borders-default));
+  box-shadow: var(--theme-focus-ring);
+}
+
+.graph-search__clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.graph-search__clear:hover {
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
+}
+
+.graph-search__results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  width: min(440px, 82vw);
+  max-height: min(420px, 55vh);
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 11px;
+  background: var(--theme-surfaces-base);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--theme-surfaces-canvas) 38%, transparent);
+}
+
+.graph-search__result {
+  display: grid;
+  width: 100%;
+  gap: 2px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--theme-text-primary);
+  text-align: left;
+  cursor: pointer;
+}

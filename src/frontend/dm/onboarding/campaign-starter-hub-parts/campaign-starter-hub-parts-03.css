@@ -1,0 +1,72 @@
+
+
+.guided-start__steps {
+  display: grid;
+  gap: 9px;
+}
+
+.guided-start-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--theme-surfaces-raised) 72%, transparent);
+}
+
+.guided-start-step--done {
+  border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 28%, transparent);
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 5.5%, transparent);
+}
+
+.guided-start-step__status {
+  width: 31px;
+  height: 31px;
+  border-radius: 11px;
+}
+
+.guided-start-step--done .guided-start-step__status {
+  color: var(--theme-feedback-success-foreground);
+  background: var(--theme-feedback-success-background);
+  border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 28%, transparent);
+}
+
+.guided-start-step__copy {
+  min-width: 0;
+}
+
+.guided-start-step__copy strong,
+.guided-start-recipe__copy strong,
+.guided-empty h3,
+.guided-inline-callout strong {
+  display: block;
+  color: var(--theme-text-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.guided-start-step__copy span,
+.guided-start-recipe__copy span,
+.guided-inline-callout span {
+  display: block;
+  margin-top: 2px;
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.guided-start__footer {
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 85%, transparent);
+}
+
+.guided-start__footer-actions,
+.guided-start__compact-actions {
+  gap: 8px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,80 @@
+
+
+.network-inspector__summary {
+  margin: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--theme-borders-default);
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.network-inspector__relations {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 16px 18px;
+}
+
+.network-inspector__section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: var(--theme-text-secondary);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.network-inspector__section-title span {
+  display: grid;
+  min-width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--theme-surfaces-raised);
+  font-size: 0.68rem;
+}
+
+.network-inspector__relation-list {
+  display: grid;
+  gap: 5px;
+}
+
+.network-inspector__relation {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 8px 9px;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 62%, transparent);
+  color: var(--theme-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.network-inspector__relation:hover {
+  border-color: color-mix(in srgb, var(--network-inspector-accent) 40%, var(--theme-borders-default));
+  background: var(--theme-surfaces-interactive-hover);
+}
+
+.network-inspector__relation-type {
+  color: var(--theme-text-secondary);
+  font-size: 0.64rem;
+}
+
+.network-inspector__relation-target {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+
+.network-inspector__relation-target strong {
+  overflow: hidden;
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

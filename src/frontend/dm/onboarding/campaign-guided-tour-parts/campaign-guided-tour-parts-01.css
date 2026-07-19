@@ -1,0 +1,68 @@
+/* Campaign guided tour */
+.campaign-tour {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  pointer-events: none;
+}
+
+.campaign-tour__scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events: auto;
+}
+
+.campaign-tour__highlight {
+  position: fixed;
+  z-index: 2101;
+  border: 2px solid var(--theme-accents-primary-foreground);
+  border-radius: 16px;
+  background: var(--theme-accents-primary-background);
+  box-shadow: 0 0 0 9999px color-mix(in srgb, var(--theme-surfaces-canvas) 36%, transparent), 0 0 18px color-mix(in srgb, var(--theme-accents-primary-foreground) 28%, transparent);
+  pointer-events: none;
+  transition: top var(--transition-normal), left var(--transition-normal), width var(--transition-normal), height var(--transition-normal);
+}
+
+.campaign-tour__card {
+  position: fixed;
+  z-index: 2102;
+  max-width: calc(100vw - 36px);
+  max-height: calc(100vh - 36px);
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, transparent);
+  border-radius: 20px;
+  background: linear-gradient(160deg, var(--theme-surfaces-raised) 0%, var(--theme-surfaces-canvas) 100%);
+  box-shadow: 0 24px 70px color-mix(in srgb, var(--theme-surfaces-canvas) 68%, transparent), 0 0 0 1px color-mix(in srgb, var(--theme-text-on-media) 3.5%, transparent);
+  overflow: hidden;
+  pointer-events: auto;
+  transition: top var(--transition-normal), left var(--transition-normal), bottom var(--transition-normal);
+}
+
+.campaign-tour__card[data-placement^="right"] {
+  transform-origin: left center;
+}
+
+.campaign-tour__card[data-placement^="left"] {
+  transform-origin: right center;
+}
+
+.campaign-tour__card[data-placement^="top"] {
+  transform-origin: bottom center;
+}
+
+.campaign-tour__card[data-placement^="bottom"] {
+  transform-origin: top center;
+}
+
+.campaign-tour__card[data-placement="center"] {
+  transform-origin: center;
+}
+
+.campaign-tour__card[data-placement="mobile-sheet"] {
+  transform-origin: bottom center;
+}
