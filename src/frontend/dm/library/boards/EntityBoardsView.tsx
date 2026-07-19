@@ -32,6 +32,7 @@ import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 
 type BoardType = "quests" | "clues" | "consequences" | "npcs" | "secrets";
 type BoardState = { key: string; labelKey: string; color: string };
+type BoardStyle = React.CSSProperties & { "--board-state-color"?: string; "--board-tab-color"?: string };
 
 type BoardDefinition = {
   id: BoardType;
@@ -42,62 +43,62 @@ type BoardDefinition = {
 };
 
 const QUEST_STATES: BoardState[] = [
-  { key: "active", labelKey: "boards.statuses.active", color: "#22c55e" },
-  { key: "blocked", labelKey: "boards.statuses.blocked", color: "#ef4444" },
-  { key: "completed", labelKey: "boards.statuses.completed", color: "#6366f1" },
-  { key: "failed", labelKey: "boards.statuses.failed", color: "#94a3b8" },
-  { key: "abandoned", labelKey: "boards.statuses.abandoned", color: "#475569" },
+  { key: "active", labelKey: "boards.statuses.active", color: "var(--theme-feedback-success-foreground)" },
+  { key: "blocked", labelKey: "boards.statuses.blocked", color: "var(--theme-feedback-danger-foreground)" },
+  { key: "completed", labelKey: "boards.statuses.completed", color: "var(--theme-accents-primary-foreground)" },
+  { key: "failed", labelKey: "boards.statuses.failed", color: "var(--theme-text-subtle)" },
+  { key: "abandoned", labelKey: "boards.statuses.abandoned", color: "var(--theme-text-secondary)" },
 ];
 
 const CLUE_STATES: BoardState[] = [
-  { key: "prepared", labelKey: "boards.statuses.prepared", color: "#64748b" },
-  { key: "hidden", labelKey: "boards.statuses.hidden", color: "#475569" },
-  { key: "hinted", labelKey: "boards.statuses.hinted", color: "#d97706" },
-  { key: "revealed_to_one", labelKey: "boards.statuses.revealedToOne", color: "#0891b2" },
-  { key: "revealed_to_some", labelKey: "boards.statuses.revealedToSome", color: "#2563eb" },
-  { key: "revealed", labelKey: "boards.statuses.revealed", color: "#22c55e" },
-  { key: "misunderstood", labelKey: "boards.statuses.misunderstood", color: "#dc2626" },
-  { key: "confirmed", labelKey: "boards.statuses.confirmed", color: "#059669" },
-  { key: "resolved", labelKey: "boards.statuses.resolved", color: "#6366f1" },
-  { key: "obsolete", labelKey: "boards.statuses.obsolete", color: "#475569" },
+  { key: "prepared", labelKey: "boards.statuses.prepared", color: "var(--theme-text-secondary)" },
+  { key: "hidden", labelKey: "boards.statuses.hidden", color: "var(--theme-text-subtle)" },
+  { key: "hinted", labelKey: "boards.statuses.hinted", color: "var(--theme-feedback-warning-foreground)" },
+  { key: "revealed_to_one", labelKey: "boards.statuses.revealedToOne", color: "var(--theme-feedback-info-foreground)" },
+  { key: "revealed_to_some", labelKey: "boards.statuses.revealedToSome", color: "var(--theme-accents-secondary-foreground)" },
+  { key: "revealed", labelKey: "boards.statuses.revealed", color: "var(--theme-feedback-success-foreground)" },
+  { key: "misunderstood", labelKey: "boards.statuses.misunderstood", color: "var(--theme-feedback-danger-foreground)" },
+  { key: "confirmed", labelKey: "boards.statuses.confirmed", color: "var(--theme-feedback-success-foreground)" },
+  { key: "resolved", labelKey: "boards.statuses.resolved", color: "var(--theme-accents-primary-foreground)" },
+  { key: "obsolete", labelKey: "boards.statuses.obsolete", color: "var(--theme-text-subtle)" },
 ];
 
 const CONSEQUENCE_STATES: BoardState[] = [
-  { key: "pending", labelKey: "boards.statuses.pending", color: "#d97706" },
-  { key: "active", labelKey: "boards.statuses.active", color: "#ef4444" },
-  { key: "triggered", labelKey: "boards.statuses.triggered", color: "#dc2626" },
-  { key: "resolved", labelKey: "boards.statuses.resolved", color: "#22c55e" },
-  { key: "averted", labelKey: "boards.statuses.averted", color: "#6366f1" },
+  { key: "pending", labelKey: "boards.statuses.pending", color: "var(--theme-feedback-warning-foreground)" },
+  { key: "active", labelKey: "boards.statuses.active", color: "var(--theme-feedback-danger-foreground)" },
+  { key: "triggered", labelKey: "boards.statuses.triggered", color: "var(--theme-feedback-danger-foreground)" },
+  { key: "resolved", labelKey: "boards.statuses.resolved", color: "var(--theme-feedback-success-foreground)" },
+  { key: "averted", labelKey: "boards.statuses.averted", color: "var(--theme-accents-primary-foreground)" },
 ];
 
 const NPC_STATES: BoardState[] = [
-  { key: "alive", labelKey: "boards.statuses.alive", color: "#22c55e" },
-  { key: "hidden", labelKey: "boards.statuses.hidden", color: "#64748b" },
-  { key: "revealed", labelKey: "boards.statuses.revealed", color: "#2563eb" },
-  { key: "deceased", labelKey: "boards.statuses.deceased", color: "#94a3b8" },
-  { key: "missing", labelKey: "boards.statuses.missing", color: "#d97706" },
-  { key: "ally", labelKey: "boards.statuses.ally", color: "#059669" },
-  { key: "enemy", labelKey: "boards.statuses.enemy", color: "#ef4444" },
-  { key: "neutral", labelKey: "boards.statuses.neutral", color: "#475569" },
+  { key: "alive", labelKey: "boards.statuses.alive", color: "var(--theme-feedback-success-foreground)" },
+  { key: "hidden", labelKey: "boards.statuses.hidden", color: "var(--theme-text-secondary)" },
+  { key: "revealed", labelKey: "boards.statuses.revealed", color: "var(--theme-accents-secondary-foreground)" },
+  { key: "deceased", labelKey: "boards.statuses.deceased", color: "var(--theme-text-subtle)" },
+  { key: "missing", labelKey: "boards.statuses.missing", color: "var(--theme-feedback-warning-foreground)" },
+  { key: "ally", labelKey: "boards.statuses.ally", color: "var(--theme-feedback-success-foreground)" },
+  { key: "enemy", labelKey: "boards.statuses.enemy", color: "var(--theme-feedback-danger-foreground)" },
+  { key: "neutral", labelKey: "boards.statuses.neutral", color: "var(--theme-text-subtle)" },
 ];
 
 const SECRET_STATES: BoardState[] = [
-  { key: "dm_only", labelKey: "boards.statuses.dmOnly", color: "#dc2626" },
-  { key: "hinted", labelKey: "boards.statuses.hinted", color: "#d97706" },
-  { key: "revealed_to_one", labelKey: "boards.statuses.revealedToOne", color: "#0891b2" },
-  { key: "revealed_to_some", labelKey: "boards.statuses.revealedToSome", color: "#2563eb" },
-  { key: "revealed", labelKey: "boards.statuses.revealed", color: "#22c55e" },
+  { key: "dm_only", labelKey: "boards.statuses.dmOnly", color: "var(--theme-feedback-danger-foreground)" },
+  { key: "hinted", labelKey: "boards.statuses.hinted", color: "var(--theme-feedback-warning-foreground)" },
+  { key: "revealed_to_one", labelKey: "boards.statuses.revealedToOne", color: "var(--theme-feedback-info-foreground)" },
+  { key: "revealed_to_some", labelKey: "boards.statuses.revealedToSome", color: "var(--theme-accents-secondary-foreground)" },
+  { key: "revealed", labelKey: "boards.statuses.revealed", color: "var(--theme-feedback-success-foreground)" },
 ];
 
 const BOARDS: BoardDefinition[] = [
   { id: "quests", labelKey: "boards.tabs.quests", entityType: "quest", color: "var(--theme-accents-primary-foreground)", states: QUEST_STATES },
-  { id: "clues", labelKey: "boards.tabs.clues", entityType: "clue", color: "#059669", states: CLUE_STATES },
-  { id: "consequences", labelKey: "boards.tabs.consequences", entityType: ["consequence", "front"], color: "#d97706", states: CONSEQUENCE_STATES },
-  { id: "npcs", labelKey: "boards.tabs.npcs", entityType: "npc", color: "#7c3aed", states: NPC_STATES },
-  { id: "secrets", labelKey: "boards.tabs.secrets", entityType: "secret", color: "#ef4444", states: SECRET_STATES },
+  { id: "clues", labelKey: "boards.tabs.clues", entityType: "clue", color: "var(--theme-feedback-success-foreground)", states: CLUE_STATES },
+  { id: "consequences", labelKey: "boards.tabs.consequences", entityType: ["consequence", "front"], color: "var(--theme-feedback-warning-foreground)", states: CONSEQUENCE_STATES },
+  { id: "npcs", labelKey: "boards.tabs.npcs", entityType: "npc", color: "var(--theme-narrative-secret-foreground)", states: NPC_STATES },
+  { id: "secrets", labelKey: "boards.tabs.secrets", entityType: "secret", color: "var(--theme-feedback-danger-foreground)", states: SECRET_STATES },
 ];
 
-const STATE_ICONS: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
+const STATE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   active: Play,
   blocked: Lock,
   completed: CheckCircle2,
@@ -181,11 +182,7 @@ function KanbanCard({
         )}
         {entity.importance && entity.importance !== "normal" && (
           <span
-            className="kanban-card__badge"
-            style={{
-              backgroundColor: entity.importance === "critical" ? "#dc262633" : "#d9770633",
-              color: entity.importance === "critical" ? "#fca5a5" : "#fcd34d",
-            }}
+            className={`kanban-card__badge kanban-card__badge--${entity.importance}`}
           >
             {entity.importance === "critical"
               ? t("boards.importanceCritical")
@@ -246,10 +243,12 @@ function KanbanColumn({
 }) {
   const Icon = STATE_ICONS[state.key] || HelpCircle;
   const { t } = useTranslation();
+  const stateStyle: BoardStyle = { "--board-state-color": state.color };
 
   return (
     <section
       className={`kanban-column ${dragOver ? "kanban-column--drag-over" : ""}`}
+      style={stateStyle}
       aria-labelledby={`kanban-column-${state.key}`}
       onDragOver={(event) => event.preventDefault()}
       onDragEnter={(event) => {
@@ -260,8 +259,8 @@ function KanbanColumn({
       onDrop={(event) => onDrop(event, state.key)}
     >
       <header className="kanban-column__header">
-        <span className="kanban-column__dot" style={{ backgroundColor: state.color }} />
-        <Icon size={14} style={{ color: state.color, flexShrink: 0 }} />
+        <span className="kanban-column__dot" />
+        <Icon className="kanban-column__icon" size={14} />
         <strong id={`kanban-column-${state.key}`}>{t(state.labelKey)}</strong>
         <span className="kanban-column__count">{entities.length}</span>
       </header>
@@ -375,7 +374,7 @@ export function EntityBoardsView() {
   const unknownState: BoardState = {
     key: "_unknown",
     labelKey: "boards.unknownStatus",
-    color: "#475569",
+    color: "var(--theme-text-subtle)",
   };
   const visibleStates = entitiesByStatus._unknown.length > 0
     ? [...board.states, unknownState]
@@ -384,42 +383,50 @@ export function EntityBoardsView() {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <div className="entity-boards-view">
         <div role="tablist" aria-label={t("boards.ariaLabel")}>
           {BOARDS.map((candidate) => (
-            <button
+            (() => {
+              const tabStyle: BoardStyle | undefined = activeBoard === candidate.id
+                ? { "--board-tab-color": candidate.color }
+                : undefined;
+              return <button
               key={candidate.id}
               type="button"
               role="tab"
               aria-selected={activeBoard === candidate.id}
-              className={`btn btn-sm ${activeBoard === candidate.id ? "btn-primary" : "btn-secondary"}`}
-              style={activeBoard === candidate.id ? { borderColor: candidate.color } : undefined}
+              className={`btn btn-sm ${activeBoard === candidate.id ? "btn-primary" : "btn-secondary"} ${activeBoard === candidate.id ? "entity-boards-view__tab--active" : ""}`}
+              style={tabStyle}
               onClick={() => setActiveBoard(candidate.id)}
             >
               {t(candidate.labelKey)}
-            </button>
+              </button>;
+            })()
           ))}
         </div>
 
-        <div className="card" aria-live="polite">
-          <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
-            {t("boards.total")}: <strong style={{ color: "var(--theme-text-primary)" }}>{boardEntities.length}</strong>
+        <div className="card entity-boards-view__summary" aria-live="polite">
+          <span className="entity-boards-view__summary-item">
+            {t("boards.total")}: <strong>{boardEntities.length}</strong>
           </span>
           {board.states.map((state) => (
-            <span key={state.key} style={{ fontSize: "0.85rem", color: state.color }}>
-              {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
-            </span>
+            (() => {
+              const stateStyle: BoardStyle = { "--board-state-color": state.color };
+              return <span key={state.key} className="entity-boards-view__summary-item entity-boards-view__summary-item--state" style={stateStyle}>
+                {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
+              </span>;
+            })()
           ))}
           {entitiesByStatus._unknown.length > 0 && (
-            <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
+            <span className="entity-boards-view__summary-item">
               {t("boards.unknownStatus")}: <strong>{entitiesByStatus._unknown.length}</strong>
             </span>
           )}
         </div>
 
         {boardEntities.length === 0 ? (
-          <div className="card" style={{ textAlign: "center", padding: 48, color: "var(--theme-text-secondary)" }}>
-            <p style={{ fontSize: "1rem" }}>{t("boards.noItems", { board: boardLabel.toLocaleLowerCase() })}</p>
+          <div className="card entity-boards-view__empty">
+            <p>{t("boards.noItems", { board: boardLabel.toLocaleLowerCase() })}</p>
           </div>
         ) : (
           <div className="kanban-scroll" tabIndex={0} aria-label={`${boardLabel}. Kanban`}>

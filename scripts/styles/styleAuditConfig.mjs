@@ -28,6 +28,7 @@ export const STYLE_AUDIT_CONFIG = {
     "--consequence-",
     "--narrative-",
     "--notebook-",
+    "--board-",
     "--history-color",
     "--history-bg",
     "--fact-color",
