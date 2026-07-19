@@ -45,13 +45,13 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
 
   if (payload.linkedCharacter) {
     return (
-      <section className="card" style={{ padding: 16 }}>
-        <h2 style={{ marginTop: 0 }}>{t("playerPortal.character.heading")}</h2>
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+      <section className="card player-campaign-card">
+        <h2 className="player-campaign-heading">{t("playerPortal.character.heading")}</h2>
+        <div className="player-character-linked">
           <User size={22} aria-hidden="true" />
           <div>
             <strong>{payload.linkedCharacter.title}</strong>
-            <p style={{ color: "var(--theme-text-secondary)", marginBottom: 0 }}>
+            <p className="player-campaign-secondary player-character-summary">
               {payload.linkedCharacter.summary ?? t("playerPortal.empty.noVisibleSummary")}
             </p>
           </div>
@@ -61,14 +61,14 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
   }
 
   return (
-    <section className="card" style={{ padding: 16 }}>
-      <h2 style={{ marginTop: 0 }}>{t("playerPortal.character.heading")}</h2>
-      <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.character.notLinked")}</p>
+    <section className="card player-campaign-card">
+      <h2 className="player-campaign-heading">{t("playerPortal.character.heading")}</h2>
+      <p className="player-campaign-secondary">{t("playerPortal.character.notLinked")}</p>
 
       {characters.length === 0 ? (
-        <p style={{ color: "var(--theme-text-secondary)", marginBottom: 0 }}>{t("playerPortal.empty.nothingYet")}</p>
+        <p className="player-campaign-secondary player-character-empty">{t("playerPortal.empty.nothingYet")}</p>
       ) : (
-        <div style={{ display: "grid", gap: 12 }}>
+        <div className="player-character-form">
           <label className="player-portal-field" htmlFor="player-character-selection">
             <span>{t("playerPortal.character.heading")}</span>
             <select
@@ -89,15 +89,15 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
           </label>
 
           {selectedCharacter && (
-            <article style={{ border: "1px solid var(--theme-borders-default)", borderRadius: 12, padding: 12 }}>
+            <article className="player-character-preview">
               <strong>{selectedCharacter.title}</strong>
-              <p style={{ color: "var(--theme-text-secondary)", marginBottom: 0 }}>
+              <p className="player-campaign-secondary player-character-summary">
                 {selectedCharacter.summary ?? t("playerPortal.empty.noVisibleSummary")}
               </p>
             </article>
           )}
 
-          {error && <p role="alert" style={{ color: "var(--theme-feedback-danger-foreground)", margin: 0 }}>{error}</p>}
+          {error && <p role="alert" className="player-character-error">{error}</p>}
           {submittedCharacterId && (
             <p role="status" aria-live="polite" style={{ margin: 0 }}>
               <CheckCircle2 size={16} aria-hidden="true" /> {t("playerPortal.character.requestSent")}

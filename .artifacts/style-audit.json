@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:02:10.672Z",
+  "generatedAt": "2026-07-19T11:02:52.451Z",
   "summary": {
     "cssFiles": 122,
     "tsxFilesWithInlineStyles": 44,
     "forbiddenLiteralColors": 246,
-    "staticInlineStyles": 335,
+    "staticInlineStyles": 323,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -4689,14 +4689,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-feedback-danger-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/player/components/PlayerPortalRealtimeSync.tsx",
@@ -7470,8 +7463,8 @@
       "path": "src/frontend/shared/styles/features/player-campaign.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 18,
-      "selectorCount": 17,
+      "lineCount": 24,
+      "selectorCount": 23,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7485,7 +7478,9 @@
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-borders-default"
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-feedback-danger-foreground"
       ]
     },
     {
@@ -17616,162 +17611,6 @@
       "severity": "high",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (274 lines, 38 selectors)."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ padding: 16 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 48,
-      "column": 33,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 16 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ marginTop: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 49,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ display: \"flex\", alignItems: \"flex-start\", gap: 12 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 50,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"flex-start\", gap: 12 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 54,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ padding: 16 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 64,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 16 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ marginTop: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 65,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 66,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 69,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ display: \"grid\", gap: 12 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 71,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"grid\", gap: 12 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ border: \"1px solid var(--theme-borders-default)\", borderRadius: 12, padding: 12 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 92,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ border: \"1px solid var(--theme-borders-default)\", borderRadius: 12, padding: 12 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 94,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ color: \"var(--theme-feedback-danger-foreground)\", margin: 0 }}",
-      "path": "src/frontend/player/components/PlayerCharacterSelectionCard.tsx",
-      "line": 100,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-feedback-danger-foreground)\", margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ margin: 0 }}",

@@ -9,7 +9,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "cssFiles": 122,
   "tsxFilesWithInlineStyles": 44,
   "forbiddenLiteralColors": 246,
-  "staticInlineStyles": 335,
+  "staticInlineStyles": 323,
   "dynamicInlineStyles": 28,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -109,7 +109,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
-| `src/frontend/shared/styles/features/player-campaign.css` | legacy | shared | 18 | 17 | 1 |
+| `src/frontend/shared/styles/features/player-campaign.css` | legacy | shared | 24 | 23 | 1 |
 | `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 988 | 153 | 1 |
 | `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
@@ -825,18 +825,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/MainLanding.tsx:98` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:101` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:104` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:92` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:86` | Static or mixed inline style must move to an atomized stylesheet. |
