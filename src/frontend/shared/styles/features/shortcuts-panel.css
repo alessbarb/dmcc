@@ -1,0 +1,65 @@
+.shortcuts-panel__empty-hint {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+}
+
+.shortcuts-panel__title {
+  margin: 0 0 6px;
+}
+
+.shortcuts-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shortcuts-panel__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--theme-shapes-radius-small);
+  color: var(--theme-text-primary);
+  transition: background 0.15s ease-in-out;
+}
+
+.shortcuts-panel__item.is-navigable {
+  cursor: pointer;
+}
+
+.shortcuts-panel__item.is-disabled {
+  cursor: default;
+}
+
+.shortcuts-panel__item.is-archived {
+  opacity: 0.6;
+}
+
+.shortcuts-panel__item.is-navigable:hover {
+  background: var(--theme-surfaces-interactive-hover);
+}
+
+.shortcuts-panel__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shortcuts-panel__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: 0;
+  color: var(--theme-text-secondary);
+  background: transparent;
+  cursor: pointer;
+}
+
+.shortcuts-panel__remove:hover {
+  color: var(--theme-text-primary);
+}

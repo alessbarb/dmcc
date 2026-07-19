@@ -30,7 +30,7 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
     if (collapsed) return null;
     return (
       <div className="shortcuts-panel shortcuts-panel--empty">
-        <p style={{ fontSize: "0.78rem", color: "var(--theme-text-secondary)", margin: 0 }}>
+        <p className="shortcuts-panel__empty-hint">
           {emptyHint ?? t("shortcuts.empty")}
         </p>
       </div>
@@ -40,11 +40,11 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
   return (
     <div className="shortcuts-panel">
       {!collapsed && (
-        <p className="sidebar-nav__section-label" style={{ margin: "0 0 6px" }}>
+        <p className="sidebar-nav__section-label shortcuts-panel__title">
           {t("shortcuts.title")}
         </p>
       )}
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      <div className="shortcuts-panel__list">
         {shortcuts.map((shortcut) => {
           const Icon = TARGET_ICON[shortcut.targetType] ?? Bookmark;
           const location = campaignResourceLocation(campaignId, { type: shortcut.targetType, resourceId: shortcut.targetId });
@@ -54,16 +54,7 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
           return (
             <div
               key={shortcut.shortcutId}
-              className="shortcuts-panel__item"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "6px 8px",
-                borderRadius: 6,
-                cursor: location ? "pointer" : "default",
-                opacity: archived ? 0.6 : 1,
-              }}
+              className={`shortcuts-panel__item ${location ? "is-navigable" : "is-disabled"} ${archived ? "is-archived" : ""}`}
               onClick={() => {
                 if (!location) return;
                 void navigate({ to: location.pathname, search: location.search });
@@ -73,13 +64,7 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
               <Icon size={14} />
               {!collapsed && (
                 <span
-                  style={{
-                    flex: 1,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    fontSize: "0.82rem",
-                  }}
+                  className="shortcuts-panel__label"
                 >
                   {title}
                   {archived && ` (${t("shortcuts.archivedBadge")})`}
@@ -95,7 +80,7 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
                       console.error("Could not remove campaign shortcut", error);
                     });
                   }}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--theme-text-secondary)", padding: 2 }}
+                  className="shortcuts-panel__remove"
                 >
                   <X size={12} />
                 </button>

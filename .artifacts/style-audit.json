@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:21:25.994Z",
+  "generatedAt": "2026-07-19T11:23:06.820Z",
   "summary": {
-    "cssFiles": 129,
-    "tsxFilesWithInlineStyles": 35,
+    "cssFiles": 130,
+    "tsxFilesWithInlineStyles": 34,
     "forbiddenLiteralColors": 183,
-    "staticInlineStyles": 87,
+    "staticInlineStyles": 81,
     "dynamicInlineStyles": 21,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -4262,15 +4262,12 @@
       "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 110,
+      "lineCount": 95,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-secondary",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/shortcuts/useCampaignShortcuts.ts",
@@ -7807,6 +7804,26 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/shortcuts-panel.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 66,
+      "selectorCount": 11,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--theme-shapes-radius-small",
+        "--theme-text-primary",
+        "--theme-surfaces-interactive-hover",
+        "--theme-text-secondary",
+        "--theme-text-primary"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/sidebar-nav.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8925,7 +8942,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 88,
+      "lineCount": 89,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8992,6 +9009,7 @@
         "src/frontend/shared/styles/features/image-picker-button.css",
         "src/frontend/shared/styles/features/image-picker-modal.css",
         "src/frontend/shared/styles/features/system-announcements.css",
+        "src/frontend/shared/styles/features/shortcuts-panel.css",
         "src/frontend/shared/styles/features/dm-onboarding.css",
         "src/frontend/shared/styles/features/entity-trace.css",
         "src/frontend/shared/styles/features/canvas-page-header.css",
@@ -14904,84 +14922,6 @@
       "reason": "Large stylesheet requires atomization (279 lines, 40 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:style={{ fontSize: \"0.78rem\", color: \"var(--theme-text-secondary)\", margin: 0 }}",
-      "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
-      "line": 33,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.78rem\", color: \"var(--theme-text-secondary)\", margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:style={{ margin: \"0 0 6px\" }}",
-      "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
-      "line": 43,
-      "column": 51,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: \"0 0 6px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: 4 }}",
-      "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
-      "line": 47,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: 4 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, padding: \"6px 8px\", borderRadius: 6, cursor: location ? \"pointer\" : \"default\",",
-      "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
-      "line": 58,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                display: \"flex\",\n                alignItems: \"center\",\n                gap: 8,\n                padding: \"6px 8px\",\n                borderRadius: 6,\n                cursor: location ? \"pointer\" : \"default\",\n         ",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:style={{ flex: 1, overflow: \"hidden\", textOverflow: \"ellipsis\", whiteSpace: \"nowrap\", fontSize: \"0.82rem\", }}",
-      "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
-      "line": 76,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    flex: 1,\n                    overflow: \"hidden\",\n                    textOverflow: \"ellipsis\",\n                    whiteSpace: \"nowrap\",\n                    fontSize: \"0.82rem\",\n                  }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:style={{ background: \"none\", border: \"none\", cursor: \"pointer\", color: \"var(--theme-text-secondary)\", padding: 2 }}",
-      "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
-      "line": 98,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ background: \"none\", border: \"none\", cursor: \"pointer\", color: \"var(--theme-text-secondary)\", padding: 2 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/dm/story/history/campaignHistory.css",
       "path": "src/frontend/dm/story/history/campaignHistory.css",
       "line": 1,
@@ -18998,6 +18938,7 @@
       "src/frontend/shared/styles/features/image-picker-button.css",
       "src/frontend/shared/styles/features/image-picker-modal.css",
       "src/frontend/shared/styles/features/system-announcements.css",
+      "src/frontend/shared/styles/features/shortcuts-panel.css",
       "src/frontend/shared/styles/features/dm-onboarding.css",
       "src/frontend/shared/styles/features/entity-trace.css",
       "src/frontend/shared/styles/features/canvas-page-header.css",
