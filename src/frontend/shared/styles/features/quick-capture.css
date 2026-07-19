@@ -82,6 +82,19 @@
   color: var(--theme-text-secondary);
 }
 
+.quick-capture-sheet__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--theme-text-secondary);
+  padding: 4px;
+}
+
+.quick-capture-sheet__textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
 .quick-capture-sheet__body {
   padding: 16px;
   display: flex;
@@ -126,4 +139,3 @@
   padding: 12px 16px 16px;
   border-top: 1px solid var(--theme-borders-default);
 }
-

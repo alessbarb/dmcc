@@ -115,13 +115,7 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label={t("common.close")}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "var(--theme-text-secondary)",
-                  padding: "4px",
-                }}
+                className="quick-capture-sheet__close"
               >
                 <X size={18} />
               </button>
@@ -138,7 +132,7 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
                   if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void handleSave();
                 }}
                 maxLength={500}
-                style={{ minHeight: "96px", resize: "vertical" }}
+                className="form-textarea quick-capture-sheet__textarea"
               />
 
               <div className="quick-capture-type-grid">

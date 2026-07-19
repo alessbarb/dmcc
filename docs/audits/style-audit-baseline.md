@@ -7,9 +7,9 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 119,
-  "tsxFilesWithInlineStyles": 51,
+  "tsxFilesWithInlineStyles": 50,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 411,
+  "staticInlineStyles": 409,
   "dynamicInlineStyles": 27,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -108,7 +108,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
 | `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 988 | 153 | 1 |
-| `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 130 | 17 | 1 |
+| `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/session-prep-form.css` | legacy | shared | 53 | 9 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | legacy | shared | 15 | 2 | 1 |
@@ -202,8 +202,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:527` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/cityTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/entities/entity-card.css:1` | Large stylesheet requires atomization (394 lines, 54 selectors). |
 | high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:133` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:142` | Selector depends on another component's DOM structure. |

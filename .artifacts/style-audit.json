@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:53:34.808Z",
+  "generatedAt": "2026-07-19T10:54:08.062Z",
   "summary": {
     "cssFiles": 119,
-    "tsxFilesWithInlineStyles": 51,
+    "tsxFilesWithInlineStyles": 50,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 411,
+    "staticInlineStyles": 409,
     "dynamicInlineStyles": 27,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -1109,14 +1109,12 @@
       "path": "src/frontend/dm/capture/QuickCaptureFAB.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 199,
+      "lineCount": 193,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/components/LiveTableModal.tsx",
@@ -7615,8 +7613,8 @@
       "path": "src/frontend/shared/styles/features/quick-capture.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 130,
-      "selectorCount": 17,
+      "lineCount": 142,
+      "selectorCount": 19,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7634,6 +7632,7 @@
         "--theme-shapes-radius-large",
         "--theme-shapes-radius-large",
         "--theme-borders-default",
+        "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
@@ -9976,32 +9975,6 @@
       "category": "literal-color",
       "value": "\"blue\"",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/capture/QuickCaptureFAB.tsx:style={{ background: \"none\", border: \"none\", cursor: \"pointer\", color: \"var(--theme-text-secondary)\", padding: \"4px\", }}",
-      "path": "src/frontend/dm/capture/QuickCaptureFAB.tsx",
-      "line": 118,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                  background: \"none\",\n                  border: \"none\",\n                  cursor: \"pointer\",\n                  color: \"var(--theme-text-secondary)\",\n                  padding: \"4px\",\n                }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/capture/QuickCaptureFAB.tsx:style={{ minHeight: \"96px\", resize: \"vertical\" }}",
-      "path": "src/frontend/dm/capture/QuickCaptureFAB.tsx",
-      "line": 141,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"96px\", resize: \"vertical\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/dm/entities/EntityCreateModal.tsx:style={{ fontWeight: \"700\" }}",
