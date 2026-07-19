@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:01:28.438Z",
+  "generatedAt": "2026-07-19T11:02:10.346Z",
   "summary": {
     "cssFiles": 122,
-    "tsxFilesWithInlineStyles": 45,
+    "tsxFilesWithInlineStyles": 44,
     "forbiddenLiteralColors": 246,
-    "staticInlineStyles": 345,
+    "staticInlineStyles": 335,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -4665,12 +4665,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/main.tsx",
@@ -5998,8 +5993,8 @@
       "path": "src/frontend/shared/styles/features/auth.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 54,
-      "selectorCount": 10,
+      "lineCount": 60,
+      "selectorCount": 15,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -6008,6 +6003,7 @@
       "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
+        "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-text-secondary"
       ]
@@ -17620,136 +17616,6 @@
       "severity": "high",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (274 lines, 38 selectors)."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", background: \"var(--theme-surfaces-canvas)\" }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 62,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", background: \"var(--theme-surfaces-canvas)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 64,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ maxWidth: 620 }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 66,
-      "column": 43,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxWidth: 620 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 70,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ marginBottom: 20, padding: 16 }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 77,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginBottom: 20, padding: 16 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ marginTop: 0 }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 78,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 79,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 80,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ display: \"grid\", gap: 10 }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 85,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"grid\", gap: 10 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/invitations/InvitationPage.tsx:style={{ marginRight: 6 }}",
-      "path": "src/frontend/invitations/InvitationPage.tsx",
-      "line": 97,
-      "column": 156,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginRight: 6 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/player/components/PlayerCharacterSelectionCard.tsx:style={{ padding: 16 }}",

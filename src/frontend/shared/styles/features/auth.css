@@ -51,3 +51,9 @@
 .auth-back-icon {
   margin-right: 6px;
 }
+
+.invitation-card { max-width: 620px; }
+.invitation-secondary-copy { color: var(--theme-text-secondary); }
+.invitation-summary { margin-bottom: 20px; padding: 16px; }
+.invitation-summary__title { margin-top: 0; }
+.invitation-auth-actions { display: grid; gap: 10px; }

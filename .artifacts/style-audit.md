@@ -7,9 +7,9 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 122,
-  "tsxFilesWithInlineStyles": 45,
+  "tsxFilesWithInlineStyles": 44,
   "forbiddenLiteralColors": 246,
-  "staticInlineStyles": 345,
+  "staticInlineStyles": 335,
   "dynamicInlineStyles": 28,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -84,7 +84,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-security.css` | legacy | shared | 16 | 15 | 1 |
 | `src/frontend/shared/styles/features/admin-template-settings.css` | legacy | shared | 25 | 24 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
-| `src/frontend/shared/styles/features/auth.css` | legacy | shared | 54 | 10 | 1 |
+| `src/frontend/shared/styles/features/auth.css` | legacy | shared | 60 | 15 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1689 | 260 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
@@ -820,16 +820,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/institutional/institutional.css:1` | Large stylesheet requires atomization (274 lines, 38 selectors). |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:77` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:79` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/invitations/InvitationPage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:92` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:95` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:98` | Runtime style requires review and CSS custom-property preference. |

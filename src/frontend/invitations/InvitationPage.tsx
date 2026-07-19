@@ -59,30 +59,30 @@ export function InvitationPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--theme-surfaces-canvas)" }}>
+    <div className="auth-page-shell">
       <PortalTopBar />
-      <div className="join-portal-container" style={{ flex: 1 }}>
+      <div className="join-portal-container auth-page-content">
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
-        <div className="join-portal-card" style={{ maxWidth: 620 }}>
+        <div className="join-portal-card invitation-card">
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><Ticket className="join-portal-icon" size={32} /></div>
             <h1 className="join-portal-title">{t("invitations.title")}</h1>
-            {preview && <p style={{ color: "var(--theme-text-secondary)" }}>{t("invitations.invitedTo", { campaign: preview.campaign.title })}</p>}
+            {preview && <p className="invitation-secondary-copy">{t("invitations.invitedTo", { campaign: preview.campaign.title })}</p>}
           </div>
 
           {loading && <p aria-live="polite">{t("invitations.loading")}</p>}
           {error && <div className="join-portal-error"><p role="alert">{error}</p></div>}
 
           {preview && (
-            <section className="glass-card" style={{ marginBottom: 20, padding: 16 }}>
-              <h2 style={{ marginTop: 0 }}>{preview.campaign.title}</h2>
-              {preview.campaign.summary && <p style={{ color: "var(--theme-text-secondary)" }}>{preview.campaign.summary}</p>}
-              <p style={{ color: "var(--theme-text-secondary)" }}>{t("invitations.roleOffered", { role: t(preview.role === "player" ? "invitations.rolePlayer" : "invitations.roleCoDm") })}</p>
+            <section className="glass-card invitation-summary">
+              <h2 className="invitation-summary__title">{preview.campaign.title}</h2>
+              {preview.campaign.summary && <p className="invitation-secondary-copy">{preview.campaign.summary}</p>}
+              <p className="invitation-secondary-copy">{t("invitations.roleOffered", { role: t(preview.role === "player" ? "invitations.rolePlayer" : "invitations.roleCoDm") })}</p>
             </section>
           )}
 
           {preview && !authenticated && (
-            <div style={{ display: "grid", gap: 10 }}>
+            <div className="invitation-auth-actions">
               <button type="button" className="btn btn-primary btn-full" onClick={() => authenticateAt("/auth/login")}><LogIn size={16} /> {t("invitations.loginBtn")}</button>
               <button type="button" className="btn btn-secondary btn-full" onClick={() => authenticateAt("/auth/register")}><UserPlus size={16} /> {t("invitations.registerBtn")}</button>
             </div>
@@ -94,7 +94,7 @@ export function InvitationPage() {
             </button>
           )}
 
-          <button type="button" className="join-portal-back-btn" onClick={() => void navigate({ to: authenticated ? "/home" : "/" })}><ArrowLeft size={14} style={{ marginRight: 6 }} /> {t("invitations.backBtn")}</button>
+          <button type="button" className="join-portal-back-btn" onClick={() => void navigate({ to: authenticated ? "/home" : "/" })}><ArrowLeft className="auth-back-icon" size={14} /> {t("invitations.backBtn")}</button>
         </div>
       </div>
     </div>
