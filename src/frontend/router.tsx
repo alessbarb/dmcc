@@ -139,6 +139,9 @@ const SessionDetailPageLazy = React.lazy(() =>
 const SessionNarrativeMapPageLazy = React.lazy(() =>
   import("./dm/sessions/narrativeMap/SessionNarrativeMapPage.js").then((module) => ({ default: module.SessionNarrativeMapPage })),
 );
+const SessionConsequenceChainPageLazy = React.lazy(() =>
+  import("./dm/sessions/consequenceChain/SessionConsequenceChainPage.js").then((module) => ({ default: module.SessionConsequenceChainPage })),
+);
 const CampaignMessagesPageLazy = React.lazy(() =>
   import("./dm/pages/CampaignMessagesPage.js").then((module) => ({ default: module.CampaignMessagesPage })),
 );
@@ -400,6 +403,11 @@ const sessionNarrativeMapRoute = createRoute({
   path: "/sessions/$sessionId/map",
   component: withSuspense(SessionNarrativeMapPageLazy),
 });
+const sessionConsequenceChainRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/sessions/$sessionId/consequences",
+  component: withSuspense(SessionConsequenceChainPageLazy),
+});
 
 // Library Workspace
 const libraryRoute = createRoute({
@@ -636,6 +644,7 @@ const routeTree = rootRoute.addChildren([
     sessionsRoute,
     sessionDetailRoute,
     sessionNarrativeMapRoute,
+    sessionConsequenceChainRoute,
     libraryRoute.addChildren([
       libraryIndexRoute,
       libraryListRoute,

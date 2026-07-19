@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { Archive, Play, Waypoints, X } from "lucide-react";
+import { Archive, GitFork, Play, Waypoints, X } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
@@ -109,6 +109,9 @@ export function SessionDetailPage() {
           <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
             <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
           </Link>
+          <Link to="/campaigns/$campaignId/sessions/$sessionId/consequences" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
+            <GitFork size={14} /> {t("sessionConsequenceChain.title")}
+          </Link>
         </div>
         <SessionPlanEditor
           session={session}
@@ -128,6 +131,9 @@ export function SessionDetailPage() {
         <SessionStatusBar activeSession={session} />
         <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
           <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
+        </Link>
+        <Link to="/campaigns/$campaignId/sessions/$sessionId/consequences" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
+          <GitFork size={14} /> {t("sessionConsequenceChain.title")}
         </Link>
         <ActiveSessionPrepPanel session={session} campaignState={campaignState} />
         <QuickCaptureBar
@@ -170,6 +176,9 @@ export function SessionDetailPage() {
         </time>
         <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
           <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
+        </Link>
+        <Link to="/campaigns/$campaignId/sessions/$sessionId/consequences" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
+          <GitFork size={14} /> {t("sessionConsequenceChain.title")}
         </Link>
       </section>
     </div>

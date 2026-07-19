@@ -298,4 +298,81 @@ describe("session web routes", () => {
     });
     expect(response.statusCode).toBe(404);
   });
+
+  it("builds a consequence chain with an origin edge from the consequence's metadata", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const sessionId = createId("sess");
+    const originEntityId = createId("ent");
+    const consequenceEntityId = createId("ent");
+
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/entities`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { entityId: originEntityId, entityType: "npc", title: "Klarg" },
+    });
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/entities`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: {
+        entityId: consequenceEntityId,
+        entityType: "consequence",
+        title: "Goblin ambush retaliates",
+        metadata: { originEntityId },
+      },
+    });
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/planned`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { sessionId, title: "La emboscada" },
+    });
+    await server.inject({
+      method: "PUT",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/plan`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: {
+        expectedRevision: 0,
+        title: "La emboscada",
+        plan: {
+          version: 2,
+          state: "ready",
+          goals: [],
+          checklist: [],
+          flowItems: [],
+          contentLinks: [{ id: "spcl_ambush", entityId: consequenceEntityId, role: "expected_consequence", order: 0 }],
+          transitions: [],
+          bindings: [],
+        },
+      },
+    });
+
+    const response = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/consequence-chain`,
+      headers,
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json() as {
+      consequenceChain: { nodes: Array<{ id: string; kind: string; label: string }>; edges: Array<{ sourceId: string; targetId: string; kind: string }> };
+    };
+    const originNode = body.consequenceChain.nodes.find((node) => node.label === "Klarg");
+    expect(originNode).toMatchObject({ kind: "context_entity" });
+    expect(body.consequenceChain.edges).toContainEqual(
+      expect.objectContaining({ sourceId: originNode?.id, targetId: "spcl_ambush", kind: "causes" }),
+    );
+  });
+
+  it("returns 404 for a consequence chain of a session that doesn't exist", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const response = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/sess_missing/consequence-chain`,
+      headers,
+    });
+    expect(response.statusCode).toBe(404);
+  });
 });

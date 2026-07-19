@@ -15,6 +15,7 @@ import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { writeMarkdownCampaignExport } from "../../export/markdownCampaignExport.js";
 import { PostgresCampaignRepository, projectionToCampaignState } from "../postgresCampaignRepository.js";
 import { buildSessionNarrativeProjection } from "@core/domain/session/projection/buildSessionNarrativeProjection.js";
+import { buildSessionConsequenceProjection } from "@core/domain/session/projection/buildSessionConsequenceProjection.js";
 import { moveCampaignToTrash } from "../../../operations/campaigns/campaignTrash.js";
 import { getRequiredWebUser } from "../webSession.js";
 import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampaignOwner, requireCampaignRole } from "../webAccess.js";
@@ -515,6 +516,17 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       return { error: "SESSION_NOT_FOUND" };
     }
     return { narrativeMap: buildSessionNarrativeProjection(session, state) };
+  });
+  server.get<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/consequence-chain", async (request, reply) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const projection = await repo.getCampaignState(request.params.campaignId);
+    const state = projectionToCampaignState(request.params.campaignId, projection);
+    const session = state.sessions.get(request.params.sessionId);
+    if (!session) {
+      reply.code(404);
+      return { error: "SESSION_NOT_FOUND" };
+    }
+    return { consequenceChain: buildSessionConsequenceProjection(session, state) };
   });
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/planned", async (request, reply) => executeDmCommand(request, reply, { type: "CreatePreparedSession", ...(request.body ?? {}) }));
   server.put<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/plan", async (request, reply) => executeDmCommand(request, reply, { type: "ReviseSessionPlan", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
