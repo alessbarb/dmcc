@@ -43,6 +43,8 @@ checkout actual la migración es incremental:
 * la fundación, las primitivas iniciales y parte de los layouts ya están
   extraídos en `shared/styles/`;
 * la importación monolítica `index.css` ya fue eliminada;
+* los dominios de navegación, captura rápida, plantillas, dashboard, canvas,
+  portal de jugador y archivo de landing ya tienen hojas explícitas;
 * `application-domains.css`, `landing.css` y `account.css` conservan dominios
   todavía pendientes de subdivisión y no deben recibir estilos nuevos;
 * el baseline del auditor es un ratchet de deuda existente, no una aprobación
