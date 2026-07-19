@@ -680,17 +680,7 @@ export function CanvasPage() {
           onClick={() => {
             stopFullscreenPresentation();
           }}
-          className="btn btn-primary"
-          style={{
-            position: "absolute",
-            top: "16px",
-            right: "16px",
-            zIndex: 99999,
-            boxShadow: "var(--theme-shadows-large)",
-            fontSize: "12px",
-            padding: "8px 12px",
-            opacity: 0.8
-          }}
+          className="btn btn-primary canvas-presentation-exit"
         >
           ❌ Salir de Presentación
         </button>

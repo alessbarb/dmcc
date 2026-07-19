@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 115,
-  "tsxFilesWithInlineStyles": 57,
+  "cssFiles": 116,
+  "tsxFilesWithInlineStyles": 56,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 462,
+  "staticInlineStyles": 461,
   "dynamicInlineStyles": 29,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -95,6 +95,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-narrative-lint.css` | legacy | shared | 80 | 14 | 1 |
 | `src/frontend/shared/styles/features/canvas-page-header.css` | legacy | shared | 18 | 17 | 1 |
 | `src/frontend/shared/styles/features/canvas-palette.css` | legacy | shared | 195 | 30 | 1 |
+| `src/frontend/shared/styles/features/canvas-presentation.css` | legacy | shared | 11 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-toolbar.css` | legacy | shared | 24 | 5 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1347 | 191 | 1 |
@@ -125,7 +126,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 74 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 75 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -248,7 +249,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:548` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:549` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:527` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/pages/CanvasPage.tsx:684` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/templates/cityTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |

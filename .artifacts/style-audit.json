@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:49:58.676Z",
+  "generatedAt": "2026-07-19T10:50:35.292Z",
   "summary": {
-    "cssFiles": 115,
-    "tsxFilesWithInlineStyles": 57,
+    "cssFiles": 116,
+    "tsxFilesWithInlineStyles": 56,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 462,
+    "staticInlineStyles": 461,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -970,14 +970,12 @@
       "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 923,
+      "lineCount": 913,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-shadows-large"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/selectors/canvasNavigatorSelectors.ts",
@@ -6702,6 +6700,21 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-presentation.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 1,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-shadows-large"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-toolbar.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8726,7 +8739,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 74,
+      "lineCount": 75,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8794,7 +8807,8 @@
         "src/frontend/shared/styles/features/canvas-toolbar.css",
         "src/frontend/shared/styles/features/canvas-flow.css",
         "src/frontend/shared/styles/features/canvas-dialog-forms.css",
-        "src/frontend/shared/styles/features/canvas-mystery-health.css"
+        "src/frontend/shared/styles/features/canvas-mystery-health.css",
+        "src/frontend/shared/styles/features/canvas-presentation.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10576,19 +10590,6 @@
       "category": "literal-color",
       "value": "hsl(230, 28%, 10%)",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/pages/CanvasPage.tsx:style={{ position: \"absolute\", top: \"16px\", right: \"16px\", zIndex: 99999, boxShadow: \"var(--theme-shadows-large)\", fontSize: \"12px\", padding: \"8px 12px\",",
-      "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
-      "line": 684,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n            position: \"absolute\",\n            top: \"16px\",\n            right: \"16px\",\n            zIndex: 99999,\n            boxShadow: \"var(--theme-shadows-large)\",\n            fontSize: \"12px\",\n            padding: \"8px 12px\",\n  ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "literal-color:src/frontend/dm/canvas/templates/cityTemplate.ts:\"green\"",
@@ -24573,7 +24574,8 @@
       "src/frontend/shared/styles/features/canvas-toolbar.css",
       "src/frontend/shared/styles/features/canvas-flow.css",
       "src/frontend/shared/styles/features/canvas-dialog-forms.css",
-      "src/frontend/shared/styles/features/canvas-mystery-health.css"
+      "src/frontend/shared/styles/features/canvas-mystery-health.css",
+      "src/frontend/shared/styles/features/canvas-presentation.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

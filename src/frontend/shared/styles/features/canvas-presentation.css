@@ -1,0 +1,10 @@
+.canvas-presentation-exit {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 99999;
+  padding: 8px 12px;
+  box-shadow: var(--theme-shadows-large);
+  font-size: 12px;
+  opacity: 0.8;
+}
