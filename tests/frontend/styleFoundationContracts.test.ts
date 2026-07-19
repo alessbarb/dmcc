@@ -34,10 +34,10 @@ describe("global style foundation", () => {
     );
   });
 
-  it("keeps the global entrypoint explicit", () => {
+  it("keeps the global entrypoint explicit without the monolithic stylesheet", () => {
     const entrypoint = read("src/frontend/shared/styles/main.css");
     expect(entrypoint).toContain('@import "./foundation/reset.css";');
-    expect(entrypoint).toContain('@import "./index.css";');
+    expect(entrypoint).not.toContain('@import "./index.css";');
   });
 
   it("routes extracted shell and primitive responsibilities through shared styles", () => {
@@ -51,6 +51,7 @@ describe("global style foundation", () => {
       "./layout/responsive.css",
       "./features/graph-search.css",
       "./features/timeline.css",
+      "./features/landing-legacy.css",
       "./primitives/dialog.css",
       "./primitives/overlay.css",
       "./primitives/tabs.css",

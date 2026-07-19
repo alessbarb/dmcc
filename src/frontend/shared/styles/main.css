@@ -37,5 +37,5 @@
 @import "./landing.css";
 @import "../../account/account.css";
 
-/* Legacy global rules are atomized by the approved domain sprints. */
-@import "./index.css";
+/* Transitional domain slices retain legacy cascade order during migration. */
+@import "./features/landing-legacy.css";
