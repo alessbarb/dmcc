@@ -1,0 +1,180 @@
+.canvas-navigator-result-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.canvas-navigator-result {
+  align-items: flex-start;
+  background-color: var(--theme-surfaces-interactive);
+  border: 1px solid transparent;
+  border-radius: var(--theme-shapes-radius-small);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  text-align: left;
+  width: 100%;
+}
+
+.canvas-navigator-result:hover {
+  border-color: var(--theme-accents-primary-foreground);
+}
+
+.canvas-navigator-result span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.canvas-navigator-result strong {
+  font-size: 0.78rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.canvas-navigator-result-action {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  color: var(--theme-accents-primary-foreground);
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0 8px 4px;
+}
+
+small.canvas-navigator-result-action {
+  color: var(--theme-text-secondary);
+  cursor: default;
+}
+
+.canvas-navigator-result small,
+.canvas-navigator-empty {
+  color: var(--theme-text-secondary);
+  font-size: 0.68rem;
+}
+
+.palette-section h3 {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--theme-text-secondary);
+  margin-bottom: 12px;
+}
+
+.palette-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.palette-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--theme-shapes-radius-small);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  border: 1px solid var(--theme-borders-default);
+  transition: all var(--transition-fast);
+}
+
+.palette-btn--note {
+  background-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 10%, transparent);
+  border-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 25%, transparent);
+}
+.palette-btn--note:hover {
+  background-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 20%, transparent);
+  border-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 50%, transparent);
+}
+
+.palette-btn--group {
+  background-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 15%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 25%, transparent);
+}
+.palette-btn--group:hover {
+  background-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 25%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 50%, transparent);
+}
+
+.palette-divider {
+  height: 1px;
+  background-color: var(--theme-borders-default);
+}
+
+.palette-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.palette-list-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-surfaces-interactive);
+  border: 1px solid var(--theme-borders-default);
+  color: var(--theme-text-primary);
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.palette-list-item-btn:hover {
+  border-color: var(--item-color);
+  background-color: var(--theme-surfaces-interactive-hover);
+  transform: translateX(2px);
+}
+
+.palette-search-container {
+  position: relative;
+}
+
+.palette-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.palette-search-icon {
+  position: absolute;
+  left: 8px;
+  color: var(--theme-text-secondary);
+}
+
+.palette-search-input {
+  width: 100%;
+  padding: 6px 8px 6px 28px;
+  font-size: 0.8rem;
+  background-color: var(--theme-surfaces-interactive);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-small);
+  color: var(--theme-text-primary);
+}
+
+.palette-search-results {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-small);
+  box-shadow: var(--theme-shadows-large);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 100;
+}
+

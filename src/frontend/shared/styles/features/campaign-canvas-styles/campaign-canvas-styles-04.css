@@ -1,0 +1,140 @@
+@keyframes rg-secret-dash {
+  to { stroke-dashoffset: -20; }
+}
+
+.rg-card {
+  --rg-accent: var(--theme-accents-secondary-foreground);
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--rg-accent) 30%, var(--theme-surfaces-interactive-hover));
+  background: linear-gradient(160deg, var(--theme-surfaces-subtle) 0%, var(--theme-surfaces-base) 100%);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent), inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.rg-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 65%, transparent), 0 0 0 1px color-mix(in srgb, var(--rg-accent) 50%, transparent);
+}
+
+/* Hero dimensions by card style */
+.rg-card--portrait  { width: 155px; }
+.rg-card--panorama  { width: 200px; }
+.rg-card--compact   { width: 155px; }
+
+.rg-card--border-dashed { border-style: dashed; }
+.rg-card--border-double { border-style: double; border-width: 3px; }
+.rg-card--shape-veiled {
+  background:
+    linear-gradient(135deg, var(--card-accent-soft), transparent 45%),
+    linear-gradient(160deg, var(--theme-surfaces-subtle), var(--theme-surfaces-base));
+}
+
+.rg-card--shape-hex-header .rg-card__hero {
+  clip-path: polygon(8% 0, 92% 0, 100% 50%, 92% 100%, 8% 100%, 0 50%);
+  margin: 4px;
+  width: calc(100% - 8px);
+}
+
+.rg-card--shape-portrait .rg-card__hero-icon {
+  box-sizing: content-box;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 55%, transparent);
+  border-radius: 50%;
+  background: var(--card-accent-soft);
+}
+
+.rg-card__hero-icon { color: var(--card-accent); }
+
+.palette-item__icon { color: var(--item-color); }
+
+.rg-card__privacy-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-2);
+  min-width: 100%;
+  min-height: 100%;
+  border: 0;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 8px, color-mix(in srgb, var(--theme-text-on-media) 3%, transparent) 8px 9px),
+    color-mix(in srgb, var(--theme-surfaces-canvas) 98%, transparent);
+  color: var(--theme-narrative-secret-foreground);
+  font: 700 0.75rem/1.2 var(--font-sans);
+  cursor: pointer;
+}
+
+.rg-card__privacy-cover:focus-visible {
+  outline: 3px solid var(--theme-accents-primary-foreground);
+  outline-offset: -3px;
+}
+
+/* Dashboard narrative composition */
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.dashboard-section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.dashboard-section-label > span {
+  color: var(--theme-text-subtle);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.dashboard-section-label > div {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--theme-borders-default), transparent);
+}
+
+.dashboard-empty-slot {
+  color: var(--theme-text-subtle);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.dashboard-command-metric {
+  min-width: 0;
+  padding: var(--space-3) 0.875rem;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-interactive);
+}
+
+.dashboard-command-metric__label {
+  margin-bottom: 5px;
+  color: var(--theme-text-subtle);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dashboard-command-metric__value { color: var(--theme-text-primary); font-size: 1.35rem; font-weight: 900; }
+.dashboard-command-metric__detail { margin-top: 3px; color: var(--theme-text-subtle); font-size: 0.875rem; }
+
+.dashboard-flow-step {
+  display: flex;
+  gap: 10px;
+  padding: var(--space-3);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-interactive);
+}
+

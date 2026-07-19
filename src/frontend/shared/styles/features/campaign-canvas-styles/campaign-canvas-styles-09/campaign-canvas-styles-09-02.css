@@ -1,0 +1,53 @@
+
+
+@keyframes drawerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Layout Optimization for Canvas --- */
+.app-container--canvas {
+  padding-bottom: 0 !important;
+}
+.app-container--canvas .sidebar {
+  height: 100vh !important;
+}
+
+/* Sidebar collapse */
+.sidebar {
+  transition: width 0.2s ease;
+  overflow: hidden;
+}
+.sidebar--collapsed { width: 52px; }
+.sidebar--collapsed .sidebar-logo,
+.sidebar--collapsed .sidebar-logo-subtitle {
+  display: none;
+}
+.sidebar--collapsed .nav-item span {
+  display: none;
+}
+
+/* --- Toolbar Grouping & Layout --- */
+.canvas-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.canvas-toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--theme-borders-default);
+  margin: 0 6px;
+  opacity: 0.5;
+}
+
+/* --- Canvas Card Density Modifiers --- */
+.rg-card--density-compact {
+  width: 130px !important;
+}

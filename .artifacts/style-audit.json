@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:56:52.050Z",
+  "generatedAt": "2026-07-19T11:57:26.162Z",
   "summary": {
-    "cssFiles": 160,
+    "cssFiles": 174,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 36,
+    "mixedResponsibilityFiles": 35,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -5970,21 +5970,17 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 1696,
-      "selectorCount": 261,
+      "lineCount": 206,
+      "selectorCount": 25,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/campaign-canvas.css"
       ],
       "variableDefinitions": [
-        "--active",
-        "--note",
-        "--group",
-        "--rg-accent",
-        "--blocked"
+        "--active"
       ],
       "variableReferences": [
         "--theme-text-secondary",
@@ -6014,7 +6010,24 @@
         "--theme-borders-default",
         "--theme-shapes-radius-small",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 181,
+      "selectorCount": 24,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [
+        "--note",
+        "--group"
+      ],
+      "variableReferences": [
         "--theme-surfaces-interactive",
         "--theme-shapes-radius-small",
         "--theme-text-primary",
@@ -6051,7 +6064,21 @@
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
-        "--theme-shadows-large",
+        "--theme-shadows-large"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 158,
+      "selectorCount": 22,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-secondary",
@@ -6088,7 +6115,23 @@
         "--theme-surfaces-canvas",
         "--rg-accent",
         "--theme-surfaces-canvas",
-        "--rg-accent",
+        "--rg-accent"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 141,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [
+        "--rg-accent"
+      ],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--rg-accent",
         "--theme-surfaces-interactive-hover",
@@ -6127,7 +6170,23 @@
         "--space-3",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
-        "--theme-surfaces-interactive",
+        "--theme-surfaces-interactive"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 119,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [
+        "--blocked"
+      ],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-interactive-hover",
         "--theme-text-subtle",
@@ -6159,7 +6218,21 @@
         "--theme-surfaces-canvas",
         "--rg-accent",
         "--theme-feedback-warning-foreground",
-        "--theme-feedback-warning-foreground",
+        "--theme-feedback-warning-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 172,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--rg-accent",
         "--theme-surfaces-canvas",
         "--rg-accent",
@@ -6190,7 +6263,21 @@
         "--theme-feedback-info-background",
         "--theme-feedback-success-background",
         "--theme-activity-relation-background",
-        "--theme-narrative-secret-background",
+        "--theme-narrative-secret-background"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 203,
+      "selectorCount": 30,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
@@ -6226,7 +6313,21 @@
         "--theme-accents-secondary-foreground",
         "--theme-text-secondary",
         "--fact-color",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 173,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-shapes-radius-medium",
@@ -6254,7 +6355,21 @@
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 87,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-shapes-radius-small",
         "--theme-surfaces-interactive",
@@ -6269,8 +6384,80 @@
         "--theme-surfaces-interactive",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 53,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 34,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 20,
+      "selectorCount": 3,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 161,
+      "selectorCount": 22,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-canvas.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-base",
         "--theme-text-primary",
@@ -6300,6 +6487,30 @@
         "--theme-text-secondary",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-01.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-02.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css",
+        "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/campaign-messaging.css",
@@ -14360,9 +14571,9 @@
       "reason": "Large stylesheet requires atomization (67 lines, 42 selectors)."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 497,
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "line": 112,
       "column": 50,
       "severity": "high",
       "status": "temporary",
@@ -14372,9 +14583,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 498,
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "line": 113,
       "column": 92,
       "severity": "high",
       "status": "temporary",
@@ -14384,9 +14595,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 502,
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "line": 117,
       "column": 51,
       "severity": "high",
       "status": "temporary",
@@ -14396,9 +14607,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 503,
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "line": 118,
       "column": 56,
       "severity": "high",
       "status": "temporary",
@@ -14408,9 +14619,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 530,
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "line": 145,
       "column": 57,
       "severity": "high",
       "status": "temporary",
@@ -14420,9 +14631,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 531,
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "line": 146,
       "column": 43,
       "severity": "high",
       "status": "temporary",
@@ -14432,657 +14643,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 762,
-      "column": 57,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 763,
-      "column": 172,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 959,
-      "column": 121,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 963,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1093,
-      "column": 164,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1225,
-      "column": 97,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1226,
-      "column": 94,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1230,
-      "column": 94,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1248,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1252,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1253,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1254,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1255,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1260,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1261,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1262,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1266,
-      "column": 99,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1267,
-      "column": 99,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1268,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1272,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1273,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1274,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1325,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1412,
-      "column": 55,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1413,
-      "column": 50,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1447,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1450,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1483,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1486,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1493,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1496,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1499,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1502,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1505,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1509,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1512,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1516,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1519,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1522,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1525,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1526,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1527,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1528,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1529,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1530,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1531,
-      "column": 25,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1532,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1533,
-      "column": 32,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1538,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1539,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1540,
-      "column": 92,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1543,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1544,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/campaign-canvas.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1548,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/features/campaign-canvas.css:color: var(--theme-text-subtle); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; } .dashboard-section-label > div",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 635,
+      "id": "cross-component-selector:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css:color: var(--theme-text-subtle); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; } .dashboard-section-label > div",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css",
+      "line": 93,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -15092,15 +14655,652 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/campaign-canvas.css",
-      "path": "src/frontend/shared/styles/features/campaign-canvas.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css",
+      "line": 80,
+      "column": 57,
+      "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1696 lines, 261 selectors)."
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css",
+      "line": 81,
+      "column": 172,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css",
+      "line": 159,
+      "column": 121,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css",
+      "line": 163,
+      "column": 45,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css",
+      "line": 122,
+      "column": 164,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 52,
+      "column": 97,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 53,
+      "column": 94,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 57,
+      "column": 94,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 75,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 79,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 80,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 81,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 82,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 87,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 88,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 89,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 93,
+      "column": 99,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 94,
+      "column": 99,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 95,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 99,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 100,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 101,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "line": 152,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css",
+      "line": 67,
+      "column": 55,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css",
+      "line": 68,
+      "column": 50,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
+      "line": 16,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
+      "line": 19,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
+      "line": 52,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 3,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 10,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 13,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 16,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 19,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 22,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 26,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 29,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "line": 33,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 3,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 6,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 9,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 10,
+      "column": 23,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 11,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 12,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 13,
+      "column": 27,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 14,
+      "column": 24,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 15,
+      "column": 25,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 16,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css",
+      "line": 17,
+      "column": 32,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "line": 3,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "line": 4,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "line": 5,
+      "column": 92,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "line": 8,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "line": 9,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css",
+      "line": 13,
+      "column": 24,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/campaign-messaging.css",
@@ -16132,6 +16332,24 @@
     ],
     "src/frontend/shared/components/Watermark.tsx": [
       "src/frontend/shared/components/watermark.css"
+    ],
+    "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css": [
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css"
+    ],
+    "src/frontend/shared/styles/features/campaign-canvas.css": [
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-01.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-02.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css",
+      "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css"
     ],
     "src/frontend/shared/styles/landing/landing-05.css": [
       "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",

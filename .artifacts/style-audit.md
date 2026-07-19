@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 160,
+  "cssFiles": 174,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 36,
+  "mixedResponsibilityFiles": 35,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -90,7 +90,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-template-settings.css` | feature | shared | 25 | 24 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | feature | shared | 67 | 42 | 1 |
 | `src/frontend/shared/styles/features/auth.css` | feature | shared | 60 | 15 | 1 |
-| `src/frontend/shared/styles/features/campaign-canvas.css` | feature | shared | 1696 | 261 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-01.css` | feature | shared | 206 | 25 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-02.css` | feature | shared | 181 | 24 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css` | feature | shared | 158 | 22 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css` | feature | shared | 141 | 25 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css` | feature | shared | 119 | 25 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css` | feature | shared | 172 | 25 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css` | feature | shared | 203 | 30 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css` | feature | shared | 173 | 25 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css` | feature | shared | 87 | 12 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css` | feature | shared | 53 | 12 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css` | feature | shared | 34 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css` | feature | shared | 20 | 3 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css` | feature | shared | 5 | 0 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css` | feature | shared | 161 | 22 | 1 |
+| `src/frontend/shared/styles/features/campaign-canvas.css` | feature | shared | 11 | 0 | 1 |
 | `src/frontend/shared/styles/features/campaign-messaging.css` | feature | shared | 39 | 38 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | feature | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | feature | shared | 28 | 27 | 1 |
@@ -554,68 +568,67 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-campaigns.css:1` | Large stylesheet requires atomization (36 lines, 36 selectors). |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-purge.css:1` | Large stylesheet requires atomization (41 lines, 37 selectors). |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-users.css:1` | Large stylesheet requires atomization (67 lines, 42 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-canvas.css:1` | Large stylesheet requires atomization (1696 lines, 261 selectors). |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:497` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:498` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:502` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:503` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:530` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:531` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/features/campaign-canvas.css:635` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:762` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:763` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:959` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:963` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1093` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1225` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1226` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1230` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1248` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1252` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1253` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1254` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1255` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1260` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1261` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1262` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1266` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1267` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1268` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1272` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1273` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1274` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1325` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1412` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1413` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1447` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1450` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1483` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1486` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1493` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1496` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1499` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1502` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1505` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1509` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1512` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1516` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1519` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1522` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1525` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1526` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1527` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1528` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1529` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1530` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1531` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1532` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1533` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1538` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1539` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1540` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1543` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1544` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1548` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:112` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:113` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:117` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:118` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:145` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:146` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css:93` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css:81` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css:159` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-06.css:163` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-07.css:122` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:75` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:79` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:81` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:82` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:87` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:88` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:89` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:93` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:94` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:95` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:99` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:100` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:101` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-08.css:152` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css:67` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-01.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-02.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:3` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:13` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:22` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:29` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-03.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:3` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:6` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:9` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:11` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:12` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:13` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09/campaign-canvas-styles-09-04.css:17` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:3` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:8` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:9` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-10.css:13` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/campaign-messaging.css:1` | Large stylesheet requires atomization (39 lines, 38 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-template.css:1` | Large stylesheet requires atomization (729 lines, 105 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:441` | Important declarations bypass the intended cascade. |

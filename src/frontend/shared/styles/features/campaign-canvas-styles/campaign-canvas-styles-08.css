@@ -1,0 +1,172 @@
+.inspector-close-btn {
+  background: none;
+  border: none;
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.inspector-close-btn:hover {
+  color: var(--theme-text-primary);
+}
+
+.inspector-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inspector-badge-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.note-inspector-textarea {
+  min-height: 180px;
+}
+
+.inspector-image-preview {
+  margin-top: 6px;
+  border-radius: var(--theme-shapes-radius-medium);
+  overflow: hidden;
+  border: 1px solid var(--theme-borders-default);
+  max-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-surfaces-canvas);
+}
+
+.inspector-image-preview img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.inspector-dm-notes {
+  background-color: color-mix(in srgb, var(--theme-activity-system-foreground) 2%, transparent) !important;
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 15%, transparent) !important;
+}
+
+.inspector-dm-notes:focus {
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 40%, transparent) !important;
+}
+
+.inspector-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Campaign Canvas Inline & Bulk Operations styles */
+.main-content--canvas {
+  overflow: hidden !important;
+}
+
+.main-content--canvas .canvas-page-container {
+  height: 100% !important;
+  width: 100% !important;
+  max-height: none !important;
+  max-width: none !important;
+}
+
+/* Visibility badges styling */
+.rg-card__dm-badge--secret {
+  background-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 85%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 50%, transparent) !important;
+  color: var(--theme-text-on-media) !important;
+}
+
+.rg-card__dm-badge--revealed {
+  background-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 85%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 50%, transparent) !important;
+  color: var(--theme-text-on-media) !important;
+}
+
+.rg-card__dm-badge--partial {
+  background-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 85%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent) !important;
+  color: var(--theme-text-on-media) !important;
+}
+
+/* Floating multi-select actions bar */
+.canvas-multiselect-bar {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--theme-canvas-toolbar-background);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--theme-borders-default);
+  padding: 12px 24px;
+  border-radius: var(--theme-shapes-radius-large);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 1000;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent), 0 0 15px color-mix(in srgb, var(--theme-accents-secondary-foreground) 15%, transparent);
+  animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.canvas-multiselect-text {
+  font-size: 0.9rem;
+  color: var(--theme-text-primary);
+}
+
+.canvas-multiselect-text strong {
+  color: var(--theme-accents-primary-foreground);
+  font-size: 1.05rem;
+}
+
+.canvas-multiselect-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Node direction toolbar styles */
+.rg-card.has-direction-toolbar {
+  overflow: visible !important;
+}
+
+.node-direction-toolbar {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  display: flex;
+  background: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  padding: 4px;
+  gap: 4px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+

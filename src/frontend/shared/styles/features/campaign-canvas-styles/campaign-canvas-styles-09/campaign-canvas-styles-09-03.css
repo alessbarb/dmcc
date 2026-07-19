@@ -1,0 +1,34 @@
+
+.rg-card--density-compact .rg-card__hero {
+  height: 32px !important;
+}
+.rg-card--density-compact .rg-card__hero img,
+.rg-card--density-compact .rg-card__hero svg {
+  transform: scale(0.65);
+}
+.rg-card--density-compact .rg-card__dm-badge {
+  display: none !important;
+}
+.rg-card--density-compact .rg-card__type-badge {
+  display: none !important;
+}
+.rg-card--density-compact .rg-card__sub {
+  display: none !important;
+}
+.rg-card--density-compact .rg-card__body {
+  padding: 4px 6px !important;
+}
+.rg-card--density-compact .rg-card__name {
+  font-size: 0.78rem !important;
+}
+
+.rg-card--density-normal {
+  width: 170px !important;
+}
+.rg-card--density-normal.rg-card--panorama {
+  width: 215px !important;
+}
+
+.rg-card--density-detailed {
+  width: 225px !important;
+}
