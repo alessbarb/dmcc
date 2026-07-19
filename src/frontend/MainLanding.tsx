@@ -46,7 +46,7 @@ function AppPreviewMock() {
           </div>
         </div>
         <div className="rl-preview-body">
-          <div className="rl-preview-cover" style={{ backgroundImage: "url(/assets/campaigns/campaign-template-oracle.jpg)" }}>
+          <div className="rl-preview-cover">
             <div className="rl-preview-cover__overlay" />
             <span className="rl-preview-cover__title">Oracle: La Triple Eclipse</span>
             <span className="rl-preview-cover__badge"><span className="rl-preview-pulse" />Sesión activa</span>

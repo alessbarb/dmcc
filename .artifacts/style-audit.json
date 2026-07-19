@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T09:45:07.761Z",
+  "generatedAt": "2026-07-19T09:45:42.732Z",
   "summary": {
     "cssFiles": 82,
     "tsxFilesWithInlineStyles": 87,
     "forbiddenLiteralColors": 310,
-    "staticInlineStyles": 1068,
+    "staticInlineStyles": 1067,
     "dynamicInlineStyles": 31,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -7683,7 +7683,7 @@
       "path": "src/frontend/shared/styles/landing.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 2640,
+      "lineCount": 2641,
       "selectorCount": 392,
       "imports": [],
       "importedBy": [
@@ -8833,19 +8833,6 @@
     }
   ],
   "findings": [
-    {
-      "id": "static-inline:src/frontend/MainLanding.tsx:style={{ backgroundImage: \"url(/assets/campaigns/campaign-template-oracle.jpg)\" }}",
-      "path": "src/frontend/MainLanding.tsx",
-      "line": 49,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ backgroundImage: \"url(/assets/campaigns/campaign-template-oracle.jpg)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '22%', left: '16%' }}",
       "path": "src/frontend/MainLanding.tsx",
@@ -31901,7 +31888,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:blue",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 598,
+      "line": 599,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -31913,7 +31900,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:green",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 604,
+      "line": 605,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -31925,7 +31912,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:blue",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 858,
+      "line": 859,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -31937,7 +31924,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:green",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 859,
+      "line": 860,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -31949,7 +31936,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#fff",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 1814,
+      "line": 1815,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -31961,7 +31948,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(239, 68, 68, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2283,
+      "line": 2284,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -31973,7 +31960,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(239, 68, 68, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2284,
+      "line": 2285,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -31985,7 +31972,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#ef4444",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2285,
+      "line": 2286,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -31997,7 +31984,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(59, 130, 246, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2289,
+      "line": 2290,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -32009,7 +31996,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(59, 130, 246, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2290,
+      "line": 2291,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -32021,7 +32008,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#3b82f6",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2291,
+      "line": 2292,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -32033,7 +32020,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(34, 197, 94, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2295,
+      "line": 2296,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -32045,7 +32032,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(34, 197, 94, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2296,
+      "line": 2297,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -32057,7 +32044,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#22c55e",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2297,
+      "line": 2298,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -32069,7 +32056,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(168, 85, 247, 0.12)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2301,
+      "line": 2302,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -32081,7 +32068,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:rgba(168, 85, 247, 0.25)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2302,
+      "line": 2303,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -32093,7 +32080,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/landing.css:#a855f7",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 2303,
+      "line": 2304,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -32117,7 +32104,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-place-in 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-cn-node:nth-child(1)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 695,
+      "line": 696,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -32129,7 +32116,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(2)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 699,
+      "line": 700,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32141,7 +32128,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(3)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 700,
+      "line": 701,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32153,7 +32140,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(4)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 701,
+      "line": 702,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32165,7 +32152,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-cn-node:nth-child(5)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 702,
+      "line": 703,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32177,7 +32164,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-slide-up 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-mem-card:nth-child(1)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 706,
+      "line": 707,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -32189,7 +32176,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-mem-card:nth-child(2)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 710,
+      "line": 711,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32201,7 +32188,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-mem-card:nth-child(3)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 711,
+      "line": 712,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32213,7 +32200,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-slide-right 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-player:nth-child(1)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 715,
+      "line": 716,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -32225,7 +32212,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-player:nth-child(2)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 719,
+      "line": 720,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32237,7 +32224,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-player:nth-child(3)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 720,
+      "line": 721,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32249,7 +32236,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:animation: rl-slide-right 0.34s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-vis-row:nth-child(1)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 724,
+      "line": 725,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -32261,7 +32248,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-vis-row:nth-child(2)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 728,
+      "line": 729,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32273,7 +32260,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-vis-row:nth-child(3)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 729,
+      "line": 730,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32285,7 +32272,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/landing.css:.rl-animate--visible .rl-network-vis-row:nth-child(4)",
       "path": "src/frontend/shared/styles/landing.css",
-      "line": 730,
+      "line": 731,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -32303,7 +32290,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (2640 lines, 392 selectors)."
+      "reason": "Large stylesheet requires atomization (2641 lines, 392 selectors)."
     },
     {
       "id": "global-selector:src/frontend/shared/styles/layout/grid.css:.grid",

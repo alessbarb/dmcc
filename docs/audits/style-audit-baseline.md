@@ -9,7 +9,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "cssFiles": 82,
   "tsxFilesWithInlineStyles": 87,
   "forbiddenLiteralColors": 310,
-  "staticInlineStyles": 1068,
+  "staticInlineStyles": 1067,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -85,7 +85,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/index.css` | legacy | shared | 8335 | 1216 | 1 |
-| `src/frontend/shared/styles/landing.css` | legacy | shared | 2640 | 392 | 1 |
+| `src/frontend/shared/styles/landing.css` | legacy | shared | 2641 | 392 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 108 | 13 | 1 |
 | `src/frontend/shared/styles/layout/footer.css` | layout | shared | 71 | 7 | 1 |
@@ -1479,7 +1479,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/invitations/InvitationPage.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/invitations/InvitationPage.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/invitations/InvitationPage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/MainLanding.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:92` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:95` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:98` | Runtime style requires review and CSS custom-property preference. |
@@ -1904,7 +1903,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:8141` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8184` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2640 lines, 392 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2641 lines, 392 selectors). |
 | high | literal-color | `src/frontend/shared/styles/landing.css:13` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:14` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:15` | Literal visual color outside a registered theme package. |
@@ -1946,38 +1945,38 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:211` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:474` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:476` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:598` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:604` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:695` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:699` | Selector depends on another component's DOM structure. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:599` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:605` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:696` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:700` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:701` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:702` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:706` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:710` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:703` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:707` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:711` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:715` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:719` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:712` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:716` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:720` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:724` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing.css:728` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:721` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:725` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:729` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:730` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:858` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing.css:731` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:859` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:1814` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2283` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:860` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:1815` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2284` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2285` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2289` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2286` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2290` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2291` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2295` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2292` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2296` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2297` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/landing.css:2301` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2298` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2302` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2303` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/landing.css:2304` | Literal visual color outside a registered theme package. |
 | medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1009 lines, 150 selectors). |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |

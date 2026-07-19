@@ -487,6 +487,7 @@ body:has(.rl-root) .watermark {
 .rl-preview-cover {
   height: 110px;
   border-radius: 8px;
+  background-image: url("/assets/campaigns/campaign-template-oracle.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
