@@ -6,15 +6,15 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 87,
+  "cssFiles": 89,
   "tsxFilesWithInlineStyles": 87,
-  "forbiddenLiteralColors": 280,
+  "forbiddenLiteralColors": 260,
   "staticInlineStyles": 1067,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 24,
+  "mixedResponsibilityFiles": 25,
   "crossComponentSelectors": 62,
   "importantDeclarations": 372,
   "unclassifiedCssFiles": 0
@@ -74,13 +74,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 154 | 27 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
-| `src/frontend/shared/styles/features/application-domains.css` | legacy | shared | 4500 | 615 | 1 |
+| `src/frontend/shared/styles/features/application-domains.css` | legacy | shared | 3529 | 484 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1577 | 246 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | legacy | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
 | `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 957 | 147 | 1 |
+| `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 130 | 17 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | legacy | shared | 15 | 2 | 1 |
 | `src/frontend/shared/styles/features/timeline.css` | legacy | shared | 217 | 37 | 1 |
@@ -92,13 +93,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2641 | 392 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 744 | 97 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 108 | 13 | 1 |
-| `src/frontend/shared/styles/layout/footer.css` | layout | shared | 71 | 7 | 1 |
+| `src/frontend/shared/styles/layout/footer.css` | layout | shared | 128 | 18 | 1 |
 | `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 7 | 1 |
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 46 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 48 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -1731,60 +1733,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:41` | Literal visual color outside a registered theme package. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/application-domains.css:1` | Large stylesheet requires atomization (4500 lines, 615 selectors). |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:69` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:108` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:160` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:164` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:168` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:230` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:231` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:232` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:233` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:235` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:291` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:295` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:299` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/features/application-domains.css:299` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:493` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:671` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:672` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:676` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:677` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:682` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:686` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:690` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:691` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:692` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:693` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:697` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:701` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:706` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:717` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:740` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:741` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:780` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:1314` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:1319` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/application-domains.css:1320` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1500` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1501` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1610` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1610` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1611` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1719` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1719` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1804` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1937` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1946` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:1946` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:2664` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:2956` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:3000` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:3512` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:4305` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:4306` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/features/application-domains.css:4349` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/application-domains.css:1` | Large stylesheet requires atomization (3529 lines, 484 selectors). |
+| high | important | `src/frontend/shared/styles/features/application-domains.css:441` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/application-domains.css:446` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/application-domains.css:447` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-canvas.css:1` | Large stylesheet requires atomization (1577 lines, 246 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:497` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:498` | Important declarations bypass the intended cascade. |
@@ -1865,6 +1817,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/player-portal.css:749` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/player-portal.css:754` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/player-portal.css:755` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/timeline.css:1` | Large stylesheet requires atomization (217 lines, 37 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/timeline.css:89` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
@@ -1943,6 +1896,36 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:2302` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2303` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2304` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/layout/campaign-navigation.css:1` | Large stylesheet requires atomization (744 lines, 97 selectors). |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:160` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:164` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:168` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:230` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:231` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:232` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:233` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:235` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:291` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:295` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:299` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/layout/campaign-navigation.css:299` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:493` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:671` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:672` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:676` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:677` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:682` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:686` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:690` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:691` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:692` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:693` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:697` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:701` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:706` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:717` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:740` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:741` | Important declarations bypass the intended cascade. |
 | medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1009 lines, 150 selectors). |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |

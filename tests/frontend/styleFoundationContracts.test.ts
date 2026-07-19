@@ -56,6 +56,8 @@ describe("global style foundation", () => {
       "./features/campaign-canvas.css",
       "./features/player-portal.css",
       "./features/application-domains.css",
+      "./layout/campaign-navigation.css",
+      "./features/quick-capture.css",
       "./primitives/dialog.css",
       "./primitives/overlay.css",
       "./primitives/tabs.css",

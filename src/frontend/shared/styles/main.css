@@ -38,6 +38,8 @@
 @import "../../account/account.css";
 
 /* Domain slices retain their original cascade order during migration. */
+@import "./layout/campaign-navigation.css";
+@import "./features/quick-capture.css";
 @import "./features/landing-archive.css";
 @import "./features/kanban.css";
 @import "./features/campaign-canvas.css";
