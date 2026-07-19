@@ -35,8 +35,8 @@ function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <section className="card player-campaign-card" style={style}>{children}</section>;
+function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <section className={`card player-campaign-card ${className}`}>{children}</section>;
 }
 
 function hasDmOnlyVisibility(value: unknown): boolean {
@@ -250,18 +250,18 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
   );
 
   return (
-    <div style={{ display: "grid", gap: 14 }}>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+    <div className="player-constellation">
+      <div className="player-constellation__actions">
         <button className="btn btn-secondary" type="button" onClick={() => void load()} disabled={loading}>
           <RefreshCw size={16} /> {t("playerPortal.actions.refresh")}
         </button>
       </div>
-      {error && <Card style={{ color: "var(--theme-feedback-danger-foreground)" }}><p role="alert"><ShieldAlert size={18} /> {error}</p></Card>}
+      {error && <Card className="player-campaign-card--error"><p role="alert"><ShieldAlert size={18} /> {error}</p></Card>}
       {loading && <Card><p aria-live="polite">{t("playerPortal.loading.constellation")}</p></Card>}
       {!loading && !error && !activeCanvas && <Card>{t("playerPortal.empty.noPublicConstellations")}</Card>}
       {activeCanvas && (
-        <section className="card" style={{ padding: 0, overflow: "hidden" }}>
-          <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid var(--theme-borders-default)", overflowX: "auto" }}>
+        <section className="card player-constellation__canvas">
+          <div className="player-constellation__tabs">
             {canvases.map((canvas) => (
               <button
                 key={canvas.canvasId}
@@ -274,7 +274,7 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
               </button>
             ))}
           </div>
-          <div style={{ height: "70dvh" }}>
+          <div className="player-constellation__flow">
             <ReactFlowProvider key={`${campaignId}:${activeCanvas.canvasId}`}>
               <CampaignCanvasFlow
                 canvasId={activeCanvas.canvasId}
@@ -389,15 +389,15 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
     if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} t={t} />;
     if (!payload) return null;
     if (tab === "overview") return (
-      <div style={{ display: "grid", gap: 14 }}>
+      <div className="player-campaign-home">
         <Card>
-          <h2 style={{ marginTop: 0 }}>{t("playerPortal.home.beforePlay")}</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.55 }}>{payload.recap ?? t("playerPortal.empty.noSharedRecapYet")}</p>
+          <h2 className="player-campaign-heading">{t("playerPortal.home.beforePlay")}</h2>
+          <p className="player-campaign-recap">{payload.recap ?? t("playerPortal.empty.noSharedRecapYet")}</p>
         </Card>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
-          <Card><strong>{counts.visibleEntities ?? 0}</strong><br /><span style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.metrics.memories")}</span></Card>
-          <Card><strong>{counts.facts ?? 0}</strong><br /><span style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.metrics.facts")}</span></Card>
-          <Card><strong>{payload.objectives?.length ?? 0}</strong><br /><span style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.metrics.objectives")}</span></Card>
+        <div className="player-campaign-metrics">
+          <Card><strong>{counts.visibleEntities ?? 0}</strong><br /><span className="player-campaign-secondary">{t("playerPortal.metrics.memories")}</span></Card>
+          <Card><strong>{counts.facts ?? 0}</strong><br /><span className="player-campaign-secondary">{t("playerPortal.metrics.facts")}</span></Card>
+          <Card><strong>{payload.objectives?.length ?? 0}</strong><br /><span className="player-campaign-secondary">{t("playerPortal.metrics.objectives")}</span></Card>
         </div>
         <PlayerSearch campaignId={campaignId} t={t} />
       </div>
@@ -408,27 +408,27 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
     );
     if (tab === "objectives") return (
       <Card>
-        <h2 style={{ marginTop: 0 }}>{t("playerPortal.objectivesHeading")}</h2>
+        <h2 className="player-campaign-heading">{t("playerPortal.objectivesHeading")}</h2>
         {payload.objectives?.length ? payload.objectives.map((objective) => (
-          <article key={objective.objectiveId} style={{ borderTop: "1px solid var(--theme-borders-default)", padding: "10px 0" }}>
+          <article key={objective.objectiveId} className="player-objective">
             <strong>{objective.title}</strong>
-            <p style={{ color: "var(--theme-text-secondary)", margin: "4px 0" }}>{objective.description ?? objective.kind}</p>
-            <span style={{ fontSize: 12 }}>{objective.status}</span>
+            <p className="player-campaign-secondary player-objective__description">{objective.description ?? objective.kind}</p>
+            <span className="player-objective__status">{objective.status}</span>
           </article>
-        )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noOpenObjectives")}</p>}
+        )) : <p className="player-campaign-secondary">{t("playerPortal.empty.noOpenObjectives")}</p>}
       </Card>
     );
-    if (tab === "recap") return <Card><h2 style={{ marginTop: 0 }}>{t("playerPortal.recap.heading")}</h2><p style={{ lineHeight: 1.6 }}>{payload.recap ?? t("playerPortal.empty.noSharedRecap")}</p></Card>;
+    if (tab === "recap") return <Card><h2 className="player-campaign-heading">{t("playerPortal.recap.heading")}</h2><p className="player-campaign-recap">{payload.recap ?? t("playerPortal.empty.noSharedRecap")}</p></Card>;
     if (tab === "notes") return (
-      <div style={{ display: "grid", gap: 14 }}>
+      <div className="player-notes">
         <Card>
-          <h2 style={{ marginTop: 0 }}>{t("playerPortal.notes.heading")}</h2>
+          <h2 className="player-campaign-heading">{t("playerPortal.notes.heading")}</h2>
           <label htmlFor="player-note-draft" className="player-portal-field">
             <span>{t("playerPortal.notes.label")}</span>
             <span id="player-note-help" className="player-portal-help">{t("playerPortal.notes.instructions")}</span>
             <textarea id="player-note-draft" aria-describedby="player-note-help" className="form-textarea" rows={4} value={draftNote} onChange={(event) => setDraftNote(event.target.value)} placeholder={t("playerPortal.notes.placeholder")} />
           </label>
-          <button className="btn btn-primary" type="button" style={{ marginTop: 10 }} disabled={!draftNote.trim()} onClick={() => {
+          <button className="btn btn-primary player-notes__submit" type="button" disabled={!draftNote.trim()} onClick={() => {
             void (async () => {
               await createPlayerNote(campaignId, { content: draftNote, visibility: "private" });
               setDraftNote("");
@@ -438,7 +438,7 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
             });
           }}><CheckCircle2 size={16} /> {t("playerPortal.notes.save")}</button>
         </Card>
-        <Card>{payload.notes?.length ? payload.notes.map((note) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
+        <Card>{payload.notes?.length ? payload.notes.map((note) => <p key={note.noteId} className="player-note">{note.content}</p>) : <p className="player-campaign-secondary">{t("playerPortal.empty.noNotesYet")}</p>}</Card>
       </div>
     );
     return null;
@@ -446,7 +446,7 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
 
   return (
     <>
-      {error && <Card style={{ color: "var(--theme-feedback-danger-foreground)" }}><p role="alert">{error}</p></Card>}
+      {error && <Card className="player-campaign-card--error"><p role="alert">{error}</p></Card>}
       {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
     </>
   );

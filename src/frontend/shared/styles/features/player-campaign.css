@@ -21,3 +21,17 @@
 .player-character-form { display: grid; gap: 12px; }
 .player-character-preview { border: 1px solid var(--theme-borders-default); border-radius: 12px; padding: 12px; }
 .player-character-error { color: var(--theme-feedback-danger-foreground); margin: 0; }
+.player-campaign-card--error { color: var(--theme-feedback-danger-foreground); }
+.player-constellation { display: grid; gap: 14px; }
+.player-constellation__actions { display: flex; justify-content: flex-end; }
+.player-constellation__canvas { padding: 0; overflow: hidden; }
+.player-constellation__tabs { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid var(--theme-borders-default); overflow-x: auto; }
+.player-constellation__flow { height: 70dvh; }
+.player-campaign-home, .player-notes { display: grid; gap: 14px; }
+.player-campaign-recap { font-size: 17px; line-height: 1.55; }
+.player-campaign-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.player-objective { border-top: 1px solid var(--theme-borders-default); padding: 10px 0; }
+.player-objective__description { margin: 4px 0; }
+.player-objective__status { font-size: 12px; }
+.player-notes__submit { margin-top: 10px; }
+.player-note { border-bottom: 1px solid var(--theme-borders-default); padding-bottom: 8px; }
