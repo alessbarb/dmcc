@@ -40,6 +40,7 @@ export const activateSession = (campaignId: string, sessionId: string) => apiFet
 export const createSession = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/ad-hoc`, { init: jsonInit("POST", payload) });
 export const revealSessionClue = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/reveal-clue`, { init: jsonInit("POST", payload) });
 export const closeSession = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/close`, { init: jsonInit("POST", payload) });
+export const getSessionNarrativeMap = (campaignId: string, sessionId: string) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/narrative-map`);
 export const createSessionEvent = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/events`, { init: jsonInit("POST", payload) });
 
 export const exportCampaignJson = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/export/json`, { init: { method: "POST" } });

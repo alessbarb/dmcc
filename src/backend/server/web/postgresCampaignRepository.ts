@@ -126,7 +126,7 @@ function serializeProjection(projection: CampaignProjection) {
   };
 }
 
-function projectionToCampaignState(campaignId: string, projection: CampaignProjection): CampaignState {
+export function projectionToCampaignState(campaignId: string, projection: CampaignProjection): CampaignState {
   return {
     campaignId,
     campaign: projection.campaign,

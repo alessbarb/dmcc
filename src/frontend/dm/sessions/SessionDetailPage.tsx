@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { Archive, Play, X } from "lucide-react";
+import { Archive, Play, Waypoints, X } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
@@ -106,6 +106,9 @@ export function SessionDetailPage() {
           <button type="button" className="btn btn-icon btn-secondary btn-sm" onClick={() => runSessionAction(handleArchive(), "No se pudo archivar la sesión preparada.")} title={t("sessionPage.archivePreparedSessionButton")}>
             <Archive size={14} />
           </button>
+          <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
+            <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
+          </Link>
         </div>
         <SessionPlanEditor
           session={session}
@@ -123,6 +126,9 @@ export function SessionDetailPage() {
     return (
       <div className="session-page session-active-workspace">
         <SessionStatusBar activeSession={session} />
+        <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
+          <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
+        </Link>
         <ActiveSessionPrepPanel session={session} campaignState={campaignState} />
         <QuickCaptureBar
           campaignState={campaignState}
@@ -162,6 +168,9 @@ export function SessionDetailPage() {
             ? new Date(session.endedAt).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })
             : "—"}
         </time>
+        <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
+          <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
+        </Link>
       </section>
     </div>
   );
