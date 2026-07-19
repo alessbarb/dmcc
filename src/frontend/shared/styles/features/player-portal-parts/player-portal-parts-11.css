@@ -1,0 +1,144 @@
+
+
+.player-history-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.player-history-header span:first-child {
+  display: block;
+  color: var(--theme-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.player-history-header h3 {
+  font-weight: 850;
+  margin: 0;
+}
+
+.player-history-summary {
+  color: var(--theme-text-primary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-top: 14px;
+  white-space: pre-line;
+}
+
+.player-history-events {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+
+@media (max-width: 900px) {
+  .player-portal-shell {
+    height: 100dvh !important;
+  }
+
+  .player-portal-sidebar {
+    display: none;
+  }
+
+  .player-portal-main {
+    height: 100dvh !important;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+
+  .player-portal-content {
+    padding: 18px !important;
+    max-width: none !important;
+  }
+
+  .player-session-hero,
+  .player-session-layout,
+  .player-knowledge-stats {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .player-session-stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-width: 0;
+    width: 100%;
+  }
+
+  .player-memory-grid,
+  .player-memory-grid.compact {
+    grid-template-columns: 1fr;
+  }
+
+  .player-hp-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .player-hp-readout {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+}
+
+@media (max-width: 560px) {
+  .player-session-hero {
+    padding: 18px;
+  }
+
+  .player-session-hero h2 {
+    font-size: 1.25rem;
+  }
+
+  .player-portal-section {
+    padding: 14px;
+  }
+
+  .player-compact-row,
+  .player-fact-row,
+  .player-relation-row,
+  .player-history-event {
+    padding: 9px 10px;
+  }
+
+  .player-session-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-portal-section-header,
+  .player-resource-row,
+  .player-history-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Player portal complete flow */
+.player-mode-switcher p {
+  margin: 8px 0 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.player-mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.player-mode-buttons button {
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 999px;
+  background: var(--theme-surfaces-subtle);
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 7px 8px;
+}

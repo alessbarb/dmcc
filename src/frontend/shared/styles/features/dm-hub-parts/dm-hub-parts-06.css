@@ -1,0 +1,77 @@
+
+
+.active-table-row-item:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 15%, transparent);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+}
+
+.active-table-avatar-frame {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.active-table-info-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.active-table-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.active-table-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.active-table-pill-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.active-table-pill-badge.active {
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent);
+  color: var(--theme-feedback-success-foreground);
+}
+
+.active-table-pill-badge.paused {
+  background: color-mix(in srgb, var(--theme-feedback-warning-foreground) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-warning-foreground) 30%, transparent);
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.active-table-campaign-name {
+  font-size: 0.72rem;
+  color: var(--theme-accents-primary-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+
+.active-table-session-desc {
+  font-size: 0.72rem;
+  color: var(--theme-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}

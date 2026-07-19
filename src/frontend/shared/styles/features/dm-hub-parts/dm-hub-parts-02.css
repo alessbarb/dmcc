@@ -1,0 +1,79 @@
+
+
+.dm-welcome-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: 8px;
+  padding: 8px 16px;
+  min-width: 110px;
+}
+
+.dm-welcome-stat-pill-icon {
+  color: var(--theme-accents-primary-foreground);
+  opacity: 0.85;
+}
+
+.dm-welcome-stat-pill-values {
+  display: flex;
+  flex-direction: column;
+}
+
+.dm-welcome-stat-pill-num {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  line-height: 1.1;
+}
+
+.dm-welcome-stat-pill-label {
+  font-size: 0.68rem;
+  color: var(--theme-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.dm-welcome-calendar-box {
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+}
+
+.dm-welcome-calendar-date {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+}
+
+.dm-welcome-calendar-campaign-date {
+  font-size: 0.76rem;
+  color: var(--theme-accents-primary-foreground);
+}
+
+/* Campaign Grid List Target Styles */
+.campaigns-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.workspace-campaign-card {
+  position: relative;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 310px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}

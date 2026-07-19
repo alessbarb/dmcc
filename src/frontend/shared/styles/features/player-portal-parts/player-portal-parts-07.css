@@ -1,0 +1,48 @@
+
+.player-portal-nav .nav-item { width: 100%; border: 0; text-align: left; }
+.player-portal-exit { width: 100%; }
+.player-portal-main { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; overflow-y: auto; }
+.player-portal-content { width: 100%; max-width: 980px; margin: 0 auto; padding: var(--space-8); }
+
+.player-portal-section {
+  padding: 20px;
+}
+
+.player-portal-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.player-portal-section-header h3 {
+  font-size: 1rem;
+  font-weight: 850;
+  margin: 0;
+}
+
+.player-portal-section-header p {
+  color: var(--theme-text-secondary);
+  font-size: 0.84rem;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.player-session-hero {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: stretch;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-activity-system-foreground) 18%, transparent), color-mix(in srgb, var(--theme-activity-tag-foreground) 8%, transparent));
+}
+
+.player-session-kicker {
+  color: var(--theme-accents-secondary-foreground);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}

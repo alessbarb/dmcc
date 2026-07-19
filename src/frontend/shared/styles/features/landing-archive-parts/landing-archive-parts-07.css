@@ -1,0 +1,66 @@
+
+
+.campaign-card-wrapper:hover .campaign-card-border-glow {
+  opacity: 1;
+}
+
+/* Landing Error Container */
+.landing-error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  text-align: center;
+  background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 2%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent);
+  border-radius: var(--theme-shapes-radius-large);
+}
+
+.landing-error-container p {
+  color: var(--theme-text-primary);
+  font-weight: 850;
+  font-size: 1rem;
+}
+
+.landing-error-container span {
+  font-size: 0.82rem;
+  color: var(--theme-text-secondary);
+  max-width: 380px;
+}
+
+/* Side Stack Creators & Backup */
+.landing-side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.landing-create-card {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 15%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent);
+}
+
+.landing-section-header {
+  margin-bottom: 20px;
+}
+
+.landing-section-header h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--theme-text-primary);
+  font-size: 1.1rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.landing-section-header svg {
+  color: var(--theme-accents-secondary-foreground);
+}
+
+.landing-creator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}

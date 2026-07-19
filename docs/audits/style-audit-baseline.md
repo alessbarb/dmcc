@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 322,
+  "cssFiles": 375,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 10,
+  "mixedResponsibilityFiles": 5,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -91,7 +91,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-06.css` | feature | onboarding | 40 | 8 | 1 |
 | `src/frontend/dm/onboarding/campaign-starter-hub.css` | feature | onboarding | 7 | 0 | 1 |
 | `src/frontend/dm/pages/campaignMessagesPage.css` | feature | pages | 113 | 22 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css` | feature | pages | 179 | 32 | 1 |
+| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css` | feature | pages | 179 | 32 | 1 |
+| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css` | feature | pages | 2 | 0 | 1 |
 | `src/frontend/dm/pages/rulesPage.css` | feature | pages | 2 | 0 | 1 |
 | `src/frontend/dm/pages/settingsPage.css` | feature | pages | 135 | 21 | 1 |
 | `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-01.css` | feature | people | 85 | 10 | 1 |
@@ -152,7 +153,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/institutional/institutional-parts/institutional-parts-02.css` | feature | institutional | 128 | 22 | 1 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 3 | 0 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 174 | 30 | 1 |
-| `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
+| `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-01.css` | component | shared-components | 146 | 17 | 1 |
+| `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css` | component | shared-components | 184 | 25 | 1 |
+| `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 3 | 0 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
 | `src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-01.css` | feature | shared | 10 | 10 | 1 |
 | `src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-02.css` | feature | shared | 11 | 10 | 1 |
@@ -257,13 +260,22 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-12.css` | feature | shared | 78 | 10 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-13.css` | feature | shared | 79 | 10 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-14.css` | feature | shared | 87 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css` | feature | shared | 330 | 63 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css` | feature | shared | 330 | 63 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css` | feature | shared | 2 | 0 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css` | feature | shared | 2 | 0 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-16.css` | feature | shared | 11 | 10 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-17.css` | feature | shared | 11 | 10 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-18.css` | feature | shared | 14 | 4 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | feature | shared | 19 | 0 | 1 |
-| `src/frontend/shared/styles/features/dm-hub.css` | feature | shared | 589 | 73 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-01.css` | feature | shared | 84 | 11 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-02.css` | feature | shared | 79 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-03.css` | feature | shared | 86 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-04.css` | feature | shared | 94 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-05.css` | feature | shared | 77 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-06.css` | feature | shared | 77 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-07.css` | feature | shared | 85 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-08.css` | feature | shared | 14 | 2 | 1 |
+| `src/frontend/shared/styles/features/dm-hub.css` | feature | shared | 9 | 0 | 1 |
 | `src/frontend/shared/styles/features/dm-onboarding.css` | feature | shared | 20 | 19 | 1 |
 | `src/frontend/shared/styles/features/entity-create.css` | feature | shared | 32 | 6 | 1 |
 | `src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css` | feature | shared | 11 | 10 | 1 |
@@ -278,10 +290,34 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/image-picker-modal.css` | feature | shared | 215 | 28 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | feature | shared | 177 | 27 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | feature | shared | 104 | 17 | 1 |
-| `src/frontend/shared/styles/features/landing-archive.css` | feature | shared | 874 | 138 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-01.css` | feature | shared | 119 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-02.css` | feature | shared | 84 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-03.css` | feature | shared | 83 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-04.css` | feature | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-05.css` | feature | shared | 85 | 13 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-06.css` | feature | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-07.css` | feature | shared | 66 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css` | feature | shared | 65 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-09.css` | feature | shared | 64 | 14 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-10.css` | feature | shared | 60 | 12 | 1 |
+| `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-11.css` | feature | shared | 102 | 29 | 1 |
+| `src/frontend/shared/styles/features/landing-archive.css` | feature | shared | 12 | 0 | 1 |
 | `src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css` | feature | shared | 38 | 37 | 1 |
 | `src/frontend/shared/styles/features/player-campaign.css` | feature | shared | 2 | 0 | 1 |
-| `src/frontend/shared/styles/features/player-portal.css` | feature | shared | 1023 | 160 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-01.css` | feature | shared | 110 | 19 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-02.css` | feature | shared | 72 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-03.css` | feature | shared | 105 | 14 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css` | feature | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-05.css` | feature | shared | 90 | 13 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-06.css` | feature | shared | 39 | 11 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-07.css` | feature | shared | 48 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-08.css` | feature | shared | 77 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-09.css` | feature | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css` | feature | shared | 63 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css` | feature | shared | 144 | 25 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-12.css` | feature | shared | 79 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-13.css` | feature | shared | 52 | 8 | 1 |
+| `src/frontend/shared/styles/features/player-portal.css` | feature | shared | 14 | 0 | 1 |
 | `src/frontend/shared/styles/features/player-profile-modal.css` | feature | shared | 18 | 4 | 1 |
 | `src/frontend/shared/styles/features/pwa-update-banner.css` | feature | shared | 30 | 2 | 1 |
 | `src/frontend/shared/styles/features/quick-capture.css` | feature | shared | 142 | 19 | 1 |
@@ -325,13 +361,30 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing.css` | feature | shared | 17 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 24 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 744 | 97 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-01.css` | layout | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css` | layout | shared | 583 | 70 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css` | layout | shared | 2 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css` | layout | shared | 88 | 17 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 4 | 0 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 202 | 30 | 1 |
 | `src/frontend/shared/styles/layout/footer.css` | layout | shared | 128 | 18 | 1 |
 | `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 7 | 1 |
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
-| `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1023 | 152 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-01.css` | layout | shared | 80 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-02.css` | layout | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-03.css` | layout | shared | 87 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-04.css` | layout | shared | 69 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-05.css` | layout | shared | 61 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-06.css` | layout | shared | 73 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-07.css` | layout | shared | 62 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-08.css` | layout | shared | 78 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-09.css` | layout | shared | 63 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-10.css` | layout | shared | 76 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-11.css` | layout | shared | 162 | 28 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-12.css` | layout | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace-parts/workspace-parts-13.css` | layout | shared | 62 | 14 | 1 |
+| `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
 | `src/frontend/shared/styles/main.css` | foundation | shared | 92 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
@@ -625,7 +678,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:101` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Selector depends on another component's DOM structure. |
-| high | mixed-responsibility | `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
+| high | mixed-responsibility | `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
 | info | dynamic-style | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:2` | Important declarations bypass the intended cascade. |
@@ -677,25 +730,24 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/MainLanding.tsx:101` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:104` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
-| high | mixed-responsibility | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Large stylesheet requires atomization (329 lines, 42 selectors). |
-| high | cross-component-selector | `src/frontend/shared/components/entityImageReframeDialog.css:147` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:222` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:226` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:280` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:281` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:282` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:283` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:284` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:285` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:287` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:288` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:289` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:290` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:291` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:292` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:294` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:295` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entityImageReframeDialog.css:325` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:2` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:81` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:135` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:136` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:137` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:138` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:139` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:140` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:142` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:143` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:144` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:145` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:146` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:147` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:149` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:150` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:180` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:112` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:113` | Important declarations bypass the intended cascade. |
@@ -761,21 +813,18 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css:5` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css:10` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css:11` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css:1` | Large stylesheet requires atomization (330 lines, 63 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (589 lines, 73 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/landing-archive.css:1` | Large stylesheet requires atomization (874 lines, 138 selectors). |
-| high | important | `src/frontend/shared/styles/features/landing-archive.css:628` | Important declarations bypass the intended cascade. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css:1` | Large stylesheet requires atomization (330 lines, 63 selectors). |
+| high | important | `src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css:42` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css:1` | Large stylesheet requires atomization (38 lines, 37 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/player-portal.css:1` | Large stylesheet requires atomization (1023 lines, 160 selectors). |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:334` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:345` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:346` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal.css:730` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal.css:754` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:793` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:801` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:806` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:807` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:62` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css:42` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:4` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:43` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:57` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing/landing-01.css:1` | Selector depends on another component's DOM structure. |
@@ -794,35 +843,34 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:16` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:17` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing/landing-05/landing-05-02.css:18` | Selector depends on another component's DOM structure. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/layout/campaign-navigation.css:1` | Large stylesheet requires atomization (744 lines, 97 selectors). |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:160` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:164` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:168` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:230` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:231` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:232` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:233` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:235` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:291` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:295` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:299` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/layout/campaign-navigation.css:299` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:493` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:671` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:672` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:676` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:677` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:682` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:686` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:690` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:691` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:692` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:693` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:697` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:701` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:706` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:717` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:740` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:741` | Important declarations bypass the intended cascade. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:1` | Large stylesheet requires atomization (583 lines, 70 selectors). |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:86` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:90` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:94` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:156` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:157` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:158` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:159` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:161` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:217` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:221` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:225` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:225` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:419` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:20` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:21` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:45` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:84` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:85` | Important declarations bypass the intended cascade. |
 | medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1023 lines, 152 selectors). |

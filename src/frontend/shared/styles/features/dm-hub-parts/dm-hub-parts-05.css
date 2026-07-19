@@ -1,0 +1,77 @@
+
+
+.workspace-campaign-create-card:hover .workspace-campaign-create-icon-wrapper {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
+  color: var(--theme-accents-primary-foreground);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-accents-primary-foreground) 15%, transparent);
+}
+
+.workspace-campaign-create-card h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  margin: 0 0 4px;
+}
+
+.workspace-campaign-create-card p {
+  font-size: 0.76rem;
+  color: var(--theme-text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  max-width: 180px;
+}
+
+/* General Summary Outlines Styles */
+.general-summary-block-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+}
+
+.general-summary-block-card {
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: all 0.2s;
+}
+
+.general-summary-block-card:hover {
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+}
+
+.general-summary-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+}
+
+.general-summary-label {
+  font-size: 0.72rem;
+  color: var(--theme-text-secondary);
+  line-height: 1.2;
+}
+
+/* Sidebar Active Tables Target Styles */
+.active-tables-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.active-table-row-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}

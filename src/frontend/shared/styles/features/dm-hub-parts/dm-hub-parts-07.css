@@ -1,0 +1,85 @@
+
+
+.active-table-players-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--theme-text-secondary);
+}
+
+.active-table-time-stat {
+  font-size: 0.7rem;
+  color: var(--theme-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Alert list item layout */
+.alert-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.alert-row-item:hover {
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+}
+
+.alert-item-label {
+  font-size: 0.78rem;
+  color: var(--theme-text-secondary);
+}
+
+.alert-item-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 35%, transparent);
+  color: var(--theme-feedback-danger-foreground);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Quick actions square button grids */
+.quick-actions-square-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.quick-action-square-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  border-radius: 10px;
+  padding: 12px 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 74px;
+}
+
+.quick-action-square-btn:hover {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent);
+  transform: translateY(-2px);
+}
+
+.quick-action-square-btn-icon {
+  color: var(--theme-accents-primary-foreground);
+  opacity: 0.85;
+}

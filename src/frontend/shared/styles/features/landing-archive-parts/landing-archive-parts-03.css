@@ -1,0 +1,83 @@
+
+
+.archive-title-group svg {
+  color: var(--theme-accents-primary-foreground);
+}
+
+.archive-title-group h2 {
+  font-size: 1.15rem;
+  font-weight: 850;
+  letter-spacing: -0.025em;
+}
+
+/* Search Bar styling */
+.archive-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--theme-surfaces-interactive);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  padding: 0 10px;
+  width: 260px;
+  transition: var(--transition-fast);
+}
+
+.archive-search-wrapper:focus-within {
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 40%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--theme-activity-system-foreground) 10%, transparent);
+  width: 320px;
+}
+
+.archive-search-input {
+  border: none;
+  background: transparent;
+  color: var(--theme-text-primary);
+  font-size: 0.8rem;
+  padding: 8px 6px;
+  width: 100%;
+  outline: none;
+}
+
+.archive-search-wrapper .search-icon {
+  color: var(--theme-text-secondary);
+}
+
+.search-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.search-clear-btn:hover {
+  background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+  color: var(--theme-text-primary);
+}
+
+/* Campaign Grid List */
+.campaign-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 980px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Premium Campaign Card */
+.campaign-card-wrapper {
+  position: relative;
+  border-radius: var(--theme-shapes-radius-large);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-surfaces-canvas) 45%, transparent) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 75%, transparent) 100%);
+  cursor: pointer;
+  overflow: hidden;
+  transition: var(--transition-normal);
+}

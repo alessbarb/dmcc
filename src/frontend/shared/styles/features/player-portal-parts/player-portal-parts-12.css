@@ -1,0 +1,79 @@
+
+
+.player-mode-buttons button.active {
+  border-color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 16%, transparent);
+  color: var(--theme-text-primary);
+}
+
+.player-onboarding-card {
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 28%, transparent);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--theme-accents-secondary-foreground) 16%, transparent), transparent 42%),
+    var(--theme-surfaces-base);
+}
+
+.player-onboarding-header,
+.player-quick-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.player-onboarding-header h3 {
+  margin: 4px 0 0;
+  color: var(--theme-text-primary);
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.player-onboarding-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.player-onboarding-grid button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--theme-text-on-media) 3.5%, transparent);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 750;
+  padding: 12px;
+}
+
+.player-onboarding-grid button.done {
+  border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 36%, transparent);
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 8%, transparent);
+  color: var(--theme-feedback-success-foreground);
+}
+
+.player-quick-actions {
+  margin-top: 16px;
+  justify-content: flex-start;
+}
+
+.player-quick-actions > span {
+  color: var(--theme-text-secondary);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.player-session-recap {
+  color: var(--theme-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin: 0;
+}

@@ -1,0 +1,90 @@
+
+
+.join-portal-error p {
+  color: var(--theme-feedback-danger-foreground);
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.join-portal-btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-radius: var(--theme-shapes-radius-medium);
+  background: linear-gradient(135deg, var(--theme-accents-primary-foreground), color-mix(in srgb, var(--theme-activity-system-foreground) 100%, transparent));
+  color: var(--theme-text-on-media);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-activity-system-foreground) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.join-portal-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--theme-activity-system-foreground) 40%, transparent);
+}
+
+.join-portal-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.join-portal-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.join-portal-back-btn {
+  background: none;
+  border: none;
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 6px 12px;
+  border-radius: var(--theme-shapes-radius-medium);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.join-portal-back-icon {
+  margin-right: 6px;
+}
+
+.join-portal-back-btn:hover {
+  color: var(--theme-text-primary);
+  background-color: color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+}
+
+@media (max-width: 480px) {
+  .join-portal-container {
+    padding: 16px;
+  }
+  .join-portal-card {
+    padding: 32px 24px;
+    gap: 24px;
+  }
+  .join-portal-title {
+    font-size: 1.4rem;
+  }
+}
+
+
+
+/* Player portal: table-first, family-friendly experience */
+.player-portal-loading {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  color: var(--theme-text-subtle);
+}

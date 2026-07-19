@@ -1,0 +1,87 @@
+
+
+/* ─────────────────────────────────────────────────────────────
+   Tablet form-factor (769px-1200px)
+   Touch-first: sidebar auto-collapsed, larger targets.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --touch-target-min: 44px;
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  /* Sidebar always collapsed on tablet */
+  .sidebar {
+    width: 52px !important;
+    min-width: 52px !important;
+  }
+
+  .sidebar-header {
+    padding: 16px 8px !important;
+    overflow: hidden !important;
+  }
+
+  .sidebar-logo,
+  .sidebar-logo-subtitle {
+    display: none !important;
+  }
+
+  .sidebar-nav {
+    padding: 12px 6px !important;
+  }
+
+  .nav-item {
+    padding: 10px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    min-height: var(--touch-target-min) !important;
+  }
+
+  .nav-item span {
+    display: none !important;
+  }
+
+  .sidebar-footer {
+    padding: 12px 8px !important;
+  }
+
+  /* Content body: slightly more breathing room on medium screens */
+  .content-body {
+    padding: 20px 20px 72px !important;
+  }
+
+  /* Buttons: larger tap targets */
+  .btn {
+    min-height: var(--touch-target-min);
+    padding: 10px 16px;
+  }
+
+  /* Cards: no lift animation on touch (avoids stuck :hover states) */
+  .card:hover {
+    transform: none !important;
+  }
+}
+
+/* Touch devices at any width: enlarge interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  .btn {
+    min-height: var(--touch-target-min);
+  }
+
+  .nav-item {
+    min-height: var(--touch-target-min);
+  }
+
+  /* Prevent double-tap zoom on buttons */
+  .btn,
+  .nav-item,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Remove hover card lift on touch */
+  .card:hover {
+    transform: none !important;
+    box-shadow: var(--theme-shadows-medium) !important;
+  }
+}

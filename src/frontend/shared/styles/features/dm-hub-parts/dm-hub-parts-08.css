@@ -1,0 +1,13 @@
+
+
+.quick-action-square-btn span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary);
+  text-align: center;
+  line-height: 1.15;
+}
+
+.quick-action-square-btn:hover span {
+  color: var(--theme-text-primary);
+}

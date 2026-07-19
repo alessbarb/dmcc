@@ -1,0 +1,61 @@
+
+
+.notebook-detail-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.notebook-detail-copy h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--theme-text-primary);
+  margin-bottom: 6px;
+}
+
+.notebook-detail-copy p {
+  margin: 4px 0 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.notebook-detail-copy p.no-desc {
+  color: var(--theme-text-subtle);
+  font-style: italic;
+}
+
+.notebook-detail-actions {
+  flex-shrink: 0;
+}
+
+.notebook-detail-actions .btn {
+  display: inline-flex;
+  align-items: center;
+}
+
+.notebooks-inline-form,
+.notebooks-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notebooks-inline-form {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+}
+
+.notebooks-edit-form {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.notebooks-inline-form label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--theme-text-subtle);
+}

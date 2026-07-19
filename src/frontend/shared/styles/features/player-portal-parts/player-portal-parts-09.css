@@ -1,0 +1,81 @@
+
+
+.player-hp-readout strong {
+  font-size: 1.45rem;
+  line-height: 1.1;
+}
+
+.player-condition-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.player-condition-chip {
+  border: 1px solid var(--theme-borders-default);
+  background: var(--theme-surfaces-interactive);
+  color: var(--theme-text-secondary);
+  border-radius: var(--theme-shapes-radius-pill);
+  padding: 7px 10px;
+  font-size: 0.78rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.player-condition-chip:hover:not(:disabled),
+.player-condition-chip.active {
+  border-color: color-mix(in srgb, var(--theme-activity-fact-foreground) 55%, transparent);
+  background: var(--theme-feedback-warning-background);
+  color: var(--theme-text-primary);
+}
+
+.player-condition-chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.player-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-compact-row,
+.player-fact-row,
+.player-relation-row,
+.player-history-event {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-interactive);
+}
+
+.player-compact-row svg,
+.player-fact-row svg,
+.player-relation-row svg,
+.player-history-event svg {
+  color: var(--theme-accents-secondary-foreground);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.player-compact-row strong,
+.player-fact-row strong,
+.player-relation-row strong,
+.player-history-event strong {
+  font-size: 0.88rem;
+}
+
+.player-compact-row p,
+.player-fact-row p,
+.player-relation-row p,
+.player-history-event p {
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  margin-top: 3px;
+}

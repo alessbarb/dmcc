@@ -1,0 +1,64 @@
+
+
+.landing-restore-card details {
+  padding: 0;
+}
+
+.landing-restore-card summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--theme-text-primary);
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 24px;
+}
+
+.landing-restore-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.landing-restore-card summary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.landing-restore-card summary svg {
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.landing-restore-form {
+  padding: 0 24px 24px 24px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
+  margin-top: 0;
+  padding-top: 18px;
+}
+
+/* Rpg Portal Background Animations and Styles */
+.rpg-portal-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+@keyframes rotateCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateCCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.rpg-portal-rotate-cw {
+  animation: rotateCW 60s linear infinite;
+  transform-origin: 500px 200px;
+}

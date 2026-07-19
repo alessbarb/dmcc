@@ -1,0 +1,85 @@
+
+
+.system-badge--custom {
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 12%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 20%, transparent);
+}
+
+.campaign-card-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary);
+  opacity: 0.6;
+}
+
+.campaign-card-enter-btn {
+  width: 100%;
+  min-height: var(--touch-target-min);
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--theme-accents-primary-foreground);
+  border: 1px solid var(--theme-accents-primary-foreground);
+  border-radius: var(--theme-shapes-radius-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: center;
+  color: var(--theme-text-inverse);
+  font: 650 0.875rem/1.2 var(--font-sans);
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.campaign-card-wrapper:hover .campaign-card-enter-btn {
+  background: var(--theme-accents-primary-hover);
+  border-color: var(--theme-accents-primary-hover);
+  color: var(--theme-text-inverse);
+  box-shadow: var(--theme-shadows-accent);
+}
+
+/* Active Session Banner */
+.campaign-card-session-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--theme-shapes-radius-medium);
+  margin-top: 14px;
+  font-size: 0.75rem;
+}
+
+.campaign-card-session-banner--active {
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 15%, transparent);
+  color: var(--theme-feedback-success-foreground);
+}
+
+.campaign-card-session-banner--idle {
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  color: var(--theme-text-secondary);
+}
+
+.pulse-indicator {
+  width: 6px;
+  height: 6px;
+  background-color: var(--theme-feedback-success-foreground);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-feedback-success-foreground) 70%, transparent);
+  animation: pulseGreen 2s infinite;
+}
+
+.idle-indicator {
+  width: 6px;
+  height: 6px;
+  background-color: var(--theme-text-secondary);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-feedback-success-foreground) 60%, transparent); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px color-mix(in srgb, var(--theme-feedback-success-foreground) 0%, transparent); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-feedback-success-foreground) 0%, transparent); }
+}

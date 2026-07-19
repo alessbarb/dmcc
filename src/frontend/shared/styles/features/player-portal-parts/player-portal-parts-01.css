@@ -1,0 +1,110 @@
+/* Mystical Portal Page Transition */
+.mystical-portal-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: color-mix(in srgb, var(--theme-surfaces-canvas) 94%, transparent);
+  pointer-events: all;
+  overflow: hidden;
+}
+
+.mystical-portal-overlay--in {
+  animation: portalFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.mystical-portal-overlay--out {
+  animation: portalFadeOut 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  pointer-events: none;
+}
+
+.mystical-portal-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--theme-activity-system-foreground) 35%, transparent) 0%,
+    color-mix(in srgb, var(--theme-activity-tag-foreground) 15%, transparent) 45%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  animation: portalGlow 8s linear infinite;
+  z-index: 1;
+}
+
+.mystical-portal-text {
+  position: relative;
+  z-index: 2;
+  color: var(--theme-text-primary);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--theme-text-primary) 30%, var(--theme-accents-secondary-foreground) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent));
+  margin-top: 20px;
+  animation: portalTextPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes portalFadeIn {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    backdrop-filter: blur(20px);
+  }
+}
+
+@keyframes portalFadeOut {
+  0% {
+    opacity: 1;
+    backdrop-filter: blur(20px);
+  }
+  100% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes portalGlow {
+  0% {
+    transform: scale(0.85) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.15) rotate(180deg);
+  }
+  100% {
+    transform: scale(0.85) rotate(360deg);
+  }
+}
+
+@keyframes portalTextPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Player Join Portal Page Styling */
+.auth-portal-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-surfaces-canvas);
+}

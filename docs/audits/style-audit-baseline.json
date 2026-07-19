@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T12:06:08.827Z",
+  "generatedAt": "2026-07-19T12:07:26.261Z",
   "summary": {
-    "cssFiles": 322,
+    "cssFiles": 375,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 10,
+    "mixedResponsibilityFiles": 5,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -3611,14 +3611,14 @@
       ]
     },
     {
-      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
       "layer": "feature",
       "domain": "pages",
       "lineCount": 179,
       "selectorCount": 32,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/pages/rulesPage.css"
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3646,6 +3646,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
+      "layer": "feature",
+      "domain": "pages",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/pages/rulesPage.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/pages/rulesPage.css",
@@ -6370,14 +6385,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-01.css",
       "layer": "component",
       "domain": "shared-components",
-      "lineCount": 329,
-      "selectorCount": 42,
+      "lineCount": 146,
+      "selectorCount": 17,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/components/EntityImageReframeDialog.tsx"
+        "src/frontend/shared/components/entityImageReframeDialog.css"
       ],
       "variableDefinitions": [
         "--entity-detail-preview-aspect-ratio",
@@ -6404,7 +6419,21 @@
         "--theme-shadows-large",
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "layer": "component",
+      "domain": "shared-components",
+      "lineCount": 184,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/components/entityImageReframeDialog.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--entity-list-preview-aspect-ratio",
         "--theme-borders-default",
@@ -6419,6 +6448,22 @@
         "--theme-shadows-medium",
         "--theme-borders-default"
       ]
+    },
+    {
+      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
+      "layer": "component",
+      "domain": "shared-components",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-01.css",
+        "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/components/EntityImageReframeDialog.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/components/imageCatalog.ts",
@@ -9243,14 +9288,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 330,
       "selectorCount": 63,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css"
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9269,6 +9314,21 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css",
@@ -9375,14 +9435,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub.css",
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 589,
-      "selectorCount": 73,
+      "lineCount": 84,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/dm-hub.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9395,7 +9455,21 @@
         "--theme-text-primary",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 79,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
@@ -9406,7 +9480,21 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 86,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
@@ -9421,7 +9509,21 @@
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 94,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
         "--theme-text-secondary",
@@ -9436,7 +9538,21 @@
         "--theme-accents-primary-foreground",
         "--theme-text-on-media",
         "--theme-text-on-media",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -9450,7 +9566,21 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-text-on-media",
         "--theme-text-primary",
@@ -9461,7 +9591,21 @@
         "--theme-feedback-warning-foreground",
         "--theme-feedback-warning-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-07.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 85,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
@@ -9476,10 +9620,46 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-08.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 14,
+      "selectorCount": 2,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-primary"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 9,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-01.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-02.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-03.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-04.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-05.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-06.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-07.css",
+        "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-08.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/dm-onboarding.css",
@@ -9879,22 +10059,16 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive.css",
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 874,
-      "selectorCount": 138,
+      "lineCount": 119,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/landing-archive.css"
       ],
-      "variableDefinitions": [
-        "--drift",
-        "--drift",
-        "--drift",
-        "--drift",
-        "--drift"
-      ],
+      "variableDefinitions": [],
       "variableReferences": [
         "--app-footer-height",
         "--theme-shapes-radius-large",
@@ -9925,7 +10099,21 @@
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-shapes-radius-large",
-        "--transition-normal",
+        "--transition-normal"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 84,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
@@ -9944,7 +10132,21 @@
         "--theme-text-on-media",
         "--theme-shapes-radius-large",
         "--theme-text-on-media",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 83,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-interactive",
         "--theme-borders-default",
@@ -9962,7 +10164,21 @@
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
-        "--transition-normal",
+        "--transition-normal"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 75,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
         "--theme-activity-system-foreground",
@@ -9976,7 +10192,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-info-foreground",
         "--theme-feedback-info-foreground",
-        "--theme-feedback-info-foreground",
+        "--theme-feedback-info-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 85,
+      "selectorCount": 13,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
@@ -10009,7 +10239,21 @@
         "--theme-text-secondary",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
-        "--theme-feedback-success-foreground",
+        "--theme-feedback-success-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-on-media",
         "--theme-text-on-media",
@@ -10023,7 +10267,21 @@
         "--theme-accents-secondary-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-07.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 66,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-shapes-radius-large",
@@ -10032,7 +10290,21 @@
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 65,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-interactive",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
@@ -10044,17 +10316,66 @@
         "--theme-text-primary",
         "--theme-accents-primary-hover",
         "--theme-text-secondary",
-        "--theme-borders-default",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-09.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 64,
+      "selectorCount": 14,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-feedback-warning-foreground",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-10.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 60,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [
+        "--drift"
+      ],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--theme-activity-tag-foreground",
         "--theme-accents-primary-hover",
         "--theme-activity-system-foreground",
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-11.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 102,
+      "selectorCount": 29,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/landing-archive.css"
+      ],
+      "variableDefinitions": [
+        "--drift",
+        "--drift",
+        "--drift",
+        "--drift"
+      ],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -10063,6 +10384,31 @@
         "--app-footer-height",
         "--app-footer-height"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/landing-archive.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 12,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-01.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-02.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-03.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-04.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-05.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-06.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-07.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-09.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-10.css",
+        "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-11.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
@@ -10108,18 +10454,16 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal.css",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 1023,
-      "selectorCount": 160,
+      "lineCount": 110,
+      "selectorCount": 19,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/player-portal.css"
       ],
-      "variableDefinitions": [
-        "--paused"
-      ],
+      "variableDefinitions": [],
       "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-activity-system-foreground",
@@ -10128,12 +10472,40 @@
         "--theme-text-primary",
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 72,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-activity-system-foreground",
-        "--theme-activity-tag-foreground",
+        "--theme-activity-tag-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 105,
+      "selectorCount": 14,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-shapes-radius-large",
@@ -10153,7 +10525,21 @@
         "--theme-shapes-radius-pill",
         "--theme-text-on-media",
         "--theme-text-on-media",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 75,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
@@ -10172,7 +10558,21 @@
         "--theme-accents-primary-foreground",
         "--theme-shapes-radius-medium",
         "--theme-feedback-danger-background",
-        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 90,
+      "selectorCount": 13,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-shapes-radius-medium",
         "--theme-accents-primary-foreground",
@@ -10189,7 +10589,23 @@
         "--transition-fast",
         "--theme-text-primary",
         "--theme-text-on-media",
-        "--theme-text-subtle",
+        "--theme-text-subtle"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 39,
+      "selectorCount": 11,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [
+        "--paused"
+      ],
+      "variableReferences": [
         "--theme-accents-primary-background",
         "--theme-accents-primary-background",
         "--theme-accents-primary-foreground",
@@ -10201,12 +10617,40 @@
         "--theme-text-inverse",
         "--theme-text-primary",
         "--theme-text-subtle",
-        "--space-4",
+        "--space-4"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-07.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 48,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--space-8",
         "--theme-text-secondary",
         "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-08.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-shapes-radius-medium",
         "--theme-borders-default",
@@ -10215,7 +10659,21 @@
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-09.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
@@ -10228,7 +10686,21 @@
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
         "--theme-accents-secondary-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 63,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
@@ -10240,13 +10712,41 @@
         "--theme-shapes-radius-pill",
         "--theme-text-on-media",
         "--theme-accents-secondary-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 144,
+      "selectorCount": 25,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-surfaces-subtle",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-12.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 79,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
         "--theme-text-primary",
@@ -10261,7 +10761,21 @@
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-13.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 52,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
@@ -10269,6 +10783,33 @@
         "--theme-text-secondary",
         "--theme-surfaces-canvas"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-portal.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 14,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-01.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-02.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-03.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-05.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-06.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-07.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-08.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-09.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-12.css",
+        "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-13.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/player-profile-modal.css",
@@ -11487,21 +12028,17 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-01.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 744,
-      "selectorCount": 97,
+      "lineCount": 75,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/layout/campaign-navigation.css"
       ],
       "variableDefinitions": [
-        "--active",
-        "--app-footer-height",
-        "--campaign-mobile-header-height",
-        "--mobile-dock-height",
-        "--touch-target-min"
+        "--active"
       ],
       "variableReferences": [
         "--theme-surfaces-base",
@@ -11522,7 +12059,25 @@
         "--theme-accents-primary-foreground",
         "--theme-text-on-media",
         "--theme-activity-system-foreground",
-        "--theme-accents-primary-hover",
+        "--theme-accents-primary-hover"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 583,
+      "selectorCount": 70,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css"
+      ],
+      "variableDefinitions": [
+        "--app-footer-height",
+        "--campaign-mobile-header-height",
+        "--mobile-dock-height"
+      ],
+      "variableReferences": [
         "--theme-surfaces-base",
         "--theme-shapes-radius-medium",
         "--theme-borders-default",
@@ -11599,13 +12154,61 @@
         "--theme-surfaces-subtle",
         "--theme-text-primary",
         "--theme-activity-system-foreground",
-        "--theme-accents-primary-background",
+        "--theme-accents-primary-background"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 88,
+      "selectorCount": 17,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation.css"
+      ],
+      "variableDefinitions": [
+        "--touch-target-min"
+      ],
+      "variableReferences": [
         "--touch-target-min",
         "--touch-target-min",
         "--touch-target-min",
         "--touch-target-min",
         "--theme-shadows-medium"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/layout/campaign-shell.css",
@@ -11747,14 +12350,249 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-01.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 1023,
-      "selectorCount": 152,
+      "lineCount": 80,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-shadows-large",
+        "--font-display",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 87,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-text-subtle",
+        "--theme-text-subtle",
+        "--notebook-depth",
+        "--theme-borders-default",
+        "--notebook-depth",
+        "--theme-text-secondary",
+        "--theme-surfaces-interactive-hover",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-04.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 69,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-subtle",
+        "--theme-accents-secondary-background",
+        "--theme-text-primary",
+        "--theme-accents-secondary-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-05.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 61,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-subtle"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-06.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 73,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--notebook-item-accent",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-accents-secondary-foreground",
+        "--theme-shadows-medium",
+        "--theme-text-on-media",
+        "--theme-text-on-media",
+        "--notebook-item-accent",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-07.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 62,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-on-media",
+        "--notebook-item-accent",
+        "--theme-text-secondary",
+        "--notebook-item-accent",
+        "--theme-text-secondary",
+        "--theme-text-subtle",
+        "--theme-text-subtle",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-08.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 78,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-subtle",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-accents-secondary-foreground",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-09.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 63,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-text-subtle"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-10.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 76,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-text-subtle",
+        "--theme-text-primary",
+        "--theme-text-on-media",
+        "--theme-accents-primary-background",
+        "--theme-accents-primary-foreground",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-accents-primary-foreground",
+        "--theme-surfaces-base",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-background"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-11.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 162,
+      "selectorCount": 28,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
       ],
       "variableDefinitions": [
         "--dmcc-page-compact",
@@ -11771,101 +12609,6 @@
         "--dmcc-control-height"
       ],
       "variableReferences": [
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-shadows-large",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--notebook-depth",
-        "--theme-borders-default",
-        "--notebook-depth",
-        "--theme-text-secondary",
-        "--theme-surfaces-interactive-hover",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--theme-accents-secondary-background",
-        "--theme-text-primary",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-borders-default",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--notebook-item-accent",
-        "--theme-borders-default",
-        "--theme-borders-default",
-        "--theme-accents-secondary-foreground",
-        "--theme-shadows-medium",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--notebook-item-accent",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-text-on-media",
-        "--notebook-item-accent",
-        "--theme-text-secondary",
-        "--notebook-item-accent",
-        "--theme-text-secondary",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-accents-secondary-foreground",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-text-subtle",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--theme-text-primary",
-        "--theme-text-on-media",
-        "--theme-accents-primary-background",
-        "--theme-accents-primary-foreground",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-accents-primary-foreground",
-        "--theme-surfaces-base",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-background",
         "--theme-text-primary",
         "--theme-text-subtle",
         "--theme-surfaces-base",
@@ -11883,7 +12626,21 @@
         "--theme-borders-default",
         "--theme-accents-secondary-foreground",
         "--theme-accents-primary-foreground",
-        "--dmcc-page-compact",
+        "--dmcc-page-compact"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-12.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--dmcc-page-standard",
         "--dmcc-page-wide",
         "--dmcc-border-subtle",
@@ -11892,13 +12649,54 @@
         "--dmcc-border-subtle",
         "--theme-text-secondary",
         "--theme-text-primary",
-        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-13.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 62,
+      "selectorCount": 14,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/workspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
         "--theme-accents-primary-foreground",
         "--dmcc-control-height",
         "--dmcc-radius-control"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 14,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-01.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-02.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-03.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-04.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-05.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-06.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-07.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-08.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-09.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-10.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-11.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-12.css",
+        "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-13.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/main.css",
@@ -15773,8 +16571,8 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
-      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
+      "id": "mixed-responsibility:src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
@@ -16352,9 +17150,9 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 222,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 77,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -16364,9 +17162,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 226,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 81,
       "column": 81,
       "severity": "high",
       "status": "temporary",
@@ -16376,9 +17174,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 280,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 135,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -16388,9 +17186,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 281,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 136,
       "column": 24,
       "severity": "high",
       "status": "temporary",
@@ -16400,9 +17198,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 282,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 137,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -16412,9 +17210,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 283,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 138,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -16424,9 +17222,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 284,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 139,
       "column": 27,
       "severity": "high",
       "status": "temporary",
@@ -16436,9 +17234,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 285,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 140,
       "column": 12,
       "severity": "high",
       "status": "temporary",
@@ -16448,9 +17246,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 287,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 142,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -16460,9 +17258,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 288,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 143,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -16472,9 +17270,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 289,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 144,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -16484,9 +17282,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 290,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 145,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -16496,9 +17294,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 291,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 146,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -16508,9 +17306,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 292,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 147,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -16520,9 +17318,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 294,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 149,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -16532,9 +17330,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 295,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 150,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -16544,9 +17342,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/components/entityImageReframeDialog.css:!important",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 325,
+      "id": "important:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:!important",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 180,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16556,9 +17354,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/components/entityImageReframeDialog.css:border-top: 1px solid var(--theme-borders-default); } .entity-reframe-dialog__footer > div",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 147,
+      "id": "cross-component-selector:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:border-top: 1px solid var(--theme-borders-default); } .entity-reframe-dialog__footer > div",
+      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
+      "line": 2,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -16566,17 +17364,6 @@
       "category": "cross-component-selector",
       "selectorOrComponent": "border-top: 1px solid var(--theme-borders-default);\n}\n\n.entity-reframe-dialog__footer > div",
       "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/components/entityImageReframeDialog.css",
-      "path": "src/frontend/shared/components/entityImageReframeDialog.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (329 lines, 42 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
@@ -17347,8 +18134,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
-      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
+      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
@@ -17358,20 +18145,9 @@
       "reason": "Large stylesheet requires atomization (330 lines, 63 selectors)."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",
-      "path": "src/frontend/shared/styles/features/dm-hub.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (589 lines, 73 selectors)."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/landing-archive.css:!important",
-      "path": "src/frontend/shared/styles/features/landing-archive.css",
-      "line": 628,
+      "id": "important:src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css:!important",
+      "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css",
+      "line": 42,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -17379,17 +18155,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/landing-archive.css",
-      "path": "src/frontend/shared/styles/features/landing-archive.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (874 lines, 138 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
@@ -17403,9 +18168,9 @@
       "reason": "Large stylesheet requires atomization (38 lines, 37 selectors)."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 334,
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css",
+      "line": 50,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -17415,9 +18180,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 345,
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css",
+      "line": 61,
       "column": 94,
       "severity": "high",
       "status": "temporary",
@@ -17427,9 +18192,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 346,
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css",
+      "line": 62,
       "column": 101,
       "severity": "high",
       "status": "temporary",
@@ -17439,57 +18204,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 793,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 801,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 806,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 807,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal.css:height: 7px; overflow: hidden; border-radius: var(--theme-shapes-radius-pill); background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); margin: 8px 0 5px; } .player-resource-meter > div",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 730,
+      "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css:height: 7px; overflow: hidden; border-radius: var(--theme-shapes-radius-pill); background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); margin: 8px 0 5px; } .player-resource-meter > div",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css",
+      "line": 42,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -17499,9 +18216,57 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal.css:display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; } .player-history-header span:first-child",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 754,
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "line": 43,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "line": 51,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "line": 56,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "line": 57,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; } .player-history-header span:first-child",
+      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "line": 4,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -17509,17 +18274,6 @@
       "category": "cross-component-selector",
       "selectorOrComponent": "display: flex;\n  justify-content: space-between;\n  gap: 12px;\n  align-items: flex-start;\n}\n\n.player-history-header span:first-child",
       "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/player-portal.css",
-      "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1023 lines, 160 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/quick-capture.css:!important",
@@ -17738,9 +18492,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 160,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 86,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -17750,9 +18504,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 164,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 90,
       "column": 83,
       "severity": "high",
       "status": "temporary",
@@ -17762,9 +18516,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 168,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 94,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -17774,9 +18528,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 230,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 156,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -17786,9 +18540,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 231,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 157,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -17798,9 +18552,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 232,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 158,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -17810,9 +18564,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 233,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 159,
       "column": 127,
       "severity": "high",
       "status": "temporary",
@@ -17822,9 +18576,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 235,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 161,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -17834,9 +18588,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 291,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 217,
       "column": 93,
       "severity": "high",
       "status": "temporary",
@@ -17846,9 +18600,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 295,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 221,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -17858,9 +18612,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 299,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 225,
       "column": 123,
       "severity": "high",
       "status": "temporary",
@@ -17870,9 +18624,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 493,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 419,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -17882,201 +18636,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 671,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 672,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 676,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 677,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 682,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 686,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 690,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 691,
-      "column": 29,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 692,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 693,
-      "column": 41,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 697,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 701,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 706,
-      "column": 29,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 717,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 740,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 741,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation.css:height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important; min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)); } .main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "line": 299,
+      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important; min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)); } .main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "line": 225,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -18086,15 +18648,207 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation.css",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
+      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (744 lines, 97 selectors)."
+      "reason": "Large stylesheet requires atomization (583 lines, 70 selectors)."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 15,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 16,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 20,
+      "column": 23,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 21,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 26,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 30,
+      "column": 23,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 34,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 35,
+      "column": 29,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 36,
+      "column": 12,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 37,
+      "column": 41,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 41,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 45,
+      "column": 23,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 50,
+      "column": 29,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 61,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 84,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css",
+      "line": 85,
+      "column": 45,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "global-selector:src/frontend/shared/styles/layout/grid.css:.grid",
@@ -18107,17 +18861,6 @@
       "category": "global-selector",
       "selectorOrComponent": ".grid",
       "reason": "Generic selector has global collision risk."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/layout/workspace.css",
-      "path": "src/frontend/shared/styles/layout/workspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1023 lines, 152 selectors)."
     }
   ],
   "importGraph": {
@@ -18244,6 +18987,9 @@
     ],
     "src/frontend/dm/pages/SettingsPage.tsx": [
       "src/frontend/dm/pages/settingsPage.css"
+    ],
+    "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css": [
+      "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
     ],
     "src/frontend/dm/pages/rulesPage.css": [
       "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css"
@@ -18382,6 +19128,10 @@
     "src/frontend/shared/components/Watermark.tsx": [
       "src/frontend/shared/components/watermark.css"
     ],
+    "src/frontend/shared/components/entityImageReframeDialog.css": [
+      "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-01.css",
+      "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css"
+    ],
     "src/frontend/shared/styles/features/admin-announcements.css": [
       "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-01.css",
       "src/frontend/shared/styles/features/admin-announcements-parts/admin-announcements-parts-02.css",
@@ -18464,6 +19214,9 @@
       "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-06.css",
       "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-07.css"
     ],
+    "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css": [
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css"
+    ],
     "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css": [
       "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css"
     ],
@@ -18487,6 +19240,16 @@
       "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-17.css",
       "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-18.css"
     ],
+    "src/frontend/shared/styles/features/dm-hub.css": [
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-01.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-02.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-03.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-04.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-05.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-06.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-07.css",
+      "src/frontend/shared/styles/features/dm-hub-parts/dm-hub-parts-08.css"
+    ],
     "src/frontend/shared/styles/features/entity-relations.css": [
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css",
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-02.css",
@@ -18494,8 +19257,36 @@
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-04.css",
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-05.css"
     ],
+    "src/frontend/shared/styles/features/landing-archive.css": [
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-01.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-02.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-03.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-04.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-05.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-06.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-07.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-09.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-10.css",
+      "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-11.css"
+    ],
     "src/frontend/shared/styles/features/player-campaign.css": [
       "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+    ],
+    "src/frontend/shared/styles/features/player-portal.css": [
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-01.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-02.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-03.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-05.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-06.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-07.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-08.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-09.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-12.css",
+      "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-13.css"
     ],
     "src/frontend/shared/styles/features/timeline.css": [
       "src/frontend/shared/styles/features/timeline-parts/timeline-parts-01.css",
@@ -18528,6 +19319,29 @@
       "src/frontend/shared/styles/landing/landing-14.css",
       "src/frontend/shared/styles/landing/landing-15.css",
       "src/frontend/shared/styles/landing/landing-16.css"
+    ],
+    "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+    ],
+    "src/frontend/shared/styles/layout/campaign-navigation.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css"
+    ],
+    "src/frontend/shared/styles/layout/workspace.css": [
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-01.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-02.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-03.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-04.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-05.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-06.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-07.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-08.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-09.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-10.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-11.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-12.css",
+      "src/frontend/shared/styles/layout/workspace-parts/workspace-parts-13.css"
     ],
     "src/frontend/shared/styles/main.css": [
       "src/frontend/shared/styles/foundation/fonts.css",

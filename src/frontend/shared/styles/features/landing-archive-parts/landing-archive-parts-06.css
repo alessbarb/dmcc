@@ -1,0 +1,81 @@
+
+
+.session-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-text strong {
+  color: var(--theme-text-primary);
+  font-weight: 700;
+}
+
+/* Narrative Stats Grid */
+.campaign-card-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  padding-top: 14px;
+}
+
+.campaign-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: color-mix(in srgb, var(--theme-text-on-media) 1%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  padding: 8px 4px;
+  transition: var(--transition-fast);
+}
+
+.campaign-card-wrapper:hover .campaign-stat-item {
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border-color: color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+}
+
+.campaign-stat-item svg {
+  color: var(--theme-text-secondary);
+  opacity: 0.8;
+  margin-bottom: 4px;
+  transition: var(--transition-fast);
+}
+
+.campaign-card-wrapper:hover .campaign-stat-item:hover svg {
+  color: var(--theme-accents-secondary-foreground);
+  transform: translateY(-1px);
+}
+
+.stat-value {
+  color: var(--theme-text-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-label {
+  color: var(--theme-text-secondary);
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.campaign-card-border-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(800px circle at 0 0, color-mix(in srgb, var(--theme-text-on-media) 6%, transparent), transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s;
+}

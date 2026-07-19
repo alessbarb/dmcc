@@ -1,0 +1,84 @@
+/* DM Campaign Center Restructuring styles */
+.dm-hub-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.workspace-main-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 900px) {
+  .workspace-main-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Detailed DM Workspace Center Styles (Target Design) */
+.dm-workspace-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 40px;
+  max-width: 1680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dm-welcome-hero-panel {
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, transparent);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent), inset 0 1px 0 color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.dm-welcome-profile-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dm-welcome-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--theme-accents-primary-foreground);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, transparent);
+  object-fit: cover;
+}
+
+.dm-welcome-text-info h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  background: linear-gradient(135deg, var(--theme-text-on-media) 40%, var(--theme-accents-primary-foreground) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dm-welcome-text-info p {
+  margin: 4px 0 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.85rem;
+}
+
+.dm-welcome-stats-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
