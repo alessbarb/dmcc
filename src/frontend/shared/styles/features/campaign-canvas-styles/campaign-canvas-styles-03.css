@@ -132,7 +132,7 @@
   transform: scale(1.2);
 }
 
-/* Legacy: used by CanvasNoteNode which still uses canvas-node-card */
+/* CanvasNoteNode card surface. */
 .canvas-node-card {
   border-radius: var(--theme-shapes-radius-medium);
   border: 1px solid var(--theme-borders-default);
@@ -154,4 +154,3 @@
   0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--rg-accent) 60%, transparent), 0 6px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent); }
   50%       { box-shadow: 0 0 0 2px color-mix(in srgb, var(--rg-accent) 90%, transparent), 0 6px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 70%, transparent), 0 0 20px color-mix(in srgb, var(--rg-accent) 40%, transparent); }
 }
-
