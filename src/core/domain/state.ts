@@ -8,6 +8,7 @@ import type { Canvas } from "./canvas/types.js";
 import type { CampaignRole } from "./campaign/player.js";
 import type { CampaignNotebook, CampaignNotebookItem } from "./notebook/types.js";
 import type { StoryThread, StoryStep } from "./story/types.js";
+import type { SessionInferenceReview } from "./session/sessionInferenceReview.js";
 
 export interface CampaignPlayerRecord {
   id: string;
@@ -68,6 +69,7 @@ export interface CampaignState {
   notebookItems: Map<string, CampaignNotebookItem>;
   storyThreads: Map<string, StoryThread>;
   storySteps: Map<string, StoryStep>;
+  sessionInferenceReviews: Map<string, SessionInferenceReview>;
 }
 
 export function createCampaignState(campaignId: string): CampaignState {
@@ -88,5 +90,6 @@ export function createCampaignState(campaignId: string): CampaignState {
     notebookItems: new Map(),
     storyThreads: new Map(),
     storySteps: new Map(),
+    sessionInferenceReviews: new Map(),
   };
 }

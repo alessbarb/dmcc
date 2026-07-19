@@ -193,6 +193,7 @@ export const domainEventTypeSchema = z.enum([
   "FrontResolved",
   "SecretHinted",
   "ObjectiveProgressUpdated",
+  "SessionInferenceReviewed",
 ]);
 
 export type DomainEventType = z.infer<typeof domainEventTypeSchema>;
@@ -640,6 +641,13 @@ export const eventPayloadSchemas = {
     status: z.string(),
     progress: z.enum(["advanced", "completed", "blocked", "failed", "unchanged"]),
     note: z.string().optional(),
+  }),
+  SessionInferenceReviewed: z.object({
+    sessionId: sessionIdSchema,
+    inferenceKey: z.string(),
+    decision: z.enum(["accepted", "hidden"]),
+    reviewedAt: z.string(),
+    reviewedByUserId: z.string(),
   }),
 } satisfies Record<DomainEventType, z.ZodTypeAny>;
 export type EventPayloads = {

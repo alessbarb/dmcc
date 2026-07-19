@@ -8,6 +8,7 @@ import { sessionPlanSchema } from "../domain/session/sessionPlan.js";
 import { validateSessionPlan } from "../domain/session/sessionPlanValidation.js";
 import { resolveSessionPlan } from "../domain/session/sessionPlanUpcast.js";
 import { validateSessionEventDetails } from "../domain/session/sessionEventDetails.js";
+import { computeInferenceKey, sessionInferenceReviewMapKey } from "../domain/session/sessionInferenceReview.js";
 
 type SessionCommandType =
   | "CreatePreparedSession"
@@ -17,7 +18,8 @@ type SessionCommandType =
   | "CloseSession"
   | "CancelPreparedSession"
   | "ArchiveSession"
-  | "RecordSessionEvent";
+  | "RecordSessionEvent"
+  | "ReviewSessionInference";
 
 type SessionCommand = Extract<Command, { type: SessionCommandType }>;
 
@@ -210,6 +212,25 @@ case "RecordSessionEvent": {
   const sessionEvents = new Map(state.sessionEvents || []);
   sessionEvents.set(id, eventRecord);
   return singleEvent({ ...state, sessionEvents }, makeEvent(command.actorId, command.campaignId, "SessionEventRecorded", eventRecord));
+}
+case "ReviewSessionInference": {
+  requireSession(state, command.sessionId);
+  const inferenceKey = computeInferenceKey({
+    perspective: command.perspective,
+    ruleId: command.ruleId,
+    sourceRefs: command.sourceRefs,
+    targetId: command.targetId,
+  });
+  const review = {
+    sessionId: command.sessionId,
+    inferenceKey,
+    decision: command.decision,
+    reviewedAt: new Date().toISOString(),
+    reviewedByUserId: command.actorId,
+  };
+  const sessionInferenceReviews = new Map(state.sessionInferenceReviews || []);
+  sessionInferenceReviews.set(sessionInferenceReviewMapKey(command.sessionId, inferenceKey), review);
+  return singleEvent({ ...state, sessionInferenceReviews }, makeEvent(command.actorId, command.campaignId, "SessionInferenceReviewed", review));
 }
   }
   throw new Error("Unsupported session command");

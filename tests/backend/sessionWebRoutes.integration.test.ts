@@ -375,4 +375,87 @@ describe("session web routes", () => {
     });
     expect(response.statusCode).toBe(404);
   });
+
+  it("accepts an inference review and persists the session_live context, and the confirmed node survives a re-fetch", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const sessionId = createId("sess");
+    const originEntityId = createId("ent");
+    const consequenceEntityId = createId("ent");
+
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/entities`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { entityId: originEntityId, entityType: "npc", title: "Klarg" },
+    });
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/entities`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { entityId: consequenceEntityId, entityType: "consequence", title: "Goblin ambush retaliates", metadata: { originEntityId } },
+    });
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/planned`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { sessionId, title: "La emboscada" },
+    });
+    await server.inject({
+      method: "PUT",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/plan`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: {
+        expectedRevision: 0,
+        title: "La emboscada",
+        plan: {
+          version: 2,
+          state: "ready",
+          goals: [],
+          checklist: [],
+          flowItems: [],
+          contentLinks: [{ id: "spcl_ambush", entityId: consequenceEntityId, role: "expected_consequence", order: 0 }],
+          transitions: [],
+          bindings: [],
+        },
+      },
+    });
+
+    const before = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/consequence-chain`,
+      headers,
+    });
+    const beforeBody = before.json() as {
+      consequenceChain: { nodes: Array<{ id: string; label: string; provenance: { basis: string; ruleId: string; sourceRefs: unknown[] } }> };
+    };
+    const originNode = beforeBody.consequenceChain.nodes.find((node) => node.label === "Klarg");
+    expect(originNode?.provenance.basis).toBe("derived");
+
+    const reviewed = await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/inference-review`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: {
+        perspective: "consequence_chain",
+        ruleId: originNode?.provenance.ruleId,
+        sourceRefs: originNode?.provenance.sourceRefs,
+        targetId: originNode?.id,
+        decision: "accepted",
+      },
+    });
+    expect(reviewed.statusCode).toBe(200);
+
+    const events = await new PostgresCampaignRepository().loadEvents(campaignId);
+    const inferenceReviewed = events.find((event) => event.type === "SessionInferenceReviewed");
+    expect(inferenceReviewed?.context).toEqual({ origin: "session_live", sessionId });
+
+    const after = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/consequence-chain`,
+      headers,
+    });
+    const afterBody = after.json() as { consequenceChain: { nodes: Array<{ id: string; provenance: { basis: string } }> } };
+    expect(afterBody.consequenceChain.nodes.find((node) => node.id === originNode?.id)?.provenance.basis).toBe("user_confirmed");
+  });
 });
