@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 
@@ -6,6 +6,18 @@ const routePath = new URL("../../src/backend/server/web/routes/playerCharacterSh
 const registerPath = new URL("../../src/backend/server/web/registerWebRoutes.ts", import.meta.url);
 const modalPath = new URL("../../src/frontend/dm/entities/PlayerCharacterDetailModal.tsx", import.meta.url);
 const detailModalPath = new URL("../../src/frontend/dm/entities/EntityDetailModal.tsx", import.meta.url);
+
+function readCssFamily(path: URL): string {
+  const css = readFileSync(path, "utf8");
+  const imports = [...css.matchAll(/@import\s+["']([^"']+)["']/g)].map((match) => match[1]);
+  return [
+    css,
+    ...imports
+      .map((relativePath) => new URL(relativePath, path).pathname)
+      .filter((importedPath) => existsSync(importedPath))
+      .map((importedPath) => readCssFamily(new URL(`file://${importedPath}`))),
+  ].join("\n");
+}
 
 describe("player character sheet synchronization contract", () => {
   it("exposes one sheet endpoint backed by the same state used by the player portal", async () => {
@@ -44,12 +56,11 @@ describe("player character sheet synchronization contract", () => {
     expect(detailModal).toContain("Ajustar encuadre");
     expect(detailModal).toContain("Ver imagen completa");
 
-    const imageDialogStyles = readFileSync(
+    const imageDialogStyles = readCssFamily(
       new URL(
         "../../src/frontend/shared/components/entityImageReframeDialog.css",
         import.meta.url,
       ),
-      "utf8",
     );
 
     expect(imageDialogStyles).toContain(
