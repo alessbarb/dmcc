@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T12:04:40.343Z",
+  "generatedAt": "2026-07-19T12:06:08.827Z",
   "summary": {
-    "cssFiles": 280,
+    "cssFiles": 322,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 14,
+    "mixedResponsibilityFiles": 10,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -3611,14 +3611,14 @@
       ]
     },
     {
-      "path": "src/frontend/dm/pages/rulesPage.css",
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
       "layer": "feature",
       "domain": "pages",
       "lineCount": 179,
       "selectorCount": 32,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/pages/RulesPage.tsx"
+        "src/frontend/dm/pages/rulesPage.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3646,6 +3646,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/dm/pages/rulesPage.css",
+      "layer": "feature",
+      "domain": "pages",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/pages/RulesPage.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/pages/settingsPage.css",
@@ -5712,14 +5727,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/institutional/institutional.css",
+      "path": "src/frontend/institutional/institutional-parts/institutional-parts-01.css",
       "layer": "feature",
       "domain": "institutional",
-      "lineCount": 274,
-      "selectorCount": 38,
+      "lineCount": 147,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
-        "src/frontend/institutional/InstitutionalLayout.tsx"
+        "src/frontend/institutional/institutional.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -5746,7 +5761,21 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/institutional/institutional-parts/institutional-parts-02.css",
+      "layer": "feature",
+      "domain": "institutional",
+      "lineCount": 128,
+      "selectorCount": 22,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/institutional/institutional.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
@@ -5760,6 +5789,22 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/institutional/institutional.css",
+      "layer": "feature",
+      "domain": "institutional",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/institutional/institutional-parts/institutional-parts-01.css",
+        "src/frontend/institutional/institutional-parts/institutional-parts-02.css"
+      ],
+      "importedBy": [
+        "src/frontend/institutional/InstitutionalLayout.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/institutional/institutionalLinks.ts",
@@ -8004,14 +8049,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template.css",
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 729,
-      "selectorCount": 105,
+      "lineCount": 78,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/campaign-template.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8024,13 +8069,41 @@
         "--theme-text-secondary",
         "--theme-text-on-media",
         "--theme-text-on-media",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 70,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--font-display",
+        "--font-display"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 74,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-surfaces-base",
@@ -8040,22 +8113,78 @@
         "--theme-text-primary",
         "--theme-feedback-warning-foreground",
         "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 65,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-surfaces-raised",
+        "--theme-surfaces-raised"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 89,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-surfaces-raised",
         "--theme-text-secondary",
-        "--theme-text-subtle",
+        "--theme-text-subtle"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 66,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 89,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-secondary",
@@ -8065,7 +8194,21 @@
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-08.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-text-on-media",
@@ -8075,7 +8218,21 @@
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-on-media",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-09.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 75,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
@@ -8084,7 +8241,21 @@
         "--theme-text-secondary",
         "--theme-feedback-success-foreground",
         "--theme-feedback-danger-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-10.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 51,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-borders-default",
@@ -8095,6 +8266,30 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/campaign-template.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-01.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-02.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-03.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-04.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-05.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-06.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-08.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-09.css",
+        "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-10.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/canvas-board-dialogs.css",
@@ -8506,14 +8701,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 507,
-      "selectorCount": 71,
+      "lineCount": 90,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/dm-dashboard.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8533,7 +8728,21 @@
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
-        "--theme-text-subtle",
+        "--theme-text-subtle"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 80,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -8545,7 +8754,21 @@
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 71,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-subtle",
         "--theme-text-on-media",
         "--theme-text-primary",
@@ -8554,7 +8777,21 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 91,
+      "selectorCount": 15,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-secondary",
@@ -8569,7 +8806,21 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 80,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-warning-foreground",
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
@@ -8586,7 +8837,21 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 70,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-warning-foreground",
         "--theme-text-on-media",
         "--theme-text-secondary",
@@ -8595,19 +8860,50 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-07.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 1434,
-      "selectorCount": 227,
+      "lineCount": 31,
+      "selectorCount": 6,
       "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-dashboard.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 8,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-01.css",
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-02.css",
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-03.css",
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-04.css",
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-05.css",
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-06.css",
+        "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-07.css"
+      ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
       ],
-      "variableDefinitions": [
-        "--danger",
-        "--create"
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 79,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
       ],
+      "variableDefinitions": [],
       "variableReferences": [
         "--theme-surfaces-canvas",
         "--app-footer-height",
@@ -8619,7 +8915,21 @@
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 81,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-on-media",
@@ -8631,7 +8941,21 @@
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 72,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
@@ -8642,12 +8966,45 @@
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--theme-surfaces-canvas",
+        "--theme-text-on-media",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
@@ -8655,19 +9012,42 @@
         "--theme-text-on-media",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-06.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 71,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
-        "--theme-text-primary",
         "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--theme-text-on-media",
-        "--theme-accents-primary-foreground",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-07.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 84,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-feedback-success-foreground",
@@ -8681,7 +9061,23 @@
         "--theme-text-primary",
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-08.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 74,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [
+        "--danger"
+      ],
+      "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
@@ -8689,7 +9085,23 @@
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-09.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 84,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [
+        "--create"
+      ],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-feedback-warning-foreground",
         "--theme-accents-primary-foreground",
@@ -8701,13 +9113,41 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
-        "--theme-text-on-media",
+        "--theme-text-on-media"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-10.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 63,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-11.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 79,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
@@ -8716,7 +9156,21 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-12.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 78,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
@@ -8732,7 +9186,21 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-13.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 79,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
@@ -8743,7 +9211,21 @@
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-14.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 87,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -8757,7 +9239,21 @@
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
-        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 330,
+      "selectorCount": 63,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-primary",
@@ -8771,11 +9267,54 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-16.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-media-overlay-strong",
         "--theme-feedback-danger-foreground",
-        "--theme-feedback-success-foreground",
+        "--theme-feedback-success-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-17.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 11,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-text-on-media",
@@ -8783,11 +9322,57 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-18.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 14,
+      "selectorCount": 4,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 19,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-01.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-02.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-03.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-04.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-05.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-06.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-07.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-08.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-09.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-10.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-11.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-12.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-13.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-14.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-16.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-17.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-18.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/dm-hub.css",
@@ -9480,14 +10065,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign.css",
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 38,
       "selectorCount": 37,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/player-campaign.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9506,6 +10091,21 @@
         "--theme-borders-default",
         "--theme-borders-default"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-campaign.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/player-portal.css",
@@ -9881,14 +10481,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/timeline.css",
+      "path": "src/frontend/shared/styles/features/timeline-parts/timeline-parts-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 216,
-      "selectorCount": 37,
+      "lineCount": 112,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/styles/features/timeline.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9946,7 +10546,21 @@
         "--space-4",
         "--theme-borders-default",
         "--theme-surfaces-base",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/timeline-parts/timeline-parts-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 105,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/timeline.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-narrative-consequence-background",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
@@ -9970,6 +10584,22 @@
         "--theme-text-primary",
         "--theme-text-secondary"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/timeline.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/timeline-parts/timeline-parts-01.css",
+        "src/frontend/shared/styles/features/timeline-parts/timeline-parts-02.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/foundation/accessibility.css",
@@ -15143,8 +15773,8 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/pages/rulesPage.css",
-      "path": "src/frontend/dm/pages/rulesPage.css",
+      "id": "mixed-responsibility:src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
@@ -15694,17 +16324,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/institutional/institutional.css",
-      "path": "src/frontend/institutional/institutional.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (274 lines, 38 selectors)."
     },
     {
       "id": "dynamic-style:src/frontend/shared/components/CampaignTemplateImportDialog.tsx:style={{ width: `${importProgress.percent}%` }}",
@@ -16692,9 +17311,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-template.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-template.css",
-      "line": 441,
+      "id": "important:src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css",
+      "line": 5,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16704,9 +17323,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-template.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-template.css",
-      "line": 446,
+      "id": "important:src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css",
+      "line": 10,
       "column": 38,
       "severity": "high",
       "status": "temporary",
@@ -16716,9 +17335,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-template.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-template.css",
-      "line": 447,
+      "id": "important:src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css",
+      "line": 11,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -16728,37 +17347,15 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/campaign-template.css",
-      "path": "src/frontend/shared/styles/features/campaign-template.css",
+      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (729 lines, 105 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-dashboard.css",
-      "path": "src/frontend/shared/styles/features/dm-dashboard.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (507 lines, 71 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub-dashboard.css",
-      "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1434 lines, 227 selectors)."
+      "reason": "Large stylesheet requires atomization (330 lines, 63 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",
@@ -16795,8 +17392,8 @@
       "reason": "Large stylesheet requires atomization (874 lines, 138 selectors)."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/player-campaign.css",
-      "path": "src/frontend/shared/styles/features/player-campaign.css",
+      "id": "mixed-responsibility:src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
@@ -16935,17 +17532,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/timeline.css",
-      "path": "src/frontend/shared/styles/features/timeline.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (216 lines, 37 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/foundation/motion.css:!important",
@@ -17659,6 +18245,9 @@
     "src/frontend/dm/pages/SettingsPage.tsx": [
       "src/frontend/dm/pages/settingsPage.css"
     ],
+    "src/frontend/dm/pages/rulesPage.css": [
+      "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css"
+    ],
     "src/frontend/dm/people/PeopleWorkspacePage.tsx": [
       "src/frontend/dm/people/peopleWorkspace.css"
     ],
@@ -17777,6 +18366,10 @@
     "src/frontend/institutional/InstitutionalLayout.tsx": [
       "src/frontend/institutional/institutional.css"
     ],
+    "src/frontend/institutional/institutional.css": [
+      "src/frontend/institutional/institutional-parts/institutional-parts-01.css",
+      "src/frontend/institutional/institutional-parts/institutional-parts-02.css"
+    ],
     "src/frontend/main.tsx": [
       "src/frontend/shared/styles/main.css"
     ],
@@ -17843,6 +18436,18 @@
       "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-03.css",
       "src/frontend/shared/styles/features/campaign-messaging-parts/campaign-messaging-parts-04.css"
     ],
+    "src/frontend/shared/styles/features/campaign-template.css": [
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-01.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-02.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-03.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-04.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-05.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-06.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-07.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-08.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-09.css",
+      "src/frontend/shared/styles/features/campaign-template-parts/campaign-template-parts-10.css"
+    ],
     "src/frontend/shared/styles/features/dashboard-overview.css": [
       "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-01.css",
       "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-02.css",
@@ -17850,12 +18455,51 @@
       "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-04.css",
       "src/frontend/shared/styles/features/dashboard-overview-parts/dashboard-overview-parts-05.css"
     ],
+    "src/frontend/shared/styles/features/dm-dashboard.css": [
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-01.css",
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-02.css",
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-03.css",
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-04.css",
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-05.css",
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-06.css",
+      "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-07.css"
+    ],
+    "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css": [
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css"
+    ],
+    "src/frontend/shared/styles/features/dm-hub-dashboard.css": [
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-01.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-02.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-03.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-04.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-05.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-06.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-07.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-08.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-09.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-10.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-11.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-12.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-13.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-14.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-16.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-17.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-18.css"
+    ],
     "src/frontend/shared/styles/features/entity-relations.css": [
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-01.css",
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-02.css",
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-03.css",
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-04.css",
       "src/frontend/shared/styles/features/entity-relations-parts/entity-relations-parts-05.css"
+    ],
+    "src/frontend/shared/styles/features/player-campaign.css": [
+      "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+    ],
+    "src/frontend/shared/styles/features/timeline.css": [
+      "src/frontend/shared/styles/features/timeline-parts/timeline-parts-01.css",
+      "src/frontend/shared/styles/features/timeline-parts/timeline-parts-02.css"
     ],
     "src/frontend/shared/styles/landing/landing-05.css": [
       "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",

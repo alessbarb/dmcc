@@ -1,0 +1,79 @@
+
+
+.dm-table-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.dm-table-row:hover {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
+}
+
+.dm-table-row__cover {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
+  flex-shrink: 0;
+}
+
+.dm-table-row__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dm-table-row__title-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dm-table-row__name {
+  font-size: 0.79rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dm-table-row__campaign {
+  font-size: 0.7rem;
+  color: var(--theme-accents-primary-foreground);
+}
+
+.dm-table-row__session {
+  font-size: 0.68rem;
+  color: var(--theme-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dm-table-row__stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.dm-table-row__time,
+.dm-table-row__players {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  color: var(--theme-text-secondary);
+}

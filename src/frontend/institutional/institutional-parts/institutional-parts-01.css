@@ -1,0 +1,146 @@
+.institutional-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  color: var(--theme-text-primary);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--theme-accents-primary-foreground) 24%, transparent), transparent 34rem),
+    radial-gradient(circle at bottom right, color-mix(in srgb, var(--theme-accents-secondary-foreground) 22%, transparent), transparent 32rem),
+    linear-gradient(135deg, var(--theme-surfaces-canvas) 0%, var(--theme-surfaces-base) 48%, var(--theme-surfaces-subtle) 100%);
+}
+
+.institutional-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.institutional-orb--gold {
+  top: 8%;
+  right: 8%;
+  width: 11rem;
+  height: 11rem;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
+}
+
+.institutional-orb--violet {
+  bottom: 10%;
+  left: 7%;
+  width: 14rem;
+  height: 14rem;
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 24%, transparent);
+}
+
+.institutional-hero,
+.institutional-frame {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.institutional-hero {
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem) 1rem clamp(1rem, 3vw, 1.75rem);
+  text-align: center;
+}
+
+.institutional-hero__mark {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent);
+  border-radius: 999px;
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
+}
+
+.institutional-hero__kicker,
+.institutional-panel__eyebrow,
+.institutional-contact__eyebrow {
+  margin: 0;
+  color: var(--theme-accents-primary-foreground);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.institutional-hero h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.institutional-hero p:last-child {
+  max-width: 42rem;
+  margin: 0;
+  color: color-mix(in srgb, var(--theme-text-primary) 76%, transparent);
+}
+
+.institutional-frame {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr) 18rem;
+  gap: 1rem;
+  align-items: start;
+}
+
+.institutional-shell .rl-footer {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  margin: clamp(1rem, 3vw, 2rem) auto 0;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 12%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 62%, transparent);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.institutional-nav,
+.institutional-panel,
+.institutional-contact {
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 14%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 62%, transparent);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.institutional-nav {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 1.25rem;
+}
+
+.institutional-nav__link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 0.9rem;
+  color: color-mix(in srgb, var(--theme-text-primary) 76%, transparent);
+  font-weight: 750;
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.institutional-nav__link:hover,
+.institutional-nav__link:focus-visible,
+.institutional-nav__link.is-active {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 36%, transparent);
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
+  outline: none;
+}
+

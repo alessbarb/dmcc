@@ -1,0 +1,78 @@
+
+
+/* ── Status badges ── */
+.dm-badge {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.dm-badge--active {
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 18%, transparent);
+  color: var(--theme-feedback-success-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent);
+}
+
+.dm-badge--paused {
+  background: color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  color: var(--theme-text-secondary);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+}
+
+/* ── Alerts list ── */
+.dm-alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dm-alert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  background: color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dm-alert-row:hover {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 4%, transparent);
+}
+
+.dm-alert-row__label {
+  font-size: 0.77rem;
+  color: var(--theme-text-primary);
+  flex: 1;
+}
+
+.dm-alert-row__badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  color: var(--theme-text-primary);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+  min-width: 24px;
+  text-align: center;
+}
+
+.dm-alert-row__badge.warning {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+  color: var(--theme-accents-primary-foreground);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent);
+}
+
+/* ── Quick access grid ── */
+.dm-quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}

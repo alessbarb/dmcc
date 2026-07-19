@@ -1,0 +1,127 @@
+.institutional-panel {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: 1.5rem;
+}
+
+.institutional-panel h2,
+.institutional-contact h2 {
+  margin: 0.35rem 0 0;
+  line-height: 1.1;
+}
+
+.institutional-panel h2 {
+  font-size: clamp(1.65rem, 3vw, 2.55rem);
+}
+
+.institutional-panel__summary {
+  margin: 1rem 0 0;
+  color: color-mix(in srgb, var(--theme-text-primary) 78%, transparent);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.institutional-panel__notice {
+  margin: 1rem 0 0;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 24%, transparent);
+  border-radius: 0.9rem;
+  color: color-mix(in srgb, var(--theme-text-primary) 78%, transparent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.institutional-panel__sections {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.75rem;
+}
+
+.institutional-section {
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 11%, transparent);
+}
+
+.institutional-section h3 {
+  margin: 0 0 0.5rem;
+  color: var(--theme-accents-primary-hover);
+}
+
+.institutional-section p,
+.institutional-contact p {
+  margin: 0.55rem 0 0;
+  color: color-mix(in srgb, var(--theme-text-primary) 74%, transparent);
+  line-height: 1.7;
+}
+
+.institutional-contact {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+}
+
+.institutional-contact__link {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 12%, transparent);
+  border-radius: 0.9rem;
+  color: var(--theme-accents-primary-hover);
+  background: color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  text-decoration: none;
+}
+
+.institutional-contact__link span {
+  overflow-wrap: anywhere;
+}
+
+.institutional-contact__link:hover,
+.institutional-contact__link:focus-visible {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, transparent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
+  outline: none;
+}
+
+@media (max-width: 920px) {
+  .institutional-frame {
+    grid-template-columns: 1fr;
+  }
+
+  .institutional-nav {
+    position: static;
+    grid-template-columns: repeat(4, minmax(max-content, 1fr));
+    overflow-x: auto;
+  }
+
+  .institutional-nav__link {
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .institutional-shell {
+    padding: 0.75rem;
+  }
+
+  .institutional-nav {
+    display: flex;
+    padding: 0.45rem;
+    border-radius: 999px;
+  }
+
+  .institutional-nav__link {
+    min-height: 2.35rem;
+    padding: 0 0.85rem;
+    border-radius: 999px;
+  }
+
+  .institutional-panel,
+  .institutional-contact {
+    border-radius: 1rem;
+  }
+}

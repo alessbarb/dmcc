@@ -1,0 +1,70 @@
+
+
+.live-table-modal__active {
+  display: grid;
+  gap: 16px;
+}
+
+.live-table-modal__code-card {
+  padding: clamp(18px, 4vw, 28px);
+  display: grid;
+  gap: 8px;
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--theme-feedback-warning-foreground) 13%, transparent), transparent 42%),
+    color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+}
+
+.live-table-modal__code-card span,
+.live-table-modal__field span {
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.live-table-modal__code-card strong {
+  font-size: clamp(2.25rem, 12vw, 5.6rem);
+  letter-spacing: 0.16em;
+  line-height: 0.95;
+}
+
+.live-table-modal__code-card small {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--theme-text-secondary);
+}
+
+.live-table-modal__actions,
+.live-table-modal__footer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.live-table-modal__info-card {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.live-table-modal__info-card p,
+.live-table-modal__setup-copy p {
+  margin: 5px 0 0;
+  color: var(--theme-text-secondary);
+  line-height: 1.55;
+}
+
+.live-table-modal__setup {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+  gap: 18px;
+  align-items: end;
+}
+
+.live-table-modal__field {
+  display: grid;
+  gap: 7px;
+}

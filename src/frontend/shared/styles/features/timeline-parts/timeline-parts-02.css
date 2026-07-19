@@ -1,0 +1,104 @@
+.timeline-group-header--active {
+  background: linear-gradient(90deg, var(--theme-narrative-consequence-background), transparent);
+}
+
+/* Timeline filter and stats additions */
+.timeline-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 4px 0;
+}
+
+.filter-chip {
+  background-color: var(--theme-surfaces-interactive);
+  color: var(--theme-text-secondary);
+  border: 1px solid var(--theme-borders-default);
+  padding: 6px 14px;
+  border-radius: var(--theme-shapes-radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-chip:hover {
+  background-color: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
+  border-color: var(--theme-borders-interactive-hover);
+}
+
+.filter-chip.active {
+  background-color: var(--theme-accents-primary-background);
+  color: var(--theme-text-primary);
+  border-color: var(--theme-accents-primary-foreground);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--theme-activity-system-foreground) 15%, transparent);
+}
+
+.timeline-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 1024px) {
+  .timeline-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .timeline-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.timeline-stat-card {
+  background-color: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--theme-shadows-small);
+  transition: var(--transition-normal);
+}
+
+.timeline-stat-card:hover {
+  border-color: var(--theme-borders-interactive-hover);
+  transform: translateY(-1px);
+}
+
+.timeline-stat-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--theme-shapes-radius-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  line-height: 1.2;
+}
+
+.timeline-stat-label {
+  font-size: 0.75rem;
+  color: var(--theme-text-secondary);
+  font-weight: 500;
+}
+

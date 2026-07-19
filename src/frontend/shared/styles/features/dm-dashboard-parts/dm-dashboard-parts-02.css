@@ -1,0 +1,80 @@
+
+
+.quick-action-link:hover {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
+  color: var(--theme-accents-primary-foreground);
+  transform: translateY(-1px);
+}
+
+.dm-dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  padding: 32px 40px;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main-content-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Scroll Active World Sidebar */
+.active-world-scroll-card {
+  position: relative;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--theme-surfaces-base) 85%, transparent) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 95%, transparent) 100%);
+  border-left: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 15%, transparent);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: -8px 8px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+  height: fit-content;
+}
+
+.scroll-image-header {
+  position: relative;
+  height: 160px;
+  background-position: center;
+  background-size: cover;
+  border-bottom: 2px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
+}
+
+.scroll-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent) 100%);
+}
+
+.scroll-campaign-info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scroll-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--theme-accents-primary-foreground);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.scroll-density-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.scroll-mini-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

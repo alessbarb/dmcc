@@ -1,0 +1,79 @@
+/* ═══════════════════════════════════════════════════════════════════
+   DM HUB GLOBAL PORTAL — /dm
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Root layout */
+.dm-hub-root {
+  background: var(--theme-surfaces-canvas);
+  min-height: 100vh;
+  position: relative;
+}
+
+.dm-hub-main {
+  max-width: 1760px;
+  margin: 0 auto;
+  padding: 24px 28px calc(24px + var(--app-footer-height));
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Topbar button variants ── */
+.dm-topbar-ghost-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 10%, transparent);
+  border-radius: 6px;
+  padding: 5px 12px;
+  color: var(--theme-text-secondary);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.dm-topbar-ghost-btn:hover {
+  border-color: color-mix(in srgb, var(--theme-text-on-media) 28%, transparent);
+  color: var(--theme-text-primary);
+}
+
+.dm-topbar-user-btn {
+  gap: 8px;
+}
+
+.dm-hub-topbar-user-menu {
+  position: relative;
+}
+
+.dm-topbar-user-btn__chevron {
+  opacity: 0.6;
+}
+
+/* ── User dropdown ── */
+.dm-user-dropdown {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  z-index: 999;
+  min-width: 190px;
+  background: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent);
+}
+
+.dm-user-dropdown__header {
+  padding: 10px 12px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
+  margin-bottom: 4px;
+}
+
+.dm-user-dropdown__name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--theme-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
