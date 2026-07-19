@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:48:42.379Z",
+  "generatedAt": "2026-07-19T10:49:58.403Z",
   "summary": {
-    "cssFiles": 114,
-    "tsxFilesWithInlineStyles": 58,
+    "cssFiles": 115,
+    "tsxFilesWithInlineStyles": 57,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 471,
+    "staticInlineStyles": 462,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -881,21 +881,12 @@
       "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 99,
+      "lineCount": 85,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-warning-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-secondary",
-        "--theme-feedback-success-foreground",
-        "--theme-shapes-radius-small",
-        "--theme-surfaces-interactive",
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/RelationshipTypePopover.tsx",
@@ -6598,6 +6589,31 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-mystery-health.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 76,
+      "selectorCount": 13,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--theme-feedback-success-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-narrative-lint.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8710,7 +8726,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 73,
+      "lineCount": 74,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8777,7 +8793,8 @@
         "src/frontend/shared/styles/features/session-prep-form.css",
         "src/frontend/shared/styles/features/canvas-toolbar.css",
         "src/frontend/shared/styles/features/canvas-flow.css",
-        "src/frontend/shared/styles/features/canvas-dialog-forms.css"
+        "src/frontend/shared/styles/features/canvas-dialog-forms.css",
+        "src/frontend/shared/styles/features/canvas-mystery-health.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10428,123 +10445,6 @@
       "category": "literal-color",
       "value": "#8b5cf6",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ display: \"flex\", gap: \"8px\", marginBottom: \"12px\", fontSize: \"0.8rem\" }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 49,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"8px\", marginBottom: \"12px\", fontSize: \"0.8rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ textAlign: \"center\", padding: \"20px\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 55,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ textAlign: \"center\", padding: \"20px\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ fontSize: \"2rem\" }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 56,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"2rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ marginTop: \"10px\", color: \"var(--theme-feedback-success-foreground)\", fontWeight: 600 }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 57,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"10px\", color: \"var(--theme-feedback-success-foreground)\", fontWeight: 600 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ fontSize: \"0.85rem\" }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 58,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.85rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"10px\", overflowY: \"auto\", maxHeight: \"calc(100vh - 160px)\" }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 61,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"10px\", overflowY: \"auto\", maxHeight: \"calc(100vh - 160px)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ padding: \"10px\", borderRadius: \"var(--theme-shapes-radius-small)\", borderLeft: `3px solid ${severityColor[issue.severity]}`, backgroundColor: \"var(--theme-surf",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 65,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                  padding: \"10px\",\n                  borderRadius: \"var(--theme-shapes-radius-small)\",\n                  borderLeft: `3px solid ${severityColor[issue.severity]}`,\n                  backgroundColor: \"var(--theme-surf",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ fontWeight: 700, marginBottom: \"4px\", color: severityColor[issue.severity] }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 74,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: 700, marginBottom: \"4px\", color: severityColor[issue.severity] }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:style={{ padding: 0, marginTop: \"6px\", fontSize: \"10px\", color: \"var(--theme-accents-primary-foreground)\", border: \"none\", background: \"transparent\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/MysteryHealthPanel.tsx",
-      "line": 82,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 0, marginTop: \"6px\", fontSize: \"10px\", color: \"var(--theme-accents-primary-foreground)\", border: \"none\", background: \"transparent\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:!important",
@@ -24672,7 +24572,8 @@
       "src/frontend/shared/styles/features/session-prep-form.css",
       "src/frontend/shared/styles/features/canvas-toolbar.css",
       "src/frontend/shared/styles/features/canvas-flow.css",
-      "src/frontend/shared/styles/features/canvas-dialog-forms.css"
+      "src/frontend/shared/styles/features/canvas-dialog-forms.css",
+      "src/frontend/shared/styles/features/canvas-mystery-health.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

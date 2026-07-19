@@ -1,0 +1,75 @@
+.mystery-health__summary {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+}
+
+.mystery-health__empty {
+  padding: 20px;
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.mystery-health__empty-icon {
+  font-size: 2rem;
+}
+
+.mystery-health__success {
+  margin: 10px 0 0;
+  color: var(--theme-feedback-success-foreground);
+  font-weight: 600;
+}
+
+.mystery-health__empty-message {
+  font-size: 0.85rem;
+}
+
+.mystery-health__issues {
+  display: flex;
+  max-height: calc(100vh - 160px);
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.mystery-health__issue {
+  padding: 10px;
+  border-left: 3px solid var(--theme-accents-primary-foreground);
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-surfaces-interactive);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.mystery-health__issue--error {
+  border-left-color: var(--theme-feedback-danger-foreground);
+}
+
+.mystery-health__issue--warning {
+  border-left-color: var(--theme-feedback-warning-foreground);
+}
+
+.mystery-health__issue-title {
+  margin-bottom: 4px;
+  color: var(--theme-accents-primary-foreground);
+  font-weight: 700;
+}
+
+.mystery-health__issue--error .mystery-health__issue-title {
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.mystery-health__issue--warning .mystery-health__issue-title {
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.mystery-health__focus {
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--theme-accents-primary-foreground);
+  cursor: pointer;
+  font-size: 10px;
+}

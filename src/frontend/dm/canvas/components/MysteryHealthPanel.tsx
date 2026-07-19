@@ -9,12 +9,6 @@ const severityLabel: Record<MysteryIssue["severity"], string> = {
   info: "Sugerencia",
 };
 
-const severityColor: Record<MysteryIssue["severity"], string> = {
-  error: "var(--theme-feedback-danger-foreground)",
-  warning: "var(--theme-feedback-warning-foreground)",
-  info: "var(--theme-accents-primary-foreground)",
-};
-
 export function MysteryHealthPanel({
   canvas,
   entities,
@@ -46,40 +40,32 @@ export function MysteryHealthPanel({
         )}
       </div>
       <div className="inspector-content">
-        <div style={{ display: "flex", gap: "8px", marginBottom: "12px", fontSize: "0.8rem" }}>
+        <div className="mystery-health__summary">
           <span className="badge badge-primary">{issues.length} hallazgos</span>
           {criticalCount > 0 && <span className="badge badge-danger">{criticalCount} críticos</span>}
         </div>
 
         {issues.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
-            <span style={{ fontSize: "2rem" }}>✨</span>
-            <p style={{ marginTop: "10px", color: "var(--theme-feedback-success-foreground)", fontWeight: 600 }}>Misterio saludable</p>
-            <p style={{ fontSize: "0.85rem" }}>Todas las pistas y revelaciones principales tienen una ruta revisable.</p>
+          <div className="mystery-health__empty">
+            <span className="mystery-health__empty-icon">✨</span>
+            <p className="mystery-health__success">Misterio saludable</p>
+            <p className="mystery-health__empty-message">Todas las pistas y revelaciones principales tienen una ruta revisable.</p>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", overflowY: "auto", maxHeight: "calc(100vh - 160px)" }}>
+          <div className="mystery-health__issues">
             {issues.map((issue) => (
               <article
                 key={issue.id}
-                style={{
-                  padding: "10px",
-                  borderRadius: "var(--theme-shapes-radius-small)",
-                  borderLeft: `3px solid ${severityColor[issue.severity]}`,
-                  backgroundColor: "var(--theme-surfaces-interactive)",
-                  fontSize: "0.82rem",
-                  lineHeight: 1.4,
-                }}
+                className={`mystery-health__issue mystery-health__issue--${issue.severity}`}
               >
-                <div style={{ fontWeight: 700, marginBottom: "4px", color: severityColor[issue.severity] }}>
+                <div className="mystery-health__issue-title">
                   {severityLabel[issue.severity]}
                 </div>
                 <div>{issue.message}</div>
                 {(issue.entityId || issue.factId) && (
                   <button
                     type="button"
-                    className="btn btn-link btn-xs"
-                    style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--theme-accents-primary-foreground)", border: "none", background: "transparent", cursor: "pointer" }}
+                    className="btn btn-link btn-xs mystery-health__focus"
                     onClick={() => {
                       if (issue.entityId) onFocusEntity?.(issue.entityId);
                       if (issue.factId) onFocusFact?.(issue.factId);
