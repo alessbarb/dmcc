@@ -41,6 +41,14 @@
   gap: 8px;
 }
 
+.dm-hub-topbar-user-menu {
+  position: relative;
+}
+
+.dm-topbar-user-btn__chevron {
+  opacity: 0.6;
+}
+
 /* ── User dropdown ── */
 .dm-user-dropdown {
   position: absolute;

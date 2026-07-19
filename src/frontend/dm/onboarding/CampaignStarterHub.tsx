@@ -208,7 +208,7 @@ function GuidanceModal({
         <div className="modal-header">
           <div>
             <span className="guided-start__eyebrow">{t("guidedStart.helpModal.eyebrow")}</span>
-            <h2 id="guided-start-modal-title" style={{ fontWeight: 800 }}>{t("guidedStart.helpModal.title")}</h2>
+            <h2 id="guided-start-modal-title" className="guided-start__modal-title">{t("guidedStart.helpModal.title")}</h2>
           </div>
           <button type="button" className="btn btn-icon btn-secondary" onClick={onClose} aria-label={t("common.close")}>
             <X size={18} />
@@ -323,7 +323,7 @@ function CampaignPremiseModal({
         <div className="modal-header">
           <div>
             <span className="guided-start__eyebrow">{t("guidedStart.premiseModal.eyebrow")}</span>
-            <h2 id="guided-start-premise-title" style={{ fontWeight: 800 }}>{t("guidedStart.premiseModal.title")}</h2>
+            <h2 id="guided-start-premise-title" className="guided-start__modal-title">{t("guidedStart.premiseModal.title")}</h2>
           </div>
           <button type="button" className="btn btn-icon btn-secondary" onClick={onClose} aria-label={t("common.close")} disabled={saving}>
             <X size={18} />

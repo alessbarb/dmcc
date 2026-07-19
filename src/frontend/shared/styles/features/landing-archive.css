@@ -722,6 +722,16 @@
   animation: d20Float 8s ease-in-out infinite;
 }
 
+.rpg-portal-background__svg {
+  position: absolute;
+  inset: 0;
+}
+
+.rpg-d20-text {
+  filter: drop-shadow(0 0 5px var(--theme-accents-secondary-foreground));
+  user-select: none;
+}
+
 @keyframes d20Float {
   0%, 100% {
     transform: translateY(0px);

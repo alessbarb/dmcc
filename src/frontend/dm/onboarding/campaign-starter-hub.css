@@ -79,6 +79,10 @@
   margin-bottom: 5px;
 }
 
+.guided-start__modal-title {
+  font-weight: 800;
+}
+
 .guided-start h2 {
   margin: 0;
   color: var(--theme-text-primary);
@@ -412,4 +416,3 @@
     justify-content: center;
   }
 }
-

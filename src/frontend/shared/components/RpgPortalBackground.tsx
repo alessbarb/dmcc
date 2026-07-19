@@ -45,7 +45,7 @@ export function RpgPortalBackground() {
         height="100%"
         viewBox="0 0 1000 400"
         preserveAspectRatio="xMidYMid slice"
-        style={{ position: "absolute", inset: 0 }}
+        className="rpg-portal-background__svg"
       >
         <defs>
           <pattern id="battleGrid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -146,10 +146,6 @@ export function RpgPortalBackground() {
             fontWeight="900"
             fontFamily="var(--font-sans)"
             className="rpg-d20-text"
-            style={{
-              filter: "drop-shadow(0 0 5px var(--theme-accents-secondary-foreground))",
-              userSelect: "none",
-            }}
           >
             20
           </text>

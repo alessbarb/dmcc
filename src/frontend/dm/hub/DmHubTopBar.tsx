@@ -48,7 +48,7 @@ export function DmHubTopBar({
           {t("nav.switchDm")}
         </button>
 
-        <div ref={dropdownRef} style={{ position: "relative" }}>
+        <div ref={dropdownRef} className="dm-hub-topbar-user-menu">
           <button
             type="button"
             className="dm-topbar-ghost-btn dm-topbar-user-btn"
@@ -56,7 +56,7 @@ export function DmHubTopBar({
           >
             <UserRound size={13} />
             <span>{dmDisplayName}</span>
-            <ChevronDown size={11} style={{ opacity: 0.6 }} />
+            <ChevronDown className="dm-topbar-user-btn__chevron" size={11} />
           </button>
           {isUserDropdownOpen && (
             <div className="dm-user-dropdown animate-fade-in">

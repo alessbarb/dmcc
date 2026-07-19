@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:38:35.402Z",
+  "generatedAt": "2026-07-19T11:39:25.997Z",
   "summary": {
     "cssFiles": 132,
-    "tsxFilesWithInlineStyles": 23,
+    "tsxFilesWithInlineStyles": 22,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 16,
+    "staticInlineStyles": 10,
     "dynamicInlineStyles": 18,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -2786,8 +2786,8 @@
       "path": "src/frontend/dm/onboarding/campaign-starter-hub.css",
       "layer": "feature",
       "domain": "onboarding",
-      "lineCount": 416,
-      "selectorCount": 57,
+      "lineCount": 419,
+      "selectorCount": 58,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/onboarding/CampaignStarterHub.tsx"
@@ -5088,7 +5088,7 @@
       "path": "src/frontend/shared/components/RpgPortalBackground.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 169,
+      "lineCount": 165,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -5113,8 +5113,7 @@
         "--theme-surfaces-selected",
         "--theme-accents-secondary-foreground",
         "--theme-text-on-media",
-        "--font-sans",
-        "--theme-accents-secondary-foreground"
+        "--font-sans"
       ]
     },
     {
@@ -6771,8 +6770,8 @@
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1416,
-      "selectorCount": 223,
+      "lineCount": 1424,
+      "selectorCount": 225,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7393,8 +7392,8 @@
       "path": "src/frontend/shared/styles/features/landing-archive.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 864,
-      "selectorCount": 136,
+      "lineCount": 874,
+      "selectorCount": 138,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7559,6 +7558,7 @@
         "--theme-text-primary",
         "--theme-feedback-warning-foreground",
         "--theme-text-on-media",
+        "--theme-accents-secondary-foreground",
         "--theme-activity-tag-foreground",
         "--theme-accents-primary-hover",
         "--theme-activity-system-foreground",
@@ -12688,32 +12688,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/DmHubTopBar.tsx:style={{ position: \"relative\" }}",
-      "path": "src/frontend/dm/hub/DmHubTopBar.tsx",
-      "line": 51,
-      "column": 32,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ position: \"relative\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubTopBar.tsx:style={{ opacity: 0.6 }}",
-      "path": "src/frontend/dm/hub/DmHubTopBar.tsx",
-      "line": 59,
-      "column": 36,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ opacity: 0.6 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "literal-color:src/frontend/dm/layouts/campaign-route-transitions.css:rgb(0 0 0 / 12%)",
       "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
       "line": 48,
@@ -13090,32 +13064,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/onboarding/CampaignStarterHub.tsx:style={{ fontWeight: 800 }}",
-      "path": "src/frontend/dm/onboarding/CampaignStarterHub.tsx",
-      "line": 211,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: 800 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/onboarding/CampaignStarterHub.tsx:style={{ fontWeight: 800 }}",
-      "path": "src/frontend/dm/onboarding/CampaignStarterHub.tsx",
-      "line": 326,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: 800 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/onboarding/CampaignStarterHub.tsx:style={{ width: `${Math.round((progress.completedCount / progress.totalCount) * 100)}%` }}",
       "path": "src/frontend/dm/onboarding/CampaignStarterHub.tsx",
       "line": 504,
@@ -13232,7 +13180,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (416 lines, 57 selectors)."
+      "reason": "Large stylesheet requires atomization (419 lines, 58 selectors)."
     },
     {
       "id": "important:src/frontend/dm/pages/campaignMessagesPage.css:!important",
@@ -14224,32 +14172,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ objectPosition: imageFocalPointToObjectPosition(focalPoint) }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/components/RpgPortalBackground.tsx:style={{ position: \"absolute\", inset: 0 }}",
-      "path": "src/frontend/shared/components/RpgPortalBackground.tsx",
-      "line": 48,
-      "column": 9,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ position: \"absolute\", inset: 0 }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/components/RpgPortalBackground.tsx:style={{ filter: \"drop-shadow(0 0 5px var(--theme-accents-secondary-foreground))\", userSelect: \"none\", }}",
-      "path": "src/frontend/shared/components/RpgPortalBackground.tsx",
-      "line": 149,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n              filter: \"drop-shadow(0 0 5px var(--theme-accents-secondary-foreground))\",\n              userSelect: \"none\",\n            }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -15584,7 +15506,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1416 lines, 223 selectors)."
+      "reason": "Large stylesheet requires atomization (1424 lines, 225 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",
@@ -15641,7 +15563,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (864 lines, 136 selectors)."
+      "reason": "Large stylesheet requires atomization (874 lines, 138 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/player-campaign.css",
