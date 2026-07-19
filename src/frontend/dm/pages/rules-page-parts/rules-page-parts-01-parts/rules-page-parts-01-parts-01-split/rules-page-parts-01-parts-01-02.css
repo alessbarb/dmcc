@@ -1,0 +1,49 @@
+
+
+.rules-page .form-select {
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+.rules-page .rules-list {
+  padding-right: 3px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, transparent) transparent;
+}
+
+.rules-page .rules-list__item {
+  background: var(--theme-surfaces-interactive);
+}
+
+.rules-page .rules-list__item[aria-selected="true"] {
+  border-color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 12%, var(--theme-surfaces-interactive));
+  box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground);
+}
+
+.rules-page__item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.rules-page__item-subtitle {
+  margin-top: 4px;
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.rules-page__list-state {
+  padding: 20px;
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.rules-page__count {
+  color: var(--theme-text-secondary);
+  font-size: 0.75rem;
+  text-align: right;
+}

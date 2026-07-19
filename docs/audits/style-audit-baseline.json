@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T12:07:26.261Z",
+  "generatedAt": "2026-07-19T16:03:15.688Z",
   "summary": {
-    "cssFiles": 375,
+    "cssFiles": 388,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 5,
+    "mixedResponsibilityFiles": 3,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -957,14 +957,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
       "layer": "feature",
       "domain": "canvas",
-      "lineCount": 265,
-      "selectorCount": 34,
+      "lineCount": 274,
+      "selectorCount": 37,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -1011,6 +1011,21 @@
         "--theme-surfaces-interactive",
         "--theme-surfaces-canvas"
       ]
+    },
+    {
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
+      "layer": "feature",
+      "domain": "canvas",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
@@ -3611,20 +3626,34 @@
       ]
     },
     {
-      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-01.css",
       "layer": "feature",
       "domain": "pages",
-      "lineCount": 179,
-      "selectorCount": 32,
+      "lineCount": 45,
+      "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css"
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-02.css",
+      "layer": "feature",
+      "domain": "pages",
+      "lineCount": 50,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-surfaces-interactive",
         "--theme-accents-primary-foreground",
@@ -3633,7 +3662,21 @@
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-03.css",
+      "layer": "feature",
+      "domain": "pages",
+      "lineCount": 58,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-accents-secondary-foreground",
         "--theme-borders-default",
@@ -3646,6 +3689,37 @@
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground"
       ]
+    },
+    {
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-04.css",
+      "layer": "feature",
+      "domain": "pages",
+      "lineCount": 32,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
+      "layer": "feature",
+      "domain": "pages",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-01.css",
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-02.css",
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-03.css",
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css",
@@ -9288,32 +9362,19 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-split/dm-hub-dashboard-parts-15-parts-01-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 330,
-      "selectorCount": 63,
-      "imports": [],
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-split/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css"
+      ],
       "importedBy": [
         "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css"
       ],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-text-on-media",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css",
@@ -9322,7 +9383,7 @@
       "lineCount": 2,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css"
+        "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-split/dm-hub-dashboard-parts-15-parts-01-01.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css"
@@ -10411,32 +10472,107 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 38,
-      "selectorCount": 37,
+      "lineCount": 9,
+      "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/player-campaign.css"
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-text-secondary",
         "--theme-text-secondary",
-        "--theme-borders-default",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-02.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 10,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
-        "--theme-borders-default",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-03.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 10,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-borders-default",
         "--theme-feedback-danger-foreground",
-        "--theme-feedback-danger-foreground",
-        "--theme-borders-default",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-04.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 10,
+      "selectorCount": 8,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-05.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 7,
+      "selectorCount": 5,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-borders-default"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
+      "layer": "feature",
+      "domain": "shared",
+      "lineCount": 6,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-01.css",
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-02.css",
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-03.css",
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-04.css",
+        "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-05.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/features/player-campaign.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/player-campaign.css",
@@ -12063,20 +12199,16 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-01.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 583,
-      "selectorCount": 70,
+      "lineCount": 55,
+      "selectorCount": 6,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css"
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
       ],
-      "variableDefinitions": [
-        "--app-footer-height",
-        "--campaign-mobile-header-height",
-        "--mobile-dock-height"
-      ],
+      "variableDefinitions": [],
       "variableReferences": [
         "--theme-surfaces-base",
         "--theme-shapes-radius-medium",
@@ -12089,7 +12221,25 @@
         "--theme-accents-primary-foreground",
         "--theme-text-on-media",
         "--theme-feedback-success-foreground",
-        "--theme-activity-attachment-foreground",
+        "--theme-activity-attachment-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 306,
+      "selectorCount": 39,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+      ],
+      "variableDefinitions": [
+        "--app-footer-height",
+        "--campaign-mobile-header-height",
+        "--mobile-dock-height"
+      ],
+      "variableReferences": [
         "--mobile-dock-height",
         "--campaign-mobile-header-height",
         "--theme-borders-default",
@@ -12122,7 +12272,21 @@
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 248,
+      "selectorCount": 32,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
@@ -12156,6 +12320,23 @@
         "--theme-activity-system-foreground",
         "--theme-accents-primary-background"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css",
@@ -13298,8 +13479,8 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
       "line": 31,
       "column": 19,
       "severity": "high",
@@ -13310,9 +13491,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 213,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 219,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -13322,9 +13503,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 214,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 220,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -13334,9 +13515,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 215,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 221,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -13346,9 +13527,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 216,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 222,
       "column": 81,
       "severity": "high",
       "status": "temporary",
@@ -13358,9 +13539,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 221,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 227,
       "column": 14,
       "severity": "high",
       "status": "temporary",
@@ -13370,9 +13551,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 262,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 271,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -13382,9 +13563,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 162,
+      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 165,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -13394,9 +13575,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "line": 241,
+      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "line": 250,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -13406,15 +13587,15 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
+      "id": "mixed-responsibility:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
       "category": "mixed-responsibility",
       "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (265 lines, 34 selectors)."
+      "reason": "Large stylesheet requires atomization (274 lines, 37 selectors)."
     },
     {
       "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:style={{ \"--entity-detail-hero-filter\": isDmOnly ? \"grayscale(70%) brightness(35%)\" : \"none\", \"--entity-detail-hero-opacity\": selectedEntity.metadata?.imageUrl ? 1 : 0.6, } as React.CSSProperties & Re",
@@ -16571,17 +16752,6 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
-      "path": "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (179 lines, 32 selectors)."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:style={{ \"--consequence-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"consequence-chain-list__kind\">{t(`sessio",
       "path": "src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx",
       "line": 55,
@@ -18134,17 +18304,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css",
-      "path": "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (330 lines, 63 selectors)."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css:!important",
       "path": "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-08.css",
       "line": 42,
@@ -18155,17 +18314,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
-      "path": "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (38 lines, 37 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-04.css:!important",
@@ -18492,9 +18640,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 86,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 33,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -18504,9 +18652,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 90,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 37,
       "column": 83,
       "severity": "high",
       "status": "temporary",
@@ -18516,9 +18664,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 94,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 41,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -18528,9 +18676,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 156,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 106,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -18540,9 +18688,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 157,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 107,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -18552,9 +18700,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 158,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 108,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -18564,9 +18712,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 159,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 109,
       "column": 127,
       "severity": "high",
       "status": "temporary",
@@ -18576,9 +18724,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 161,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 111,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -18588,9 +18736,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 217,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 170,
       "column": 93,
       "severity": "high",
       "status": "temporary",
@@ -18600,9 +18748,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 221,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 174,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -18612,9 +18760,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 225,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 178,
       "column": 123,
       "severity": "high",
       "status": "temporary",
@@ -18624,21 +18772,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 419,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css:height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important; min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)); } .main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "line": 225,
+      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important; min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)); } .main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "line": 178,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -18648,15 +18784,38 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
+      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
       "category": "mixed-responsibility",
-      "severity": "critical",
+      "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (583 lines, 70 selectors)."
+      "reason": "Large stylesheet requires atomization (306 lines, 39 selectors)."
+    },
+    {
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
+      "line": 77,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
+      "line": 1,
+      "column": 1,
+      "sourceType": "css",
+      "category": "mixed-responsibility",
+      "severity": "high",
+      "status": "temporary",
+      "reason": "Large stylesheet requires atomization (248 lines, 32 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
@@ -18874,6 +19033,9 @@
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
     ],
+    "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css": [
+      "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
+    ],
     "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css"
     ],
@@ -18987,6 +19149,12 @@
     ],
     "src/frontend/dm/pages/SettingsPage.tsx": [
       "src/frontend/dm/pages/settingsPage.css"
+    ],
+    "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css": [
+      "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-01.css",
+      "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-02.css",
+      "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-03.css",
+      "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-04.css"
     ],
     "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css": [
       "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
@@ -19214,8 +19382,11 @@
       "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-06.css",
       "src/frontend/shared/styles/features/dm-dashboard-parts/dm-dashboard-parts-07.css"
     ],
+    "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-split/dm-hub-dashboard-parts-15-parts-01-01.css": [
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-split/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css"
+    ],
     "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css": [
-      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-parts/dm-hub-dashboard-parts-15-parts-01-parts-01.css"
+      "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01-split/dm-hub-dashboard-parts-15-parts-01-01.css"
     ],
     "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15.css": [
       "src/frontend/shared/styles/features/dm-hub-dashboard-parts/dm-hub-dashboard-parts-15-parts/dm-hub-dashboard-parts-15-parts-01.css"
@@ -19270,6 +19441,13 @@
       "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-10.css",
       "src/frontend/shared/styles/features/landing-archive-parts/landing-archive-parts-11.css"
     ],
+    "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css": [
+      "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-01.css",
+      "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-02.css",
+      "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-03.css",
+      "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-04.css",
+      "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01-split/player-campaign-parts-01-05.css"
+    ],
     "src/frontend/shared/styles/features/player-campaign.css": [
       "src/frontend/shared/styles/features/player-campaign-parts/player-campaign-parts-01.css"
     ],
@@ -19319,6 +19497,11 @@
       "src/frontend/shared/styles/landing/landing-14.css",
       "src/frontend/shared/styles/landing/landing-15.css",
       "src/frontend/shared/styles/landing/landing-16.css"
+    ],
+    "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css"
     ],
     "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02.css": [
       "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"

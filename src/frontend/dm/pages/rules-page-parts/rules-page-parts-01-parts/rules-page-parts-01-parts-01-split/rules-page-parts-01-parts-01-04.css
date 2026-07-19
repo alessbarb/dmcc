@@ -1,0 +1,31 @@
+
+
+body[data-watermark="hidden"] .watermark {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .rules-page .rules-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .rules-page .rules-sidebar,
+  .rules-page .rules-detail {
+    max-height: none;
+  }
+
+  .rules-page .rules-list {
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 560px) {
+  .rules-page .rules-sidebar,
+  .rules-page .rules-detail {
+    padding: 14px;
+  }
+
+  .rules-page__article {
+    width: 100%;
+  }
+}

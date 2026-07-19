@@ -1,0 +1,44 @@
+.rules-page {
+  min-height: min(760px, calc(100dvh - 230px));
+}
+
+.rules-page .rules-layout {
+  min-height: inherit;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.rules-page .rules-sidebar,
+.rules-page .rules-detail {
+  border-radius: var(--theme-shapes-radius-large, 14px);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
+}
+
+.rules-page .rules-sidebar {
+  max-height: min(760px, calc(100dvh - 230px));
+  padding: 16px;
+}
+
+.rules-page__field {
+  display: grid;
+  gap: 6px;
+}
+
+.rules-page__search {
+  position: relative;
+}
+
+.rules-page__search svg {
+  position: absolute;
+  top: 50%;
+  left: 11px;
+  color: var(--theme-text-secondary);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.rules-page__search .form-input {
+  width: 100%;
+  padding-left: 34px;
+  font-size: 0.85rem;
+}

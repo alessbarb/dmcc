@@ -1,0 +1,54 @@
+
+
+/* Compact pill for landing page header */
+.language-pill {
+  display: flex;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 80%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  border: 1px solid var(--theme-borders-default);
+  padding: 3px;
+  gap: 2px;
+  backdrop-filter: blur(8px);
+}
+
+.language-pill__btn {
+  padding: 5px 12px;
+  border-radius: var(--theme-shapes-radius-small);
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border: none;
+  background: transparent;
+  color: var(--theme-text-secondary);
+  letter-spacing: 0.06em;
+  font-family: var(--font-sans);
+}
+
+.language-pill__btn:hover {
+  color: var(--theme-text-primary);
+}
+
+.language-pill__btn--active {
+  background: var(--theme-accents-primary-foreground);
+  color: var(--theme-text-on-media);
+}
+
+/* Campaign shell shared navigation. */
+
+.nav-item {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+}
+
+.nav-item__live-dot {
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  border-radius: 999px;
+  background: var(--theme-feedback-success-foreground);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--theme-activity-attachment-foreground) 50%, transparent);
+}

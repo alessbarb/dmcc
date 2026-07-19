@@ -1,0 +1,9 @@
+
+.player-memory-line { border-bottom: 1px solid var(--theme-borders-default); padding-bottom: 8px; }
+.player-character-linked { display: flex; align-items: flex-start; gap: 12px; }
+.player-character-summary { margin-bottom: 0; }
+.player-character-empty { margin-bottom: 0; }
+.player-character-form { display: grid; gap: 12px; }
+.player-character-preview { border: 1px solid var(--theme-borders-default); border-radius: 12px; padding: 12px; }
+.player-character-error { color: var(--theme-feedback-danger-foreground); margin: 0; }
+.player-campaign-card--error { color: var(--theme-feedback-danger-foreground); }
