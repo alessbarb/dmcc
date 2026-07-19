@@ -1,0 +1,31 @@
+.entity-create-modal__title {
+  font-weight: 700;
+}
+
+.entity-create-modal__dnd-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.entity-create-modal__section {
+  border-bottom: 1px solid var(--theme-borders-default);
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+.entity-create-modal__section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--theme-accents-secondary-foreground);
+  margin-bottom: 12px;
+}
+
+.entity-create-modal__grid {
+  gap: 12px;
+}
+
+.entity-create-modal__submit-error {
+  flex: 1;
+  margin: 0;
+}

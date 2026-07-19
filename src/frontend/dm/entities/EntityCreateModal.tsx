@@ -230,7 +230,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2 style={{ fontWeight: "700" }}>Crear entidad narrativa</h2>
+          <h2 className="entity-create-modal__title">Crear entidad narrativa</h2>
           <button className="btn btn-icon btn-secondary" onClick={onClose}>
             <X size={18} />
           </button>
@@ -406,10 +406,10 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
             )}
             {entityForm.entityType === "player_character" && (
               campaignState?.campaign?.system === "dnd_5e" ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Información Básica</h4>
-                    <div className="grid grid-cols-2" style={{ gap: "12px" }}>
+                <div className="entity-create-modal__dnd-fields">
+                  <div className="entity-create-modal__section">
+                    <h4 className="entity-create-modal__section-title">Información Básica</h4>
+                    <div className="grid grid-cols-2 entity-create-modal__grid">
                       <div className="form-group">
                         <label className="form-label">Perfil del jugador</label>
                         <select className="form-select" value={entityForm.metadata.playerId || ""}
@@ -448,9 +448,9 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     </div>
                   </div>
 
-                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Atributos Principales (1-30)</h4>
-                    <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                  <div className="entity-create-modal__section">
+                    <h4 className="entity-create-modal__section-title">Atributos Principales (1-30)</h4>
+                    <div className="grid grid-cols-3 entity-create-modal__grid">
                       <div className="form-group">
                         <label className="form-label">Fuerza (STR) *</label>
                         <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.strength || 10}
@@ -484,9 +484,9 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     </div>
                   </div>
 
-                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Estadísticas de Combate y Progreso</h4>
-                    <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                  <div className="entity-create-modal__section">
+                    <h4 className="entity-create-modal__section-title">Estadísticas de Combate y Progreso</h4>
+                    <div className="grid grid-cols-3 entity-create-modal__grid">
                       <div className="form-group">
                         <label className="form-label">CA *</label>
                         <input type="number" className="form-input" min={0} required value={entityForm.metadata.armorClass || 10}
@@ -530,9 +530,9 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     </div>
                   </div>
 
-                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Habilidades Pasivas</h4>
-                    <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                  <div className="entity-create-modal__section">
+                    <h4 className="entity-create-modal__section-title">Habilidades Pasivas</h4>
+                    <div className="grid grid-cols-3 entity-create-modal__grid">
                       <div className="form-group">
                         <label className="form-label">Percepción Pasiva *</label>
                         <input type="number" className="form-input" required value={entityForm.metadata.passivePerception || 10}
@@ -552,7 +552,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                   </div>
 
                   <div>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Competencias, Dotes e Idiomas</h4>
+                    <h4 className="entity-create-modal__section-title">Competencias, Dotes e Idiomas</h4>
                     <div className="form-group">
                       <label className="form-label">Salvaciones Competentes (ej. dex, con)</label>
                       <input type="text" className="form-input" placeholder="Separadas por comas"
@@ -577,7 +577,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                         value={Array.isArray(entityForm.metadata.feats) ? entityForm.metadata.feats.join(", ") : ""}
                         onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, feats: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
                     </div>
-                    <div className="grid grid-cols-2" style={{ gap: "12px" }}>
+                    <div className="grid grid-cols-2 entity-create-modal__grid">
                       <div className="form-group">
                         <label className="form-label">CD Salvación Conjuros</label>
                         <input type="number" className="form-input" placeholder="Ej. 13" value={entityForm.metadata.spellSaveDC || ""}
@@ -597,7 +597,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-2" style={{ gap: "12px" }}>
+                <div className="grid grid-cols-2 entity-create-modal__grid">
                   <div className="form-group">
                     <label className="form-label">Player Profile</label>
                     <select className="form-select" value={entityForm.metadata.playerId || ""}
@@ -679,7 +679,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
           </div>
           <div className="modal-footer">
             {submitError && (
-              <p className="form-error" role="alert" style={{ flex: 1, margin: 0 }}>{submitError}</p>
+              <p className="form-error entity-create-modal__submit-error" role="alert">{submitError}</p>
             )}
             <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>
               Cancelar
