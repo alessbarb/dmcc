@@ -98,16 +98,16 @@ describe("theme-backed visual system", () => {
     expect(colorScheme).toContain("color-scheme: light");
   });
 
-  it("loads the foundation before primitives and legacy module styles", () => {
+  it("loads the foundation before primitives and domain styles", () => {
     const styles = read("src/frontend/shared/styles/main.css");
     const fontsIndex = styles.indexOf('@import "./foundation/fonts.css"');
     const structuralTokensIndex = styles.indexOf('@import "./foundation/structural-tokens.css"');
     const primitivesIndex = styles.indexOf('@import "./primitives/button.css"');
-    const legacyIndex = styles.indexOf('@import "./index.css"');
+    const domainIndex = styles.indexOf('@import "./layout/campaign-navigation.css"');
 
     expect(fontsIndex).toBe(0);
     expect(structuralTokensIndex).toBeGreaterThan(fontsIndex);
     expect(primitivesIndex).toBeGreaterThan(structuralTokensIndex);
-    expect(legacyIndex).toBeGreaterThan(primitivesIndex);
+    expect(domainIndex).toBeGreaterThan(primitivesIndex);
   });
 });
