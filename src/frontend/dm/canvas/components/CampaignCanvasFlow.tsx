@@ -829,7 +829,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     // Show Undo toast if addToast is available
     if (addToast) {
       addToast(
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "16px" }}>
+        <div className="canvas-layout-toast">
           <span>Canvas ordenado con «{label}»</span>
           <button
             type="button"
@@ -842,18 +842,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
                 }
               })();
             }}
-            className="btn btn-secondary btn-xs"
-            style={{
-              marginLeft: "auto",
-              background: "var(--theme-surfaces-interactive)",
-              color: "var(--theme-text-primary)",
-              border: "1px solid var(--theme-borders-default)",
-              padding: "3px 8px",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "11px",
-              fontWeight: 600,
-            }}
+            className="btn btn-secondary btn-xs canvas-layout-toast__undo"
           >
             Deshacer
           </button>
@@ -1226,8 +1215,8 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   return (
     <div
       ref={wrapperRef}
-      style={{ width: "100%", height: "100%", cursor: isPanMode ? "grab" : "default", position: "relative" }}
-      className={isDragOver ? "canvas-drop-zone--active" : undefined}
+      style={{ cursor: isPanMode ? "grab" : "default" }}
+      className={`canvas-flow-wrapper${isDragOver ? " canvas-drop-zone--active" : ""}`}
       onDoubleClick={onPaneDoubleClick}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -1296,7 +1285,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
               return "var(--theme-canvas-toolbar-border)";
             }}
             maskColor="var(--theme-canvas-minimap-mask)"
-            style={{ background: "var(--theme-canvas-minimap-background)", border: "1px solid var(--theme-canvas-toolbar-border)" }}
+            className="canvas-flow-minimap"
           />
         )}
       </ReactFlow>

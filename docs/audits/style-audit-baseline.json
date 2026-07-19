@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:45:38.650Z",
+  "generatedAt": "2026-07-19T10:46:41.173Z",
   "summary": {
-    "cssFiles": 112,
+    "cssFiles": 113,
     "tsxFilesWithInlineStyles": 62,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 496,
+    "staticInlineStyles": 493,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -675,7 +675,7 @@
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 1321,
+      "lineCount": 1310,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -697,15 +697,10 @@
         "--theme-narrative-secret-foreground",
         "--theme-narrative-secret-foreground",
         "--theme-graph-edge-label-background",
-        "--theme-surfaces-interactive",
-        "--theme-text-primary",
-        "--theme-borders-default",
         "--theme-canvas-grid",
         "--theme-accents-secondary-foreground",
         "--theme-canvas-toolbar-border",
-        "--theme-canvas-minimap-mask",
-        "--theme-canvas-minimap-background",
-        "--theme-canvas-toolbar-border"
+        "--theme-canvas-minimap-mask"
       ]
     },
     {
@@ -6536,6 +6531,26 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-flow.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 31,
+      "selectorCount": 4,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive",
+        "--theme-text-primary",
+        "--theme-canvas-toolbar-border",
+        "--theme-canvas-minimap-background"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-group-hulls.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8684,7 +8699,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 71,
+      "lineCount": 72,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8749,7 +8764,8 @@
         "src/frontend/shared/styles/features/canvas-bulk-actions.css",
         "src/frontend/shared/styles/features/canvas-group-hulls.css",
         "src/frontend/shared/styles/features/session-prep-form.css",
-        "src/frontend/shared/styles/features/canvas-toolbar.css"
+        "src/frontend/shared/styles/features/canvas-toolbar.css",
+        "src/frontend/shared/styles/features/canvas-flow.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -9935,7 +9951,7 @@
     {
       "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:#fef08a",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1294,
+      "line": 1283,
       "column": 46,
       "severity": "high",
       "status": "temporary",
@@ -9945,54 +9961,15 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:style={{ display: \"flex\", alignItems: \"center\", justifyContent: \"space-between\", width: \"100%\", gap: \"16px\" }}",
+      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:style={{ cursor: isPanMode ? \"grab\" : \"default\" }}",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 832,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", justifyContent: \"space-between\", width: \"100%\", gap: \"16px\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:style={{ marginLeft: \"auto\", background: \"var(--theme-surfaces-interactive)\", color: \"var(--theme-text-primary)\", border: \"1px solid var(--theme-borders-default)\", paddin",
-      "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 846,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n              marginLeft: \"auto\",\n              background: \"var(--theme-surfaces-interactive)\",\n              color: \"var(--theme-text-primary)\",\n              border: \"1px solid var(--theme-borders-default)\",\n              paddin",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:style={{ width: \"100%\", height: \"100%\", cursor: isPanMode ? \"grab\" : \"default\", position: \"relative\" }}",
-      "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1229,
+      "line": 1218,
       "column": 7,
       "severity": "high",
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ width: \"100%\", height: \"100%\", cursor: isPanMode ? \"grab\" : \"default\", position: \"relative\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:style={{ background: \"var(--theme-canvas-minimap-background)\", border: \"1px solid var(--theme-canvas-toolbar-border)\" }}",
-      "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1299,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ background: \"var(--theme-canvas-minimap-background)\", border: \"1px solid var(--theme-canvas-toolbar-border)\" }}",
+      "value": "style={{ cursor: isPanMode ? \"grab\" : \"default\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -24967,7 +24944,8 @@
       "src/frontend/shared/styles/features/canvas-bulk-actions.css",
       "src/frontend/shared/styles/features/canvas-group-hulls.css",
       "src/frontend/shared/styles/features/session-prep-form.css",
-      "src/frontend/shared/styles/features/canvas-toolbar.css"
+      "src/frontend/shared/styles/features/canvas-toolbar.css",
+      "src/frontend/shared/styles/features/canvas-flow.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"
