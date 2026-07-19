@@ -22,6 +22,7 @@
 @import "./features/kanban-board.css";
 @import "./features/sidebar-nav.css";
 @import "./features/graph-search.css";
+@import "./features/timeline.css";
 
 @import "./layout/workspace.css";
 @import "./layout/app-shell.css";

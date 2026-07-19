@@ -50,6 +50,7 @@ describe("global style foundation", () => {
       "./layout/footer.css",
       "./layout/responsive.css",
       "./features/graph-search.css",
+      "./features/timeline.css",
       "./primitives/dialog.css",
       "./primitives/overlay.css",
       "./primitives/tabs.css",
