@@ -416,23 +416,13 @@ export function StoryPlanView() {
   };
 
   return (
-    <div className="story-plan-workspace" style={{ display: "flex", gap: "24px", minHeight: "60vh" }}>
+    <div className="story-plan-workspace">
       {/* SIDEBAR: Threads list */}
       <div
         className="story-sidebar glass-panel"
-        style={{
-          width: "280px",
-          padding: "16px",
-          borderRadius: "12px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          background: "var(--theme-surfaces-base)",
-          border: "1px solid var(--theme-borders-default)",
-        }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h3 style={{ margin: 0, fontSize: "1.1rem" }}>{t("story.threads") || "Hilos Narrativos"}</h3>
+        <div className="story-plan-section-header">
+          <h3 className="story-plan-title">{t("story.threads") || "Hilos Narrativos"}</h3>
           <button
             type="button"
             className="btn btn-sm btn-outline-primary"
@@ -445,27 +435,25 @@ export function StoryPlanView() {
 
         {/* Create Thread Form Inline */}
         {isCreatingThread && (
-          <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--theme-surfaces-canvas)" }}>
-            <div style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)", marginBottom: 6 }}>
+          <div className="glass-form story-plan-create-form">
+            <div className="story-plan-form-hint">
               {t("story.newThreadTitle") || "Nuevo Hilo Narrativo"}
             </div>
             <input
               type="text"
-              className="form-control form-control-sm"
               value={threadTitle}
               onChange={(e) => setThreadTitle(e.target.value)}
               placeholder="Title..."
-              style={{ marginBottom: 8 }}
+              className="form-control form-control-sm story-plan-field-spaced"
             />
             <textarea
-              className="form-control form-control-sm"
               value={threadSummary}
               onChange={(e) => setThreadSummary(e.target.value)}
               placeholder="Summary..."
               rows={2}
-              style={{ marginBottom: 8 }}
+              className="form-control form-control-sm story-plan-field-spaced"
             />
-            <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+            <div className="story-plan-actions story-plan-actions--compact">
               <button
                 type="button"
                 className="btn btn-sm btn-secondary"
@@ -485,44 +473,26 @@ export function StoryPlanView() {
           </div>
         )}
 
-        <div className="threads-list" style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 4 }}>
+        <div className="threads-list">
           {activeThreads.length === 0 ? (
-            <div style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", textAlign: "center", padding: "20px 0" }}>
+            <div className="story-plan-empty story-plan-empty--threads">
               {t("story.emptyThreads") || "No hay hilos narrativos."}
             </div>
           ) : (
             activeThreads.map((thread) => {
               const isSelected = selectedThreadId === thread.threadId;
-              let badgeColor = "var(--theme-text-secondary)";
-              if (thread.status === "active") badgeColor = "var(--theme-accents-primary-foreground)";
-              if (thread.status === "resolved") badgeColor = "var(--theme-feedback-success-foreground)";
-
               return (
                 <button
                   type="button"
                   key={thread.threadId}
                   onClick={() => setSelectedThreadId(thread.threadId)}
                   className={`thread-item-btn ${isSelected ? "selected" : ""}`}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    width: "100%",
-                    padding: "10px 12px",
-                    border: "none",
-                    background: isSelected ? "color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent)" : "none",
-                    color: isSelected ? "var(--theme-accents-primary-foreground)" : "var(--theme-text-primary)",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    transition: "all 0.2s ease",
-                    borderLeft: `3px solid ${badgeColor}`,
-                  }}
+                  data-status={thread.status}
                 >
-                  <span style={{ fontWeight: 500, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", width: "100%" }}>
+                  <span className="story-plan-thread-title">
                     {thread.title}
                   </span>
-                  <span style={{ fontSize: "0.75rem", opacity: 0.6, textTransform: "uppercase", marginTop: 4 }}>
+                  <span className="story-plan-thread-status">
                     {thread.status}
                   </span>
                 </button>
@@ -533,47 +503,30 @@ export function StoryPlanView() {
       </div>
 
       {/* MAIN STORY WORKSPACE */}
-      <div className="story-content-area" style={{ flex: 1 }}>
+      <div className="story-content-area">
         {selectedThread ? (
           <div
-            className="glass-panel"
-            style={{
-              padding: "24px",
-              borderRadius: "12px",
-              background: "var(--theme-surfaces-base)",
-              border: "1px solid var(--theme-borders-default)",
-              minHeight: "100%",
-              display: "flex",
-              flexDirection: "column",
-              gap: "24px",
-            }}
+            className="glass-panel story-plan-content-panel"
           >
             {/* Header section with statuses and thread management */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <h2 style={{ margin: 0 }}>{selectedThread.title}</h2>
+            <div className="story-plan-header">
+              <div className="story-plan-header__main">
+                <div className="story-plan-heading">
+                  <h2 className="story-plan-heading__title">{selectedThread.title}</h2>
                   <span
-                    className={`badge badge-${selectedThread.status}`}
-                    style={{
-                      fontSize: "0.75rem",
-                      padding: "4px 8px",
-                      borderRadius: 4,
-                      textTransform: "uppercase",
-                      fontWeight: "bold",
-                    }}
+                    className={`badge badge-${selectedThread.status} story-plan-status-badge`}
                   >
                     {selectedThread.status}
                   </span>
                 </div>
                 {selectedThread.summary && (
-                  <p style={{ color: "var(--theme-text-secondary)", margin: "8px 0 0", fontSize: "0.95rem" }}>
+                  <p className="story-plan-summary">
                     {selectedThread.summary}
                   </p>
                 )}
               </div>
 
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="story-plan-actions">
                 {/* Shortcut toggle */}
                 <button
                   type="button"
@@ -587,12 +540,12 @@ export function StoryPlanView() {
                 {/* Status Transitions */}
                 {selectedThread.status === "planned" && (
                   <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateThread()}>
-                    <Play size={14} style={{ marginRight: 4 }} /> {t("story.activate") || "Activar"}
+                    <Play size={14} className="story-plan-icon-gap" /> {t("story.activate") || "Activar"}
                   </button>
                 )}
                 {selectedThread.status === "active" && (
                   <button type="button" className="btn btn-sm btn-success" onClick={() => void handleResolveThread()}>
-                    <CheckCircle2 size={14} style={{ marginRight: 4 }} /> {t("story.resolve") || "Resolver"}
+                    <CheckCircle2 size={14} className="story-plan-icon-gap" /> {t("story.resolve") || "Resolver"}
                   </button>
                 )}
                 {selectedThread.status !== "discarded" && selectedThread.status !== "resolved" && (
@@ -609,9 +562,9 @@ export function StoryPlanView() {
             </div>
 
             {/* Linked Entities section */}
-            <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <h5 style={{ margin: 0 }}>{t("story.linkedEntities") || "Entidades vinculadas al hilo"}</h5>
+            <div className="story-plan-section">
+              <div className="story-plan-section-header story-plan-section-header--spaced">
+                <h5 className="story-plan-heading__title story-plan-heading__title--small">{t("story.linkedEntities") || "Entidades vinculadas al hilo"}</h5>
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-primary"
@@ -623,8 +576,8 @@ export function StoryPlanView() {
 
               {/* Link Entity Form Inline */}
               {linkingToThread && (
-                <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--theme-surfaces-canvas)", marginBottom: 12, display: "flex", gap: 12, alignItems: "flex-end" }}>
-                  <div style={{ flex: 1 }}>
+                <div className="glass-form story-plan-link-form">
+                  <div className="story-plan-link-form__field">
                     <select
                       className="form-control form-control-sm"
                       value={selectedEntityId}
@@ -643,30 +596,20 @@ export function StoryPlanView() {
                 </div>
               )}
 
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              <div className="story-plan-entity-list">
                 {(selectedThread.entityIds || []).map((eid: string) => {
                   const ent = entities.find((e) => e.entityId === eid);
                   if (!ent) return null;
                   return (
                     <span
                       key={eid}
-                      className="badge"
-                      style={{
-                        background: "var(--theme-surfaces-canvas)",
-                        border: "1px solid var(--theme-borders-default)",
-                        padding: "4px 8px",
-                        borderRadius: 6,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        fontSize: "0.8rem",
-                      }}
+                      className="badge story-plan-entity-badge"
                     >
                       {ent.title}
                       <button
                         type="button"
                         onClick={() => void handleUnlinkEntityFromThread(eid)}
-                        style={{ border: "none", background: "none", cursor: "pointer", padding: 0, color: "var(--theme-feedback-danger-foreground)" }}
+                        className="story-plan-icon-button story-plan-icon-button--inline story-plan-icon-button--danger"
                       >
                         <X size={12} />
                       </button>
@@ -677,22 +620,22 @@ export function StoryPlanView() {
             </div>
 
             {/* Steps section */}
-            <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <h4 style={{ margin: 0 }}>{t("story.steps") || "Pasos del Plan"}</h4>
+            <div className="story-plan-section">
+              <div className="story-plan-section-header story-plan-section-header--steps">
+                <h4 className="story-plan-heading__title story-plan-heading__title--small">{t("story.steps") || "Pasos del Plan"}</h4>
                 <button
                   type="button"
                   className="btn btn-sm btn-primary"
                   onClick={() => setIsCreatingStep(true)}
                 >
-                  <Plus size={14} style={{ marginRight: 4 }} /> {t("story.addStep") || "Añadir paso"}
+                  <Plus size={14} className="story-plan-icon-gap" /> {t("story.addStep") || "Añadir paso"}
                 </button>
               </div>
 
               {/* Create Step Form */}
               {isCreatingStep && (
-                <div className="glass-panel" style={{ padding: 16, borderRadius: 8, background: "var(--theme-surfaces-canvas)", marginBottom: 16, display: "flex", flexDirection: "column", gap: 12 }}>
-                  <h5 style={{ margin: 0 }}>{t("story.newStep") || "Nuevo paso narrativo"}</h5>
+                <div className="glass-panel story-plan-step-form">
+                  <h5 className="story-plan-heading__title story-plan-heading__title--small">{t("story.newStep") || "Nuevo paso narrativo"}</h5>
                   <input
                     type="text"
                     className="form-control"
@@ -715,7 +658,7 @@ export function StoryPlanView() {
                     onChange={(e) => setStepExpectedOutcome(e.target.value)}
                   />
                   <div>
-                    <label style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
+                    <label className="story-plan-form-label">
                       {t("story.associatedScene") || "Escena o localización asociada"}
                     </label>
                     <select
@@ -729,7 +672,7 @@ export function StoryPlanView() {
                       ))}
                     </select>
                   </div>
-                  <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+                  <div className="story-plan-actions story-plan-actions--end">
                     <button type="button" className="btn btn-sm btn-secondary" onClick={() => setIsCreatingStep(false)}>{t("common.cancel")}</button>
                     <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleCreateStep()} disabled={!stepTitle.trim()}>{t("common.save")}</button>
                   </div>
@@ -738,12 +681,12 @@ export function StoryPlanView() {
 
               {/* Steps List */}
               {selectedThreadSteps.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "var(--theme-text-secondary)" }}>
-                  <GitBranch size={24} style={{ opacity: 0.3, marginBottom: 8 }} />
+                <div className="story-plan-empty story-plan-empty--steps">
+                  <GitBranch size={24} className="story-plan-empty__icon" />
                   <p>{t("story.emptySteps") || "No hay pasos planificados en esta trama."}</p>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div className="story-plan-step-list">
                   {selectedThreadSteps.map((step, index) => {
                     const sceneEnt = step.sceneEntityId ? entities.find((e) => e.entityId === step.sceneEntityId) : null;
                     const resolvedSess = step.resolvedSessionId ? sessions.find((s) => s.sessionId === step.resolvedSessionId) : null;
@@ -753,34 +696,24 @@ export function StoryPlanView() {
                       <div
                         key={step.stepId}
                         className={`step-card glass-panel status-${step.status}`}
-                        style={{
-                          padding: "16px",
-                          borderRadius: "8px",
-                          background: "var(--theme-surfaces-canvas)",
-                          border: "1px solid var(--theme-borders-default)",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "10px",
-                        }}
                       >
                         {/* Title and Badge row */}
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                            <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{step.title}</span>
-                            <span className={`badge badge-${step.status}`} style={{ fontSize: "0.7rem", padding: "2px 6px" }}>{step.status}</span>
+                        <div className="story-plan-step-header">
+                          <div className="story-plan-step-heading">
+                            <span className="story-plan-step-title">{step.title}</span>
+                            <span className={`badge badge-${step.status} story-plan-step-badge`}>{step.status}</span>
                             {step.resolutionKind && (
-                              <span className="badge badge-secondary" style={{ fontSize: "0.7rem", padding: "2px 6px" }}>{step.resolutionKind}</span>
+                              <span className="badge badge-secondary story-plan-step-badge">{step.resolutionKind}</span>
                             )}
                           </div>
 
                           {/* Reordering & Action buttons */}
-                          <div style={{ display: "flex", gap: 4 }}>
+                          <div className="story-plan-step-actions">
                             <button
                               type="button"
-                              className="btn btn-sm btn-link"
                               onClick={() => void handleToggleStepShortcut(step.stepId)}
                               title={t("shortcuts.add")}
-                              style={{ padding: 2 }}
+                              className="btn btn-sm btn-link story-plan-icon-button"
                             >
                               {shortcuts.some((shortcut) => shortcut.targetType === "story_step" && shortcut.targetId === step.stepId)
                                 ? <BookmarkMinus size={14} />
@@ -788,19 +721,17 @@ export function StoryPlanView() {
                             </button>
                             <button
                               type="button"
-                              className="btn btn-sm btn-link"
                               disabled={index === 0}
                               onClick={() => void handleReorderSteps(index, "up")}
-                              style={{ padding: 2 }}
+                              className="btn btn-sm btn-link story-plan-icon-button"
                             >
                               <ArrowUp size={14} />
                             </button>
                             <button
                               type="button"
-                              className="btn btn-sm btn-link"
                               disabled={index === selectedThreadSteps.length - 1}
                               onClick={() => void handleReorderSteps(index, "down")}
-                              style={{ padding: 2 }}
+                              className="btn btn-sm btn-link story-plan-icon-button"
                             >
                               <ArrowDown size={14} />
                             </button>
@@ -808,7 +739,7 @@ export function StoryPlanView() {
                         </div>
 
                         {/* Step Details grid */}
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
+                        <div className="story-plan-step-details">
                           {step.intent && (
                             <div>
                               <strong>{t("story.intent") || "Intención"}:</strong> {step.intent}
@@ -835,32 +766,31 @@ export function StoryPlanView() {
                             </div>
                           )}
                           {step.actualOutcome && (
-                            <div style={{ gridColumn: "span 2" }}>
+                            <div className="story-plan-step-detail--full">
                               <strong>{t("story.actualOutcome") || "Resultado real"}:</strong> {step.actualOutcome}
                             </div>
                           )}
                         </div>
 
                         {/* Step Linked Entities */}
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
-                          <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginRight: 4 }}>
+                        <div className="story-plan-step-entities">
+                          <span className="story-plan-step-entities__label">
                             {t("story.linked") || "Vinculados"}:
                           </span>
                           {(step.entityIds || []).map((eid) => {
                             const ent = entities.find((e) => e.entityId === eid);
                             if (!ent) return null;
                             return (
-                              <span key={eid} className="badge" style={{ background: "var(--theme-surfaces-base)", border: "1px solid var(--theme-borders-default)", fontSize: "0.75rem", padding: "2px 4px", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                              <span key={eid} className="badge story-plan-step-entity-badge">
                                 {ent.title}
-                                <button type="button" onClick={() => void handleUnlinkEntityFromStep(step.stepId, eid)} style={{ border: "none", background: "none", padding: 0, color: "var(--theme-feedback-danger-foreground)" }}><X size={10} /></button>
+                                <button type="button" onClick={() => void handleUnlinkEntityFromStep(step.stepId, eid)} className="story-plan-icon-button story-plan-icon-button--inline story-plan-icon-button--danger"><X size={10} /></button>
                               </span>
                             );
                           })}
                           {linkingToStepId === step.stepId ? (
-                            <div style={{ display: "inline-flex", gap: 4 }}>
+                            <div className="story-plan-inline-actions">
                               <select
-                                className="form-control form-control-sm"
-                                style={{ fontSize: "0.75rem", padding: "2px 4px" }}
+                                className="form-control form-control-sm story-plan-inline-select"
                                 value={selectedEntityId}
                                 onChange={(e) => setSelectedEntityId(e.target.value)}
                               >
@@ -869,31 +799,31 @@ export function StoryPlanView() {
                                   <option key={e.entityId} value={e.entityId}>{e.title}</option>
                                 ))}
                               </select>
-                              <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleLinkEntityToStep()} style={{ padding: "2px 4px" }}><Check size={10} /></button>
-                              <button type="button" className="btn btn-sm btn-secondary" onClick={() => setLinkingToStepId(null)} style={{ padding: "2px 4px" }}><X size={10} /></button>
+                              <button type="button" className="btn btn-sm btn-primary story-plan-icon-button" onClick={() => void handleLinkEntityToStep()}><Check size={10} /></button>
+                              <button type="button" className="btn btn-sm btn-secondary story-plan-icon-button" onClick={() => setLinkingToStepId(null)}><X size={10} /></button>
                             </div>
                           ) : (
-                            <button type="button" className="btn btn-sm btn-link" onClick={() => { setLinkingToStepId(step.stepId); setSelectedEntityId(""); }} style={{ fontSize: "0.75rem", padding: "2px 4px" }}>
+                            <button type="button" className="btn btn-sm btn-link story-plan-link-button" onClick={() => { setLinkingToStepId(step.stepId); setSelectedEntityId(""); }}>
                               + vincular
                             </button>
                           )}
                         </div>
 
                         {/* Step actions: schedule, defer, reconcile */}
-                        <div style={{ display: "flex", gap: 8, marginTop: 4, borderTop: "1px solid var(--theme-borders-default)", paddingTop: 8 }}>
+                        <div className="story-plan-step-footer">
                           {(step.status === "planned" || step.status === "ready" || step.status === "active") && (
                             <>
                               {step.plannedSessionId ? (
                                 <>
                                   <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => void handleDeferStep(step.stepId)}>
-                                    <RotateCcw size={12} style={{ marginRight: 4 }} /> {t("story.defer") || "Posponer"}
+                                    <RotateCcw size={12} className="story-plan-icon-gap" /> {t("story.defer") || "Posponer"}
                                   </button>
                                   <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => void handleUnscheduleStep(step.stepId)}>
                                     {t("story.unschedule") || "Desprogramar"}
                                   </button>
                                 </>
                               ) : schedulingStepId === step.stepId ? (
-                                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                                <div className="story-plan-schedule-form">
                                   <select
                                     className="form-control form-control-sm"
                                     value={scheduleSessionId}
@@ -909,7 +839,7 @@ export function StoryPlanView() {
                                 </div>
                               ) : (
                                 <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => { setSchedulingStepId(step.stepId); setScheduleSessionId(""); }}>
-                                  <Calendar size={12} style={{ marginRight: 4 }} /> {t("story.schedule") || "Programar"}
+                                  <Calendar size={12} className="story-plan-icon-gap" /> {t("story.schedule") || "Programar"}
                                 </button>
                               )}
                             </>
@@ -917,13 +847,13 @@ export function StoryPlanView() {
 
                           {step.status === "planned" && (
                             <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleMarkStepReady(step.stepId)}>
-                              <Check size={12} style={{ marginRight: 4 }} /> {t("story.ready")}
+                              <Check size={12} className="story-plan-icon-gap" /> {t("story.ready")}
                             </button>
                           )}
 
                           {step.status === "ready" && (
                             <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateStep(step.stepId)}>
-                              <Play size={12} style={{ marginRight: 4 }} /> {t("story.activate")}
+                              <Play size={12} className="story-plan-icon-gap" /> {t("story.activate")}
                             </button>
                           )}
 
@@ -940,7 +870,7 @@ export function StoryPlanView() {
                                 setReconcileOutcome("");
                               }}
                             >
-                              <CheckCircle2 size={12} style={{ marginRight: 4 }} /> {t("story.reconcile") || "Reconciliar / Cerrar"}
+                              <CheckCircle2 size={12} className="story-plan-icon-gap" /> {t("story.reconcile") || "Reconciliar / Cerrar"}
                             </button>
                           )}
                         </div>
@@ -953,24 +883,11 @@ export function StoryPlanView() {
           </div>
         ) : (
           <div
-            className="glass-panel"
-            style={{
-              padding: "48px",
-              borderRadius: "12px",
-              background: "var(--theme-surfaces-base)",
-              border: "1px solid var(--theme-borders-default)",
-              textAlign: "center",
-              color: "var(--theme-text-secondary)",
-              minHeight: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            className="glass-panel story-plan-placeholder"
           >
-            <GitBranch size={48} style={{ opacity: 0.2, marginBottom: 16 }} />
+            <GitBranch size={48} className="story-plan-placeholder__icon" />
             <h3>{t("story.selectPlaceholderTitle") || "Gestionar Hilos y Plan Narrativo"}</h3>
-            <p style={{ maxWidth: 420, margin: "0 auto" }}>
+            <p className="story-plan-placeholder__description">
               {t("story.selectPlaceholderDesc") ||
                 "Planifica tramas complejas, crea pasos secuenciales, programalos para sesiones futuras y realiza la reconciliación interactiva cuando tus jugadores resuelvan o cambien la historia."}
             </p>
@@ -981,38 +898,15 @@ export function StoryPlanView() {
       {/* RECONCILIATION MODAL/DIALOG OVERLAY */}
       {reconcilingStepId && (
         <div
-          className="modal-overlay"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent)",
-            backdropFilter: "blur(4px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 999,
-          }}
+          className="modal-overlay story-plan-modal-overlay"
         >
           <div
-            className="glass-panel modal-content"
-            style={{
-              background: "var(--theme-surfaces-base)",
-              border: "1px solid var(--theme-borders-default)",
-              padding: "24px",
-              borderRadius: "12px",
-              width: "480px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
+            className="glass-panel modal-content story-plan-modal"
           >
-            <h3 style={{ margin: 0 }}>{t("story.reconcileStepTitle") || "Reconciliar paso narrativo"}</h3>
+            <h3 className="story-plan-heading__title">{t("story.reconcileStepTitle") || "Reconciliar paso narrativo"}</h3>
             
             <div>
-              <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
+              <label className="story-plan-form-label story-plan-form-label--standard">
                 {t("story.reconcileSession") || "Sesión en la que se resolvió (debe estar cerrada)"}
               </label>
               <select
@@ -1028,7 +922,7 @@ export function StoryPlanView() {
             </div>
 
             <div>
-              <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
+              <label className="story-plan-form-label story-plan-form-label--standard">
                 {t("story.reconcileStatus") || "Estado final"}
               </label>
               <select
@@ -1047,7 +941,7 @@ export function StoryPlanView() {
 
             {reconcileStatus === "resolved" && (
               <div>
-                <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
+                <label className="story-plan-form-label story-plan-form-label--standard">
                   {t("story.reconcileKind") || "Cómo se resolvió"}
                 </label>
                 <select
@@ -1063,7 +957,7 @@ export function StoryPlanView() {
 
             {reconcileKind === "changed" && (
               <div>
-                <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
+                <label className="story-plan-form-label story-plan-form-label--standard">
                   {t("story.actualOutcomeTitle") || "Resultado real (requerido para cambios)"}
                 </label>
                 <textarea
@@ -1076,7 +970,7 @@ export function StoryPlanView() {
               </div>
             )}
 
-            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 12 }}>
+            <div className="story-plan-actions story-plan-actions--end story-plan-modal-actions">
               <button type="button" className="btn btn-secondary" onClick={() => setReconcilingStepId(null)}>
                 {t("common.cancel")}
               </button>

@@ -7,16 +7,16 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 93,
-  "tsxFilesWithInlineStyles": 82,
+  "tsxFilesWithInlineStyles": 81,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 1038,
+  "staticInlineStyles": 955,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 28,
+  "mixedResponsibilityFiles": 29,
   "crossComponentSelectors": 62,
-  "importantDeclarations": 372,
+  "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -69,7 +69,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css` | feature | sessions | 279 | 40 | 1 |
 | `src/frontend/dm/sessions/session-workspace.css` | feature | sessions | 18 | 3 | 4 |
 | `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 295 | 41 | 1 |
-| `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 153 | 27 | 1 |
+| `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 276 | 96 | 1 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 274 | 38 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 154 | 27 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
@@ -1343,89 +1343,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:76` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/story/history/campaignHistory.css:1` | Large stylesheet requires atomization (295 lines, 41 selectors). |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:434` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:435` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:448` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:449` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:458` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:466` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:468` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:488` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:490` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:506` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:522` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:525` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:536` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:540` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:552` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:553` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:554` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:555` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:558` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:570` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:576` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:590` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:595` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:612` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:613` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:614` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:626` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:627` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:646` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:654` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:669` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:680` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:681` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:682` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:688` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:694` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:695` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:718` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:732` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:741` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:742` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:746` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:756` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:767` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:768` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:769` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:770` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:772` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:777` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:783` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:794` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:803` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:811` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:838` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:845` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:846` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:853` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:855` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:860` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:863` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:872` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:873` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:876` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:883` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:889` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:896` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:912` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:920` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:926` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:943` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:957` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:971` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:973` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:985` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1001` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1012` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1015` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1031` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1050` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1066` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1079` | Static or mixed inline style must move to an atomized stylesheet. |
+| critical | mixed-responsibility | `src/frontend/dm/story/plan/storyPlanWorkspace.css:1` | Large stylesheet requires atomization (276 lines, 96 selectors). |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:2` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:5` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:6` | Important declarations bypass the intended cascade. |
@@ -1434,32 +1352,41 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:16` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:17` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:18` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:30` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:31` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:32` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:33` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:38` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:39` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:43` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:44` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:53` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:54` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:55` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:46` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:47` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:63` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:64` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:65` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:59` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:60` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:67` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:68` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:69` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:74` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:101` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/story/plan/storyPlanWorkspace.css:105` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:108` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:122` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:133` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:138` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:146` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:73` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:105` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/story/plan/storyPlanWorkspace.css:109` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:112` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:126` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:137` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:142` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:152` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:188` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:189` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:190` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:210` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:258` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |

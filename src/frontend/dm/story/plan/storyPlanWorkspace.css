@@ -16,6 +16,9 @@
   border: 1px solid var(--theme-borders-default) !important;
   border-radius: var(--theme-shapes-radius-large, 14px) !important;
   background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .story-plan-workspace .threads-list {
@@ -43,6 +46,7 @@
   border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default)) !important;
   background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-interactive)) !important;
   box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .story-plan-workspace .story-content-area {
@@ -101,7 +105,7 @@
   font-size: 0.68rem !important;
 }
 
-.story-plan-workspace button[style*="padding: 2"] {
+.story-plan-workspace .story-plan-icon-button {
   width: 34px;
   min-width: 34px;
   min-height: 34px;
@@ -138,15 +142,134 @@ body:has(.story-plan-workspace) .watermark {
     padding: 14px !important;
   }
 
-  .story-plan-workspace .story-content-area [style*="justify-content: space-between"] {
+  .story-plan-workspace .story-plan-header,
+  .story-plan-workspace .story-plan-step-header,
+  .story-plan-workspace .story-plan-section-header {
     flex-wrap: wrap;
   }
 
-  .story-plan-workspace .story-content-area [style*="grid-template-columns: 1fr 1fr"] {
+  .story-plan-workspace .story-plan-step-details {
     grid-template-columns: 1fr !important;
+  }
+
+  .story-plan-workspace .story-plan-step-detail--full {
+    grid-column: auto;
+  }
+
+  .story-plan-workspace .story-plan-link-form {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .story-plan-workspace .story-content-area .btn {
     min-height: 40px;
   }
+}
+
+.story-plan-workspace .threads-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.story-plan-workspace .thread-item-btn {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.story-plan-workspace .thread-item-btn[data-status="active"] { border-left-color: var(--theme-accents-primary-foreground) !important; }
+.story-plan-workspace .thread-item-btn[data-status="resolved"] { border-left-color: var(--theme-feedback-success-foreground) !important; }
+.story-plan-workspace .thread-item-btn[data-status]:not([data-status="active"]):not([data-status="resolved"]) { border-left-color: var(--theme-text-secondary) !important; }
+
+.story-plan-title,
+.story-plan-heading__title { margin: 0; }
+.story-plan-title { font-size: 1.1rem; }
+.story-plan-heading__title--small { font-size: 1rem; }
+
+.story-plan-section-header,
+.story-plan-header,
+.story-plan-step-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.story-plan-section-header--spaced { margin-bottom: 8px; }
+.story-plan-section-header--steps { margin-bottom: 16px; }
+.story-plan-header { align-items: flex-start; }
+.story-plan-header__main { flex: 1; }
+.story-plan-heading,
+.story-plan-step-heading { display: flex; align-items: center; gap: 8px; }
+.story-plan-heading { gap: 12px; }
+.story-plan-heading__title { font-size: 1.25rem; }
+.story-plan-summary { margin: 8px 0 0; color: var(--theme-text-secondary); font-size: 0.95rem; }
+.story-plan-status-badge,
+.story-plan-step-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem !important; font-weight: 700; text-transform: uppercase; }
+.story-plan-status-badge { padding: 4px 8px; }
+
+.story-plan-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.story-plan-actions--compact { justify-content: flex-end; gap: 6px; }
+.story-plan-actions--end { justify-content: flex-end; }
+.story-plan-icon-gap { margin-right: 4px; }
+
+.story-plan-create-form,
+.story-plan-link-form,
+.story-plan-step-form { padding: 12px; border-radius: 8px; background: var(--theme-surfaces-canvas); }
+.story-plan-step-form { display: flex; flex-direction: column; gap: 12px; padding: 16px; margin-bottom: 16px; }
+.story-plan-form-hint,
+.story-plan-form-label { color: var(--theme-text-secondary); }
+.story-plan-form-hint { margin-bottom: 6px; font-size: 0.8rem; }
+.story-plan-form-label { display: block; margin-bottom: 4px; font-size: 0.8rem; }
+.story-plan-form-label--standard { font-size: 0.85rem; }
+.story-plan-field-spaced { margin-bottom: 8px; }
+.story-plan-link-form { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 12px; }
+.story-plan-link-form__field { flex: 1; }
+.story-plan-section { border-top: 1px solid var(--theme-borders-default); padding-top: 16px; }
+
+.story-plan-entity-list,
+.story-plan-step-entities { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.story-plan-entity-badge,
+.story-plan-step-entity-badge { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--theme-borders-default); border-radius: 6px; padding: 4px 8px; background: var(--theme-surfaces-canvas); font-size: 0.8rem; }
+.story-plan-icon-button { border: 0; background: transparent; cursor: pointer; }
+.story-plan-icon-button--inline { width: auto !important; min-width: 0 !important; min-height: 0 !important; padding: 0 !important; }
+.story-plan-icon-button--danger { color: var(--theme-feedback-danger-foreground); }
+.story-plan-empty { color: var(--theme-text-secondary); text-align: center; }
+.story-plan-empty--threads { padding: 20px 0; font-size: 0.85rem; }
+.story-plan-empty--steps { padding: 40px 0; }
+.story-plan-empty__icon { margin-bottom: 8px; opacity: 0.3; }
+.story-plan-thread-title { width: 100%; overflow: hidden; font-size: 0.9rem; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.story-plan-thread-status { margin-top: 4px; font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; }
+
+.story-plan-content-panel { display: flex; flex-direction: column; gap: 24px; }
+.story-plan-step-list { display: flex; flex-direction: column; gap: 12px; }
+.story-plan-step-title { font-size: 0.95rem; font-weight: 600; }
+.story-plan-step-actions,
+.story-plan-inline-actions,
+.story-plan-schedule-form { display: flex; align-items: center; gap: 4px; }
+.story-plan-step-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; color: var(--theme-text-secondary); font-size: 0.85rem; }
+.story-plan-step-detail--full { grid-column: span 2; }
+.story-plan-step-entities { gap: 4px; }
+.story-plan-step-entities__label { margin-right: 4px; color: var(--theme-text-secondary); font-size: 0.75rem; }
+.story-plan-step-entity-badge { gap: 4px; padding: 2px 4px; background: var(--theme-surfaces-base); font-size: 0.75rem; }
+.story-plan-inline-select { width: auto; min-height: 32px; padding: 2px 4px; font-size: 0.75rem; }
+.story-plan-link-button { padding: 2px 4px !important; font-size: 0.75rem; }
+.story-plan-step-footer { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; border-top: 1px solid var(--theme-borders-default); padding-top: 8px; }
+
+.story-plan-placeholder { display: flex; min-height: 100%; flex-direction: column; align-items: center; justify-content: center; padding: 48px; color: var(--theme-text-secondary); text-align: center; }
+.story-plan-placeholder__icon { margin-bottom: 16px; opacity: 0.2; }
+.story-plan-placeholder__description { max-width: 420px; margin: 0 auto; }
+.story-plan-modal-overlay { z-index: 999; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent); backdrop-filter: blur(4px); }
+.story-plan-modal { display: flex; width: min(480px, calc(100vw - 32px)); flex-direction: column; gap: 16px; border: 1px solid var(--theme-borders-default); padding: 24px; background: var(--theme-surfaces-base); }
+.story-plan-modal-actions { margin-top: 12px; }
+
+@media (max-width: 640px) {
+  .story-plan-workspace .story-plan-header,
+  .story-plan-workspace .story-plan-step-header,
+  .story-plan-workspace .story-plan-section-header { flex-wrap: wrap; }
+  .story-plan-workspace .story-plan-step-details { grid-template-columns: 1fr; }
+  .story-plan-workspace .story-plan-step-detail--full { grid-column: auto; }
+  .story-plan-workspace .story-plan-link-form { align-items: stretch; flex-direction: column; }
 }
