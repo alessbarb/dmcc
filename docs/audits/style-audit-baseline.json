@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:50:35.023Z",
+  "generatedAt": "2026-07-19T10:52:06.623Z",
   "summary": {
-    "cssFiles": 116,
-    "tsxFilesWithInlineStyles": 56,
+    "cssFiles": 117,
+    "tsxFilesWithInlineStyles": 53,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 461,
-    "dynamicInlineStyles": 29,
+    "staticInlineStyles": 445,
+    "dynamicInlineStyles": 27,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -107,22 +107,12 @@
       "path": "src/frontend/account/PreferencesPanel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 173,
+      "lineCount": 163,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-borders-default",
-        "--theme-shapes-radius-panel",
-        "--theme-surfaces-base",
-        "--theme-text-primary",
-        "--theme-shadows-medium",
-        "--font-sans",
-        "--typography-scale",
-        "--font-display",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/account/PrivacyPreview.tsx",
@@ -161,8 +151,8 @@
       "path": "src/frontend/account/account.css",
       "layer": "legacy",
       "domain": "account",
-      "lineCount": 804,
-      "selectorCount": 121,
+      "lineCount": 823,
+      "selectorCount": 124,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -249,6 +239,15 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
+        "--theme-borders-default",
+        "--theme-shapes-radius-panel",
+        "--theme-surfaces-base",
+        "--theme-text-primary",
+        "--theme-shadows-medium",
+        "--font-sans",
+        "--typography-scale",
+        "--font-display",
+        "--theme-text-secondary",
         "--theme-shapes-radius-medium",
         "--theme-text-on-media",
         "--theme-text-on-media",
@@ -628,10 +627,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/auth/RegisterPage.tsx",
@@ -642,12 +638,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/analysis/mysteryAnalysis.ts",
@@ -6030,6 +6021,24 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/auth.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 54,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas",
+        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/campaign-canvas.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8739,7 +8748,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 75,
+      "lineCount": 76,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8783,6 +8792,7 @@
         "src/frontend/shared/styles/features/kanban.css",
         "src/frontend/shared/styles/features/campaign-canvas.css",
         "src/frontend/shared/styles/features/player-portal.css",
+        "src/frontend/shared/styles/features/auth.css",
         "src/frontend/shared/styles/features/campaign-template.css",
         "src/frontend/shared/styles/features/dm-dashboard.css",
         "src/frontend/shared/styles/features/dm-hub.css",
@@ -9305,45 +9315,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/account/PreferencesPanel.tsx:style={{ padding: \"1rem\", border: \"1px solid var(--theme-borders-default)\", borderRadius: \"var(--theme-shapes-radius-panel)\", background: \"var(--theme-surfaces-base)\", color: \"var(--theme-te",
-      "path": "src/frontend/account/PreferencesPanel.tsx",
-      "line": 149,
-      "column": 9,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n          padding: \"1rem\",\n          border: \"1px solid var(--theme-borders-default)\",\n          borderRadius: \"var(--theme-shapes-radius-panel)\",\n          background: \"var(--theme-surfaces-base)\",\n          color: \"var(--theme-te",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/account/PreferencesPanel.tsx:style={{ fontFamily: \"var(--font-display)\" }}",
-      "path": "src/frontend/account/PreferencesPanel.tsx",
-      "line": 160,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontFamily: \"var(--font-display)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/account/PreferencesPanel.tsx:style={{ color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/account/PreferencesPanel.tsx",
-      "line": 163,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/account/account.css",
       "path": "src/frontend/account/account.css",
       "line": 1,
@@ -9352,7 +9323,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (804 lines, 121 selectors)."
+      "reason": "Large stylesheet requires atomization (823 lines, 124 selectors)."
     },
     {
       "id": "static-inline:src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:style={{ maxWidth: \"1200px\", margin: \"0 auto\" }}",
@@ -9793,201 +9764,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{\n              padding: \"8px 16px\",\n              borderRadius: \"8px\",\n              backgroundColor: \"var(--theme-feedback-danger-foreground)\",\n              color: \"var(--theme-feedback-danger-on-strong)\",\n              border: \"n",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/LoginPage.tsx:style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 62,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/LoginPage.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 64,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/LoginPage.tsx:style={{ fontSize: \"1.3rem\" }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 69,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"1.3rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/LoginPage.tsx:style={{ color: \"var(--theme-text-secondary)\", margin: \"4px 0 0\" }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 70,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", margin: \"4px 0 0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/LoginPage.tsx:style={{ cursor: \"pointer\", background: \"none\", border: \"none\", padding: 0 }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 82,
-      "column": 160,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ cursor: \"pointer\", background: \"none\", border: \"none\", padding: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/LoginPage.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: 8, marginTop: 12 }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 93,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: 8, marginTop: 12 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/auth/LoginPage.tsx:style={{ width: \"100%\" }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 94,
-      "column": 65,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ width: \"100%\" }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "dynamic-style:src/frontend/auth/LoginPage.tsx:style={{ width: \"100%\" }}",
-      "path": "src/frontend/auth/LoginPage.tsx",
-      "line": 95,
-      "column": 65,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ width: \"100%\" }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ minHeight: \"100vh\", display: \"grid\", placeItems: \"center\", background: \"var(--theme-surfaces-canvas)\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 54,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"grid\", placeItems: \"center\", background: \"var(--theme-surfaces-canvas)\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 58,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 60,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ fontSize: \"1.3rem\" }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 65,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"1.3rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.85rem\", margin: \"4px 0 0\" }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 66,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.85rem\", margin: \"4px 0 0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ cursor: \"pointer\", background: \"none\", border: \"none\", padding: 0 }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 82,
-      "column": 160,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ cursor: \"pointer\", background: \"none\", border: \"none\", padding: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/auth/RegisterPage.tsx:style={{ marginRight: 6 }}",
-      "path": "src/frontend/auth/RegisterPage.tsx",
-      "line": 93,
-      "column": 140,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginRight: 6 }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -24550,6 +24326,7 @@
       "src/frontend/shared/styles/features/kanban.css",
       "src/frontend/shared/styles/features/campaign-canvas.css",
       "src/frontend/shared/styles/features/player-portal.css",
+      "src/frontend/shared/styles/features/auth.css",
       "src/frontend/shared/styles/features/campaign-template.css",
       "src/frontend/shared/styles/features/dm-dashboard.css",
       "src/frontend/shared/styles/features/dm-hub.css",

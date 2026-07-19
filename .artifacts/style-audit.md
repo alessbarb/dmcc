@@ -6,11 +6,11 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 116,
-  "tsxFilesWithInlineStyles": 56,
+  "cssFiles": 117,
+  "tsxFilesWithInlineStyles": 53,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 461,
-  "dynamicInlineStyles": 29,
+  "staticInlineStyles": 445,
+  "dynamicInlineStyles": 27,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -25,7 +25,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | File | Layer | Domain | Lines | Selectors | Importers |
 |---|---:|---:|---:|---:|---:|
-| `src/frontend/account/account.css` | legacy | account | 804 | 121 | 1 |
+| `src/frontend/account/account.css` | legacy | account | 823 | 124 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
 | `src/frontend/dm/entities/entity-card.css` | feature | entities | 394 | 54 | 1 |
 | `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 216 | 25 | 2 |
@@ -82,6 +82,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-purge.css` | legacy | shared | 41 | 37 | 1 |
 | `src/frontend/shared/styles/features/admin-template-settings.css` | legacy | shared | 25 | 24 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
+| `src/frontend/shared/styles/features/auth.css` | legacy | shared | 54 | 10 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1689 | 260 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
@@ -126,7 +127,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 75 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 76 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -146,10 +147,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | Severity | Category | Location | Reason |
 |---|---|---|---|
-| critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (804 lines, 121 selectors). |
-| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
+| critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (823 lines, 124 selectors). |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -184,21 +182,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/LoginPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/LoginPage.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/LoginPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/LoginPage.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/LoginPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/LoginPage.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/auth/LoginPage.tsx:94` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/auth/LoginPage.tsx:95` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:58` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/auth/RegisterPage.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1282` | Literal visual color outside a registered theme package. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
