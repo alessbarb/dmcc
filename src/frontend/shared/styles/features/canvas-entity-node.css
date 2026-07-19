@@ -1,0 +1,8 @@
+.rg-card__archived-icon {
+  color: var(--theme-text-secondary);
+  opacity: 0.5;
+}
+
+.rg-card__visibility-label {
+  font-size: 9px;
+}

@@ -67,7 +67,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
            style={archivedCardStyle}>
         <Handle type="target" position={Position.Top} className="canvas-handle target-handle" />
         <div className="rg-card__hero rg-card__hero--icon">
-          <FileText size={24} style={{ color: "var(--theme-text-secondary)", opacity: 0.5 }} />
+          <FileText size={24} className="rg-card__archived-icon" />
         </div>
         <div className="rg-card__body">
           <div className="rg-card__name rg-card__name--muted">[Archivada]</div>
@@ -168,19 +168,19 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
           if (isDmOnlyVisibility(entity.visibility)) {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--secret" title={t("canvas.node.visibilityDmOnly")}>
-                <span style={{ fontSize: "9px" }}>🔒 Secreto DM</span>
+                <span className="rg-card__visibility-label">🔒 Secreto DM</span>
               </div>
             );
           } else if (kind === "public" || kind === "party") {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--revealed" title="Revelado (Visible para todos los jugadores)">
-                <span style={{ fontSize: "9px" }}>👁 Revelado</span>
+                <span className="rg-card__visibility-label">👁 Revelado</span>
               </div>
             );
           } else {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--partial" title="Parcialmente descubierto (Visible para algunos jugadores/personajes)">
-                <span style={{ fontSize: "9px" }}>🕯 Parcial</span>
+                <span className="rg-card__visibility-label">🕯 Parcial</span>
               </div>
             );
           }
