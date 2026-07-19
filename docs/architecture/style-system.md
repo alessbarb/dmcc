@@ -45,8 +45,8 @@ checkout actual la migración es incremental:
 * la importación monolítica `index.css` ya fue eliminada;
 * los dominios de navegación, captura rápida, plantillas, dashboard, canvas,
   portal de jugador y archivo de landing ya tienen hojas explícitas;
-* `application-domains.css`, `landing.css` y `account.css` conservan dominios
-  todavía pendientes de subdivisión y no deben recibir estilos nuevos;
+* `landing.css` y `account.css` conservan dominios todavía pendientes de
+  subdivisión y no deben recibir estilos nuevos;
 * el baseline del auditor es un ratchet de deuda existente, no una aprobación
   de esa deuda como arquitectura final.
 
@@ -163,8 +163,7 @@ reset + cards + timeline + landing + kanban
 ```
 
 Ese fue el problema de `shared/styles/index.css`; sus reglas restantes viven
-ahora en hojas de dominio explícitas y `application-domains.css` sigue siendo
-el siguiente candidato a subdivisión.
+ahora en hojas de dominio explícitas.
 
 ## 2.4 Imports locales explícitos
 
@@ -1001,7 +1000,7 @@ Objetivos:
 * dividir `tokens.css`;
 * separar reset, fonts, motion y accesibilidad;
 * eliminar `p1.css`;
-* subdividir progresivamente `application-domains.css`;
+* subdividir progresivamente los dominios globales restantes;
 * definir un único orden de carga.
 
 Criterio:
