@@ -98,6 +98,7 @@ function snapshotToProjection(row: typeof schema.campaignSnapshots.$inferSelect 
     notebookItems: mapFromSerialized(projection.notebookItems),
     storyThreads: mapFromSerialized(projection.storyThreads),
     storySteps: mapFromSerialized(projection.storySteps),
+    sessionInferenceReviews: mapFromSerialized(projection.sessionInferenceReviews),
     lastSequence: Number(projection.lastSequence ?? row.sequence ?? 0),
   } as CampaignProjection;
 }
@@ -122,6 +123,7 @@ function serializeProjection(projection: CampaignProjection) {
     notebookItems: toPlain(projection.notebookItems),
     storyThreads: toPlain(projection.storyThreads),
     storySteps: toPlain(projection.storySteps),
+    sessionInferenceReviews: toPlain(projection.sessionInferenceReviews),
     lastSequence: projection.lastSequence,
   };
 }
@@ -144,6 +146,7 @@ export function projectionToCampaignState(campaignId: string, projection: Campai
     notebookItems: projection.notebookItems,
     storyThreads: projection.storyThreads,
     storySteps: projection.storySteps,
+    sessionInferenceReviews: projection.sessionInferenceReviews,
   };
 }
 

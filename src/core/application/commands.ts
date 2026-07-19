@@ -8,6 +8,8 @@ import type { PlayerCharacterProposal } from "../domain/playerPortal/types.js";
 import type { CampaignSettings, CampaignSystem, CampaignStatus } from "../domain/campaign/types.js";
 import type { NotebookItemTargetType } from "../domain/resource/resourceType.js";
 import type { SessionEventReference } from "../domain/session/sessionEventReference.js";
+import type { SessionInferenceDecision } from "../domain/session/sessionInferenceReview.js";
+import type { SessionProjectionPerspective, SessionProjectionSourceRef } from "../domain/session/projection/sessionProjectionTypes.js";
 
 export type Command =
   | {
@@ -935,4 +937,15 @@ export type Command =
       entityId: EntityId;
       progress: "advanced" | "completed" | "blocked" | "failed" | "unchanged";
       note?: string;
+    }
+  | {
+      type: "ReviewSessionInference";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
+      perspective: SessionProjectionPerspective;
+      ruleId: string;
+      sourceRefs: SessionProjectionSourceRef[];
+      targetId: string;
+      decision: SessionInferenceDecision;
     };

@@ -54,6 +54,7 @@ function dispatchCommand(state: CampaignState, command: Command): CommandResult 
     case "CancelPreparedSession":
     case "ArchiveSession":
     case "RecordSessionEvent":
+    case "ReviewSessionInference":
       return handleSessionCommand(state, command);
     case "UpdateCampaignSettings":
     case "CreatePlayerProfile":

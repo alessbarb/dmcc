@@ -14,6 +14,8 @@ import type {
 import type { Canvas } from "../domain/canvas/types.js";
 import type { CampaignNotebook, CampaignNotebookItem } from "../domain/notebook/types.js";
 import type { StoryThread, StoryStep } from "../domain/story/types.js";
+import type { SessionInferenceReview } from "../domain/session/sessionInferenceReview.js";
+import { sessionInferenceReviewMapKey } from "../domain/session/sessionInferenceReview.js";
 
 export type ProjectedCampaign = Campaign & { campaignId: string };
 type CanvasNodeLayoutUpdate = {
@@ -42,6 +44,7 @@ export interface CampaignProjection {
   notebookItems: Map<string, CampaignNotebookItem>;
   storyThreads: Map<string, StoryThread>;
   storySteps: Map<string, StoryStep>;
+  sessionInferenceReviews: Map<string, SessionInferenceReview>;
   lastSequence: number;
 }
 
@@ -62,6 +65,7 @@ export function createEmptyCampaignProjection(): CampaignProjection {
     notebookItems: new Map(),
     storyThreads: new Map(),
     storySteps: new Map(),
+    sessionInferenceReviews: new Map(),
     lastSequence: 0,
   };
 }
@@ -86,6 +90,7 @@ export function applyEvent(
     notebookItems: new Map(projection.notebookItems),
     storyThreads: new Map(projection.storyThreads),
     storySteps: new Map(projection.storySteps),
+    sessionInferenceReviews: new Map(projection.sessionInferenceReviews ?? new Map()),
     lastSequence: event.sequence,
   };
 
@@ -463,6 +468,10 @@ export function applyEvent(
     }
     case "SessionEventRecorded": {
       next.sessionEvents.set(payload.id, { ...payload });
+      break;
+    }
+    case "SessionInferenceReviewed": {
+      next.sessionInferenceReviews.set(sessionInferenceReviewMapKey(payload.sessionId, payload.inferenceKey), { ...payload });
       break;
     }
     case "AttachmentAdded": {

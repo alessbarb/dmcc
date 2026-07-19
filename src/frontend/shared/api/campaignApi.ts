@@ -43,6 +43,7 @@ export const closeSession = (campaignId: string, sessionId: string, payload: unk
 export const getSessionNarrativeMap = (campaignId: string, sessionId: string) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/narrative-map`);
 export const getSessionConsequenceChain = (campaignId: string, sessionId: string) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/consequence-chain`);
 export const createSessionEvent = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/events`, { init: jsonInit("POST", payload) });
+export const reviewSessionInference = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/inference-review`, { init: jsonInit("POST", payload) });
 
 export const exportCampaignJson = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/export/json`, { init: { method: "POST" } });
 export const exportCampaignMarkdown = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/export/markdown`, { init: { method: "POST" } });

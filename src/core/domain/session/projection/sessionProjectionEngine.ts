@@ -1,5 +1,6 @@
 import type { CampaignState } from "../../state.js";
 import type { Session } from "../types.js";
+import { computeInferenceKey, sessionInferenceReviewMapKey } from "../sessionInferenceReview.js";
 import type {
   SessionProjectionPerspective,
   SessionProjectionBasis,
@@ -93,6 +94,51 @@ export function evaluateSessionProjectionRules(
 }
 
 /**
+ * §27's DM-review overlay, applied after rule evaluation so it works identically for every
+ * perspective (narrative_map, consequence_chain, ...) without each rule set having to know
+ * about reviews. "accepted" bumps a candidate's basis to user_confirmed (the first real
+ * producer of that basis — see PROVENANCE_BASIS_PRIORITY above); "hidden" drops it entirely,
+ * along with any edge that would otherwise dangle off a hidden node. Never creates or
+ * touches a relation: promoting an inference to a world relation is a deliberately separate,
+ * explicit CreateRelation call (§27.1 "Confirmar una lectura local no creará silenciosamente
+ * una relación global").
+ */
+function applyInferenceReviews(
+  nodes: SessionProjectionNode[],
+  edges: SessionProjectionEdge[],
+  sessionId: string,
+  perspective: SessionProjectionPerspective,
+  reviews: Map<string, { decision: "accepted" | "hidden" }>,
+): { nodes: SessionProjectionNode[]; edges: SessionProjectionEdge[] } {
+  function reviewFor(ruleId: string, sourceRefs: SessionProjectionProvenance["sourceRefs"], targetId: string) {
+    const key = computeInferenceKey({ perspective, ruleId, sourceRefs, targetId });
+    return reviews.get(sessionInferenceReviewMapKey(sessionId, key));
+  }
+
+  const keptNodes: SessionProjectionNode[] = [];
+  for (const node of nodes) {
+    const review = reviewFor(node.provenance.ruleId, node.provenance.sourceRefs, node.id);
+    if (review?.decision === "hidden") continue;
+    keptNodes.push(
+      review?.decision === "accepted" ? { ...node, provenance: { ...node.provenance, basis: "user_confirmed" } } : node,
+    );
+  }
+
+  const keptNodeIds = new Set(keptNodes.map((node) => node.id));
+  const keptEdges: SessionProjectionEdge[] = [];
+  for (const edge of edges) {
+    if (!keptNodeIds.has(edge.sourceId) || !keptNodeIds.has(edge.targetId)) continue;
+    const review = reviewFor(edge.provenance.ruleId, edge.provenance.sourceRefs, edge.id);
+    if (review?.decision === "hidden") continue;
+    keptEdges.push(
+      review?.decision === "accepted" ? { ...edge, provenance: { ...edge.provenance, basis: "user_confirmed" } } : edge,
+    );
+  }
+
+  return { nodes: keptNodes, edges: keptEdges };
+}
+
+/**
  * Deterministic fingerprint of the state a projection was built from — no timestamps,
  * no randomness. Two builds from identical plan/event state must produce identical output.
  */
@@ -114,7 +160,14 @@ export function buildSessionProjection(params: {
   lastEventSequence?: number;
   diagnostics?: SessionProjectionDiagnostic[];
 }): SessionProjection {
-  const { nodes, edges } = evaluateSessionProjectionRules(params.rules, params.input, params.perspective);
+  const evaluated = evaluateSessionProjectionRules(params.rules, params.input, params.perspective);
+  const { nodes, edges } = applyInferenceReviews(
+    evaluated.nodes,
+    evaluated.edges,
+    params.input.session.sessionId,
+    params.perspective,
+    params.input.campaignState.sessionInferenceReviews,
+  );
   return {
     version: 1,
     sessionId: params.input.session.sessionId,
