@@ -3,11 +3,12 @@ import { createPortal } from "react-dom";
 import { Background, Controls, ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import type { Edge, Node } from "@xyflow/react";
 import { AlertTriangle, List, Maximize2, Network, X } from "lucide-react";
-import type { SessionProjection, SessionProjectionNode, SessionProjectionNodeKind } from "@core/domain/session/projection/sessionProjectionTypes.js";
+import type { SessionProjection, SessionProjectionEdge, SessionProjectionNode, SessionProjectionNodeKind } from "@core/domain/session/projection/sessionProjectionTypes.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { buildConsequenceChainFlow } from "./buildConsequenceChainFlow.js";
 import { ConsequenceChainNode } from "./ConsequenceChainNode.js";
 import { ConsequenceChainInspector } from "./ConsequenceChainInspector.js";
+import { ConsequenceChainEdgeInspector } from "./ConsequenceChainEdgeInspector.js";
 import { getNarrativeNodeVisual } from "../narrativeMap/narrativeNodeVisuals.js";
 import "./sessionConsequenceChain.css";
 
@@ -80,11 +81,26 @@ function DiagnosticsBanner({ projection }: { projection: SessionProjection }) {
   );
 }
 
-function CanvasInner({ projection }: { projection: SessionProjection }) {
+export type ConsequenceChainReviewHandler = (
+  target: { kind: "node"; node: SessionProjectionNode } | { kind: "edge"; edge: SessionProjectionEdge },
+  decision: "accepted" | "hidden",
+) => void;
+export type ConsequenceChainPromoteHandler = (edge: SessionProjectionEdge) => void;
+
+function CanvasInner({
+  projection,
+  onReview,
+  onPromote,
+}: {
+  projection: SessionProjection;
+  onReview: ConsequenceChainReviewHandler;
+  onPromote: ConsequenceChainPromoteHandler;
+}) {
   const { t } = useTranslation();
   const { fitView } = useReactFlow();
   const [kindFilter, setKindFilter] = useState<Set<SessionProjectionNodeKind> | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("graph");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [flow, setFlow] = useState<{ nodes: Node[]; edges: Edge[] }>({ nodes: [], edges: [] });
@@ -135,6 +151,20 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
   }, [fitView, flow.nodes.length]);
 
   const selectedNode = selectedNodeId ? projection.nodes.find((node) => node.id === selectedNodeId) ?? null : null;
+  const selectedEdge = selectedEdgeId ? projection.edges.find((edge) => edge.id === selectedEdgeId) ?? null : null;
+
+  function selectNode(node: SessionProjectionNode) {
+    setSelectedEdgeId(null);
+    setSelectedNodeId(node.id);
+  }
+  function selectEdge(edge: SessionProjectionEdge) {
+    setSelectedNodeId(null);
+    setSelectedEdgeId(edge.id);
+  }
+  function clearSelection() {
+    setSelectedNodeId(null);
+    setSelectedEdgeId(null);
+  }
 
   const toggleKind = (kind: SessionProjectionNodeKind) => {
     setKindFilter((current) => {
@@ -200,7 +230,7 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
       <div className="consequence-chain-stage">
         <div ref={containerRef} className="consequence-chain-canvas">
           {viewMode === "list" ? (
-            <ConsequenceChainListView nodes={filteredProjection.nodes} onSelect={(node) => setSelectedNodeId(node.id)} />
+            <ConsequenceChainListView nodes={filteredProjection.nodes} onSelect={selectNode} />
           ) : filteredProjection.nodes.length === 0 ? (
             <div className="consequence-chain-empty">{t("sessionConsequenceChain.empty")}</div>
           ) : (
@@ -208,8 +238,15 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
               nodes={flow.nodes}
               edges={flow.edges}
               nodeTypes={nodeTypes}
-              onNodeClick={(_event, node) => setSelectedNodeId(node.id)}
-              onPaneClick={() => setSelectedNodeId(null)}
+              onNodeClick={(_event, node) => {
+                const match = projection.nodes.find((n) => n.id === node.id);
+                if (match) selectNode(match);
+              }}
+              onEdgeClick={(_event, edge) => {
+                const match = projection.edges.find((e) => e.id === edge.id);
+                if (match) selectEdge(match);
+              }}
+              onPaneClick={clearSelection}
               proOptions={{ hideAttribution: true }}
               minZoom={0.1}
               maxZoom={1.6}
@@ -222,7 +259,21 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
           )}
         </div>
 
-        {selectedNode && <ConsequenceChainInspector node={selectedNode} onClose={() => setSelectedNodeId(null)} />}
+        {selectedNode && (
+          <ConsequenceChainInspector
+            node={selectedNode}
+            onClose={clearSelection}
+            onReview={(decision) => onReview({ kind: "node", node: selectedNode }, decision)}
+          />
+        )}
+        {selectedEdge && (
+          <ConsequenceChainEdgeInspector
+            edge={selectedEdge}
+            onClose={clearSelection}
+            onReview={(decision) => onReview({ kind: "edge", edge: selectedEdge }, decision)}
+            onPromote={() => onPromote(selectedEdge)}
+          />
+        )}
       </div>
     </div>
   );
@@ -241,10 +292,18 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
   );
 }
 
-export function SessionConsequenceChainCanvas({ projection }: { projection: SessionProjection }) {
+export function SessionConsequenceChainCanvas({
+  projection,
+  onReview,
+  onPromote,
+}: {
+  projection: SessionProjection;
+  onReview: ConsequenceChainReviewHandler;
+  onPromote: ConsequenceChainPromoteHandler;
+}) {
   return (
     <ReactFlowProvider>
-      <CanvasInner projection={projection} />
+      <CanvasInner projection={projection} onReview={onReview} onPromote={onPromote} />
     </ReactFlowProvider>
   );
 }

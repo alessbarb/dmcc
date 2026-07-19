@@ -7,6 +7,7 @@ import { getNarrativeNodeVisual } from "../narrativeMap/narrativeNodeVisuals.js"
 export interface ConsequenceChainInspectorProps {
   node: SessionProjectionNode;
   onClose: () => void;
+  onReview: (decision: "accepted" | "hidden") => void;
 }
 
 function sourceRefLabel(ref: SessionProjectionNode["reference"]): string {
@@ -28,7 +29,7 @@ function sourceRefLabel(ref: SessionProjectionNode["reference"]): string {
   }
 }
 
-export function ConsequenceChainInspector({ node, onClose }: ConsequenceChainInspectorProps) {
+export function ConsequenceChainInspector({ node, onClose, onReview }: ConsequenceChainInspectorProps) {
   const { t } = useTranslation();
   const visual = getNarrativeNodeVisual(node.kind);
 
@@ -67,6 +68,15 @@ export function ConsequenceChainInspector({ node, onClose }: ConsequenceChainIns
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="consequence-chain-inspector__review-actions">
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onReview("accepted")}>
+          {t("sessionConsequenceChain.reviewConfirm")}
+        </button>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onReview("hidden")}>
+          {t("sessionConsequenceChain.reviewHide")}
+        </button>
       </div>
     </aside>
   );

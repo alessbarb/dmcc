@@ -65,7 +65,9 @@ function NarrativeMapListView({ nodes, onSelect }: { nodes: SessionProjectionNod
   );
 }
 
-function CanvasInner({ projection }: { projection: SessionProjection }) {
+export type NarrativeMapReviewHandler = (node: SessionProjectionNode, decision: "accepted" | "hidden") => void;
+
+function CanvasInner({ projection, onReview }: { projection: SessionProjection; onReview: NarrativeMapReviewHandler }) {
   const { t } = useTranslation();
   const { fitView } = useReactFlow();
   const [kindFilter, setKindFilter] = useState<Set<SessionProjectionNodeKind> | null>(null);
@@ -203,7 +205,13 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
           )}
         </div>
 
-        {selectedNode && <NarrativeMapInspector node={selectedNode} onClose={() => setSelectedNodeId(null)} />}
+        {selectedNode && (
+          <NarrativeMapInspector
+            node={selectedNode}
+            onClose={() => setSelectedNodeId(null)}
+            onReview={(decision) => onReview(selectedNode, decision)}
+          />
+        )}
       </div>
     </div>
   );
@@ -222,10 +230,10 @@ function CanvasInner({ projection }: { projection: SessionProjection }) {
   );
 }
 
-export function SessionNarrativeMapCanvas({ projection }: { projection: SessionProjection }) {
+export function SessionNarrativeMapCanvas({ projection, onReview }: { projection: SessionProjection; onReview: NarrativeMapReviewHandler }) {
   return (
     <ReactFlowProvider>
-      <CanvasInner projection={projection} />
+      <CanvasInner projection={projection} onReview={onReview} />
     </ReactFlowProvider>
   );
 }
