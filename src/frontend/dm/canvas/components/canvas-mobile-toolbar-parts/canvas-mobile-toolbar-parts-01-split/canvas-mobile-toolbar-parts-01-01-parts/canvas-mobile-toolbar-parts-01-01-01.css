@@ -1,0 +1,27 @@
+.canvas-toolbar-panel--mobile,
+.canvas-mobile-mode-panel {
+  display: none;
+}
+
+.canvas-mobile-tools-section {
+  display: none;
+}
+
+.canvas-toolbar__select {
+  max-width: 90px;
+  padding: 2px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--theme-text-primary);
+  font-size: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.canvas-toolbar__inline-divider {
+  width: 1px;
+  height: 14px;
+  margin: 0 2px;
+  background-color: var(--theme-borders-default);
+  opacity: 0.4;
+}

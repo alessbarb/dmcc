@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T16:03:15.899Z",
+  "generatedAt": "2026-07-19T16:05:57.729Z",
   "summary": {
-    "cssFiles": 388,
+    "cssFiles": 396,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 3,
+    "mixedResponsibilityFiles": 0,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -957,19 +957,33 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-01.css",
       "layer": "feature",
       "domain": "canvas",
-      "lineCount": 274,
-      "selectorCount": 37,
+      "lineCount": 28,
+      "selectorCount": 4,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css"
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-primary",
-        "--theme-borders-default",
+        "--theme-borders-default"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css",
+      "layer": "feature",
+      "domain": "canvas",
+      "lineCount": 160,
+      "selectorCount": 20,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-surfaces-base",
@@ -999,7 +1013,21 @@
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "layer": "feature",
+      "domain": "canvas",
+      "lineCount": 102,
+      "selectorCount": 17,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--theme-accents-primary-foreground",
@@ -1011,6 +1039,23 @@
         "--theme-surfaces-interactive",
         "--theme-surfaces-canvas"
       ]
+    },
+    {
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
+      "layer": "feature",
+      "domain": "canvas",
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-01.css",
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css",
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css",
@@ -12225,14 +12270,27 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-01.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 306,
-      "selectorCount": 39,
+      "lineCount": 24,
+      "selectorCount": 3,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 142,
+      "selectorCount": 20,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css"
       ],
       "variableDefinitions": [
         "--app-footer-height",
@@ -12253,7 +12311,21 @@
         "--theme-text-primary",
         "--campaign-mobile-header-height",
         "--mobile-dock-height",
-        "--mobile-dock-height",
+        "--mobile-dock-height"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 156,
+      "selectorCount": 20,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--mobile-dock-height",
         "--campaign-mobile-header-height",
         "--mobile-dock-height",
@@ -12276,14 +12348,31 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 248,
-      "selectorCount": 32,
-      "imports": [],
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css"
+      ],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 145,
+      "selectorCount": 20,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -12303,7 +12392,21 @@
         "--theme-text-secondary",
         "--theme-activity-system-foreground",
         "--theme-accents-primary-background",
-        "--theme-text-primary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 114,
+      "selectorCount": 15,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-surfaces-base",
@@ -12320,6 +12423,22 @@
         "--theme-activity-system-foreground",
         "--theme-accents-primary-background"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-02.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css",
@@ -13479,9 +13598,9 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 31,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css",
+      "line": 5,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -13491,81 +13610,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 219,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 220,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 221,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 222,
-      "column": 81,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 227,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:!important",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 271,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 165,
+      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css",
+      "line": 145,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -13575,9 +13622,81 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 250,
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 44,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 45,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 46,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 47,
+      "column": 81,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 52,
+      "column": 14,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 99,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
+      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
+      "line": 75,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -13585,17 +13704,6 @@
       "category": "cross-component-selector",
       "selectorOrComponent": "grid-template-columns: repeat(3, minmax(0, 1fr));\n    left: 18px;\n    right: 18px;\n    bottom: calc(8px + env(safe-area-inset-bottom));\n    padding: 7px;\n    border-radius: 18px;\n  }\n\n  .main-content--canvas .canvas-mobile-dock button:first-child",
       "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (274 lines, 37 selectors)."
     },
     {
       "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:style={{ \"--entity-detail-hero-filter\": isDmOnly ? \"grayscale(70%) brightness(35%)\" : \"none\", \"--entity-detail-hero-opacity\": selectedEntity.metadata?.imageUrl ? 1 : 0.6, } as React.CSSProperties & Re",
@@ -18640,9 +18748,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 33,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 11,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -18652,9 +18760,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 37,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 15,
       "column": 83,
       "severity": "high",
       "status": "temporary",
@@ -18664,9 +18772,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 41,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 19,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -18676,9 +18784,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 106,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 87,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -18688,9 +18796,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 107,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 88,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -18700,9 +18808,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 108,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 89,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -18712,9 +18820,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 109,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 90,
       "column": 127,
       "severity": "high",
       "status": "temporary",
@@ -18724,9 +18832,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 111,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "line": 92,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -18736,9 +18844,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 170,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css",
+      "line": 14,
       "column": 93,
       "severity": "high",
       "status": "temporary",
@@ -18748,9 +18856,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 174,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css",
+      "line": 18,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -18760,9 +18868,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 178,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css",
+      "line": 22,
       "column": 123,
       "severity": "high",
       "status": "temporary",
@@ -18772,32 +18880,21 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css:height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important; min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)); } .main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 178,
-      "column": 5,
+      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css:.main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css",
+      "line": 29,
+      "column": 3,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
       "category": "cross-component-selector",
-      "selectorOrComponent": "height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important;\n    min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom));\n  }\n\n  .main-content--canvas .canvas-layout,\n  .main-content--canvas .canvas-work-area,\n  .main-content--canvas .canvas-work-area > .react-flow__renderer,\n  .main-content--canvas .canvas-work-area > div",
+      "selectorOrComponent": ".main-content--canvas .canvas-layout,\n  .main-content--canvas .canvas-work-area,\n  .main-content--canvas .canvas-work-area > .react-flow__renderer,\n  .main-content--canvas .canvas-work-area > div",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (306 lines, 39 selectors)."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
-      "line": 77,
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-01.css",
+      "line": 80,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -18805,17 +18902,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (248 lines, 32 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-03.css:!important",
@@ -19032,6 +19118,11 @@
     ],
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
+    ],
+    "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css": [
+      "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-01.css",
+      "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css",
+      "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css"
     ],
     "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
@@ -19497,6 +19588,15 @@
       "src/frontend/shared/styles/landing/landing-14.css",
       "src/frontend/shared/styles/landing/landing-15.css",
       "src/frontend/shared/styles/landing/landing-16.css"
+    ],
+    "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css"
+    ],
+    "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-02.css"
     ],
     "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01.css": [
       "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-01.css",

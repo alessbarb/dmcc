@@ -1,0 +1,23 @@
+
+
+.sidebar-footer__campaign-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.sidebar-footer__lock-btn {
+  width: 100%;
+  margin-top: 6px;
+  opacity: 0.72;
+  font-size: 0.78rem;
+}
+
+/* CampaignShell mobile navigation. */
+.campaign-mobile-header,
+.mobile-dock,
+.mobile-dock-overlay {
+  display: none;
+}

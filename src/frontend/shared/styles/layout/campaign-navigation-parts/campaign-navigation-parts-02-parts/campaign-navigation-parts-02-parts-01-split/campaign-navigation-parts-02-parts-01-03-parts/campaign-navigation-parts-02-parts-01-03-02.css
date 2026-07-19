@@ -1,0 +1,113 @@
+
+
+@media (max-width: 768px) {
+
+  .mobile-dock-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 980;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 14px;
+    background: color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent);
+  }
+
+  .mobile-dock-sheet {
+    width: min(100%, 460px);
+    max-height: min(78vh, 680px);
+    overflow-y: auto;
+    border: 1px solid var(--theme-borders-default);
+    border-radius: 24px;
+    background: var(--theme-surfaces-base);
+    box-shadow: 0 24px 70px color-mix(in srgb, var(--theme-surfaces-canvas) 64%, transparent);
+  }
+
+  .mobile-dock-sheet__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--theme-borders-default);
+    background: color-mix(in srgb, var(--theme-surfaces-base) 98%, transparent);
+  }
+
+  .mobile-dock-sheet__header div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .mobile-dock-sheet__header strong {
+    overflow: hidden;
+    color: var(--theme-text-primary);
+    font-size: 0.98rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-dock-sheet__header span {
+    overflow: hidden;
+    color: var(--theme-text-secondary);
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-dock-sheet__body,
+  .mobile-dock-sheet__footer {
+    padding: 16px;
+  }
+
+  .mobile-dock-sheet__body {
+    border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-interactive-hover) 65%, transparent);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .mobile-dock-sheet__eyebrow {
+    margin: 0 0 10px;
+    color: var(--theme-accents-secondary-foreground);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .mobile-dock-sheet__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .mobile-dock-sheet__item {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid var(--theme-borders-default);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--theme-surfaces-subtle) 88%, transparent);
+    color: var(--theme-text-primary);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .mobile-dock-sheet__item.active {
+    border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 45%, transparent);
+    background: var(--theme-accents-primary-background);
+  }
+}
