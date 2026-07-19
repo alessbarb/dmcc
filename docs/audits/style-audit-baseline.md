@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 92,
-  "tsxFilesWithInlineStyles": 84,
-  "forbiddenLiteralColors": 260,
-  "staticInlineStyles": 1041,
+  "cssFiles": 93,
+  "tsxFilesWithInlineStyles": 83,
+  "forbiddenLiteralColors": 256,
+  "staticInlineStyles": 1039,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -103,7 +103,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 51 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 52 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -114,6 +114,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/primitives/overlay.css` | primitive | shared | 16 | 2 | 1 |
 | `src/frontend/shared/styles/primitives/status.css` | primitive | shared | 24 | 3 | 1 |
 | `src/frontend/shared/styles/primitives/tabs.css` | primitive | shared | 24 | 3 | 1 |
+| `src/frontend/shared/styles/primitives/toast.css` | primitive | shared | 24 | 2 | 1 |
 | `src/frontend/shared/styles/primitives/toolbar.css` | primitive | shared | 12 | 2 | 1 |
 | `src/frontend/shared/styles/primitives/tooltip.css` | primitive | shared | 13 | 1 | 1 |
 | `src/frontend/shared/styles/vendor/react-flow.css` | vendor | shared | 2 | 0 | 1 |
@@ -1704,12 +1705,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:166` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:167` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:171` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:4` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:5` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:6` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:41` | Literal visual color outside a registered theme package. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-canvas.css:1` | Large stylesheet requires atomization (1683 lines, 259 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:497` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:498` | Important declarations bypass the intended cascade. |

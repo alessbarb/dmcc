@@ -1,9 +1,10 @@
+import type { CSSProperties } from "react";
 import type { Toast } from "../hooks/useToast.js";
 
 const kindStyles: Record<string, string> = {
-  success: "#22c55e",
-  error: "#ef4444",
-  warning: "#f59e0b",
+  success: "var(--theme-feedback-success-foreground)",
+  error: "var(--theme-feedback-danger-foreground)",
+  warning: "var(--theme-feedback-warning-foreground)",
   info: "var(--theme-accents-primary-foreground)",
 };
 
@@ -15,31 +16,13 @@ interface Props {
 export function ToastContainer({ toasts, onRemove }: Props) {
   if (toasts.length === 0) return null;
   return (
-    <div style={{
-      position: "fixed",
-      bottom: "24px",
-      right: "24px",
-      display: "flex",
-      flexDirection: "column",
-      gap: "8px",
-      zIndex: 9999,
-      maxWidth: "360px",
-    }}>
+    <div className="toast-container">
       {toasts.map((t) => (
         <div
           key={t.id}
           onClick={() => onRemove(t.id)}
-          style={{
-            background: "var(--theme-surfaces-base)",
-            border: `1px solid ${kindStyles[t.kind]}`,
-            borderLeft: `4px solid ${kindStyles[t.kind]}`,
-            borderRadius: "var(--theme-shapes-radius-small)",
-            padding: "10px 16px",
-            cursor: "pointer",
-            fontSize: "0.875rem",
-            color: "var(--theme-text-primary)",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-          }}
+          className="toast"
+          style={{ "--toast-accent": kindStyles[t.kind] } as CSSProperties}
         >
           {t.message}
         </div>

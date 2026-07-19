@@ -17,6 +17,7 @@
 @import "./primitives/toolbar.css";
 @import "./primitives/empty-state.css";
 @import "./primitives/status.css";
+@import "./primitives/toast.css";
 
 @import "./features/rules-workspace.css";
 @import "./features/kanban-board.css";

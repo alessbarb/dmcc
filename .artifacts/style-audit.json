@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:04:08.318Z",
+  "generatedAt": "2026-07-19T10:04:57.408Z",
   "summary": {
-    "cssFiles": 92,
-    "tsxFilesWithInlineStyles": 84,
-    "forbiddenLiteralColors": 260,
-    "staticInlineStyles": 1041,
+    "cssFiles": 93,
+    "tsxFilesWithInlineStyles": 83,
+    "forbiddenLiteralColors": 256,
+    "staticInlineStyles": 1039,
     "dynamicInlineStyles": 31,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -5844,16 +5844,16 @@
       "path": "src/frontend/shared/components/ToastContainer.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 50,
+      "lineCount": 33,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-surfaces-base",
-        "--theme-shapes-radius-small",
-        "--theme-text-primary"
+        "--theme-feedback-success-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-accents-primary-foreground"
       ]
     },
     {
@@ -8505,7 +8505,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 51,
+      "lineCount": 52,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8526,6 +8526,7 @@
         "src/frontend/shared/styles/primitives/toolbar.css",
         "src/frontend/shared/styles/primitives/empty-state.css",
         "src/frontend/shared/styles/primitives/status.css",
+        "src/frontend/shared/styles/primitives/toast.css",
         "src/frontend/shared/styles/features/rules-workspace.css",
         "src/frontend/shared/styles/features/kanban-board.css",
         "src/frontend/shared/styles/features/sidebar-nav.css",
@@ -8854,6 +8855,29 @@
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/primitives/toast.css",
+      "layer": "primitive",
+      "domain": "shared",
+      "lineCount": 24,
+      "selectorCount": 2,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [
+        "--toast-accent"
+      ],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--toast-accent",
+        "--toast-accent",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-base",
+        "--theme-text-primary",
+        "--theme-surfaces-canvas"
       ]
     },
     {
@@ -28613,80 +28637,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/shared/components/ToastContainer.tsx:#22c55e",
-      "path": "src/frontend/shared/components/ToastContainer.tsx",
-      "line": 4,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#22c55e",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/shared/components/ToastContainer.tsx:#ef4444",
-      "path": "src/frontend/shared/components/ToastContainer.tsx",
-      "line": 5,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#ef4444",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/shared/components/ToastContainer.tsx:#f59e0b",
-      "path": "src/frontend/shared/components/ToastContainer.tsx",
-      "line": 6,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#f59e0b",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/shared/components/ToastContainer.tsx:rgba(0,0,0,0.4)",
-      "path": "src/frontend/shared/components/ToastContainer.tsx",
-      "line": 41,
-      "column": 36,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(0,0,0,0.4)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/components/ToastContainer.tsx:style={{ position: \"fixed\", bottom: \"24px\", right: \"24px\", display: \"flex\", flexDirection: \"column\", gap: \"8px\", zIndex: 9999, maxWidth: \"360px\", }}",
-      "path": "src/frontend/shared/components/ToastContainer.tsx",
-      "line": 18,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n      position: \"fixed\",\n      bottom: \"24px\",\n      right: \"24px\",\n      display: \"flex\",\n      flexDirection: \"column\",\n      gap: \"8px\",\n      zIndex: 9999,\n      maxWidth: \"360px\",\n    }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/components/ToastContainer.tsx:style={{ background: \"var(--theme-surfaces-base)\", border: `1px solid ${kindStyles[t.kind]}`, borderLeft: `4px solid ${kindStyles[t.kind]}`, borderRadius: \"var(--theme-shapes-radius-small)\",",
-      "path": "src/frontend/shared/components/ToastContainer.tsx",
-      "line": 32,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n            background: \"var(--theme-surfaces-base)\",\n            border: `1px solid ${kindStyles[t.kind]}`,\n            borderLeft: `4px solid ${kindStyles[t.kind]}`,\n            borderRadius: \"var(--theme-shapes-radius-small)\",\n ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "literal-color:src/frontend/shared/components/entityImageReframeDialog.css:rgb(2 3 8 / 92%)",
       "path": "src/frontend/shared/components/entityImageReframeDialog.css",
       "line": 11,
@@ -31710,6 +31660,7 @@
       "src/frontend/shared/styles/primitives/toolbar.css",
       "src/frontend/shared/styles/primitives/empty-state.css",
       "src/frontend/shared/styles/primitives/status.css",
+      "src/frontend/shared/styles/primitives/toast.css",
       "src/frontend/shared/styles/features/rules-workspace.css",
       "src/frontend/shared/styles/features/kanban-board.css",
       "src/frontend/shared/styles/features/sidebar-nav.css",
