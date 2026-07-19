@@ -132,12 +132,11 @@ export function CampaignShell() {
       <button
         type="button"
         key={path}
-        className={`nav-item ${currentSegment === path ? "active" : ""}`}
+        className={`nav-item ${currentSegment === path ? "active" : ""} ${sidebarCollapsed ? "nav-item--collapsed" : ""}`}
         data-tour-id={`campaign-nav-${path}`}
         onClick={() => handleNavClick(path)}
         title={sidebarCollapsed ? t(labelKey) : undefined}
         aria-current={currentSegment === path ? "page" : undefined}
-        style={sidebarCollapsed ? { padding: "10px", justifyContent: "center", gap: 0 } : undefined}
       >
         <Icon size={16} />
         {!sidebarCollapsed && <span>{t(labelKey)}</span>}
@@ -148,16 +147,8 @@ export function CampaignShell() {
 
   if (loading && !campaignState) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "var(--theme-surfaces-canvas)",
-        }}
-      >
-        <p style={{ margin: 0, color: "var(--theme-text-secondary)" }}>
+      <div className="campaign-shell-feedback campaign-shell-feedback--loading">
+        <p className="campaign-shell-feedback__message">
           {t("campaignShell.loading.loadingTitle")}
         </p>
       </div>
@@ -166,21 +157,12 @@ export function CampaignShell() {
 
   if (error && !campaignState) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "var(--theme-surfaces-canvas)",
-          padding: 24,
-        }}
-      >
-        <div style={{ maxWidth: 420, textAlign: "center" }}>
+      <div className="campaign-shell-feedback campaign-shell-feedback--error">
+        <div className="campaign-shell-feedback__content">
           <h2>{t("campaignShell.loading.errorTitle")}</h2>
-          <p style={{ color: "var(--theme-text-secondary)" }}>{t("campaignShell.loading.errorDesc")}</p>
-          <p style={{ color: "var(--theme-feedback-danger-foreground)", fontFamily: "monospace" }}>{error}</p>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+          <p className="campaign-shell-feedback__description">{t("campaignShell.loading.errorDesc")}</p>
+          <p className="campaign-shell-feedback__error">{error}</p>
+          <div className="campaign-shell-feedback__actions">
             <button className="btn btn-primary" type="button" onClick={() => void selectCampaign(campaignId)}>
               {t("campaignShell.loading.retry")}
             </button>
@@ -200,19 +182,14 @@ export function CampaignShell() {
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
-          className="sidebar-header"
+          className={`sidebar-header ${sidebarCollapsed ? "sidebar-header--collapsed" : ""}`}
           data-tour-id="campaign-current-campaign"
-          style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}
         >
           <button
             type="button"
             onClick={exitCampaign}
             title={t("nav.backToHub")}
-            className="btn btn-secondary btn-sm"
-            style={{
-              width: "100%",
-              justifyContent: sidebarCollapsed ? "center" : "flex-start",
-            }}
+            className={`btn btn-secondary btn-sm campaign-shell__back-button ${sidebarCollapsed ? "campaign-shell__back-button--collapsed" : ""}`}
           >
             <ArrowLeft size={13} />
             {!sidebarCollapsed && <span>{t("nav.backToHub")}</span>}
@@ -240,26 +217,15 @@ export function CampaignShell() {
                 ? t("campaignShell.expandMenu")
                 : t("campaignShell.collapseMenu")
             }
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "var(--theme-text-secondary)",
-              padding: 4,
-              display: "flex",
-              width: "100%",
-              justifyContent: sidebarCollapsed ? "center" : "flex-end",
-              marginTop: 10,
-            }}
+            className={`sidebar-toggle ${sidebarCollapsed ? "sidebar-toggle--collapsed" : ""}`}
           >
             {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           </button>
         </div>
 
         <nav
-          className="sidebar-nav"
+          className={`sidebar-nav ${sidebarCollapsed ? "sidebar-nav--collapsed" : ""}`}
           aria-label={t("campaignShell.mainNavigationLabel")}
-          style={{ padding: sidebarCollapsed ? "12px 6px" : undefined }}
         >
           {renderSidebarItems(primaryNav)}
           <div className="sidebar-nav__separator" aria-hidden="true" />
@@ -275,23 +241,21 @@ export function CampaignShell() {
           )}
         </nav>
 
-        <div className="sidebar-footer" style={{ padding: sidebarCollapsed ? "12px 8px" : undefined }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div className={`sidebar-footer ${sidebarCollapsed ? "sidebar-footer--collapsed" : ""}`}>
+          <div className="sidebar-footer__actions">
             <button
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary btn-sm sidebar-footer__action"
               type="button"
               onClick={() => setAccountModalOpen(true)}
               title={t("account.title")}
-              style={{ width: "100%", justifyContent: "center" }}
             >
               <User size={14} /> {!sidebarCollapsed && t("account.title")}
             </button>
             <button
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary btn-sm sidebar-footer__action"
               type="button"
               onClick={() => void handleSignOutDm()}
               title={t("nav.signOut")}
-              style={{ width: "100%", justifyContent: "center" }}
             >
               <LogOut size={14} /> {!sidebarCollapsed && t("nav.signOut")}
             </button>
