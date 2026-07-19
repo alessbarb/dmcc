@@ -35,11 +35,11 @@ export function EntityNodeContent({
 
   if (entity.archived) {
     return (
-      <div style={{ display: "flex", padding: "12px", alignItems: "center", gap: "12px" }}>
-        <FileText size={24} style={{ color: "var(--theme-text-secondary)", opacity: 0.5 }} />
+      <div className="entity-node-content__archived">
+        <FileText className="entity-node-content__archived-icon" size={24} />
         <div>
-          <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", fontWeight: "600" }}>[Archivada]</div>
-          <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.75rem" }}>{entity.entityId.slice(0, 8)}…</div>
+          <div className="entity-node-content__archived-title">[Archivada]</div>
+          <div className="entity-node-content__archived-id">{entity.entityId.slice(0, 8)}…</div>
         </div>
       </div>
     );
@@ -61,92 +61,69 @@ export function EntityNodeContent({
     : undefined);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%", position: "relative" }}>
+    <div
+      className={`entity-node-content rg-card--density-${density}`}
+      style={{ "--rg-accent": cfg.accent } as React.CSSProperties & Record<`--${string}`, string>}
+    >
       {isTableHidden && (
         <button
           type="button"
-          className="rg-card__privacy-cover"
+          className="rg-card__privacy-cover entity-node-content__privacy-cover"
           onClick={(event) => {
             event.stopPropagation();
             if (onRevealPrivacy) onRevealPrivacy();
           }}
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "var(--theme-media-overlay-strong)",
-            border: "none",
-            color: "var(--theme-text-on-media)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            zIndex: 10,
-            cursor: "pointer"
-          }}
         >
           <KeyRound size={22} />
-          <span style={{ fontSize: "0.75rem" }}>{t("canvas.toolbar.privateContent")}</span>
+          <span className="entity-node-content__privacy-label">{t("canvas.toolbar.privateContent")}</span>
         </button>
       )}
 
       {/* Hero Area */}
       <div
-        className={`rg-card__hero ${imageUrl ? "rg-card__hero--img" : "rg-card__hero--icon"}`}
-        style={{
-          height: density === "compact" ? "40px" : "120px",
-          position: "relative",
-          overflow: "hidden",
-          background: "var(--theme-borders-default)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
+        className={`rg-card__hero entity-node-content__hero entity-node-content__hero--${density} ${imageUrl ? "rg-card__hero--img" : "rg-card__hero--icon"}`}
       >
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={entity.title}
             className="rg-card__img"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
             loading="lazy"
             draggable={false}
           />
         ) : (
           <IconComponent
-            className="rg-card__hero-icon"
-            size={heroStyle === "portrait" ? 36 : heroStyle === "panorama" ? 30 : 24}
-            style={{ color: cfg.accent }}
+            className={`rg-card__hero-icon entity-node-content__hero-icon entity-node-content__hero-icon--${heroStyle}`}
           />
         )}
 
         {imageUrl && <div className="rg-card__img-gradient" />}
 
         {/* Type Badge */}
-        <div className="rg-card__type-badge" style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", alignItems: "center", gap: "4px", background: "var(--theme-media-overlay-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.7rem", color: "var(--theme-text-on-media)" }}>
+        <div className="rg-card__type-badge entity-node-content__type-badge">
           <IconComponent size={9} />
           <span>{t(cfg.labelKey)}</span>
         </div>
 
         {/* Visibility Badge */}
-        <div style={{ position: "absolute", top: "8px", right: "8px" }}>
+        <div className="entity-node-content__visibility">
           {(() => {
             const kind = entity.visibility?.kind;
             if (isDmOnly) {
               return (
-                <div style={{ background: "color-mix(in srgb, var(--theme-feedback-danger-strong) 85%, transparent)", color: "var(--theme-feedback-danger-on-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
+                <div className="entity-node-content__visibility-badge entity-node-content__visibility-badge--secret">
                   🔒 Secreto
                 </div>
               );
             } else if (kind === "public" || kind === "party") {
               return (
-                <div style={{ background: "color-mix(in srgb, var(--theme-feedback-success-strong) 85%, transparent)", color: "var(--theme-feedback-success-on-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
+                <div className="entity-node-content__visibility-badge entity-node-content__visibility-badge--revealed">
                   👁 Revelado
                 </div>
               );
             } else {
               return (
-                <div style={{ background: "color-mix(in srgb, var(--theme-feedback-warning-strong) 85%, transparent)", color: "var(--theme-feedback-warning-on-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
+                <div className="entity-node-content__visibility-badge entity-node-content__visibility-badge--partial">
                   🕯 Parcial
                 </div>
               );
@@ -156,12 +133,12 @@ export function EntityNodeContent({
       </div>
 
       {/* Body */}
-      <div className="rg-card__body" style={{ padding: "12px", flex: 1, display: "flex", flexDirection: "column", gap: "4px" }}>
-        <div className="rg-card__name" style={{ fontWeight: "700", fontSize: "0.95rem", color: "var(--theme-text-primary)" }} title={entity.title}>
+      <div className="rg-card__body entity-node-content__body">
+        <div className="rg-card__name entity-node-content__name" title={entity.title}>
           {entity.title}
         </div>
         {subtitle && (
-          <div className="rg-card__sub" style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
+          <div className="rg-card__sub entity-node-content__subtitle">
             {subtitle}
           </div>
         )}

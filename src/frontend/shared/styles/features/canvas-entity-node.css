@@ -6,3 +6,125 @@
 .rg-card__visibility-label {
   font-size: 9px;
 }
+
+.entity-node-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.entity-node-content__archived {
+  display: flex;
+  padding: 12px;
+  align-items: center;
+  gap: 12px;
+}
+
+.entity-node-content__archived-icon {
+  color: var(--theme-text-secondary);
+  opacity: 0.5;
+}
+
+.entity-node-content__archived-title {
+  color: var(--theme-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.entity-node-content__archived-id {
+  color: var(--theme-text-secondary);
+  font-size: 0.75rem;
+}
+
+.entity-node-content__privacy-cover {
+  position: absolute;
+  inset: 0;
+  border: none;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.entity-node-content__privacy-label {
+  font-size: 0.75rem;
+}
+
+.entity-node-content__hero {
+  height: 120px;
+  background: var(--theme-borders-default);
+}
+
+.entity-node-content__hero--compact {
+  height: 40px;
+}
+
+.entity-node-content__hero-icon--portrait {
+  width: 36px;
+  height: 36px;
+}
+
+.entity-node-content__hero-icon--panorama {
+  width: 30px;
+  height: 30px;
+}
+
+.entity-node-content__hero-icon--compact {
+  width: 24px;
+  height: 24px;
+}
+
+.entity-node-content__type-badge {
+  bottom: 8px;
+  left: 8px;
+  gap: 4px;
+  background: var(--theme-media-overlay-strong);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  color: var(--theme-text-on-media);
+}
+
+.entity-node-content__visibility {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.entity-node-content__visibility-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.entity-node-content__visibility-badge--secret {
+  background: color-mix(in srgb, var(--theme-feedback-danger-strong) 85%, transparent);
+  color: var(--theme-feedback-danger-on-strong);
+}
+
+.entity-node-content__visibility-badge--revealed {
+  background: color-mix(in srgb, var(--theme-feedback-success-strong) 85%, transparent);
+  color: var(--theme-feedback-success-on-strong);
+}
+
+.entity-node-content__visibility-badge--partial {
+  background: color-mix(in srgb, var(--theme-feedback-warning-strong) 85%, transparent);
+  color: var(--theme-feedback-warning-on-strong);
+}
+
+.entity-node-content__body {
+  padding: 12px;
+  flex: 1;
+  gap: 4px;
+}
+
+.entity-node-content__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--theme-text-primary);
+}
+
+.entity-node-content__subtitle {
+  font-size: 0.8rem;
+  color: var(--theme-text-secondary);
+}

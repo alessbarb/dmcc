@@ -9,7 +9,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "cssFiles": 124,
   "tsxFilesWithInlineStyles": 41,
   "forbiddenLiteralColors": 246,
-  "staticInlineStyles": 280,
+  "staticInlineStyles": 263,
   "dynamicInlineStyles": 28,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -90,7 +90,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
 | `src/frontend/shared/styles/features/canvas-bulk-actions.css` | legacy | shared | 7 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-dialog-forms.css` | legacy | shared | 65 | 13 | 1 |
-| `src/frontend/shared/styles/features/canvas-entity-node.css` | legacy | shared | 9 | 2 | 1 |
+| `src/frontend/shared/styles/features/canvas-entity-node.css` | legacy | shared | 131 | 23 | 1 |
 | `src/frontend/shared/styles/features/canvas-flow.css` | legacy | shared | 35 | 5 | 1 |
 | `src/frontend/shared/styles/features/canvas-group-hulls.css` | legacy | shared | 23 | 3 | 1 |
 | `src/frontend/shared/styles/features/canvas-inspector.css` | legacy | shared | 93 | 14 | 1 |
@@ -563,24 +563,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/map/network/networkFlow.css:685` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:41` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:89` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:111` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:126` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:132` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:159` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:66` | Runtime style requires review and CSS custom-property preference. |
 | high | literal-color | `src/frontend/dm/map/shared/FactNodeContent.tsx:29` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/shared/FactNodeContent.tsx:30` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/shared/FactNodeContent.tsx:31` | Literal visual color outside a registered theme package. |
