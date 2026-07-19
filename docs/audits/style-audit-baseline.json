@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:43:39.597Z",
+  "generatedAt": "2026-07-19T10:44:17.206Z",
   "summary": {
-    "cssFiles": 109,
+    "cssFiles": 110,
     "tsxFilesWithInlineStyles": 64,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 518,
-    "dynamicInlineStyles": 28,
+    "staticInlineStyles": 515,
+    "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -758,7 +758,7 @@
       "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 277,
+      "lineCount": 261,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -6549,6 +6549,19 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-group-hulls.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 23,
+      "selectorCount": 3,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-inspector.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8648,7 +8661,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 68,
+      "lineCount": 69,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8710,7 +8723,8 @@
         "src/frontend/shared/styles/features/canvas-entity-node.css",
         "src/frontend/shared/styles/features/canvas-inspector.css",
         "src/frontend/shared/styles/features/canvas-narrative-lint.css",
-        "src/frontend/shared/styles/features/canvas-bulk-actions.css"
+        "src/frontend/shared/styles/features/canvas-bulk-actions.css",
+        "src/frontend/shared/styles/features/canvas-group-hulls.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10150,43 +10164,17 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ position: \"absolute\", top: 0, left: 0, width: \"100%\", height: \"100%\", pointerEvents: \"none\", zIndex: 0, overflow: \"hidden\", }}",
+      "id": "dynamic-style:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})` }}",
       "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 201,
-      "column": 7,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n        position: \"absolute\",\n        top: 0, left: 0,\n        width: \"100%\", height: \"100%\",\n        pointerEvents: \"none\",\n        zIndex: 0,\n        overflow: \"hidden\",\n      }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ position: \"absolute\", top: 0, left: 0, overflow: \"visible\", width: \"100%\", height: \"100%\", transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})`, transformOr",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 211,
+      "line": 203,
       "column": 9,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n          position: \"absolute\",\n          top: 0, left: 0,\n          overflow: \"visible\",\n          width: \"100%\",\n          height: \"100%\",\n          transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})`,\n          transformOr",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ textTransform: \"uppercase\", userSelect: \"none\", pointerEvents: \"none\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
-      "line": 266,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ textTransform: \"uppercase\", userSelect: \"none\", pointerEvents: \"none\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+      "category": "dynamic-style",
+      "value": "style={{ transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})` }}",
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "literal-color:src/frontend/dm/canvas/components/CanvasInspector.tsx:\"blue\"",
@@ -25198,7 +25186,8 @@
       "src/frontend/shared/styles/features/canvas-entity-node.css",
       "src/frontend/shared/styles/features/canvas-inspector.css",
       "src/frontend/shared/styles/features/canvas-narrative-lint.css",
-      "src/frontend/shared/styles/features/canvas-bulk-actions.css"
+      "src/frontend/shared/styles/features/canvas-bulk-actions.css",
+      "src/frontend/shared/styles/features/canvas-group-hulls.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

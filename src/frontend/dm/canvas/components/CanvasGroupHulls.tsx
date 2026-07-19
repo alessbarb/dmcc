@@ -197,26 +197,10 @@ export function CanvasGroupHulls({ canvasId: _canvasId, viewport, canvasNodes, r
   if (groupEntries.length === 0) return null;
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0, left: 0,
-        width: "100%", height: "100%",
-        pointerEvents: "none",
-        zIndex: 0,
-        overflow: "hidden",
-      }}
-    >
+    <div className="canvas-group-hulls">
       <svg
-        style={{
-          position: "absolute",
-          top: 0, left: 0,
-          overflow: "visible",
-          width: "100%",
-          height: "100%",
-          transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})`,
-          transformOrigin: "0 0",
-        }}
+        className="canvas-group-hulls__svg"
+        style={{ transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})` }}
       >
         <defs>
           <filter id="hull-glow" x="-15%" y="-15%" width="130%" height="130%">
@@ -263,7 +247,7 @@ export function CanvasGroupHulls({ canvasId: _canvasId, viewport, canvasNodes, r
                 fontSize={11}
                 fontWeight="800"
                 letterSpacing="0.12em"
-                style={{ textTransform: "uppercase", userSelect: "none", pointerEvents: "none" }}
+                className="canvas-group-hulls__label"
               >
                 {title}
               </text>
