@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:57:54.680Z",
+  "generatedAt": "2026-07-19T10:58:50.299Z",
   "summary": {
-    "cssFiles": 120,
+    "cssFiles": 121,
     "tsxFilesWithInlineStyles": 46,
-    "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 383,
+    "forbiddenLiteralColors": 246,
+    "staticInlineStyles": 374,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -2911,16 +2911,12 @@
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 792,
+      "lineCount": 768,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-feedback-danger-foreground",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-text-secondary",
@@ -6736,6 +6732,32 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/dashboard-overview.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 14,
+      "selectorCount": 13,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-feedback-success-foreground",
+        "--theme-feedback-success-foreground",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-feedback-danger-foreground"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/dm-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8787,7 +8809,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 79,
+      "lineCount": 80,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8836,6 +8858,7 @@
         "src/frontend/shared/styles/features/dm-dashboard.css",
         "src/frontend/shared/styles/features/dm-hub.css",
         "src/frontend/shared/styles/features/dm-hub-dashboard.css",
+        "src/frontend/shared/styles/features/dashboard-overview.css",
         "src/frontend/shared/styles/features/admin-audit.css",
         "src/frontend/shared/styles/features/admin-overview.css",
         "src/frontend/shared/styles/features/admin-purge.css",
@@ -15587,105 +15610,9 @@
       "reason": "Large stylesheet requires atomization (416 lines, 57 selectors)."
     },
     {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(239, 68, 68, .12)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 60,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(239, 68, 68, .12)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(245, 158, 11, .14)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 62,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(245, 158, 11, .14)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(34, 197, 94, .12)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 64,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(34, 197, 94, .12)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(148, 163, 184, .12)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 65,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(148, 163, 184, .12)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(239, 68, 68, .35)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 68,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(239, 68, 68, .35)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(245, 158, 11, .35)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 70,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(245, 158, 11, .35)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(34, 197, 94, .3)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 72,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(34, 197, 94, .3)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(148, 163, 184, .24)",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 73,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(148, 163, 184, .24)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(239,68,68,.4)",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 480,
+      "line": 456,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -15697,7 +15624,7 @@
     {
       "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(245,158,11,.35)",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 482,
+      "line": 458,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -15709,7 +15636,7 @@
     {
       "id": "literal-color:src/frontend/dm/overview/OverviewPage.tsx:rgba(34,197,94,.3)",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 483,
+      "line": 459,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -15719,126 +15646,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ padding: 18, ...style }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 35,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 18, ...style }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ border: `1px solid ${border}`, background, borderRadius: 999, padding: \"4px 9px\", fontSize: 12, color: \"var(--theme-text-primary)\", }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 77,
-      "column": 7,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n        border: `1px solid ${border}`,\n        background,\n        borderRadius: 999,\n        padding: \"4px 9px\",\n        fontSize: 12,\n        color: \"var(--theme-text-primary)\",\n      }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: \"8px 0 0\", color: \"var(--theme-text-secondary)\", fontSize: 12 }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 103,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: \"8px 0 0\", color: \"var(--theme-text-secondary)\", fontSize: 12 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ fontSize: 28 }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 104,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: 28 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: 0, color: \"var(--theme-text-secondary)\", fontSize: 14 }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 110,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: 0, color: \"var(--theme-text-secondary)\", fontSize: 14 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gap: 8 }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 125,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"grid\", gap: 8 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ padding: 32 }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 280,
-      "column": 34,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 32 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ padding: 32, display: \"grid\", gap: 16 }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 285,
-      "column": 29,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 32, display: \"grid\", gap: 16 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: 0, color: \"var(--theme-feedback-danger-foreground)\" }}",
-      "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 286,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: 0, color: \"var(--theme-feedback-danger-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gap: 24 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 302,
+      "line": 278,
       "column": 39,
       "severity": "high",
       "status": "temporary",
@@ -15851,7 +15661,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", justifyContent: \"space-between\", gap: 16, flexWrap: \"wrap\", alignItems: \"flex-start\", }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 304,
+      "line": 280,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -15864,7 +15674,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: \"0 0 6px\", color: \"var(--theme-text-secondary)\", textTransform: \"uppercase\", letterSpacing: \".12em\", fontSize: 12, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 314,
+      "line": 290,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -15877,7 +15687,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: 0, fontSize: \"clamp(1.8rem, 4vw, 3rem)\" }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 324,
+      "line": 300,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -15890,7 +15700,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: \"8px 0 0\", color: \"var(--theme-text-secondary)\", maxWidth: 760 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 327,
+      "line": 303,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -15903,7 +15713,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", gap: 8, flexWrap: \"wrap\" }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 332,
+      "line": 308,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -15916,7 +15726,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ padding: 16 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 359,
+      "line": 335,
       "column": 31,
       "severity": "high",
       "status": "temporary",
@@ -15929,7 +15739,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gridTemplateColumns: \"repeat(auto-fit, minmax(170px, 1fr))\", gap: 12, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 378,
+      "line": 354,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -15942,7 +15752,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gridTemplateColumns: \"repeat(auto-fit, minmax(240px, 1fr))\", gap: 12, marginTop: 12, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 407,
+      "line": 383,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -15955,7 +15765,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 415,
+      "line": 391,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -15968,7 +15778,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 432,
+      "line": 408,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -15981,7 +15791,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 449,
+      "line": 425,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -15994,7 +15804,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gap: 4 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 453,
+      "line": 429,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -16007,7 +15817,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: 13 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 456,
+      "line": 432,
       "column": 27,
       "severity": "high",
       "status": "temporary",
@@ -16020,7 +15830,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: 13 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 464,
+      "line": 440,
       "column": 27,
       "severity": "high",
       "status": "temporary",
@@ -16033,7 +15843,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ borderColor: attentionTone === \"danger\" ? \"rgba(239,68,68,.4)\" : attentionTone === \"warning\" ? \"rgba(245,158,11,.35)\" : \"rgba(34,197,94,.",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 477,
+      "line": 453,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -16046,7 +15856,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", gap: 12, alignItems: \"center\", marginBottom: 12 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 486,
+      "line": 462,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -16059,7 +15869,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ margin: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 488,
+      "line": 464,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16072,7 +15882,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", gap: 8, flexWrap: \"wrap\" }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 494,
+      "line": 470,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -16085,7 +15895,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gridTemplateColumns: \"repeat(auto-fit, minmax(300px, 1fr))\", gap: 18, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 515,
+      "line": 491,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -16098,7 +15908,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 522,
+      "line": 498,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16111,7 +15921,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gap: 10 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 528,
+      "line": 504,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -16124,7 +15934,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 12, padding: 12, borderRadius: \"var(--theme-shapes-radius-medium)\",",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 534,
+      "line": 510,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -16137,7 +15947,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ flex: 1, textDecoration: checked ? \"line-through\" : \"none\", color: checked ? \"var(--theme-text-secondary)\" : \"var(--theme-text-primary)\",",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 552,
+      "line": 528,
       "column": 25,
       "severity": "high",
       "status": "temporary",
@@ -16150,7 +15960,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 569,
+      "line": 545,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16163,7 +15973,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gap: 10 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 575,
+      "line": 551,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -16176,7 +15986,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ border: \"1px solid var(--theme-borders-default)\", borderRadius: \"var(--theme-shapes-radius-medium)\", padding: 12, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 579,
+      "line": 555,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -16189,7 +15999,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gridTemplateColumns: \"repeat(auto-fit, minmax(280px, 1fr))\", gap: 18, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 594,
+      "line": 570,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -16202,7 +16012,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 601,
+      "line": 577,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16215,7 +16025,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 612,
+      "line": 588,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16228,7 +16038,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 623,
+      "line": 599,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16241,7 +16051,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 634,
+      "line": 610,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16254,7 +16064,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gridTemplateColumns: \"minmax(0, 1.25fr) minmax(280px, .75fr)\", gap: 18, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 646,
+      "line": 622,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -16267,7 +16077,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 653,
+      "line": 629,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16280,7 +16090,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ color: \"var(--theme-text-secondary)\", lineHeight: 1.6 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 656,
+      "line": 632,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -16293,7 +16103,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ marginTop: 12 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 666,
+      "line": 642,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -16306,7 +16116,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: 8, marginTop: 0 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 670,
+      "line": 646,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -16319,7 +16129,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ display: \"grid\", gap: 8 }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 673,
+      "line": 649,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -16332,7 +16142,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ fontSize: 13, color: \"var(--theme-text-secondary)\", borderBottom: \"1px solid var(--theme-borders-default)\", paddingBottom: 8, }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 677,
+      "line": 653,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -16345,7 +16155,7 @@
     {
       "id": "static-inline:src/frontend/dm/overview/OverviewPage.tsx:style={{ color: \"var(--theme-text-primary)\" }}",
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
-      "line": 684,
+      "line": 660,
       "column": 27,
       "severity": "high",
       "status": "temporary",
@@ -23591,6 +23401,7 @@
       "src/frontend/shared/styles/features/dm-dashboard.css",
       "src/frontend/shared/styles/features/dm-hub.css",
       "src/frontend/shared/styles/features/dm-hub-dashboard.css",
+      "src/frontend/shared/styles/features/dashboard-overview.css",
       "src/frontend/shared/styles/features/admin-audit.css",
       "src/frontend/shared/styles/features/admin-overview.css",
       "src/frontend/shared/styles/features/admin-purge.css",

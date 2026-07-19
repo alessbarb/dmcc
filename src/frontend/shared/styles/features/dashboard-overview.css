@@ -1,0 +1,13 @@
+.dashboard-card { padding: 18px; }
+.dashboard-card--loading { padding: 32px; }
+.dashboard-card--error { padding: 32px; display: grid; gap: 16px; }
+.dashboard-pill { border-radius: 999px; padding: 4px 9px; font-size: 12px; color: var(--theme-text-primary); }
+.dashboard-pill--neutral { border: 1px solid color-mix(in srgb, var(--theme-text-secondary) 24%, transparent); background: color-mix(in srgb, var(--theme-text-secondary) 12%, transparent); }
+.dashboard-pill--danger { border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 35%, transparent); background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 12%, transparent); }
+.dashboard-pill--warning { border: 1px solid color-mix(in srgb, var(--theme-feedback-warning-foreground) 35%, transparent); background: color-mix(in srgb, var(--theme-feedback-warning-foreground) 14%, transparent); }
+.dashboard-pill--good { border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-success-foreground) 12%, transparent); }
+.dashboard-metric-label { margin: 8px 0 0; color: var(--theme-text-secondary); font-size: 12px; }
+.dashboard-metric-value { font-size: 28px; }
+.dashboard-empty-message { margin: 0; color: var(--theme-text-secondary); font-size: 14px; }
+.dashboard-entity-list { display: grid; gap: 8px; }
+.dashboard-error-message { margin: 0; color: var(--theme-feedback-danger-foreground); }

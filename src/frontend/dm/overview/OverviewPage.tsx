@@ -32,7 +32,7 @@ import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 
 function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <section className="card" style={{ padding: 18, ...style }}>
+    <section className="card dashboard-card" style={style}>
       {children}
     </section>
   );
@@ -55,33 +55,9 @@ function Pill({
   children: React.ReactNode;
   tone?: "neutral" | "danger" | "warning" | "good";
 }) {
-  const background =
-    tone === "danger"
-      ? "rgba(239, 68, 68, .12)"
-      : tone === "warning"
-        ? "rgba(245, 158, 11, .14)"
-        : tone === "good"
-          ? "rgba(34, 197, 94, .12)"
-          : "rgba(148, 163, 184, .12)";
-  const border =
-    tone === "danger"
-      ? "rgba(239, 68, 68, .35)"
-      : tone === "warning"
-        ? "rgba(245, 158, 11, .35)"
-        : tone === "good"
-          ? "rgba(34, 197, 94, .3)"
-          : "rgba(148, 163, 184, .24)";
-
   return (
     <span
-      style={{
-        border: `1px solid ${border}`,
-        background,
-        borderRadius: 999,
-        padding: "4px 9px",
-        fontSize: 12,
-        color: "var(--theme-text-primary)",
-      }}
+      className={`dashboard-pill dashboard-pill--${tone}`}
     >
       {children}
     </span>
@@ -100,14 +76,14 @@ function MetricCard({
   return (
     <Card>
       {icon}
-      <p style={{ margin: "8px 0 0", color: "var(--theme-text-secondary)", fontSize: 12 }}>{label}</p>
-      <strong style={{ fontSize: 28 }}>{value}</strong>
+      <p className="dashboard-metric-label">{label}</p>
+      <strong className="dashboard-metric-value">{value}</strong>
     </Card>
   );
 }
 
 function EmptyMessage({ children }: { children: React.ReactNode }) {
-  return <p style={{ margin: 0, color: "var(--theme-text-secondary)", fontSize: 14 }}>{children}</p>;
+  return <p className="dashboard-empty-message">{children}</p>;
 }
 
 function EntityList({
@@ -122,7 +98,7 @@ function EntityList({
   if (items.length === 0) return <EmptyMessage>{empty}</EmptyMessage>;
 
   return (
-    <div style={{ display: "grid", gap: 8 }}>
+    <div className="dashboard-entity-list">
       {items.slice(0, 6).map((entity) => (
         <button
           key={entity.entityId}
@@ -277,13 +253,13 @@ export function OverviewPage() {
   };
 
   if (loading && !commandCenter) {
-    return <div className="card" style={{ padding: 32 }}>{t("common.loading")}</div>;
+    return <div className="card dashboard-card dashboard-card--loading">{t("common.loading")}</div>;
   }
 
   if (error && !commandCenter) {
     return (
-      <div className="card" style={{ padding: 32, display: "grid", gap: 16 }}>
-        <p style={{ margin: 0, color: "var(--theme-feedback-danger-foreground)" }}>{error}</p>
+      <div className="card dashboard-card dashboard-card--error">
+        <p className="dashboard-error-message">{error}</p>
         <button
           className="btn btn-secondary"
           type="button"

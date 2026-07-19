@@ -51,6 +51,7 @@
 @import "./features/dm-dashboard.css";
 @import "./features/dm-hub.css";
 @import "./features/dm-hub-dashboard.css";
+@import "./features/dashboard-overview.css";
 @import "./features/admin-audit.css";
 @import "./features/admin-overview.css";
 @import "./features/admin-purge.css";
