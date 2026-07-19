@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:44:17.536Z",
+  "generatedAt": "2026-07-19T10:45:02.664Z",
   "summary": {
-    "cssFiles": 110,
-    "tsxFilesWithInlineStyles": 64,
+    "cssFiles": 111,
+    "tsxFilesWithInlineStyles": 63,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 515,
+    "staticInlineStyles": 501,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -931,15 +931,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-interactive",
-        "--theme-shapes-radius-small",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css",
@@ -7579,6 +7571,25 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/session-prep-form.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 53,
+      "selectorCount": 9,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive",
+        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/sidebar-nav.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8661,7 +8672,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 69,
+      "lineCount": 70,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8724,7 +8735,8 @@
         "src/frontend/shared/styles/features/canvas-inspector.css",
         "src/frontend/shared/styles/features/canvas-narrative-lint.css",
         "src/frontend/shared/styles/features/canvas-bulk-actions.css",
-        "src/frontend/shared/styles/features/canvas-group-hulls.css"
+        "src/frontend/shared/styles/features/canvas-group-hulls.css",
+        "src/frontend/shared/styles/features/session-prep-form.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10880,188 +10892,6 @@
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"6px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 42,
-      "column": 35,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ fontSize: \"0.93rem\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 43,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.93rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ maxHeight: \"100px\", overflowY: \"auto\", padding: \"8px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", fontSize: \"0.85rem\", color: \"var(--theme-text-secondary)\", border: \"1px",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 46,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxHeight: \"100px\", overflowY: \"auto\", padding: \"8px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", fontSize: \"0.85rem\", color: \"var(--theme-text-secondary)\", border: \"1px ",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", marginTop: \"8px\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 50,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", marginTop: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 52,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ marginTop: \"3px\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 58,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"3px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ fontSize: \"11px\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 62,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 70,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ marginTop: \"3px\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 76,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"3px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 78,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ fontSize: \"11px\", color: \"var(--theme-text-secondary)\", marginBottom: \"8px\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 80,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", color: \"var(--theme-text-secondary)\", marginBottom: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 96,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"start\", gap: \"8px\", fontWeight: \"normal\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ marginTop: \"3px\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 102,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"3px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/SessionPrepForm.tsx:style={{ fontSize: \"11px\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
-      "line": 106,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", color: \"var(--theme-text-secondary)\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -25187,7 +25017,8 @@
       "src/frontend/shared/styles/features/canvas-inspector.css",
       "src/frontend/shared/styles/features/canvas-narrative-lint.css",
       "src/frontend/shared/styles/features/canvas-bulk-actions.css",
-      "src/frontend/shared/styles/features/canvas-group-hulls.css"
+      "src/frontend/shared/styles/features/canvas-group-hulls.css",
+      "src/frontend/shared/styles/features/session-prep-form.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

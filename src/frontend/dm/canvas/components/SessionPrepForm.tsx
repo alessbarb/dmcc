@@ -39,27 +39,27 @@ export function SessionPrepForm({
 
   return (
     <form onSubmit={handleSubmit} className="dialog-form">
-      <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        <p style={{ fontSize: "0.93rem" }}>
+      <div className="modal-body session-prep-form__body">
+        <p className="session-prep-form__intro">
           {t("sessionPage.selectedElementsIntro", { count: selectedCount })}
         </p>
-        <div style={{ maxHeight: "100px", overflowY: "auto", padding: "8px", backgroundColor: "var(--theme-surfaces-interactive)", borderRadius: "var(--theme-shapes-radius-small)", fontSize: "0.85rem", color: "var(--theme-text-secondary)", border: "1px solid var(--theme-borders-default)" }}>
+        <div className="session-prep-form__elements">
           {elementNames.join(", ")}
         </div>
 
-        <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "8px" }}>
+        <div className="form-group session-prep-form__modes">
           {activeSession && (
-            <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
+            <label className="session-prep-form__mode">
               <input
                 type="radio"
                 name="sessionPrepMode"
                 checked={targetMode === "active"}
                 onChange={() => setTargetMode("active")}
-                style={{ marginTop: "3px" }}
+                className="session-prep-form__radio"
               />
               <div>
                 <strong>{t("sessionPage.addToActiveSessionLabel", { title: activeSession.title })}</strong>
-                <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>
+                <div className="session-prep-form__help">
                   {t("sessionPage.addToActiveSessionHelp")}
                 </div>
               </div>
@@ -67,17 +67,17 @@ export function SessionPrepForm({
           )}
 
           {preparedSessions.length > 0 && (
-            <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
+            <label className="session-prep-form__mode">
               <input
                 type="radio"
                 name="sessionPrepMode"
                 checked={targetMode === "prepared"}
                 onChange={() => setTargetMode("prepared")}
-                style={{ marginTop: "3px" }}
+                className="session-prep-form__radio"
               />
-              <div style={{ flex: 1 }}>
+              <div className="session-prep-form__mode-content">
                 <strong>{t("sessionPage.addToPreparedSessionLabel")}</strong>
-                <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)", marginBottom: "8px" }}>
+                <div className="session-prep-form__help session-prep-form__help--select">
                   {t("sessionPage.addToPreparedSessionHelp")}
                 </div>
                 {targetMode === "prepared" && (
@@ -93,17 +93,17 @@ export function SessionPrepForm({
             </label>
           )}
 
-          <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
+          <label className="session-prep-form__mode">
             <input
               type="radio"
               name="sessionPrepMode"
               checked={targetMode === "new"}
               onChange={() => setTargetMode("new")}
-              style={{ marginTop: "3px" }}
+              className="session-prep-form__radio"
             />
             <div>
               <strong>{t("sessionPage.createPreparedSessionWithElements")}</strong>
-              <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>
+              <div className="session-prep-form__help">
                 {t("sessionPage.createPreparedSessionHelp")}
               </div>
             </div>
