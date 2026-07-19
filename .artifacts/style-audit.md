@@ -6,15 +6,15 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 124,
-  "tsxFilesWithInlineStyles": 41,
-  "forbiddenLiteralColors": 246,
-  "staticInlineStyles": 263,
-  "dynamicInlineStyles": 28,
+  "cssFiles": 125,
+  "tsxFilesWithInlineStyles": 40,
+  "forbiddenLiteralColors": 236,
+  "staticInlineStyles": 236,
+  "dynamicInlineStyles": 26,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 35,
+  "mixedResponsibilityFiles": 36,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -86,6 +86,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
 | `src/frontend/shared/styles/features/auth.css` | legacy | shared | 60 | 15 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1689 | 260 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging.css` | legacy | shared | 39 | 38 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
 | `src/frontend/shared/styles/features/canvas-bulk-actions.css` | legacy | shared | 7 | 1 | 1 |
@@ -134,7 +135,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 83 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 84 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -806,45 +807,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerMessagesPage.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerMessagesPage.tsx:43` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:277` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:283` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:284` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:287` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:287` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/shared/components/CampaignMessagingPanel.tsx:291` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:292` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:292` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:292` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/shared/components/CampaignMessagingPanel.tsx:299` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:300` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:301` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:302` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:310` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:313` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:314` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:315` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:319` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:320` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:321` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:322` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Large stylesheet requires atomization (329 lines, 42 selectors). |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:11` | Literal visual color outside a registered theme package. |
@@ -1028,6 +990,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1536` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1537` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas.css:1541` | Important declarations bypass the intended cascade. |
+| high | mixed-responsibility | `src/frontend/shared/styles/features/campaign-messaging.css:1` | Large stylesheet requires atomization (39 lines, 38 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/campaign-template.css:1` | Large stylesheet requires atomization (729 lines, 105 selectors). |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:441` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:446` | Important declarations bypass the intended cascade. |

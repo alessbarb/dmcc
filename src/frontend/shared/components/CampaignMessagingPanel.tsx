@@ -5,10 +5,7 @@ import { useTranslation } from "../i18n/useTranslation.js";
 
 const MAX_MESSAGE_LENGTH = 4_000;
 const NEAR_BOTTOM_THRESHOLD_PX = 96;
-const SENDER_COLORS = [
-  "#2563eb", "#7c3aed", "#db2777", "#dc2626", "#ea580c",
-  "#ca8a04", "#16a34a", "#0d9488", "#0891b2", "#4f46e5",
-] as const;
+const SENDER_TONE_COUNT = 10;
 
 type Audience = "party" | "dm" | "player";
 
@@ -53,8 +50,8 @@ function isNearBottom(element: HTMLDivElement | null): boolean {
   return element.scrollHeight - element.scrollTop - element.clientHeight <= NEAR_BOTTOM_THRESHOLD_PX;
 }
 
-function senderColor(index: number): string {
-  return SENDER_COLORS[Math.abs(index) % SENDER_COLORS.length] ?? SENDER_COLORS[0];
+function senderTone(index: number): number {
+  return Math.abs(index) % SENDER_TONE_COUNT;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -274,32 +271,32 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   };
 
   return (
-    <section className="card" style={{ display: "grid", gridTemplateRows: "auto minmax(320px, 1fr) auto", minHeight: "min(720px, calc(100vh - 220px))", overflow: "hidden" }}>
-      <header style={{ display: "flex", gap: 12, alignItems: "center", paddingBottom: 14, borderBottom: "1px solid var(--theme-borders-default)" }}>
-        <div style={{ width: 42, height: 42, borderRadius: 14, display: "grid", placeItems: "center", background: "var(--theme-surfaces-raised)" }}><MessageCircle size={21} /></div>
-        <div><h2 style={{ margin: 0 }}>{t("playerPortal.messaging.heading")}</h2><p style={{ margin: "3px 0 0", color: "var(--theme-text-secondary)", fontSize: 13 }}>{t(dmMode ? "playerPortal.messaging.dmSubtitle" : "playerPortal.messaging.playerSubtitle")}</p></div>
+    <section className="card campaign-messaging">
+      <header className="campaign-messaging__header">
+        <div className="campaign-messaging__icon"><MessageCircle size={21} /></div>
+        <div><h2 className="campaign-messaging__title">{t("playerPortal.messaging.heading")}</h2><p className="campaign-messaging__subtitle">{t(dmMode ? "playerPortal.messaging.dmSubtitle" : "playerPortal.messaging.playerSubtitle")}</p></div>
       </header>
 
-      <div style={{ position: "relative", minHeight: 0 }}>
-        <div ref={listRef} role="log" aria-live="polite" aria-relevant="additions text" onScroll={handleScroll} style={{ height: "100%", overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
-          {loading && <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.messaging.loading")}</p>}
-          {!loading && payload.pageInfo.hasMore && <button className="btn btn-secondary btn-sm" type="button" disabled={loadingOlder} onClick={() => void loadOlder()} style={{ alignSelf: "center" }}>{loadingOlder ? t("playerPortal.messaging.loading") : t("playerPortal.messaging.loadOlder")}</button>}
-          {!loading && payload.messages.length === 0 && !pendingMessage && <div style={{ margin: "auto", textAlign: "center", color: "var(--theme-text-secondary)", maxWidth: 360 }}><MessageCircle size={34} style={{ opacity: .5 }} /><p>{t("playerPortal.messaging.empty")}</p></div>}
+      <div className="campaign-messaging__content">
+        <div ref={listRef} className="campaign-messaging__list" role="log" aria-live="polite" aria-relevant="additions text" onScroll={handleScroll}>
+          {loading && <p className="campaign-messaging__muted">{t("playerPortal.messaging.loading")}</p>}
+          {!loading && payload.pageInfo.hasMore && <button className="btn btn-secondary btn-sm campaign-messaging__load-older" type="button" disabled={loadingOlder} onClick={() => void loadOlder()}>{loadingOlder ? t("playerPortal.messaging.loading") : t("playerPortal.messaging.loadOlder")}</button>}
+          {!loading && payload.messages.length === 0 && !pendingMessage && <div className="campaign-messaging__empty"><MessageCircle size={34} /><p>{t("playerPortal.messaging.empty")}</p></div>}
           {payload.messages.map((message) => {
-            const color = senderColor(message.senderColorIndex);
+            const tone = senderTone(message.senderColorIndex);
             return (
-              <article key={message.messageId} style={{ alignSelf: message.sentByMe ? "flex-end" : "flex-start", width: "min(88%, 620px)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11 }}><strong style={{ color }}>{message.senderName}</strong><span style={{ color: "var(--theme-text-secondary)" }}>{new Date(message.createdAt).toLocaleString()}</span></div>
-                <div style={{ padding: "11px 14px", borderRadius: message.sentByMe ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: `color-mix(in srgb, ${color} 14%, var(--theme-surfaces-raised))`, border: `1px solid color-mix(in srgb, ${color} 55%, var(--theme-borders-default))`, borderInlineStartWidth: 4, borderInlineStartColor: color, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{message.content}</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--theme-text-secondary)" }}>{message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}<span>{audienceLabel(message)}</span>{message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}</div>
+              <article key={message.messageId} className={`campaign-messaging__message ${message.sentByMe ? "campaign-messaging__message--mine" : "campaign-messaging__message--incoming"} campaign-messaging__message--tone-${tone}`}>
+                <div className="campaign-messaging__message-meta"><strong>{message.senderName}</strong><span>{new Date(message.createdAt).toLocaleString()}</span></div>
+                <div className="campaign-messaging__bubble">{message.content}</div>
+                <div className="campaign-messaging__message-footer">{message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}<span>{audienceLabel(message)}</span>{message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}</div>
               </article>
             );
           })}
           {pendingMessage && (
-            <article key={pendingMessage.localId} aria-busy={pendingMessage.status === "sending"} style={{ alignSelf: "flex-end", width: "min(88%, 620px)", opacity: pendingMessage.status === "sending" ? .72 : 1 }}>
-              <div style={{ display: "flex", justifyContent: "flex-end", margin: "0 6px 4px", fontSize: 11, color: "var(--theme-text-secondary)" }}>{new Date(pendingMessage.createdAt).toLocaleString()}</div>
-              <div style={{ padding: "11px 14px", borderRadius: "16px 16px 4px 16px", background: "color-mix(in srgb, var(--theme-accents-primary-foreground) 14%, transparent)", border: `1px solid ${pendingMessage.status === "failed" ? "var(--theme-feedback-danger-foreground)" : "var(--theme-borders-default)"}`, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{pendingMessage.content}</div>
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "4px 6px 0", fontSize: 10, color: pendingMessage.status === "failed" ? "var(--theme-feedback-danger-foreground)" : "var(--theme-text-secondary)" }}>
+            <article key={pendingMessage.localId} className={`campaign-messaging__message campaign-messaging__message--mine campaign-messaging__pending campaign-messaging__pending--${pendingMessage.status}`} aria-busy={pendingMessage.status === "sending"}>
+              <div className="campaign-messaging__message-meta campaign-messaging__message-meta--pending">{new Date(pendingMessage.createdAt).toLocaleString()}</div>
+              <div className="campaign-messaging__bubble">{pendingMessage.content}</div>
+              <div className="campaign-messaging__message-footer campaign-messaging__message-footer--pending">
                 <span>{audienceLabel(pendingMessage)} · {pendingMessage.status === "sending" ? t("playerPortal.messaging.sending") : t("playerPortal.messaging.failed")}</span>
                 {pendingMessage.status === "failed" && <button className="btn btn-secondary btn-sm" type="button" onClick={() => void submitMessage(pendingMessage)} aria-label={t("playerPortal.messaging.retry")}><RefreshCw size={12} /> {t("playerPortal.messaging.retry")}</button>}
               </div>
@@ -307,19 +304,19 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           )}
           <div ref={endRef} />
         </div>
-        {unseenCount > 0 && <button className="btn btn-primary btn-sm" type="button" onClick={() => scrollToLatest("smooth")} aria-label={`${t("playerPortal.messaging.jumpToLatest")}: ${unseenCount} ${t("playerPortal.messaging.newMessages")}`} style={{ position: "absolute", right: 12, bottom: 12, maxWidth: "calc(100% - 24px)", borderRadius: 999, boxShadow: "var(--theme-shadows-medium)" }}><ArrowDown size={15} /> {unseenCount} {t("playerPortal.messaging.newMessages")}</button>}
+        {unseenCount > 0 && <button className="btn btn-primary btn-sm campaign-messaging__jump" type="button" onClick={() => scrollToLatest("smooth")} aria-label={`${t("playerPortal.messaging.jumpToLatest")}: ${unseenCount} ${t("playerPortal.messaging.newMessages")}`}><ArrowDown size={15} /> {unseenCount} {t("playerPortal.messaging.newMessages")}</button>}
       </div>
 
-      <footer style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: 14, display: "grid", gap: 10 }}>
-        {error && <p role="alert" style={{ margin: 0, color: "var(--theme-feedback-danger-foreground)" }}>{error}</p>}
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <footer className="campaign-messaging__footer">
+        {error && <p className="campaign-messaging__error" role="alert">{error}</p>}
+        <div className="campaign-messaging__audience">
           <select className="form-select" value={audience} onChange={(event) => { if (isAudience(event.target.value)) setAudience(event.target.value); }} aria-label={t("playerPortal.messaging.channelParty")}><option value="party">{t("playerPortal.messaging.channelParty")}</option>{!dmMode && <option value="dm">{t("playerPortal.messaging.channelDm")}</option>}<option value="player">{t("playerPortal.messaging.channelPlayer")}</option></select>
           {audience === "player" && <select className="form-select" value={recipientPlayerId} onChange={(event) => setRecipientPlayerId(event.target.value)} aria-label={t("playerPortal.messaging.selectPlayer")}><option value="">{t("playerPortal.messaging.selectPlayer")}</option>{payload.participants.map((participant) => <option key={participant.playerId} value={participant.playerId}>{participant.displayName}</option>)}</select>}
         </div>
-        <small style={{ color: "var(--theme-text-secondary)" }}>{selectedAudienceDescription}</small>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "stretch" }}>
-          <textarea className="form-textarea" rows={3} value={content} maxLength={MAX_MESSAGE_LENGTH} aria-label={t("playerPortal.messaging.placeholder")} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} style={{ flex: "1 1 260px", minWidth: 0 }} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void sendMessage(); } }} />
-          <button className="btn btn-primary" type="button" style={{ flex: "1 0 auto", minHeight: 44 }} disabled={!content.trim() || content.trim().length > MAX_MESSAGE_LENGTH || pendingMessage?.status === "sending" || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}><Send size={16} /> {t("playerPortal.messaging.send")}</button>
+        <small className="campaign-messaging__description">{selectedAudienceDescription}</small>
+        <div className="campaign-messaging__composer">
+          <textarea className="form-textarea campaign-messaging__textarea" rows={3} value={content} maxLength={MAX_MESSAGE_LENGTH} aria-label={t("playerPortal.messaging.placeholder")} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void sendMessage(); } }} />
+          <button className="btn btn-primary campaign-messaging__send" type="button" disabled={!content.trim() || content.trim().length > MAX_MESSAGE_LENGTH || pendingMessage?.status === "sending" || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}><Send size={16} /> {t("playerPortal.messaging.send")}</button>
         </div>
       </footer>
     </section>

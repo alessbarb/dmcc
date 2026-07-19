@@ -65,6 +65,7 @@
 @import "./features/admin-security.css";
 @import "./features/entity-relations.css";
 @import "./features/entity-create.css";
+@import "./features/campaign-messaging.css";
 @import "./features/entity-trace.css";
 @import "./features/canvas-page-header.css";
 @import "./features/canvas-board-dialogs.css";
