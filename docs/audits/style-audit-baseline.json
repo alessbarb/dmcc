@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:43:01.786Z",
+  "generatedAt": "2026-07-19T10:43:39.597Z",
   "summary": {
-    "cssFiles": 108,
-    "tsxFilesWithInlineStyles": 65,
+    "cssFiles": 109,
+    "tsxFilesWithInlineStyles": 64,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 519,
+    "staticInlineStyles": 518,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -723,7 +723,7 @@
       "path": "src/frontend/dm/canvas/components/CanvasBulkActionsBar.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 186,
+      "lineCount": 185,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -6521,6 +6521,19 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-bulk-actions.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 7,
+      "selectorCount": 1,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-entity-node.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8635,7 +8648,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 67,
+      "lineCount": 68,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8696,7 +8709,8 @@
         "src/frontend/shared/styles/features/canvas-palette.css",
         "src/frontend/shared/styles/features/canvas-entity-node.css",
         "src/frontend/shared/styles/features/canvas-inspector.css",
-        "src/frontend/shared/styles/features/canvas-narrative-lint.css"
+        "src/frontend/shared/styles/features/canvas-narrative-lint.css",
+        "src/frontend/shared/styles/features/canvas-bulk-actions.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -9941,19 +9955,6 @@
       "category": "static-inline",
       "value": "style={{ background: \"var(--theme-canvas-minimap-background)\", border: \"1px solid var(--theme-canvas-toolbar-border)\" }}",
       "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasBulkActionsBar.tsx:style={{ fontSize: \"12px\", padding: \"3px 6px\", height: \"28px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasBulkActionsBar.tsx",
-      "line": 56,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"12px\", padding: \"3px 6px\", height: \"28px\" }}",
-      "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
@@ -25196,7 +25197,8 @@
       "src/frontend/shared/styles/features/canvas-palette.css",
       "src/frontend/shared/styles/features/canvas-entity-node.css",
       "src/frontend/shared/styles/features/canvas-inspector.css",
-      "src/frontend/shared/styles/features/canvas-narrative-lint.css"
+      "src/frontend/shared/styles/features/canvas-narrative-lint.css",
+      "src/frontend/shared/styles/features/canvas-bulk-actions.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

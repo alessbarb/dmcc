@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 108,
-  "tsxFilesWithInlineStyles": 65,
+  "cssFiles": 109,
+  "tsxFilesWithInlineStyles": 64,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 519,
+  "staticInlineStyles": 518,
   "dynamicInlineStyles": 28,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -85,6 +85,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1689 | 260 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | legacy | shared | 28 | 27 | 1 |
+| `src/frontend/shared/styles/features/canvas-bulk-actions.css` | legacy | shared | 7 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-entity-node.css` | legacy | shared | 9 | 2 | 1 |
 | `src/frontend/shared/styles/features/canvas-inspector.css` | legacy | shared | 93 | 14 | 1 |
 | `src/frontend/shared/styles/features/canvas-narrative-lint.css` | legacy | shared | 80 | 14 | 1 |
@@ -118,7 +119,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 67 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 68 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -206,7 +207,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:221` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:241` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:262` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasBulkActionsBar.tsx:56` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:39` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:40` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:41` | Literal visual color outside a registered theme package. |

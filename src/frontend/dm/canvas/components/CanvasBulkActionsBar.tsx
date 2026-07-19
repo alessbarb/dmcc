@@ -52,8 +52,7 @@ export function CanvasBulkActionsBar({
       if (groups.length === 0) return null;
       return (
         <select
-          className="form-select"
-          style={{ fontSize: "12px", padding: "3px 6px", height: "28px" }}
+          className="form-select canvas-multiselect-group-select"
           value={bulkGroupId}
           onChange={(e) => {
             const gid = (e.target.value && e.target.value !== "__none__") ? e.target.value : null;
