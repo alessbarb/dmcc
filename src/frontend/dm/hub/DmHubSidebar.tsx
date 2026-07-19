@@ -30,14 +30,14 @@ export function DmHubSidebar({
             <section className="dm-panel">
               <div className="dm-panel__header">
                 <div className="dm-panel__title-group">
-                  <Activity size={16} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+                  <Activity size={16} className="dm-hub-sidebar__heading-icon" />
                   <h2 className="dm-panel__title">Mesas activas ahora</h2>
                 </div>
                 <button type="button" className="dm-panel__link" disabled={activeTables.length === 0}>Ver todas</button>
               </div>
               {activeTables.length === 0 ? (
                 <div className="dm-empty-state dm-empty-state--compact">
-                  <Activity size={22} style={{ color: "var(--theme-accents-primary-foreground)", opacity: 0.55, marginBottom: "10px" }} />
+                  <Activity size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
                   <p>No hay mesas activas ahora.</p>
                   <span>Cuando una campaña tenga una sesión activa, aparecerá aquí.</span>
                 </div>
@@ -66,8 +66,7 @@ export function DmHubSidebar({
               )}
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
-                style={{ width: "100%", marginTop: "14px" }}
+                className="btn btn-secondary btn-sm dm-hub-sidebar__manage-button"
                 disabled={activeTables.length === 0}
                 onClick={() => {
                   const firstTable = activeTables[0];
@@ -82,14 +81,14 @@ export function DmHubSidebar({
             <section className="dm-panel">
               <div className="dm-panel__header">
                 <div className="dm-panel__title-group">
-                  <Bell size={16} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+                  <Bell size={16} className="dm-hub-sidebar__heading-icon" />
                   <h2 className="dm-panel__title">Alertas y pendientes</h2>
                 </div>
                 <button type="button" className="dm-panel__link" disabled={alerts.length === 0}>Ver todas</button>
               </div>
               {alerts.length === 0 ? (
                 <div className="dm-empty-state dm-empty-state--compact">
-                  <Bell size={22} style={{ color: "var(--theme-accents-primary-foreground)", opacity: 0.55, marginBottom: "10px" }} />
+                  <Bell size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
                   <p>Todo está al día.</p>
                   <span>No tienes pendientes importantes ahora mismo.</span>
                 </div>

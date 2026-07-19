@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:35:02.253Z",
+  "generatedAt": "2026-07-19T11:36:01.141Z",
   "summary": {
     "cssFiles": 131,
-    "tsxFilesWithInlineStyles": 29,
+    "tsxFilesWithInlineStyles": 28,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 32,
-    "dynamicInlineStyles": 19,
+    "staticInlineStyles": 28,
+    "dynamicInlineStyles": 18,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -1912,17 +1912,12 @@
       "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 134,
+      "lineCount": 133,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/hub/DmHubTopBar.tsx",
@@ -6788,8 +6783,8 @@
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1407,
-      "selectorCount": 221,
+      "lineCount": 1416,
+      "selectorCount": 223,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -6849,6 +6844,7 @@
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-text-primary",
+        "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
@@ -12680,71 +12676,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/DmHubSidebar.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
-      "line": 33,
-      "column": 39,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubSidebar.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.55, marginBottom: \"10px\" }}",
-      "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
-      "line": 40,
-      "column": 39,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.55, marginBottom: \"10px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/hub/DmHubSidebar.tsx:style={{ width: \"100%\", marginTop: \"14px\" }}",
-      "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
-      "line": 70,
-      "column": 17,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ width: \"100%\", marginTop: \"14px\" }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubSidebar.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
-      "line": 85,
-      "column": 35,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubSidebar.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.55, marginBottom: \"10px\" }}",
-      "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
-      "line": 92,
-      "column": 35,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.55, marginBottom: \"10px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "static-inline:src/frontend/dm/hub/DmHubTopBar.tsx:style={{ position: \"relative\" }}",
       "path": "src/frontend/dm/hub/DmHubTopBar.tsx",
       "line": 51,
@@ -15797,7 +15728,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1407 lines, 221 selectors)."
+      "reason": "Large stylesheet requires atomization (1416 lines, 223 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",

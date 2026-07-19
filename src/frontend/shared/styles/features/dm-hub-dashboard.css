@@ -369,6 +369,15 @@
   opacity: 0.55;
 }
 
+.dm-hub-sidebar__heading-icon {
+  color: var(--theme-accents-primary-foreground);
+}
+
+.dm-hub-sidebar__manage-button {
+  width: 100%;
+  margin-top: 14px;
+}
+
 .dm-empty-state__title {
   margin: 0;
   color: var(--theme-text-primary);
