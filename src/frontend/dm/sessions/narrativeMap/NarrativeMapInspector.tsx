@@ -7,6 +7,7 @@ import { getNarrativeNodeVisual } from "./narrativeNodeVisuals.js";
 export interface NarrativeMapInspectorProps {
   node: SessionProjectionNode;
   onClose: () => void;
+  onReview: (decision: "accepted" | "hidden") => void;
 }
 
 function sourceRefLabel(ref: SessionProjectionNode["reference"]): string {
@@ -28,7 +29,7 @@ function sourceRefLabel(ref: SessionProjectionNode["reference"]): string {
   }
 }
 
-export function NarrativeMapInspector({ node, onClose }: NarrativeMapInspectorProps) {
+export function NarrativeMapInspector({ node, onClose, onReview }: NarrativeMapInspectorProps) {
   const { t } = useTranslation();
   const visual = getNarrativeNodeVisual(node.kind);
 
@@ -67,6 +68,15 @@ export function NarrativeMapInspector({ node, onClose }: NarrativeMapInspectorPr
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="narrative-map-inspector__review-actions">
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onReview("accepted")}>
+          {t("sessionNarrativeMap.reviewConfirm")}
+        </button>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onReview("hidden")}>
+          {t("sessionNarrativeMap.reviewHide")}
+        </button>
       </div>
     </aside>
   );
