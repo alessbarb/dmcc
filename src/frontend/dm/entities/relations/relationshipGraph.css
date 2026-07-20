@@ -8,6 +8,11 @@
   background: var(--theme-surfaces-base);
 }
 
+.entity-relations__minimap {
+  width: 96px;
+  height: 72px;
+}
+
 .entity-relations-node {
   position: relative;
   border-radius: var(--theme-shapes-radius-medium);

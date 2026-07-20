@@ -7,10 +7,10 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 362,
-  "tsxFilesWithInlineStyles": 15,
+  "tsxFilesWithInlineStyles": 13,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
-  "dynamicInlineStyles": 20,
+  "dynamicInlineStyles": 14,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -56,7 +56,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 7 | 2 |
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 16 | 2 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 145 | 20 | 1 |
-| `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 154 | 22 | 2 |
+| `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 159 | 23 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 14 | 1 |
 | `src/frontend/dm/library/boards/entity-board/entity-board-components.css` | feature | library | 88 | 14 | 1 |
@@ -324,7 +324,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing/account-home-featured-campaign.css` | feature | shared | 152 | 19 | 1 |
 | `src/frontend/shared/styles/landing/account-home-layout.css` | feature | shared | 144 | 19 | 1 |
 | `src/frontend/shared/styles/landing/landing-animations.css` | feature | shared | 51 | 18 | 1 |
-| `src/frontend/shared/styles/landing/landing-feature-blocks.css` | feature | shared | 154 | 26 | 1 |
+| `src/frontend/shared/styles/landing/landing-feature-blocks.css` | feature | shared | 164 | 26 | 1 |
 | `src/frontend/shared/styles/landing/landing-hero-actions.css` | feature | shared | 128 | 15 | 1 |
 | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css` | feature | shared | 206 | 29 | 1 |
 | `src/frontend/shared/styles/landing/landing-memory-and-network.css` | feature | shared | 151 | 24 | 1 |
@@ -579,7 +579,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:181` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:196` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:99` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:541` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignModals.tsx:367` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:152` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
@@ -668,11 +667,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:94` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:97` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:100` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:103` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:106` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:77` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:81` | Important declarations bypass the intended cascade. |

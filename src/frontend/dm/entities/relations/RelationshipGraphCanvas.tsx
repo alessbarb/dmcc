@@ -538,7 +538,7 @@ const layoutIsIncoming =
     >
       <Background gap={24} size={1} />
       {neighborhood.neighbors.length > MINIMAP_NEIGHBOR_THRESHOLD && (
-        <MiniMap pannable zoomable style={{ width: 96, height: 72 }} />
+        <MiniMap pannable zoomable className="entity-relations__minimap" />
       )}
     </ReactFlow>
   );

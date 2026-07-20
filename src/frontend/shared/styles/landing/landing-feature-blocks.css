@@ -125,26 +125,36 @@
 }
 
 .rl-cn-node--npc {
+  top: 22%;
+  left: 16%;
   background: color-mix(in srgb, var(--theme-entities-npc-foreground) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-entities-npc-foreground) 30%, transparent);
   color: var(--theme-entities-npc-foreground);
 }
 .rl-cn-node--secret {
+  top: 16%;
+  right: 14%;
   background: color-mix(in srgb, var(--theme-narrative-secret-foreground) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-narrative-secret-foreground) 30%, transparent);
   color: var(--theme-narrative-secret-foreground);
 }
 .rl-cn-node--faction {
+  top: 42%;
+  left: 42%;
   background: color-mix(in srgb, var(--theme-entities-faction-foreground) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-entities-faction-foreground) 30%, transparent);
   color: var(--theme-entities-faction-foreground);
 }
 .rl-cn-node--location {
+  bottom: 22%;
+  left: 16%;
   background: color-mix(in srgb, var(--theme-entities-location-foreground) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-entities-location-foreground) 30%, transparent);
   color: var(--theme-entities-location-foreground);
 }
 .rl-cn-node--quest {
+  bottom: 16%;
+  right: 12%;
   background: color-mix(in srgb, var(--theme-entities-quest-foreground) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-entities-quest-foreground) 30%, transparent);
   color: var(--theme-entities-quest-foreground);

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T10:41:32.535Z",
+  "generatedAt": "2026-07-20T10:43:53.135Z",
   "summary": {
     "cssFiles": 362,
-    "tsxFilesWithInlineStyles": 15,
+    "tsxFilesWithInlineStyles": 13,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
-    "dynamicInlineStyles": 20,
+    "dynamicInlineStyles": 14,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -1996,7 +1996,7 @@
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 116,
+      "lineCount": 115,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -2122,8 +2122,8 @@
       "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 154,
-      "selectorCount": 22,
+      "lineCount": 159,
+      "selectorCount": 23,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
@@ -11006,7 +11006,7 @@
       "path": "src/frontend/shared/styles/landing/landing-feature-blocks.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 154,
+      "lineCount": 164,
       "selectorCount": 26,
       "imports": [],
       "importedBy": [
@@ -12842,71 +12842,6 @@
     }
   ],
   "findings": [
-    {
-      "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '22%', left: '16%' }}",
-      "path": "src/frontend/MainLanding.tsx",
-      "line": 94,
-      "column": 51,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ top: '22%', left: '16%' }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '16%', right: '14%' }}",
-      "path": "src/frontend/MainLanding.tsx",
-      "line": 97,
-      "column": 54,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ top: '16%', right: '14%' }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '42%', left: '42%' }}",
-      "path": "src/frontend/MainLanding.tsx",
-      "line": 100,
-      "column": 55,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ top: '42%', left: '42%' }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ bottom: '22%', left: '16%' }}",
-      "path": "src/frontend/MainLanding.tsx",
-      "line": 103,
-      "column": 56,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ bottom: '22%', left: '16%' }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ bottom: '16%', right: '12%' }}",
-      "path": "src/frontend/MainLanding.tsx",
-      "line": 106,
-      "column": 53,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ bottom: '16%', right: '12%' }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
     {
       "id": "dynamic-style:src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:style={{ transform: `translate(${vpX}px, ${vpY}px) scale(${zoom})` }}",
       "path": "src/frontend/dm/canvas/components/CanvasGroupHulls.tsx",
@@ -15142,7 +15077,7 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipEdge.tsx:style={{ transform: `translate(-50%, -50%) ` + `translate(${labelX}px, ${labelY}px)`, pointerEvents: \"none\", }}",
+      "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipEdge.tsx:style={{ transform: `translate(-50%, -50%) ` + `translate(${labelX}px, ${labelY}px)`, }}",
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
       "line": 99,
       "column": 15,
@@ -15150,20 +15085,7 @@
       "status": "allowed",
       "sourceType": "tsx-inline",
       "category": "dynamic-style",
-      "value": "style={{\n                transform:\n                  `translate(-50%, -50%) ` +\n                  `translate(${labelX}px, ${labelY}px)`,\n                pointerEvents: \"none\",\n              }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:style={{ width: 96, height: 72 }}",
-      "path": "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx",
-      "line": 541,
-      "column": 36,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ width: 96, height: 72 }}",
+      "value": "style={{\n                transform:\n                  `translate(-50%, -50%) ` +\n                  `translate(${labelX}px, ${labelY}px)`,\n              }}",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
     },

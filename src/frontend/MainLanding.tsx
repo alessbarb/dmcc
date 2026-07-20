@@ -91,19 +91,19 @@ function CanvasIllustration() {
         <text x="95" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">dirige</text>
         <text x="215" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">causa</text>
       </svg>
-      <div className="rl-cn-node rl-cn-node--npc" style={{ top: '22%', left: '16%' }}>
+      <div className="rl-cn-node rl-cn-node--npc">
         <Users size={11} /><span>Ragnar</span>
       </div>
-      <div className="rl-cn-node rl-cn-node--secret" style={{ top: '16%', right: '14%' }}>
+      <div className="rl-cn-node rl-cn-node--secret">
         <Lock size={11} /><span>El Pacto</span>
       </div>
-      <div className="rl-cn-node rl-cn-node--faction" style={{ top: '42%', left: '42%' }}>
+      <div className="rl-cn-node rl-cn-node--faction">
         <Shield size={11} /><span>El Gremio</span>
       </div>
-      <div className="rl-cn-node rl-cn-node--location" style={{ bottom: '22%', left: '16%' }}>
+      <div className="rl-cn-node rl-cn-node--location">
         <Map size={11} /><span>Torre Norte</span>
       </div>
-      <div className="rl-cn-node rl-cn-node--quest" style={{ bottom: '16%', right: '12%' }}>
+      <div className="rl-cn-node rl-cn-node--quest">
         <Scroll size={11} /><span>La Herejía</span>
       </div>
     </div>

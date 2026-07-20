@@ -100,7 +100,6 @@ export const RelationshipEdge = React.memo(
                 transform:
                   `translate(-50%, -50%) ` +
                   `translate(${labelX}px, ${labelY}px)`,
-                pointerEvents: "none",
               }}
             >
               <RelationEdgeLabel
