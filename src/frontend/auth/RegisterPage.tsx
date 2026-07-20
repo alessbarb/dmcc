@@ -6,6 +6,7 @@ import { consumeAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
+import "../shared/styles/features/auth.css";
 
 const MIN_PASSWORD_LENGTH = 12;
 

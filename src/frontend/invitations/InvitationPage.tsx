@@ -7,6 +7,7 @@ import { rememberAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
+import "../shared/styles/features/auth.css";
 
 type InvitationPreview = {
   campaign: { campaignId: string; title: string; summary?: string | null };

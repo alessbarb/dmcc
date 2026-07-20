@@ -7,6 +7,7 @@ import {
   type ImageCatalogGroups,
   type ImageCatalogItem,
 } from "./imageCatalog.js";
+import "../styles/features/image-picker-modal.css";
 
 export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities";
 type ImagePickerView = "groups" | "images";

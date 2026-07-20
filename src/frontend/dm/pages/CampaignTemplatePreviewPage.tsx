@@ -17,6 +17,7 @@ import { fetchSession } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
+import "../../shared/styles/features/campaign-template.css";
 
 function runCampaignTemplatePreviewAction(operation: Promise<unknown>, errorMessage: string): void {
   void operation.catch((error: unknown) => {

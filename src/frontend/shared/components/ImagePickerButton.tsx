@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { ImagePlus, Move, Pencil } from "lucide-react";
 import { ImagePickerModal, type ImageCatalogType } from "./ImagePickerModal.js";
 import { EntityImageReframeDialog } from "./EntityImageReframeDialog.js";
+import "../styles/features/image-picker-button.css";
 
 type CSSPropertiesWithVars = CSSProperties & Record<`--${string}`, string | number | undefined>;
 import {

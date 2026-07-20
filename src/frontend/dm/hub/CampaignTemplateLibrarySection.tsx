@@ -1,6 +1,7 @@
 import { Eye, Sparkles } from "lucide-react";
 import type { I18nContextType } from "../../shared/i18n/I18nProvider.js";
 import type { CampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
+import "../../shared/styles/features/campaign-template.css";
 
 interface CampaignTemplateLibrarySectionProps {
   templates: CampaignTemplateSummary[];
