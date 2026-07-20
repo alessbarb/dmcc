@@ -126,13 +126,26 @@
 }
 
 .campaign-template-preview-graph-card {
-  max-width: 1180px;
-  margin: 0 auto 20px;
-  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, var(--theme-borders-default));
+  max-width: 1400px;
+  margin: 0 auto 48px;
+  padding: 0 28px;
+}
+
+.campaign-template-preview-graph-card .campaign-template-preview-section-heading {
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.campaign-template-preview-graph-card .campaign-template-preview-section-heading h2 {
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
 }
 
 .campaign-template-preview-graph-card .entity-relations-graph {
-  height: clamp(420px, 55dvh, 620px);
+  height: clamp(460px, 62dvh, 680px);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, var(--theme-borders-default));
 }
 
 .campaign-template-preview-secret-card {

@@ -1454,6 +1454,8 @@ export const pt: TranslationDictionary = {
   campaignTemplatePreview: {
     loading: "A carregar campanha de exemplo…",
     eyebrow: "Pré-visualização só de leitura",
+    exploreCta: "Explorar a campanha ↓",
+    statsSentence: "{entities} entidades, unidas por {relations} relações, preparadas para {sessions} sessões e sustentadas por {facts} factos canónicos.",
     readOnlyTitle: "Estás a explorar uma campanha de exemplo",
     readOnlyDesc: "Nada é guardado aqui. Para dirigir, editar ou revelar conteúdo, cria uma cópia editável para o teu DM.",
     createCopy: "Criar cópia editável",

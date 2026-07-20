@@ -1470,6 +1470,8 @@ export const de: TranslationDictionary = {
   campaignTemplatePreview: {
     loading: "Beispielkampagne wird geladen…",
     eyebrow: "Schreibgeschützte Vorschau",
+    exploreCta: "Kampagne erkunden ↓",
+    statsSentence: "{entities} Entitäten, verbunden durch {relations} Beziehungen, vorbereitet für {sessions} Sitzungen und getragen von {facts} kanonischen Fakten.",
     readOnlyTitle: "Du erkundest eine Beispielkampagne",
     readOnlyDesc: "Hier wird nichts gespeichert. Zum Leiten, Bearbeiten oder Enthüllen erstellst du eine editierbare Kopie für deinen SL.",
     createCopy: "Editierbare Kopie erstellen",

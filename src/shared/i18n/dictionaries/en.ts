@@ -1530,6 +1530,8 @@ export const en = {
   campaignTemplatePreview: {
     loading: "Loading example campaign…",
     eyebrow: "Read-only preview",
+    exploreCta: "Explore the campaign ↓",
+    statsSentence: "{entities} entities, tied together by {relations} relations, prepared for {sessions} sessions and backed by {facts} canonical facts.",
     readOnlyTitle: "You are exploring an example campaign",
     readOnlyDesc:
       "Nothing is saved here. To run, edit, or reveal content, create an editable copy for your DM account.",
