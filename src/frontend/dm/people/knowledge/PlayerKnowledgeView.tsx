@@ -93,7 +93,7 @@ export function PlayerKnowledgeView() {
       {error && <div className="people-inline-error surface-panel" role="alert">{error}</div>}
 
       {!error && (projection?.players.length ?? 0) === 0 ? (
-        <section className="people-empty-state surface-panel">
+        <section className="people-empty-state empty-state--ornamented surface-panel">
           <Users size={34} aria-hidden="true" />
           <h3>{t("playerKnowledge.noPlayers")}</h3>
         </section>

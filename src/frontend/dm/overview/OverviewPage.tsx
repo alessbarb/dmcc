@@ -28,6 +28,7 @@ import { CampaignStarterHub } from "../onboarding/CampaignStarterHub.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { resolveActiveEntity } from "../entities/relations/resolveActiveEntity.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
+import { NarrativeDivider } from "../../shared/components/NarrativeDivider.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 import "../../shared/styles/features/dashboard-overview.css";
 import "../../shared/styles/features/dm-dashboard.css";
@@ -562,6 +563,7 @@ export function OverviewPage() {
             <p className="dashboard-recap">
               {commandCenter?.recap ?? lastClosedSession?.summary ?? t("dashboard.noPreviousSessions")}
             </p>
+            <NarrativeDivider />
             {activeSession ? (
               <Pill tone="good">{t("dashboard.runningSessionTitle", { title: activeSession.title })}</Pill>
             ) : nextPreparedSession ? (

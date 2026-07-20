@@ -4,6 +4,7 @@ import { Archive, GitFork, Play, Waypoints, X } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { NarrativeDivider } from "../../shared/components/NarrativeDivider.js";
 import type { SessionEvent } from "@core/domain/session/types.js";
 import { errorMessage, runSessionAction } from "./sessionFormSubmit.js";
 import { SessionPlanEditor } from "./components/SessionPlanEditor.js";
@@ -174,9 +175,10 @@ export function SessionDetailPage() {
 
   return (
     <div className="session-page">
-      <section className="session-history-item">
+      <section className="session-history-item ornamented-frame">
         <h2>{session.number ? `#${session.number} ` : ""}{session.title}</h2>
         {session.summary && <p>{session.summary}</p>}
+        <NarrativeDivider />
         <time dateTime={session.endedAt ?? undefined}>
           {session.endedAt
             ? new Date(session.endedAt).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })

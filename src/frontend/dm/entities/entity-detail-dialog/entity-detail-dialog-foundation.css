@@ -47,6 +47,26 @@ body[data-entity-detail-dialog-open="true"] .main-content:not(.main-content--can
   transform: none !important;
 }
 
+.entity-detail-dialog-frame {
+  position: relative;
+  width: min(1180px, calc(100vw - 48px));
+  height: min(900px, calc(100dvh - 48px));
+  max-width: 1180px;
+  max-height: calc(100dvh - 48px);
+}
+
+.entity-detail-dialog-frame.entity-detail-dialog-frame--relations-expanded {
+  width: min(1480px, calc(100vw - 2 * clamp(16px, 2.5vw, 36px)));
+  max-width: 1480px;
+  height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px));
+  max-height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px));
+}
+
+.entity-detail-dialog-frame > .entity-detail-dialog {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .modal-content.entity-detail-dialog {
   position: relative !important;
   inset: auto !important;
