@@ -42,14 +42,14 @@ const RESOURCE_NAVIGATION: Partial<Record<CampaignResourceType, ResourceNavigati
   story_thread: {
     type: "story_thread",
     location: (campaignId, resourceId) => ({
-      pathname: `/campaigns/${campaignId}/story/plan`,
+      pathname: `/campaigns/${campaignId}/sessions`,
       search: { threadId: resourceId },
     }),
   },
   story_step: {
     type: "story_step",
     location: (campaignId, resourceId) => ({
-      pathname: `/campaigns/${campaignId}/story/plan`,
+      pathname: `/campaigns/${campaignId}/sessions`,
       search: { stepId: resourceId },
     }),
   },

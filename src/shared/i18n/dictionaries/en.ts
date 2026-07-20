@@ -1098,7 +1098,6 @@ export const en = {
       people: "People",
       messages: "Messages",
       notebooks: "Notebooks",
-      storyPlan: "Narrative Plan",
     },
     meta: {
       canvasTitle: "Campaign Canvas",

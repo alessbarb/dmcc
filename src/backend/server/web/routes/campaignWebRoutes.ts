@@ -295,6 +295,8 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       tags,
       attachments,
       sessionEvents,
+      storyThreads: projectionMapValues(projection.storyThreads),
+      storySteps: projectionMapValues(projection.storySteps),
     };
   });
 
