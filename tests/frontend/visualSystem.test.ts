@@ -103,7 +103,7 @@ describe("theme-backed visual system", () => {
     const fontsIndex = styles.indexOf('@import "./foundation/fonts.css"');
     const structuralTokensIndex = styles.indexOf('@import "./foundation/structural-tokens.css"');
     const primitivesIndex = styles.indexOf('@import "./primitives/button.css"');
-    const domainIndex = styles.indexOf('@import "./layout/campaign-navigation.css"');
+    const domainIndex = styles.indexOf('@import "./layout/workspace.css"');
 
     expect(fontsIndex).toBe(0);
     expect(structuralTokensIndex).toBeGreaterThan(fontsIndex);

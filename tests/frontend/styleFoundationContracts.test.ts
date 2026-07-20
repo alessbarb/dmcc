@@ -49,18 +49,6 @@ describe("global style foundation", () => {
       "./layout/campaign-shell.css",
       "./layout/footer.css",
       "./layout/responsive.css",
-      "./features/graph-search.css",
-      "./features/timeline.css",
-      "./features/landing-archive.css",
-      "./features/kanban.css",
-      "./features/campaign-canvas.css",
-      "./features/player-portal.css",
-      "./features/campaign-template.css",
-      "./features/dm-dashboard.css",
-      "./features/dm-hub.css",
-      "./features/dm-hub-dashboard.css",
-      "./layout/campaign-navigation.css",
-      "./features/quick-capture.css",
       "./primitives/dialog.css",
       "./primitives/overlay.css",
       "./primitives/tabs.css",
@@ -70,5 +58,13 @@ describe("global style foundation", () => {
     ]) {
       expect(entrypoint).toContain(`@import \"${file}\";`);
     }
+
+    expect(read("src/frontend/dm/layouts/CampaignShell.tsx")).toContain(
+      'import "../../shared/styles/layout/campaign-navigation.css";',
+    );
+    expect(read("src/frontend/dm/canvas/pages/CanvasPage.tsx")).toContain(
+      'import "../../../shared/styles/features/campaign-canvas.css";',
+    );
+    expect(existsSync(new URL("../../src/frontend/shared/styles/features/graph-search.css", import.meta.url))).toBe(false);
   });
 });
