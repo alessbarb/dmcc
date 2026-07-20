@@ -228,8 +228,6 @@ src/frontend/shared/styles/
 │   ├── campaign-shell.css
 │   ├── workspace.css
 │   ├── navigation.css
-│   ├── sidebar.css
-│   ├── top-bar.css
 │   ├── footer.css
 │   ├── grid.css
 │   └── responsive.css
@@ -269,8 +267,6 @@ antes de cerrar el Sprint 2; no se consideran parte de la cascada objetivo.
 @import "./layout/campaign-shell.css";
 @import "./layout/workspace.css";
 @import "./layout/navigation.css";
-@import "./layout/sidebar.css";
-@import "./layout/top-bar.css";
 @import "./layout/footer.css";
 @import "./layout/grid.css";
 @import "./layout/responsive.css";
