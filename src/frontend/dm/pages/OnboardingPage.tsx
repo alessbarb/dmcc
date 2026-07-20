@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import "../../shared/styles/features/dm-onboarding.css";
 
 const SYSTEMS = [
   { value: "dnd_5e", label: "D&D 5e / D20 Fantasy" },
