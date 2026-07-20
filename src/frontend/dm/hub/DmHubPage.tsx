@@ -11,6 +11,8 @@ import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
+import "../../shared/styles/features/dm-hub.css";
+import "../../shared/styles/features/dm-hub-dashboard.css";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 

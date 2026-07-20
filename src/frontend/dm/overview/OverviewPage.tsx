@@ -29,6 +29,8 @@ import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { resolveActiveEntity } from "../entities/relations/resolveActiveEntity.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
+import "../../shared/styles/features/dashboard-overview.css";
+import "../../shared/styles/features/dm-dashboard.css";
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (

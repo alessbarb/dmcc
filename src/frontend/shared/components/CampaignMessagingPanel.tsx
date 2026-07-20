@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
+import "../styles/features/campaign-messaging.css";
 
 const MAX_MESSAGE_LENGTH = 4_000;
 const NEAR_BOTTOM_THRESHOLD_PX = 96;

@@ -2,6 +2,7 @@ import type { Entity, Fact, Relation, Session } from "../../shared/stores/campai
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatRelationType } from "@shared/i18n/index.js";
 import type { SupportedLocale } from "@shared/i18n/types.js";
+import "../../shared/styles/features/entity-trace.css";
 
 function formatDate(iso: string | undefined, locale?: string): string {
   if (!iso) return "—";

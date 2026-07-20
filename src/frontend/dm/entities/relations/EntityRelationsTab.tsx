@@ -13,6 +13,7 @@ import { EntityRelationsList } from "./EntityRelationsList.js";
 import { RelationshipGraphCanvas } from "./RelationshipGraphCanvas.js";
 import { defaultGroupingEnabled, shouldOfferGrouping } from "./groupRelationshipNeighbors.js";
 import "./relationshipGraph.css";
+import "../../../shared/styles/features/entity-relations.css";
 
 type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 type ViewMode = "graph" | "list";

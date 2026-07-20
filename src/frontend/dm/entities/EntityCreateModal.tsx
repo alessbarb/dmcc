@@ -7,6 +7,7 @@ import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import "../../shared/styles/features/entity-create.css";
 
 function getErrorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
