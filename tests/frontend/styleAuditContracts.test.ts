@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { classifyInlineStyle } from "../../scripts/styles/auditStyles.mjs";
 
 const auditSource = readFileSync(
   new URL("../../scripts/styles/auditStyles.mjs", import.meta.url),
@@ -48,5 +49,11 @@ describe("style audit architecture", () => {
     expect(auditSource).toContain("Style audit ratchet failed");
     expect(auditSource).toContain("--update-baseline");
     expect(auditSource).toContain("--check");
+  });
+
+  it("does not classify fixed layout values as runtime styles", () => {
+    expect(classifyInlineStyle("{ top: '22%', left: '4%' }")).toBe("static");
+    expect(classifyInlineStyle("{ width: 96, height: 72 }")).toBe("static");
+    expect(classifyInlineStyle("{ transform: `translate(${x}px)` }")).toBe("dynamic");
   });
 });

@@ -137,11 +137,17 @@ function isCrossComponentSelector(selector) {
   return /(?:>\s*(?:div|img|button|section|header|footer|main|article)|:first-child|:nth-child)/.test(selector);
 }
 
-function classifyInlineStyle(body) {
+export function classifyInlineStyle(body) {
   if (/^\s*["']?--[a-zA-Z0-9_-]+["']?\s*:/.test(body)) {
     return "dynamic";
   }
-  const containsDynamic = /\$\{|--[a-zA-Z0-9_-]+|\b(?:props|state|value|index|progress|width|height|top|left|right|bottom|x|y|focus|position|transform)\b/.test(body);
+  // Do not mistake fixed property names such as `top` or `width` for runtime
+  // values. Dynamic detection must inspect the value side of declarations.
+  const valueSource = body.replace(
+    /["']?[a-zA-Z][a-zA-Z0-9_-]*["']?\s*:/g,
+    ":",
+  );
+  const containsDynamic = /\$\{|--[a-zA-Z0-9_-]+|\b(?:props|state|value|index|progress|focus|position|transform|runtime|custom)\b/.test(valueSource);
   const containsStaticProperty = /\b(?:background|backgroundColor|color|border|borderRadius|boxShadow|fontSize|fontFamily|fontWeight|padding|margin|display|grid|flex|gap|alignItems|justifyContent|position|overflow)\s*:/.test(body);
   if (containsDynamic && containsStaticProperty) return "mixed";
   if (containsDynamic) return "dynamic";
