@@ -22,6 +22,8 @@
     "styles:audit": "node scripts/styles/auditStyles.mjs",
     "styles:audit:report": "node scripts/styles/auditStyles.mjs",
     "styles:audit:check": "node scripts/styles/auditStyles.mjs --check",
+    "styles:inventory": "npm run styles:audit:report && node scripts/styles/generateStyleInventory.mjs",
+    "styles:inventory:check": "npm run styles:audit:check && node scripts/styles/generateStyleInventory.mjs --check",
     "styles:audit:update-baseline": "node scripts/styles/auditStyles.mjs --update-baseline",
     "audit:unused": "knip --no-config-hints",
     "audit:unused:prod": "knip --production --strict --no-config-hints",
