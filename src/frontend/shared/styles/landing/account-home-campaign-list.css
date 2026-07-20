@@ -2,18 +2,18 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
-  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 4px 10px;
-  border-radius: var(--theme-shapes-radius-medium, 6px);
+  border-radius: var(--radius-md, 6px);
   font-size: 0.78rem;
-  color: var(--theme-text-subtle);
+  color: var(--text-subtle);
   transition: all 0.2s ease;
 }
 
 .featured-campaign-card:hover .stat-pill {
-  background: color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
-  border-color: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .other-campaigns-section {
@@ -32,28 +32,28 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
-  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   padding: 10px 12px;
-  border-radius: var(--theme-shapes-radius-medium, 8px);
+  border-radius: var(--radius-md, 8px);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .campaign-row-item:hover {
-  background: color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
-  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(226, 159, 82, 0.25);
   transform: translateX(2px);
 }
 
 .campaign-row-thumb {
   width: 36px;
   height: 36px;
-  border-radius: var(--theme-shapes-radius-small, 4px);
+  border-radius: var(--radius-sm, 4px);
   background-position: center;
   background-size: cover;
   flex-shrink: 0;
-  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .campaign-row-info {
@@ -64,7 +64,7 @@
 .campaign-row-info h4 {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-main);
   margin: 0 0 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -73,18 +73,18 @@
 
 .system-text {
   font-size: 0.72rem;
-  color: var(--theme-text-secondary);
+  color: var(--text-muted);
   margin: 0;
 }
 
 .row-arrow {
-  color: var(--theme-text-secondary);
+  color: var(--text-muted);
   opacity: 0.5;
   transition: all 0.2s ease;
 }
 
 .campaign-row-item:hover .row-arrow {
-  color: var(--theme-accents-primary-foreground);
+  color: var(--accent-fire);
   opacity: 1;
 }
 
@@ -100,17 +100,12 @@
   gap: 12px;
 }
 
-.player-profiles-list--centered {
-  width: min(760px, 100%);
-  margin: 0 auto;
-}
-
 .player-profile-row-card {
   cursor: pointer;
 }
 
 .player-profile-row-card:hover {
-  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 35%, transparent);
+  border-color: rgba(167, 139, 250, 0.35);
 }
 
 .row-layout {
@@ -125,8 +120,8 @@
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px double color-mix(in srgb, var(--theme-accents-secondary-foreground) 50%, transparent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--theme-accents-secondary-foreground) 20%, transparent);
+  border: 2px double rgba(167, 139, 250, 0.5);
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.2);
   flex-shrink: 0;
 }
 
@@ -145,25 +140,25 @@
 .profile-name {
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-main);
   margin: 0 0 2px;
 }
 
 .char-name {
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--theme-accents-secondary-foreground);
+  color: var(--accent-amethyst);
   margin: 0 0 2px;
 }
 
 .campaign-link-name {
   font-size: 0.72rem;
-  color: var(--theme-text-secondary);
+  color: var(--text-muted);
   margin: 0;
 }
 
 .amethyst-arrow {
-  color: var(--theme-accents-secondary-foreground);
+  color: var(--accent-amethyst);
   opacity: 0.6;
   transition: all 0.2s ease;
 }
@@ -178,14 +173,14 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 16px;
-  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   padding-top: 16px;
 }
 
 .link-action-gold {
   background: none;
   border: none;
-  color: var(--theme-accents-primary-foreground);
+  color: var(--accent-fire);
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
@@ -193,4 +188,3 @@
   text-decoration: underline;
   text-decoration-style: dotted;
 }
-

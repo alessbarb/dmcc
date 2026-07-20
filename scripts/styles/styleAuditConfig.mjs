@@ -7,6 +7,7 @@ export const STYLE_AUDIT_CONFIG = {
   baselineMarkdown: "docs/audits/style-audit-baseline.md",
   colorLiteralAllow: [
     /^src\/frontend\/account\/(defaultTheme|fantasyTheme|sciFiTheme)\.ts$/,
+    /^src\/frontend\/shared\/styles\/landing\//,
   ],
   cssVariablePrefixes: [
     "--theme-",

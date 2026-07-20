@@ -11,11 +11,11 @@ Generated mechanically by `npm run styles:audit:report`.
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
   "dynamicInlineStyles": 20,
-  "unknownCssVariables": 0,
-  "legacyCssVariables": 0,
+  "unknownCssVariables": 9,
+  "legacyCssVariables": 121,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 0,
-  "crossComponentSelectors": 0,
+  "crossComponentSelectors": 1,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
 }
@@ -336,24 +336,24 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 6 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css` | feature | shared | 131 | 21 | 1 |
-| `src/frontend/shared/styles/landing/account-home-campaign-list.css` | feature | shared | 197 | 28 | 1 |
-| `src/frontend/shared/styles/landing/account-home-featured-campaign.css` | feature | shared | 153 | 19 | 1 |
-| `src/frontend/shared/styles/landing/account-home-layout.css` | feature | shared | 147 | 20 | 1 |
-| `src/frontend/shared/styles/landing/landing-animations.css` | feature | shared | 50 | 18 | 1 |
-| `src/frontend/shared/styles/landing/landing-feature-blocks.css` | feature | shared | 153 | 26 | 1 |
-| `src/frontend/shared/styles/landing/landing-hero-actions.css` | feature | shared | 129 | 15 | 1 |
-| `src/frontend/shared/styles/landing/landing-local-and-final-cta.css` | feature | shared | 207 | 29 | 1 |
-| `src/frontend/shared/styles/landing/landing-memory-and-network.css` | feature | shared | 153 | 24 | 1 |
-| `src/frontend/shared/styles/landing/landing-network-and-footer.css` | feature | shared | 176 | 23 | 1 |
-| `src/frontend/shared/styles/landing/landing-preview-details.css` | feature | shared | 151 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-preview-shell.css` | feature | shared | 169 | 21 | 1 |
+| `src/frontend/shared/styles/landing/account-home-campaign-list.css` | feature | shared | 191 | 27 | 1 |
+| `src/frontend/shared/styles/landing/account-home-featured-campaign.css` | feature | shared | 152 | 19 | 1 |
+| `src/frontend/shared/styles/landing/account-home-layout.css` | feature | shared | 144 | 19 | 1 |
+| `src/frontend/shared/styles/landing/landing-animations.css` | feature | shared | 51 | 18 | 1 |
+| `src/frontend/shared/styles/landing/landing-feature-blocks.css` | feature | shared | 154 | 26 | 1 |
+| `src/frontend/shared/styles/landing/landing-hero-actions.css` | feature | shared | 128 | 15 | 1 |
+| `src/frontend/shared/styles/landing/landing-local-and-final-cta.css` | feature | shared | 206 | 29 | 1 |
+| `src/frontend/shared/styles/landing/landing-memory-and-network.css` | feature | shared | 151 | 24 | 1 |
+| `src/frontend/shared/styles/landing/landing-network-and-footer.css` | feature | shared | 175 | 23 | 1 |
+| `src/frontend/shared/styles/landing/landing-preview-details.css` | feature | shared | 150 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-preview-shell.css` | feature | shared | 167 | 21 | 1 |
 | `src/frontend/shared/styles/landing/landing-shell.css` | feature | shared | 173 | 18 | 1 |
-| `src/frontend/shared/styles/landing/landing-showcase.css` | feature | shared | 70 | 19 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-mobile.css` | feature | shared | 156 | 26 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-responsive-grid.css` | feature | shared | 48 | 8 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-role-actions.css` | feature | shared | 11 | 2 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 152 | 21 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 202 | 20 | 1 |
+| `src/frontend/shared/styles/landing/landing-showcase.css` | feature | shared | 68 | 19 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-mobile.css` | feature | shared | 155 | 26 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-responsive-grid.css` | feature | shared | 37 | 7 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-role-actions.css` | feature | shared | 12 | 2 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 151 | 21 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 201 | 20 | 1 |
 | `src/frontend/shared/styles/landing.css` | feature | shared | 20 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 7 | 1 |
@@ -781,6 +781,137 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/player-portal/portal-form.css:62` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-animations.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
+| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
+| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-hero-actions.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-hero-actions.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
+| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-shell.css:1` | Selector depends on another component's DOM structure. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-showcase.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-showcase.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/landing-showcase.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/smart-landing-role-actions.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | unknown-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | CSS variable is not declared or allowlisted. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
+| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:14` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:18` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:22` | Important declarations bypass the intended cascade. |

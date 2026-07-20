@@ -1,9 +1,7 @@
-
-
 .smart-role-card--player:hover .smart-role-card__cta,
 .smart-role-card--player:focus-visible .smart-role-card__cta {
-  background: color-mix(in srgb, var(--theme-activity-tag-foreground) 12%, transparent);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-activity-tag-foreground) 20%, transparent);
+  background: hsla(175, 85%, 45%, 0.12);
+  box-shadow: 0 4px 16px hsla(175, 85%, 45%, 0.2);
 }
 
 /* Mobile landing */

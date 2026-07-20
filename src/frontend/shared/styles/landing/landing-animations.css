@@ -1,7 +1,7 @@
 .rl-feature-icon--teal {
-  background: color-mix(in srgb, var(--theme-narrative-rumor-foreground) 10%, transparent);
-  color: var(--theme-narrative-rumor-foreground);
-  border: 1px solid color-mix(in srgb, var(--theme-narrative-rumor-foreground) 20%, transparent);
+  background: hsl(193 55% 65% / 0.1);
+  color: var(--semantic-rumor);
+  border: 1px solid hsl(193 55% 65% / 0.2);
 }
 
 /* ── Scroll entrance animations ──────────────────────────── */
@@ -47,3 +47,4 @@
 .rl-animate--visible .rl-mem-card:nth-child(2) { animation-delay: 0.22s; }
 .rl-animate--visible .rl-mem-card:nth-child(3) { animation-delay: 0.34s; }
 
+/* Web players: appear one by one */

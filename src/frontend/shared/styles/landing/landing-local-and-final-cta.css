@@ -1,6 +1,6 @@
 .rl-local {
-  background: var(--theme-surfaces-canvas);
-  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  background: hsl(226 28% 7%);
+  border-top: 1px solid hsl(220 20% 13% / 0.7);
   padding: 100px 24px;
 }
 
@@ -18,12 +18,12 @@
   width: 64px;
   height: 64px;
   border-radius: 16px;
-  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent);
+  background: hsl(38 66% 62% / 0.08);
+  border: 1px solid hsl(38 66% 62% / 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--theme-accents-primary-foreground);
+  color: var(--accent-fire);
   margin-bottom: 8px;
 }
 
@@ -31,13 +31,13 @@
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2.2rem);
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-primary);
   letter-spacing: 0.01em;
 }
 
 .rl-local__body {
   font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-  color: var(--theme-text-secondary);
+  color: var(--text-secondary);
   line-height: 1.8;
 }
 
@@ -53,17 +53,17 @@
   font-size: 0.78rem;
   padding: 6px 14px;
   border-radius: 20px;
-  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, transparent);
-  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
-  color: var(--theme-accents-primary-hover);
+  background: hsl(38 66% 62% / 0.07);
+  border: 1px solid hsl(38 66% 62% / 0.18);
+  color: hsl(38 55% 65%);
   letter-spacing: 0.02em;
 }
 
 /* ── Final CTA Section ────────────────────────────────────── */
 
 .rl-final-cta {
-  background: var(--theme-surfaces-canvas);
-  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  background: var(--bg-abyss);
+  border-top: 1px solid hsl(220 20% 13% / 0.7);
   padding: 120px 24px;
 }
 
@@ -81,13 +81,13 @@
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-primary);
   letter-spacing: 0.01em;
 }
 
 .rl-final-cta__sub {
   font-size: clamp(0.9rem, 1.4vw, 1.05rem);
-  color: var(--theme-text-secondary);
+  color: var(--text-secondary);
   line-height: 1.7;
 }
 
@@ -175,7 +175,7 @@
   }
 }
 
-/* Shared portal chrome reused by AccountHomePage, PlayerCampaignsPage, and PlayerCampaignShell. */
+/* Additional shared public landing flows (SmartLanding and previous portal). */
 
 /* Smart Landing / Main Portal */
 
@@ -183,7 +183,7 @@
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
-  background-color: var(--theme-surfaces-canvas);
+  background-color: var(--bg-main);
   overflow-x: hidden;
 }
 
@@ -193,7 +193,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--theme-text-secondary);
+  color: var(--text-muted);
 }
 
 .smart-landing__background {
@@ -203,4 +203,3 @@
   pointer-events: none;
   opacity: 0.52;
 }
-

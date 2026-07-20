@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 80%, transparent);
+  border-top: 1px solid hsl(220 20% 14% / 0.8);
   padding-top: 12px;
 }
 
@@ -17,15 +17,15 @@
   border-radius: 5px;
 }
 
-.vis--visible { color: var(--theme-text-secondary); background: transparent; }
-.vis--hidden  { color: var(--theme-text-subtle); background: color-mix(in srgb, var(--theme-surfaces-base) 50%, transparent); text-decoration: none; }
+.vis--visible { color: var(--text-secondary); background: transparent; }
+.vis--hidden  { color: var(--text-subtle); background: hsl(220 20% 10% / 0.5); text-decoration: none; }
 .vis--hidden span { text-decoration: line-through; opacity: 0.6; }
 
 /* ── Footer ───────────────────────────────────────────────── */
 
 .rl-footer {
-  background: var(--theme-surfaces-canvas);
-  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-base) 60%, transparent);
+  background: var(--bg-abyss);
+  border-top: 1px solid hsl(220 20% 12% / 0.6);
   padding: 20px 24px;
 }
 
@@ -50,7 +50,7 @@
   gap: 7px;
   font-family: var(--font-display);
   font-size: 0.72rem;
-  color: var(--theme-text-disabled);
+  color: hsl(32 12% 48%);
   letter-spacing: 0.05em;
 }
 
@@ -59,7 +59,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.7rem;
-  color: var(--theme-text-disabled);
+  color: hsl(32 12% 40%);
 }
 
 .rl-footer__nav {
@@ -71,7 +71,7 @@
 }
 
 .rl-footer__link {
-  color: var(--theme-text-subtle);
+  color: hsl(32 18% 58%);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -81,7 +81,7 @@
 
 .rl-footer__link:hover,
 .rl-footer__link:focus-visible {
-  color: var(--theme-accents-primary-hover);
+  color: hsl(38 66% 72%);
   outline: none;
 }
 
@@ -89,7 +89,7 @@
 
 .rl-hero__fine {
   font-size: 0.72rem;
-  color: var(--theme-text-disabled);
+  color: hsl(32 12% 42%);
   letter-spacing: 0.04em;
   margin-top: 4px;
   text-align: center;
@@ -98,9 +98,9 @@
 /* ── Pain Section ─────────────────────────────────────────── */
 
 .rl-pain {
-  background: var(--theme-surfaces-canvas);
-  border-top: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+  background: hsl(226 28% 7%);
+  border-top: 1px solid hsl(220 20% 13% / 0.7);
+  border-bottom: 1px solid hsl(220 20% 13% / 0.7);
   padding: 100px 24px;
 }
 
@@ -117,20 +117,20 @@
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2.2rem);
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-primary);
   line-height: 1.2;
   letter-spacing: 0.01em;
 }
 
 .rl-pain__body {
   font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-  color: var(--theme-text-secondary);
+  color: var(--text-secondary);
   line-height: 1.8;
 }
 
 .rl-pain__answer {
   font-size: clamp(0.95rem, 1.4vw, 1.05rem);
-  color: var(--theme-accents-primary-foreground);
+  color: var(--accent-fire);
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -139,9 +139,9 @@
 
 .rl-audience {
   background:
-    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent), transparent 42%),
-    var(--theme-surfaces-canvas);
-  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 70%, transparent);
+    radial-gradient(circle at 50% 0%, hsl(270 52% 70% / 0.08), transparent 42%),
+    var(--bg-abyss);
+  border-bottom: 1px solid hsl(220 20% 13% / 0.7);
   padding: 96px 24px;
 }
 
@@ -159,17 +159,16 @@
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3.2vw, 2.35rem);
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-primary);
   line-height: 1.18;
   letter-spacing: 0.01em;
 }
 
 .rl-audience__body {
   font-size: clamp(0.95rem, 1.5vw, 1.08rem);
-  color: var(--theme-text-secondary);
+  color: var(--text-secondary);
   line-height: 1.8;
   max-width: 640px;
 }
 
 /* ── Local-first Section ──────────────────────────────────── */
-

@@ -1,4 +1,3 @@
-/* Web players: appear one by one */
 .rl-animate--visible .rl-network-player {
   animation: rl-slide-right 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both;
   animation-play-state: running;
@@ -36,7 +35,7 @@
 /* ── Showcase Section ─────────────────────────────────────── */
 
 .rl-showcase {
-  background: var(--theme-surfaces-canvas);
+  background: var(--bg-abyss);
   position: relative;
   z-index: 5;
 }
@@ -53,7 +52,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--theme-accents-primary-foreground);
+  color: var(--accent-fire);
   margin-bottom: 14px;
 }
 
@@ -61,9 +60,8 @@
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 700;
-  color: var(--theme-text-primary);
+  color: var(--text-primary);
   margin-bottom: 20px;
   letter-spacing: -0.01em;
   line-height: 1.15;
 }
-

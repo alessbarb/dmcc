@@ -1,5 +1,3 @@
-
-
 @media (max-width: 380px) {
   .portal-topbar {
     padding-inline: 10px;
@@ -36,13 +34,3 @@
 /* ==========================================================================
    Smart Landing Midnight & Gold Styles
    ========================================================================== */
-
-.smart-landing__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 32px;
-  width: 100%;
-  max-width: 900px;
-  margin-top: 48px;
-  text-align: left;
-}
