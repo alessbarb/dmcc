@@ -21,7 +21,7 @@ export const campaignTemplateEntityFileSchema = z.strictObject({
   visibility: campaignTemplateVisibilitySchema.optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
   imageUrl: z.string().optional(),
-  // Opcionales por si se definen textos base directamente
+  // Optional in case base text is defined directly
   title: z.string().optional(),
   subtitle: z.string().optional(),
   summary: z.string().optional(),

@@ -11,7 +11,7 @@ export const runNarrativeLint = (campaignState: { entities: Entity[]; relations:
   const canvasNodes = activeCanvas.nodes || [];
   const canvasEdges = activeCanvas.edges || [];
 
-  // 1. Secretos sin pistas
+  // 1. Secrets without clues
   const secrets = entities.filter((e: Entity) => e.entityType === "secret");
   for (const secret of secrets) {
     const anchors = Array.isArray(secret.metadata?.revelationAnchors) ? secret.metadata.revelationAnchors : [];
@@ -32,7 +32,7 @@ export const runNarrativeLint = (campaignState: { entities: Entity[]; relations:
     }
   }
 
-  // 2. Pistas huérfanas
+  // 2. Orphan clues
   const clues = entities.filter((e: Entity) => e.entityType === "clue");
   for (const clue of clues) {
     const isAnchor = secrets.some((s: Entity) => Array.isArray(s.metadata?.revelationAnchors) && s.metadata.revelationAnchors.includes(clue.entityId));
@@ -47,7 +47,7 @@ export const runNarrativeLint = (campaignState: { entities: Entity[]; relations:
     }
   }
 
-  // 3. NPCs importantes sin uso
+  // 3. Unused key NPCs
   const importantNpcs = entities.filter(
     (e: Entity) => e.entityType === "npc" && (e.importance === "critical" || e.importance === "high")
   );
@@ -65,7 +65,7 @@ export const runNarrativeLint = (campaignState: { entities: Entity[]; relations:
     }
   }
 
-  // 4. Misiones sin cierre
+  // 4. Unclosed quests
   const quests = entities.filter((e: Entity) => e.entityType === "quest");
   for (const quest of quests) {
     const hasConnections = relations.some(
@@ -99,7 +99,7 @@ export const runNarrativeLint = (campaignState: { entities: Entity[]; relations:
     }
   }
 
-  // 6. Relaciones privadas con fuga
+  // 6. Leaked private relationships
   for (const rel of relations) {
     const source = entities.find((e: Entity) => e.entityId === rel.sourceEntityId);
     const target = entities.find((e: Entity) => e.entityId === rel.targetEntityId);

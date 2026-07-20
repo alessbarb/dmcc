@@ -466,8 +466,8 @@ function StandardEntityDetailWithImageFocus(props: EntityDetailModalProps) {
       ...metadataWithoutLegacyFocus
     } = metadata;
 
-    // Estos campos pertenecen al sistema anterior. Se leen únicamente
-    // para omitirlos al guardar la metadata normalizada.
+    // These fields belong to the legacy system. Read only to
+    // omit them when saving normalized metadata.
     void imageFocusX;
     void imageFocusY;
 

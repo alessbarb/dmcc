@@ -54,7 +54,7 @@ export type OperationTargetType =
   | "campaign_template"
   | "game_system";
 
-// Tabla para la purga idempotente de recursos externos y base de datos
+// Table for idempotent purging of external resources and database
 export const campaignPurgeJobs = pgTable("campaign_purge_jobs", {
   jobId: text("job_id").primaryKey(),
   campaignId: text("campaign_id").notNull(),
@@ -67,8 +67,8 @@ export const campaignPurgeJobs = pgTable("campaign_purge_jobs", {
     .$type<CampaignPurgeManifestV1>()
     .notNull(),
   attemptCount: integer("attempt_count").notNull().default(0),
-  workerId: text("worker_id"),                             // Propietario del lease
-  leaseToken: text("lease_token"),                         // Fencing token único
+  workerId: text("worker_id"),                             // Lease owner
+  leaseToken: text("lease_token"),                         // Unique fencing token
   leaseExpiresAt: timestamp("lease_expires_at"),
   lastErrorCode: text("last_error_code"),
   lastErrorMessage: text("last_error_message"),
@@ -101,7 +101,7 @@ export const campaignPurgeJobs = pgTable("campaign_purge_jobs", {
   attemptCountCheck: check("chk_purge_jobs_attempt_count", sql`attempt_count >= 0`),
 }));
 
-// Tabla de auditoría operacional
+// Operational audit log table
 export const operationsAuditLog = pgTable("operations_audit_log", {
   auditId: text("audit_id").primaryKey(),
   actorUserId: text("actor_user_id")

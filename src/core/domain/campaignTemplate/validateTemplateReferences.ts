@@ -19,7 +19,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
   const relationIds = new Set(template.relations.map((r) => r.relationId));
   const factIds = new Set(template.facts.map((f) => f.factId));
 
-  // Duplicados a nivel superior
+  // Top-level duplicates
   getDuplicates(template.entities.map((e) => e.entityId)).forEach((id) => {
     errors.push(`${label}.entities contiene un identificador duplicado: ${id}`);
   });
@@ -36,7 +36,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
     errors.push(`${label}.canvases contiene un identificador duplicado: ${id}`);
   });
 
-  // Validar relaciones
+  // Validate relationships
   for (const relation of template.relations) {
     const rid = relation.relationId;
     if (!entityIds.has(relation.sourceEntityId)) {
@@ -47,7 +47,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
     }
   }
 
-  // Validar hechos
+  // Validate facts
   for (const fact of template.facts) {
     const fid = fact.factId;
     const related = fact.relatedEntityIds ?? [];
@@ -58,7 +58,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
     }
   }
 
-  // Validar sesiones
+  // Validate sessions
   for (const session of template.sessions) {
     const sid = session.sessionId;
     const prep = session.prep;
@@ -95,7 +95,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
         }
       }
 
-      // Duplicados en checklist de sesión
+      // Duplicates in session checklist
       const checklist = prep.checklist ?? [];
       getDuplicates(checklist.map((item) => item.id)).forEach((id) => {
         errors.push(`${label}.sessions[${sid}].prep.checklist contiene un identificador de item duplicado: ${id}`);
@@ -103,7 +103,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
     }
   }
 
-  // Validar ids destacados del manifiesto/plantilla
+  // Validate featured IDs from manifest/template
   const highlightEntityIds = template.highlightEntityIds ?? [];
   for (const id of highlightEntityIds) {
     if (!entityIds.has(id)) {
@@ -125,7 +125,7 @@ export function validateCampaignTemplateReferences(template: CampaignTemplateTem
     }
   }
 
-  // Validar lienzos (canvases)
+  // Validate canvases
   for (const canvas of template.canvases) {
     const cid = canvas.canvasId;
     const nodes = canvas.nodes ?? [];

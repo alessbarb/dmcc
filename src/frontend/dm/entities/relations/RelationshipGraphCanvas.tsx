@@ -244,9 +244,9 @@ function RelationshipGraphCanvasInner({
           };
         }
 
-        // Una conexión bidireccional no debe duplicar la tarjeta.
-        // La colocamos en el lado menos cargado, manteniendo una
-        // distribución visual equilibrada.
+        // A bidirectional connection should not duplicate the card.
+        // We place it on the less crowded side, maintaining a
+        // balanced visual distribution.
         if (incomingCount <= outgoingCount) {
           incomingCount += 1;
 
