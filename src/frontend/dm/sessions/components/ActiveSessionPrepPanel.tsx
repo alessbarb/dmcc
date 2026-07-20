@@ -3,6 +3,7 @@ import { CheckSquare, ChevronDown, ChevronUp } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 import type { MaybeCampaignState } from "../sessionTypes.js";
+import { MarkdownContent } from "../../../shared/components/MarkdownContent.js";
 import { PrepLinkedList } from "./PrepLinkedList.js";
 import "./active-session-prep.css";
 
@@ -80,7 +81,7 @@ export function ActiveSessionPrepPanel({ session, campaignState }: { session: Se
           {prep.notes && (
             <section className="active-session-prep__notes">
               <h4 className="active-session-prep__section-title">{t("sessionPage.privatePrepNotesLabel")}</h4>
-              <p className="active-session-prep__preformatted active-session-prep__notes-copy">{prep.notes}</p>
+              <MarkdownContent value={prep.notes} className="active-session-prep__preformatted active-session-prep__notes-copy" />
             </section>
           )}
         </div>
