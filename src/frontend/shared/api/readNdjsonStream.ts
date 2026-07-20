@@ -31,15 +31,16 @@ export async function readNdjsonStream<T>(
       for (const line of lines) {
         const trimmed = line.trim();
         if (!trimmed) continue;
+        let event: T;
         try {
           // Trusting the caller-supplied generic T for parsed NDJSON payloads; no runtime schema here.
           // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-          const event = JSON.parse(trimmed) as T;
-          onEvent(event);
+          event = JSON.parse(trimmed) as T;
         } catch (err) {
           console.error("Failed to parse NDJSON line:", trimmed, err);
           throw new Error("Invalid response format received from server");
         }
+        onEvent(event);
       }
     }
 
@@ -47,15 +48,16 @@ export async function readNdjsonStream<T>(
     buffer += decoder.decode();
     const trimmed = buffer.trim();
     if (trimmed) {
+      let event: T;
       try {
         // Trusting the caller-supplied generic T for parsed NDJSON payloads; no runtime schema here.
         // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-        const event = JSON.parse(trimmed) as T;
-        onEvent(event);
+        event = JSON.parse(trimmed) as T;
       } catch (err) {
         console.error("Failed to parse final NDJSON line:", trimmed, err);
         throw new Error("Invalid response format received from server");
       }
+      onEvent(event);
     }
   } finally {
     reader.releaseLock();

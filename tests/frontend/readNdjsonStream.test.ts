@@ -79,6 +79,15 @@ describe("readNdjsonStream", () => {
   it("throws an error on invalid JSON", async () => {
     const response = createStreamingResponse(['{"a":1\n']);
     const events: any[] = [];
-    await expect(readNdjsonStream(response, (event) => events.push(event))).rejects.toThrow();
+    await expect(readNdjsonStream(response, (event) => events.push(event))).rejects.toThrow("Invalid response format received from server");
+  });
+
+  it("bubbles up errors thrown inside onEvent without wrapping them as JSON parse errors", async () => {
+    const response = createStreamingResponse(['{"type":"error","messageKey":"custom.error"}\n']);
+    await expect(
+      readNdjsonStream(response, (event: any) => {
+        if (event.type === "error") throw new Error(event.messageKey);
+      })
+    ).rejects.toThrow("custom.error");
   });
 });

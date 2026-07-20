@@ -1,5 +1,5 @@
 import { Eye, Sparkles } from "lucide-react";
-import type { I18nContextType } from "../../shared/i18n/I18nProvider.js";
+import type { I18nContextType } from "../../shared/i18n/I18nContext.js";
 import type { CampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
 import "../../shared/styles/features/campaign-template.css";
 

@@ -151,6 +151,10 @@ function mergeEntities(base: CampaignTemplateEntityFile[], overlayEntities?: Cam
         .join(" ");
     }
 
+    const mergedMetadata = (entity.metadata || overlay?.metadata)
+      ? { ...(entity.metadata ?? {}), ...(overlay?.metadata ?? {}) }
+      : undefined;
+
     return {
       entityId: id,
       entityType: entity.entityType,
@@ -161,7 +165,7 @@ function mergeEntities(base: CampaignTemplateEntityFile[], overlayEntities?: Cam
       status: overlay?.status ?? entity.status,
       importance: entity.importance,
       visibility: entity.visibility,
-      metadata: overlay?.metadata ?? entity.metadata,
+      metadata: mergedMetadata,
       imageUrl: overlay?.imageUrl ?? entity.imageUrl,
     };
   });

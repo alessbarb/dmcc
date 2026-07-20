@@ -1,16 +1,10 @@
-import React, { createContext, useState } from "react";
-import type { SupportedLocale, TranslationKey } from "@shared/i18n/index.js";
+import React, { useState } from "react";
+import type { SupportedLocale } from "@shared/i18n/index.js";
 import { createTranslator, detectBrowserLocale } from "@shared/i18n/index.js";
 import { readStoredLocale, writeStoredLocale } from "./localeStorage.js";
+import { I18nContext } from "./I18nContext.js";
 
-export interface I18nContextType {
-  locale: SupportedLocale;
-  setLocale: (locale: SupportedLocale) => void;
-  t: (key: TranslationKey | string, params?: Record<string, string | number>) => string;
-}
-
-export const I18nContext = createContext<I18nContextType | null>(null);
-
+export type { I18nContextType } from "./I18nContext.js";
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {

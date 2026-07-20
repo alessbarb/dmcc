@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { I18nContext } from "./I18nProvider.js";
-import type { I18nContextType } from "./I18nProvider.js";
+import { I18nContext } from "./I18nContext.js";
+import type { I18nContextType } from "./I18nContext.js";
 
 export function useTranslation(): I18nContextType {
   const ctx = useContext(I18nContext);
