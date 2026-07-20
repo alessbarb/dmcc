@@ -3,6 +3,7 @@ import { AdminShell } from "../AdminShell.js";
 import { fetchAdminUsers, enableUser, disableUser, revokeUserSessions, grantPlatformAdmin, revokePlatformAdmin, type AdminUserSummary } from "../adminClient.js";
 import { ConfirmPasswordDialog } from "../security/ConfirmPasswordDialog.js";
 import { Search, UserCheck, UserX, Shield, ShieldOff, Key, Loader } from "lucide-react";
+import "../../shared/styles/features/admin-users.css";
 
 type PendingAction =
   | { kind: "disable"; user: AdminUserSummary }
