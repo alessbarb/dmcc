@@ -1,0 +1,63 @@
+  .dm-campaign-templates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dm-campaign-template-card__actions {
+    flex-direction: column;
+  }
+
+  .dm-campaign-template-card__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dm-quick-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dm-modal {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    padding: 20px;
+  }
+
+  .dm-modal__footer {
+    flex-direction: column-reverse;
+  }
+
+  .dm-modal__footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+@media (max-width: 420px) {
+  .dm-hub-main {
+    padding-inline: 10px;
+  }
+
+  .dm-hub-hero__profile {
+    flex-direction: column;
+  }
+
+  .dm-hub-hero__stats,
+  .dm-hub-mobile-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dm-panel__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .dm-filter-select {
+    width: 100%;
+  }
+
+  .dm-table-row,
+  .dm-activity-row {
+    flex-direction: column;
+  }
+
+  .dm-table-row__stats {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+}

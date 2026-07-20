@@ -76,3 +76,81 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
+
+.dm-quick-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  min-height: 72px;
+}
+
+.dm-quick-btn:hover {
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 22%, transparent);
+  transform: translateY(-2px);
+}
+
+.dm-quick-btn__icon {
+  color: var(--theme-accents-primary-foreground);
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+}
+
+.dm-quick-btn__label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dm-quick-btn:hover .dm-quick-btn__label {
+  color: var(--theme-text-primary);
+}
+
+/* ── Campaign templates grid ── */
+.dm-campaign-templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.dm-campaign-template-card {
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+
+.dm-campaign-template-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent);
+}
+
+.dm-campaign-template-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.dm-campaign-template-card__title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+}

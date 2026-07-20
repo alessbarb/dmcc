@@ -1,0 +1,94 @@
+@media (max-width: 1200px) {
+  .dm-hub-grid {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dm-hub-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dm-hub-grid__right {
+    position: static;
+  }
+
+  .dm-hub-twin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dm-hub-main {
+    padding: 12px 12px calc(84px + env(safe-area-inset-bottom));
+  }
+
+  .dm-hub-topbar-actions {
+    gap: 6px;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .dm-hub-topbar-actions .dm-topbar-ghost-btn {
+    flex: 0 0 auto;
+  }
+
+  .dm-hub-topbar-actions .dm-topbar-user-btn span {
+    max-width: 112px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dm-hub-hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .dm-hub-hero__profile {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dm-hub-hero__avatar-ring {
+    width: 52px;
+    height: 52px;
+  }
+
+  .dm-hub-hero__greeting {
+    font-size: 1.08rem;
+    line-height: 1.2;
+  }
+
+  .dm-hub-hero__subtitle {
+    margin-bottom: 12px;
+  }
+
+  .dm-hub-hero__calendar {
+    min-width: unset;
+  }
+
+  .dm-hub-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .dm-stat-pill {
+    min-width: 0;
+    justify-content: flex-start;
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+
+  .dm-stat-pill__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
