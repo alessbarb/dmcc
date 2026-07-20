@@ -99,6 +99,77 @@ interface PreviewSecretFact {
   relatedEntityIds?: string[];
 }
 
+type PerspectiveTab = "story" | "prep" | "network";
+
+function PerspectiveSelector({
+  storyText,
+  prepTitle,
+  prepSteps,
+  t,
+}: {
+  storyText: string;
+  prepTitle: string;
+  prepSteps: string[];
+  t: TranslateFn;
+}) {
+  const [tab, setTab] = useState<PerspectiveTab>("story");
+  const tabs: { id: PerspectiveTab; labelKey: string }[] = [
+    { id: "story", labelKey: "campaignTemplatePreview.perspective.storyTab" },
+    { id: "prep", labelKey: "campaignTemplatePreview.perspective.prepTab" },
+    { id: "network", labelKey: "campaignTemplatePreview.perspective.networkTab" },
+  ];
+
+  return (
+    <section className="campaign-template-preview-perspective">
+      <div className="campaign-template-preview-section-heading">
+        <h2>{t("campaignTemplatePreview.perspective.title")}</h2>
+        <span>{t("campaignTemplatePreview.perspective.desc")}</span>
+      </div>
+      <div className="campaign-template-preview-perspective__tabs" role="tablist">
+        {tabs.map((entry) => (
+          <button
+            key={entry.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === entry.id}
+            className={tab === entry.id ? "is-active" : ""}
+            onClick={() => setTab(entry.id)}
+          >
+            {t(entry.labelKey)}
+          </button>
+        ))}
+      </div>
+      <div className="campaign-template-preview-perspective__panel">
+        {tab === "story" && <p className="campaign-template-preview-perspective__story">{storyText}</p>}
+        {tab === "prep" && (
+          <>
+            <strong>{prepTitle}</strong>
+            <ol>
+              {prepSteps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </>
+        )}
+        {tab === "network" && (
+          <div className="campaign-template-preview-perspective__network">
+            <p>{t("campaignTemplatePreview.perspective.networkDesc")}</p>
+            <button
+              type="button"
+              className="campaign-template-preview-hero__explore"
+              onClick={() => {
+                document.getElementById("campaign-template-preview-graph")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              {t("campaignTemplatePreview.perspective.networkCta")}
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function SecretRevealCard({
   secret,
   entityTitle,
@@ -519,19 +590,14 @@ export function CampaignTemplatePreviewPage() {
         </section>
       </div>
 
-      {template.quickStart ? (
-        <section className="card campaign-template-preview-card campaign-template-quickstart-card">
-          <div className="campaign-template-preview-section-heading">
-            <h2>{template.quickStart.title}</h2>
-            <span>{t("campaignTemplatePreview.quickStartDesc")}</span>
-          </div>
-          <ol>
-            {template.quickStart.steps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
-        </section>
-      ) : null}
+      {template.quickStart && (
+        <PerspectiveSelector
+          storyText={template.description || template.recommendedFor}
+          prepTitle={template.quickStart.title}
+          prepSteps={template.quickStart.steps}
+          t={t}
+        />
+      )}
 
       <div className="campaign-template-preview-grid">
         <section className="card campaign-template-preview-card campaign-template-preview-card--wide">

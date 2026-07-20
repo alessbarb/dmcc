@@ -17,6 +17,14 @@
   position: relative;
   border-radius: var(--theme-shapes-radius-medium);
   transition: transform 0.15s;
+  /* Nodes are built with draggable:false/selectable:false (this is a fixed
+     radial layout, not a free canvas), which makes @xyflow/react set
+     pointer-events:none inline on the `.react-flow__node` wrapper as an
+     optimization for "non-interactive" nodes. But these nodes ARE
+     interactive via our own onClick/onKeyDown (role="button") — re-enable
+     pointer events here so real mouse clicks reach it, not just the
+     synthetic/keyboard paths that happened to bypass the wrapper. */
+  pointer-events: auto;
 }
 
 .entity-relations-node--neighbor {
