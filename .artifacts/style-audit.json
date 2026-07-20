@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T10:43:53.135Z",
+  "generatedAt": "2026-07-20T10:45:41.186Z",
   "summary": {
     "cssFiles": 362,
     "tsxFilesWithInlineStyles": 13,
@@ -11593,8 +11593,7 @@
       "selectorCount": 6,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -11620,8 +11619,7 @@
       "selectorCount": 3,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -11634,8 +11632,7 @@
       "selectorCount": 16,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -11668,8 +11665,7 @@
       "selectorCount": 16,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css"
       ],
       "variableDefinitions": [
         "--app-footer-height",
@@ -11705,8 +11701,7 @@
         "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -11775,8 +11770,7 @@
       "selectorCount": 16,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -11807,8 +11801,7 @@
       "selectorCount": 12,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -11840,8 +11833,7 @@
         "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-states.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -11867,20 +11859,12 @@
       "path": "src/frontend/shared/styles/layout/campaign-navigation.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 12,
+      "lineCount": 4,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-language.css",
         "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-controls.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-layout.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-layout.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-states.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css"
       ],
       "importedBy": [
         "src/frontend/dm/layouts/CampaignShell.tsx"
@@ -18226,15 +18210,7 @@
     "src/frontend/shared/styles/layout/campaign-navigation.css": [
       "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-language.css",
       "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-controls.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-layout.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-layout.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-states.css"
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css"
     ],
     "src/frontend/shared/styles/layout/workspace.css": [
       "src/frontend/shared/styles/layout/workspace/workspace-shell.css",
