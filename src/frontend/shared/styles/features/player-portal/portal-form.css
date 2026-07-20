@@ -47,7 +47,7 @@
 
 .join-portal-input {
   width: 100%;
-  padding: 12px 16px 12px 42px !important;
+  padding: 12px 16px 12px 42px;
   font-size: 0.95rem;
   letter-spacing: 0.05em;
   border-radius: var(--theme-shapes-radius-medium);
@@ -58,8 +58,8 @@
 }
 
 .join-portal-input:focus {
-  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 50%, transparent) !important;
-  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-activity-system-foreground) 20%, transparent) !important;
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 50%, transparent);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-activity-system-foreground) 20%, transparent);
   outline: none;
 }
 

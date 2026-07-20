@@ -3,8 +3,8 @@
 }
 
 .campaign-messages-page .campaign-messaging {
-  min-height: inherit !important;
-  grid-template-rows: auto minmax(360px, 1fr) auto !important;
+  min-height: inherit;
+  grid-template-rows: auto minmax(360px, 1fr) auto;
   padding: 0;
   overflow: hidden;
   border-color: color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
@@ -14,7 +14,7 @@
 }
 
 .campaign-messages-page .campaign-messaging__header {
-  padding: 16px 18px !important;
+  padding: 16px 18px;
   background: color-mix(in srgb, var(--theme-surfaces-interactive) 76%, var(--theme-surfaces-base));
 }
 
@@ -25,7 +25,7 @@
 }
 
 .campaign-messages-page [role="log"] {
-  padding: 20px clamp(12px, 2vw, 24px) !important;
+  padding: 20px clamp(12px, 2vw, 24px);
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 38%, transparent) transparent;
 }
@@ -38,7 +38,7 @@
   position: sticky;
   bottom: 0;
   z-index: 2;
-  padding: 14px 18px 18px !important;
+  padding: 14px 18px 18px;
   background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
   box-shadow: 0 -12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 14%, transparent);
 }
@@ -50,9 +50,9 @@
 }
 
 .campaign-messages-page .campaign-messaging__composer {
-  display: grid !important;
+  display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end !important;
+  align-items: end;
 }
 
 .campaign-messages-page .campaign-messaging__textarea {
@@ -63,7 +63,7 @@
 
 .campaign-messages-page .campaign-messaging__send {
   min-width: 132px;
-  min-height: 44px !important;
+  min-height: 44px;
   align-self: end;
 }
 
@@ -73,12 +73,12 @@
   }
 
   .campaign-messages-page .campaign-messaging {
-    grid-template-rows: auto minmax(280px, 1fr) auto !important;
+    grid-template-rows: auto minmax(280px, 1fr) auto;
     border-radius: var(--theme-shapes-radius-medium, 10px);
   }
 
   .campaign-messages-page .campaign-messaging__message {
-    width: min(92%, 620px) !important;
+    width: min(92%, 620px);
     max-width: none;
   }
 
@@ -94,15 +94,15 @@
 @media (max-width: 520px) {
   .campaign-messages-page .campaign-messaging__header,
   .campaign-messages-page .campaign-messaging__footer {
-    padding-inline: 12px !important;
+    padding-inline: 12px;
   }
 
   .campaign-messages-page .campaign-messaging__list {
-    padding-inline: 10px !important;
+    padding-inline: 10px;
   }
 
   .campaign-messages-page .campaign-messaging__audience {
-    display: grid !important;
+    display: grid;
     grid-template-columns: 1fr;
   }
 

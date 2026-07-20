@@ -74,8 +74,8 @@
   border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 22%, transparent);
   border-radius: 14px;
   background: color-mix(in srgb, var(--theme-feedback-success-foreground) 8%, transparent);
-  color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 70%, var(--theme-text-primary)) !important;
-  font-size: 0.84rem !important;
+  color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 70%, var(--theme-text-primary));
+  font-size: 0.84rem;
 }
 
 .campaign-tour__progress {

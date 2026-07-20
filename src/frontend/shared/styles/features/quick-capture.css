@@ -33,7 +33,7 @@
 
 .player-portal-shell .quick-capture-fab,
 .join-portal-container .quick-capture-fab {
-  display: none !important;
+  display: none;
 }
 
 .quick-capture-overlay {

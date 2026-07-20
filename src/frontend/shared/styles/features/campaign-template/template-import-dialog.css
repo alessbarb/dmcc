@@ -2,13 +2,13 @@
 
 .campaign-template-preview-badge {
   flex: 0 0 auto;
-  margin-top: 0 !important;
+  margin-top: 0;
   padding: 3px 7px;
   border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
-  color: var(--theme-text-secondary) !important;
-  font-size: 0.7rem !important;
+  color: var(--theme-text-secondary);
+  font-size: 0.7rem;
   font-weight: 800;
 }
 

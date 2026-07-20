@@ -40,7 +40,7 @@
 
 @media (max-width: 900px) {
   .player-portal-shell {
-    height: 100dvh !important;
+    height: 100dvh;
   }
 
   .player-portal-sidebar {
@@ -48,13 +48,13 @@
   }
 
   .player-portal-main {
-    height: 100dvh !important;
+    height: 100dvh;
     padding-bottom: calc(84px + env(safe-area-inset-bottom));
   }
 
   .player-portal-content {
-    padding: 18px !important;
-    max-width: none !important;
+    padding: 18px;
+    max-width: none;
   }
 
   .player-session-hero,

@@ -47,10 +47,10 @@
 
 @media (max-width: 768px) {
   .campaign-tour__card {
-    top: auto !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: auto !important;
+    top: auto;
+    left: 12px;
+    right: 12px;
+    width: auto;
     max-height: min(72vh, 560px);
   }
 
