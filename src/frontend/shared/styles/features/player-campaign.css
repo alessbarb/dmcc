@@ -1,1 +1,5 @@
-@import "./player-campaign/player-campaign-shell.css";
+@import "./player-campaign/player-campaign-search.css";
+@import "./player-campaign/player-campaign-memory.css";
+@import "./player-campaign/player-campaign-character.css";
+@import "./player-campaign/player-campaign-constellation.css";
+@import "./player-campaign/player-campaign-objectives-and-notes.css";

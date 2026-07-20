@@ -1,1 +1,4 @@
-@import "./admin-announcements/admin-announcements.css";
+@import "./admin-announcements/admin-announcements-layout.css";
+@import "./admin-announcements/admin-announcements-form.css";
+@import "./admin-announcements/admin-announcements-cards.css";
+@import "./admin-announcements/admin-announcements-actions.css";

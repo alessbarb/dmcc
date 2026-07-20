@@ -1,0 +1,11 @@
+
+.admin-users__table-panel { overflow-x: auto; border: 1px solid var(--theme-borders-default); border-radius: 12px; background: var(--theme-surfaces-base); }
+.admin-users__table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+.admin-users__table th, .admin-users__table td { padding: 16px; }
+.admin-users__table-head { border-bottom: 1px solid var(--theme-borders-default); background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent); }
+.admin-users__row { border-bottom: 1px solid var(--theme-borders-default); }
+.admin-users__row:last-child { border-bottom: 0; }
+.admin-users__cell--right { text-align: right; }
+.admin-users__identity { display: flex; align-items: center; gap: 12px; }
+.admin-users__avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.admin-users__avatar--initial { display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--theme-text-on-media) 5%, transparent); font-weight: 600; }

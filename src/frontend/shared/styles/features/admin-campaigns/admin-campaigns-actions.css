@@ -1,0 +1,6 @@
+
+.admin-campaigns__action--restore { border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent); color: var(--theme-feedback-success-foreground); }
+.admin-campaigns__action--purge { border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent); color: var(--theme-feedback-danger-foreground); }
+.admin-campaigns__status-note { padding: 6px 12px; color: var(--theme-text-secondary); font-size: 0.8rem; }
+.admin-campaigns__status-note--importing { display: flex; align-items: center; gap: 4px; color: var(--theme-accents-primary-foreground); }
+@media (max-width: 720px) { .admin-campaigns__search-form { max-width: none; } .admin-campaigns__actions { flex-wrap: wrap; } }

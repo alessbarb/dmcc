@@ -1,1 +1,5 @@
-@import "./entity-relations/entity-relations.css";
+@import "./entity-relations/entity-facts.css";
+@import "./entity-relations/entity-fact-filters.css";
+@import "./entity-relations/entity-relation-list.css";
+@import "./entity-relations/entity-connections.css";
+@import "./entity-relations/entity-graph.css";

@@ -1,1 +1,4 @@
-@import "./admin-audit/admin-audit.css";
+@import "./admin-audit/admin-audit-layout.css";
+@import "./admin-audit/admin-audit-filters.css";
+@import "./admin-audit/admin-audit-table.css";
+@import "./admin-audit/admin-audit-details.css";

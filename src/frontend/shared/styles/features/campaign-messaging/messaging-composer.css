@@ -1,0 +1,11 @@
+
+.campaign-messaging__message-footer--pending { flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.campaign-messaging__jump { position: absolute; right: 12px; bottom: 12px; max-width: calc(100% - 24px); border-radius: 999px; box-shadow: var(--theme-shadows-medium); }
+.campaign-messaging__footer { border-top: 1px solid var(--theme-borders-default); padding-top: 14px; display: grid; gap: 10px; }
+.campaign-messaging__error { margin: 0; color: var(--theme-feedback-danger-foreground); }
+.campaign-messaging__audience { display: flex; gap: 8px; flex-wrap: wrap; }
+.campaign-messaging__composer { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.campaign-messaging__textarea { flex: 1 1 260px; min-width: 0; }
+.campaign-messaging__send { flex: 1 0 auto; min-height: 44px; }
+.campaign-messaging__message--tone-0 { --campaign-message-accent: var(--theme-accents-primary-foreground); }
+.campaign-messaging__message--tone-1 { --campaign-message-accent: var(--theme-accents-secondary-foreground); }

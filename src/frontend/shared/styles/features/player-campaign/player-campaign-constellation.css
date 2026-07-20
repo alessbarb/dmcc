@@ -1,0 +1,9 @@
+
+.player-constellation { display: grid; gap: 14px; }
+.player-constellation__actions { display: flex; justify-content: flex-end; }
+.player-constellation__canvas { padding: 0; overflow: hidden; }
+.player-constellation__tabs { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid var(--theme-borders-default); overflow-x: auto; }
+.player-constellation__flow { height: 70dvh; }
+.player-campaign-home, .player-notes { display: grid; gap: 14px; }
+.player-campaign-recap { font-size: 17px; line-height: 1.55; }
+.player-campaign-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }

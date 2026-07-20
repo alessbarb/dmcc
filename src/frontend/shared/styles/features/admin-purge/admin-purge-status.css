@@ -1,0 +1,11 @@
+
+.admin-purge__cell--right { text-align: right; }
+.admin-purge__status-icon--success { color: var(--theme-feedback-success-foreground); }
+.admin-purge__status-icon--danger { color: var(--theme-feedback-danger-foreground); }
+.admin-purge__status-icon--accent { color: var(--theme-accents-primary-foreground); }
+.admin-purge__status-icon--muted { color: var(--theme-text-secondary); }
+.admin-purge__job-id { font-weight: 600; }
+.admin-purge__muted-detail { margin-top: 2px; color: var(--theme-text-secondary); font-size: 0.75rem; }
+.admin-purge__capitalize { text-transform: capitalize; }
+.admin-purge__error-cell { max-width: 300px; }
+.admin-purge__error-code { color: var(--theme-feedback-danger-foreground); font-size: 0.8rem; font-weight: 500; }

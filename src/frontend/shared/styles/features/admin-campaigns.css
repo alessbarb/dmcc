@@ -1,1 +1,4 @@
-@import "./admin-campaigns/admin-campaigns.css";
+@import "./admin-campaigns/admin-campaigns-layout.css";
+@import "./admin-campaigns/admin-campaigns-filters.css";
+@import "./admin-campaigns/admin-campaigns-table.css";
+@import "./admin-campaigns/admin-campaigns-actions.css";

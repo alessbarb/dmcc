@@ -1,1 +1,4 @@
-@import "./admin-purge/admin-purge.css";
+@import "./admin-purge/admin-purge-layout-and-filters.css";
+@import "./admin-purge/admin-purge-table.css";
+@import "./admin-purge/admin-purge-status.css";
+@import "./admin-purge/admin-purge-actions.css";

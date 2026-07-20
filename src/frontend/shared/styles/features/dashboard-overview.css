@@ -1,1 +1,5 @@
-@import "./dashboard-overview/dashboard-overview.css";
+@import "./dashboard-overview/dashboard-cards.css";
+@import "./dashboard-overview/dashboard-header.css";
+@import "./dashboard-overview/dashboard-grids.css";
+@import "./dashboard-overview/dashboard-checklists.css";
+@import "./dashboard-overview/dashboard-activity.css";

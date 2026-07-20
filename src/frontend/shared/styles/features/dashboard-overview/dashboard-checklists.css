@@ -1,0 +1,11 @@
+
+.dashboard-attention--warning { border-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 35%, transparent); }
+.dashboard-attention--danger { border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 40%, transparent); }
+.dashboard-attention__header { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+.dashboard-attention__title { margin: 0; }
+.dashboard-attention__items { display: flex; gap: 8px; flex-wrap: wrap; }
+.dashboard-checklist, .dashboard-risk-list, .dashboard-activity-list { display: grid; gap: 10px; }
+.dashboard-checklist__item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--theme-shapes-radius-medium); background: var(--theme-surfaces-interactive); border: 1px solid var(--theme-borders-default); }
+.dashboard-checklist__label { flex: 1; color: var(--theme-text-primary); }
+.dashboard-checklist__label.is-complete { text-decoration: line-through; color: var(--theme-text-secondary); }
+.dashboard-risk-item { border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-medium); padding: 12px; }

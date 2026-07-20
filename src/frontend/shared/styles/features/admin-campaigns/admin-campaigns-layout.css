@@ -1,0 +1,10 @@
+.admin-campaigns { max-width: 1200px; margin: 0 auto; }
+.admin-campaigns__header { margin-bottom: 32px; }
+.admin-campaigns__title { margin: 0; font-size: 1.8rem; font-weight: 700; }
+.admin-campaigns__subtitle { margin-top: 4px; color: var(--theme-text-secondary); font-size: 0.85rem; }
+.admin-campaigns__zero-margin { margin: 0; }
+.admin-campaigns__error { margin-bottom: 24px; padding: 16px; border: 1px solid var(--theme-feedback-danger-foreground); border-radius: 8px; background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent); color: var(--theme-feedback-danger-foreground); }
+.admin-campaigns__filters { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; padding: 16px; border: 1px solid var(--theme-borders-default); border-radius: 12px; background: var(--theme-surfaces-base); }
+.admin-campaigns__status-filters, .admin-campaigns__search-form, .admin-campaigns__actions { display: flex; gap: 8px; }
+.admin-campaigns__search-form { flex: 1; max-width: 400px; }
+.admin-campaigns__search-field { position: relative; flex: 1; }

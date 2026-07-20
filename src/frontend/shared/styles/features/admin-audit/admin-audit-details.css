@@ -1,0 +1,22 @@
+
+.admin-audit__details-list { display: flex; flex-direction: column; gap: 16px; font-size: 0.8rem; }
+.admin-audit__detail-label { display: block; margin-bottom: 4px; color: var(--theme-text-secondary); }
+.admin-audit__detail-label--metadata { margin-bottom: 8px; }
+.admin-audit__mono { font-family: monospace; }
+.admin-audit__break-all { word-break: break-all; }
+.admin-audit__metadata { border-top: 1px solid var(--theme-borders-default); padding-top: 16px; }
+.admin-audit__metadata-code { overflow-x: auto; margin: 0; border-radius: 6px; padding: 12px; background: color-mix(in srgb, var(--theme-surfaces-canvas) 30%, transparent); font-family: monospace; font-size: 0.75rem; }
+
+@media (max-width: 900px) {
+  .admin-audit__content { flex-direction: column; }
+  .admin-audit__table-panel,
+  .admin-audit__details-panel { width: 100%; box-sizing: border-box; min-width: 0; }
+  .admin-audit__details-panel { position: static; }
+}
+
+@media (max-width: 600px) {
+  .admin-audit__header { align-items: flex-start; flex-direction: column; }
+  .admin-audit__refresh { align-self: stretch; justify-content: center; }
+  .admin-audit__table-panel { overflow-x: auto; }
+  .admin-audit__table { min-width: 620px; }
+}

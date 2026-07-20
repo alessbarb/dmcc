@@ -1,1 +1,4 @@
-@import "./admin-users/admin-users.css";
+@import "./admin-users/admin-users-layout.css";
+@import "./admin-users/admin-users-filters.css";
+@import "./admin-users/admin-users-table.css";
+@import "./admin-users/admin-users-actions.css";

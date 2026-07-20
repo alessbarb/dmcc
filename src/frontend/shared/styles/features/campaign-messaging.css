@@ -1,1 +1,4 @@
-@import "./campaign-messaging/campaign-messaging.css";
+@import "./campaign-messaging/messaging-layout.css";
+@import "./campaign-messaging/messaging-bubbles.css";
+@import "./campaign-messaging/messaging-composer.css";
+@import "./campaign-messaging/messaging-tones.css";

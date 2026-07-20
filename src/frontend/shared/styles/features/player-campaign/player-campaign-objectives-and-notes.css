@@ -1,0 +1,6 @@
+
+.player-objective { border-top: 1px solid var(--theme-borders-default); padding: 10px 0; }
+.player-objective__description { margin: 4px 0; }
+.player-objective__status { font-size: 12px; }
+.player-notes__submit { margin-top: 10px; }
+.player-note { border-bottom: 1px solid var(--theme-borders-default); padding-bottom: 8px; }
