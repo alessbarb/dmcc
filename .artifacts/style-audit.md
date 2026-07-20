@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 382,
+  "cssFiles": 379,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -335,62 +335,59 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 6 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
-| `src/frontend/shared/styles/landing/landing-01.css` | feature | shared | 173 | 18 | 1 |
-| `src/frontend/shared/styles/landing/landing-02.css` | feature | shared | 129 | 15 | 1 |
-| `src/frontend/shared/styles/landing/landing-03.css` | feature | shared | 169 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-04.css` | feature | shared | 151 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-05/landing-05-01.css` | feature | shared | 50 | 18 | 1 |
-| `src/frontend/shared/styles/landing/landing-05/landing-05-02.css` | feature | shared | 70 | 19 | 1 |
-| `src/frontend/shared/styles/landing/landing-05.css` | feature | shared | 3 | 0 | 1 |
-| `src/frontend/shared/styles/landing/landing-06.css` | feature | shared | 153 | 26 | 1 |
-| `src/frontend/shared/styles/landing/landing-07.css` | feature | shared | 153 | 24 | 1 |
-| `src/frontend/shared/styles/landing/landing-08.css` | feature | shared | 176 | 23 | 1 |
-| `src/frontend/shared/styles/landing/landing-09.css` | feature | shared | 207 | 29 | 1 |
-| `src/frontend/shared/styles/landing/landing-10.css` | feature | shared | 202 | 20 | 1 |
-| `src/frontend/shared/styles/landing/landing-11.css` | feature | shared | 152 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-01.css` | feature | shared | 11 | 2 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-02.css` | feature | shared | 156 | 26 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-03.css` | feature | shared | 48 | 8 | 1 |
-| `src/frontend/shared/styles/landing/landing-12/landing-12-04.css` | feature | shared | 3 | 0 | 1 |
-| `src/frontend/shared/styles/landing/landing-12.css` | feature | shared | 5 | 0 | 1 |
-| `src/frontend/shared/styles/landing/landing-13.css` | feature | shared | 147 | 20 | 1 |
-| `src/frontend/shared/styles/landing/landing-14.css` | feature | shared | 153 | 19 | 1 |
-| `src/frontend/shared/styles/landing/landing-15.css` | feature | shared | 197 | 28 | 1 |
-| `src/frontend/shared/styles/landing/landing-16.css` | feature | shared | 131 | 21 | 1 |
-| `src/frontend/shared/styles/landing.css` | feature | shared | 17 | 0 | 1 |
+| `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css` | feature | shared | 131 | 21 | 1 |
+| `src/frontend/shared/styles/landing/account-home-campaign-list.css` | feature | shared | 197 | 28 | 1 |
+| `src/frontend/shared/styles/landing/account-home-featured-campaign.css` | feature | shared | 153 | 19 | 1 |
+| `src/frontend/shared/styles/landing/account-home-layout.css` | feature | shared | 147 | 20 | 1 |
+| `src/frontend/shared/styles/landing/landing-animations.css` | feature | shared | 50 | 18 | 1 |
+| `src/frontend/shared/styles/landing/landing-feature-blocks.css` | feature | shared | 153 | 26 | 1 |
+| `src/frontend/shared/styles/landing/landing-hero-actions.css` | feature | shared | 129 | 15 | 1 |
+| `src/frontend/shared/styles/landing/landing-local-and-final-cta.css` | feature | shared | 207 | 29 | 1 |
+| `src/frontend/shared/styles/landing/landing-memory-and-network.css` | feature | shared | 153 | 24 | 1 |
+| `src/frontend/shared/styles/landing/landing-network-and-footer.css` | feature | shared | 176 | 23 | 1 |
+| `src/frontend/shared/styles/landing/landing-preview-details.css` | feature | shared | 151 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-preview-shell.css` | feature | shared | 169 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-shell.css` | feature | shared | 173 | 18 | 1 |
+| `src/frontend/shared/styles/landing/landing-showcase.css` | feature | shared | 70 | 19 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-mobile.css` | feature | shared | 156 | 26 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-responsive-details.css` | feature | shared | 3 | 0 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-responsive-grid.css` | feature | shared | 48 | 8 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-role-actions.css` | feature | shared | 11 | 2 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 152 | 21 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 202 | 20 | 1 |
+| `src/frontend/shared/styles/landing.css` | feature | shared | 21 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 7 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-01.css` | layout | shared | 75 | 10 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-01.css` | layout | shared | 55 | 6 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-01.css` | layout | shared | 24 | 3 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css` | layout | shared | 142 | 16 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css` | layout | shared | 156 | 16 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css` | layout | shared | 4 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css` | layout | shared | 145 | 16 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-02.css` | layout | shared | 114 | 12 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css` | layout | shared | 3 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css` | layout | shared | 4 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css` | layout | shared | 2 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css` | layout | shared | 88 | 15 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 4 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-controls.css` | layout | shared | 55 | 6 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-layout.css` | layout | shared | 24 | 3 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css` | layout | shared | 156 | 16 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css` | layout | shared | 142 | 16 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items.css` | layout | shared | 4 | 0 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-language.css` | layout | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css` | layout | shared | 88 | 15 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-layout.css` | layout | shared | 145 | 16 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-states.css` | layout | shared | 114 | 12 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary.css` | layout | shared | 3 | 0 | 2 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-shell.css` | layout | shared | 4 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 12 | 0 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 202 | 30 | 1 |
 | `src/frontend/shared/styles/layout/footer.css` | layout | shared | 128 | 16 | 1 |
 | `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 5 | 1 |
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 11 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-01.css` | layout | shared | 80 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-02.css` | layout | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-03.css` | layout | shared | 87 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-04.css` | layout | shared | 69 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-05.css` | layout | shared | 61 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-06.css` | layout | shared | 73 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-07.css` | layout | shared | 62 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-08.css` | layout | shared | 78 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-09.css` | layout | shared | 63 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-10.css` | layout | shared | 76 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-11.css` | layout | shared | 162 | 26 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-12.css` | layout | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-13.css` | layout | shared | 62 | 12 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-link-modal-filters.css` | layout | shared | 76 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-link-modal.css` | layout | shared | 63 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebook-details.css` | layout | shared | 61 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebook-forms.css` | layout | shared | 73 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebook-items.css` | layout | shared | 62 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebooks-empty.css` | layout | shared | 78 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebooks-layout.css` | layout | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebooks-search.css` | layout | shared | 87 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebooks-tree.css` | layout | shared | 69 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-responsive.css` | layout | shared | 162 | 26 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-shell.css` | layout | shared | 80 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-tabs.css` | layout | shared | 62 | 12 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-variants.css` | layout | shared | 81 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
 | `src/frontend/shared/styles/main.css` | foundation | shared | 92 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
@@ -785,34 +782,34 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/player-portal/portal-form.css:62` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:19` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:87` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:88` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:89` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:90` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:92` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:14` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:18` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:22` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css:80` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:16` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:20` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:21` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:26` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:30` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:36` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:45` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:50` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:84` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:85` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:18` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:22` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:11` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:87` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:88` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:89` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:90` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-states.css:92` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:20` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:21` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:45` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:84` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-responsive.css:85` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-layout.css:80` | Important declarations bypass the intended cascade. |
 | medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/card.css:7` | Generic selector has global collision risk. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/dialog.css:44` | Generic selector has global collision risk. |
