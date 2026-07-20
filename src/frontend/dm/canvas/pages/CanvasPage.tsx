@@ -548,7 +548,7 @@ export function CanvasPage() {
                 const pngUrl = URL.createObjectURL(pngBlob);
                 const link = document.createElement('a');
                 link.href = pngUrl;
-                link.download = `${activeCanvas?.title || 'canvas'}-${viewMode}.webp`;
+                link.download = `${activeCanvas?.title || 'canvas'}-${viewMode}.png`;
                 link.click();
                 URL.revokeObjectURL(pngUrl);
                 addToast(`Canvas (${viewMode.toUpperCase()}) exportado como imagen PNG.`, "success");
