@@ -50,6 +50,8 @@ export function SessionDetailPage() {
   }
 
   if (session.status === "planned") {
+    const focusStepId = new URLSearchParams(window.location.search).get("stepId");
+
     const handleSavePlan = async (title: string, plan: Omit<NonNullable<typeof session.plan>, "revision">, scheduledAt?: string) => {
       try {
         await store.reviseSessionPlan(session.sessionId, {
@@ -125,6 +127,7 @@ export function SessionDetailPage() {
         <SessionStorySteps
           sessionId={session.sessionId}
           closedSessions={sessions.filter((s) => s.status === "closed")}
+          focusStepId={focusStepId}
         />
       </div>
     );

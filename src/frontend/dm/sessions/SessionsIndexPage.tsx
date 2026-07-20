@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "@tanstack/react-router";
 import { CalendarClock, HelpCircle, MapPin, Play, StickyNote, UserPlus } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
@@ -7,6 +7,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { errorMessage, runSessionAction } from "./sessionFormSubmit.js";
 import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 import { StoryThreadsPanel } from "./components/StoryThreadsPanel.js";
+import { useStoryThreads } from "../story/useStoryThreads.js";
 import "./session-workspace.css";
 import "./components/session-idle.css";
 import "./components/prepared-session.css";
@@ -21,6 +22,8 @@ export function SessionsIndexPage() {
   const [newTitle, setNewTitle] = useState("");
   const [isPreparing, setIsPreparing] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
+  const { steps: storySteps } = useStoryThreads();
+  const [focusThreadId, setFocusThreadId] = useState<string | null>(null);
 
   const sessions = store.campaignState?.sessions ?? [];
   const activeSession = sessions.find((session) => session.status === "active");
@@ -36,6 +39,36 @@ export function SessionsIndexPage() {
   const goToDetail = (sessionId: string) => {
     if (campaignId) runSessionAction(navigate({ to: `/campaigns/${campaignId}/sessions/${sessionId}` }), "No se pudo abrir la sesión.");
   };
+
+  useEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const requestedStepId = search.get("stepId");
+    const requestedThreadId = search.get("threadId");
+
+    if (requestedStepId) {
+      const step = storySteps.find((s) => s.stepId === requestedStepId);
+      if (step?.plannedSessionId) {
+        if (campaignId) {
+          runSessionAction(
+            navigate({
+              to: `/campaigns/${campaignId}/sessions/${step.plannedSessionId}`,
+              search: { stepId: requestedStepId },
+              replace: true,
+            }),
+            "No se pudo abrir la sesión.",
+          );
+        }
+        return;
+      }
+      if (step) {
+        setFocusThreadId(step.threadId);
+        return;
+      }
+    }
+    if (requestedThreadId) {
+      setFocusThreadId(requestedThreadId);
+    }
+  }, [storySteps, campaignId, navigate]);
 
   const handlePrepare = async () => {
     const title = newTitle.trim() || t("session.sessionNumber", { number: nextNumber });
@@ -193,7 +226,7 @@ export function SessionsIndexPage() {
               </section>
             )}
 
-            <StoryThreadsPanel plannedSessions={preparedSessions} />
+            <StoryThreadsPanel plannedSessions={preparedSessions} focusThreadId={focusThreadId} />
           </main>
 
           <aside className="session-history-panel surface-panel" aria-labelledby="recent-sessions-heading">

@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Plus, X, Check, Calendar, GitBranch } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useStoryThreads } from "../../story/useStoryThreads.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 
-export function StoryThreadsPanel({ plannedSessions }: { plannedSessions: Session[] }) {
+export function StoryThreadsPanel({
+  plannedSessions,
+  focusThreadId = null,
+}: {
+  plannedSessions: Session[];
+  focusThreadId?: string | null;
+}) {
   const { t } = useTranslation();
   const { threads, steps, createThread, archiveThread, createStep, scheduleStep } = useStoryThreads();
 
@@ -16,6 +22,19 @@ export function StoryThreadsPanel({ plannedSessions }: { plannedSessions: Sessio
   const [stepTitle, setStepTitle] = useState("");
   const [schedulingStepId, setSchedulingStepId] = useState<string | null>(null);
   const [scheduleSessionId, setScheduleSessionId] = useState("");
+  const focusedCardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (focusThreadId) {
+      setExpandedThreadId(focusThreadId);
+    }
+  }, [focusThreadId]);
+
+  useEffect(() => {
+    if (focusThreadId && focusedCardRef.current) {
+      focusedCardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [focusThreadId, expandedThreadId]);
 
   const activeThreads = threads.filter((thread) => !thread.archivedAt).sort((a, b) => a.sortOrder - b.sortOrder);
   const backlogStepsByThread = (threadId: string) =>
@@ -103,7 +122,11 @@ export function StoryThreadsPanel({ plannedSessions }: { plannedSessions: Sessio
             const isExpanded = expandedThreadId === thread.threadId;
             const backlog = backlogStepsByThread(thread.threadId);
             return (
-              <div key={thread.threadId} className="story-thread-card">
+              <div
+                key={thread.threadId}
+                className="story-thread-card"
+                ref={thread.threadId === focusThreadId ? focusedCardRef : undefined}
+              >
                 <button
                   type="button"
                   className={`thread-item-btn ${isExpanded ? "selected" : ""}`}

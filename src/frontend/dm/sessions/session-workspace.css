@@ -299,3 +299,8 @@
   min-height: 84px;
   resize: vertical;
 }
+
+.step-card--focused {
+  outline: 2px solid var(--theme-focus-outline);
+  outline-offset: 2px;
+}

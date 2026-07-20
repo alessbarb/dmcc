@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RotateCcw, Check, Play, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useStoryThreads } from "../../story/useStoryThreads.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 
-export function SessionStorySteps({ sessionId, closedSessions }: { sessionId: string; closedSessions: Session[] }) {
+export function SessionStorySteps({
+  sessionId,
+  closedSessions,
+  focusStepId = null,
+}: {
+  sessionId: string;
+  closedSessions: Session[];
+  focusStepId?: string | null;
+}) {
   const { t } = useTranslation();
   const { steps, threads, deferStep, unscheduleStep, markStepReady, activateStep, reconcileStep } = useStoryThreads();
 
@@ -13,6 +21,13 @@ export function SessionStorySteps({ sessionId, closedSessions }: { sessionId: st
   const [reconcileStatus, setReconcileStatus] = useState<"resolved" | "discarded">("resolved");
   const [reconcileKind, setReconcileKind] = useState<"as_planned" | "changed" | "discarded">("as_planned");
   const [reconcileOutcome, setReconcileOutcome] = useState("");
+  const focusedStepRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (focusStepId && focusedStepRef.current) {
+      focusedStepRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [focusStepId]);
 
   const scheduledSteps = steps.filter((step) => step.plannedSessionId === sessionId);
   if (scheduledSteps.length === 0) return null;
@@ -50,7 +65,11 @@ export function SessionStorySteps({ sessionId, closedSessions }: { sessionId: st
       <h3 className="story-plan-heading__title story-plan-heading__title--small">{t("story.steps") || "Pasos del Plan"}</h3>
       <div className="story-plan-step-list">
         {scheduledSteps.map((step) => (
-          <div key={step.stepId} className={`step-card glass-panel status-${step.status}`}>
+          <div
+            key={step.stepId}
+            className={`step-card glass-panel status-${step.status}${step.stepId === focusStepId ? " step-card--focused" : ""}`}
+            ref={step.stepId === focusStepId ? focusedStepRef : undefined}
+          >
             <div className="story-plan-step-header">
               <div className="story-plan-step-heading">
                 <span className="story-plan-thread-title">{threadTitle(step.threadId)}</span>
