@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 379,
+  "cssFiles": 378,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -350,12 +350,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing/landing-shell.css` | feature | shared | 173 | 18 | 1 |
 | `src/frontend/shared/styles/landing/landing-showcase.css` | feature | shared | 70 | 19 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-mobile.css` | feature | shared | 156 | 26 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-responsive-details.css` | feature | shared | 3 | 0 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-responsive-grid.css` | feature | shared | 48 | 8 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-role-actions.css` | feature | shared | 11 | 2 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 152 | 21 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 202 | 20 | 1 |
-| `src/frontend/shared/styles/landing.css` | feature | shared | 21 | 0 | 1 |
+| `src/frontend/shared/styles/landing.css` | feature | shared | 20 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 7 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-controls.css` | layout | shared | 55 | 6 | 2 |
