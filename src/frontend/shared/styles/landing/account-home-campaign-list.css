@@ -2,18 +2,18 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
   padding: 4px 10px;
-  border-radius: var(--radius-md, 6px);
+  border-radius: var(--theme-shapes-radius-medium, 6px);
   font-size: 0.78rem;
-  color: var(--text-subtle);
+  color: var(--theme-text-subtle);
   transition: all 0.2s ease;
 }
 
 .featured-campaign-card:hover .stat-pill {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  border-color: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
 }
 
 .other-campaigns-section {
@@ -32,28 +32,28 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
   padding: 10px 12px;
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--theme-shapes-radius-medium, 8px);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .campaign-row-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(226, 159, 82, 0.25);
+  background: color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent);
   transform: translateX(2px);
 }
 
 .campaign-row-thumb {
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-sm, 4px);
+  border-radius: var(--theme-shapes-radius-small, 4px);
   background-position: center;
   background-size: cover;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);
 }
 
 .campaign-row-info {
@@ -64,7 +64,7 @@
 .campaign-row-info h4 {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   margin: 0 0 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -73,18 +73,18 @@
 
 .system-text {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   margin: 0;
 }
 
 .row-arrow {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   opacity: 0.5;
   transition: all 0.2s ease;
 }
 
 .campaign-row-item:hover .row-arrow {
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   opacity: 1;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .player-profile-row-card:hover {
-  border-color: rgba(167, 139, 250, 0.35);
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 35%, transparent);
 }
 
 .row-layout {
@@ -120,8 +120,8 @@
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px double rgba(167, 139, 250, 0.5);
-  box-shadow: 0 0 12px rgba(167, 139, 250, 0.2);
+  border: 2px double color-mix(in srgb, var(--theme-accents-secondary-foreground) 50%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--theme-accents-secondary-foreground) 20%, transparent);
   flex-shrink: 0;
 }
 
@@ -140,25 +140,25 @@
 .profile-name {
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   margin: 0 0 2px;
 }
 
 .char-name {
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--accent-amethyst);
+  color: var(--theme-accents-secondary-foreground);
   margin: 0 0 2px;
 }
 
 .campaign-link-name {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   margin: 0;
 }
 
 .amethyst-arrow {
-  color: var(--accent-amethyst);
+  color: var(--theme-accents-secondary-foreground);
   opacity: 0.6;
   transition: all 0.2s ease;
 }
@@ -173,14 +173,14 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
   padding-top: 16px;
 }
 
 .link-action-gold {
   background: none;
   border: none;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;

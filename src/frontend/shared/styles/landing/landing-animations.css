@@ -1,7 +1,7 @@
 .rl-feature-icon--teal {
-  background: hsl(193 55% 65% / 0.1);
-  color: var(--semantic-rumor);
-  border: 1px solid hsl(193 55% 65% / 0.2);
+  background: color-mix(in srgb, var(--theme-narrative-rumor-foreground) 10%, transparent);
+  color: var(--theme-narrative-rumor-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-narrative-rumor-foreground) 20%, transparent);
 }
 
 /* ── Scroll entrance animations ──────────────────────────── */

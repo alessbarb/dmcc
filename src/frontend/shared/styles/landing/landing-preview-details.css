@@ -5,9 +5,9 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: hsl(145 48% 45% / 0.18);
-  border: 1px solid hsl(145 48% 45% / 0.3);
-  color: var(--semantic-success);
+  background: color-mix(in srgb, var(--theme-feedback-success-foreground) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent);
+  color: var(--theme-feedback-success-foreground);
   font-size: 0.54rem;
   font-weight: 600;
   padding: 2px 7px;
@@ -20,7 +20,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--semantic-success);
+  background: var(--theme-feedback-success-foreground);
   animation: rl-pulse 2s ease infinite;
   flex-shrink: 0;
 }
@@ -40,18 +40,18 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: hsl(32 12% 50%);
+  color: var(--theme-text-disabled);
   font-size: 0.6rem;
 }
 
 .rl-preview-stat strong {
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   font-weight: 700;
   font-size: 0.75rem;
 }
 
 .rl-preview-stat small {
-  color: hsl(32 12% 48%);
+  color: var(--theme-text-disabled);
   font-size: 0.56rem;
 }
 
@@ -71,27 +71,27 @@
 }
 
 .rl-preview-tag--purple {
-  background: hsl(270 52% 70% / 0.1);
-  color: var(--accent-amethyst);
-  border: 1px solid hsl(270 52% 70% / 0.2);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 10%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 20%, transparent);
 }
 
 .rl-preview-tag--amber {
-  background: hsl(38 66% 62% / 0.1);
-  color: var(--accent-fire);
-  border: 1px solid hsl(38 66% 62% / 0.2);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+  color: var(--theme-accents-primary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent);
 }
 
 .rl-preview-tag--blue {
-  background: hsl(204 66% 68% / 0.1);
-  color: var(--semantic-info);
-  border: 1px solid hsl(204 66% 68% / 0.2);
+  background: color-mix(in srgb, var(--theme-feedback-info-foreground) 10%, transparent);
+  color: var(--theme-feedback-info-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-info-foreground) 20%, transparent);
 }
 
 .rl-preview-tag--green {
-  background: hsl(158 52% 58% / 0.1);
-  color: var(--entity-location);
-  border: 1px solid hsl(158 52% 58% / 0.2);
+  background: color-mix(in srgb, var(--theme-entities-location-foreground) 10%, transparent);
+  color: var(--theme-entities-location-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-entities-location-foreground) 20%, transparent);
 }
 
 /* Alert */
@@ -100,9 +100,9 @@
   align-items: center;
   gap: 6px;
   font-size: 0.58rem;
-  color: var(--accent-amethyst);
-  background: hsl(270 52% 70% / 0.06);
-  border: 1px solid hsl(270 52% 70% / 0.15);
+  color: var(--theme-accents-secondary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 15%, transparent);
   border-radius: 6px;
   padding: 5px 9px;
 }
@@ -115,7 +115,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  color: hsl(32 12% 45%);
+  color: var(--theme-text-disabled);
   animation: rl-bounce 2.4s ease infinite;
 }
 
@@ -137,13 +137,13 @@
 }
 
 .rl-feature-icon--purple {
-  background: hsl(270 52% 70% / 0.1);
-  color: var(--accent-amethyst);
-  border: 1px solid hsl(270 52% 70% / 0.2);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 10%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 20%, transparent);
 }
 
 .rl-feature-icon--gold {
-  background: hsl(38 66% 62% / 0.1);
-  color: var(--accent-fire);
-  border: 1px solid hsl(38 66% 62% / 0.2);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+  color: var(--theme-accents-primary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent);
 }

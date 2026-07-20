@@ -6,7 +6,7 @@
 
 .rl-mem-card {
   padding: 14px 18px;
-  border-bottom: 1px solid hsl(220 20% 14% / 0.8);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 80%, transparent);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -24,13 +24,13 @@
   width: fit-content;
 }
 
-.badge--canon   { background: hsl(38 66% 62% / 0.12); color: var(--accent-fire); border: 1px solid hsl(38 66% 62% / 0.25); }
-.badge--secret  { background: hsl(277 58% 72% / 0.12); color: var(--semantic-secret); border: 1px solid hsl(277 58% 72% / 0.25); }
-.badge--rumor   { background: hsl(193 55% 65% / 0.12); color: var(--semantic-rumor); border: 1px solid hsl(193 55% 65% / 0.25); }
+.badge--canon   { background: var(--theme-canvas-selection); color: var(--theme-accents-primary-foreground); border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent); }
+.badge--secret  { background: color-mix(in srgb, var(--theme-narrative-secret-foreground) 12%, transparent); color: var(--theme-narrative-secret-foreground); border: 1px solid color-mix(in srgb, var(--theme-narrative-secret-foreground) 25%, transparent); }
+.badge--rumor   { background: color-mix(in srgb, var(--theme-narrative-rumor-foreground) 12%, transparent); color: var(--theme-narrative-rumor-foreground); border: 1px solid color-mix(in srgb, var(--theme-narrative-rumor-foreground) 25%, transparent); }
 
 .rl-mem-card__text {
   font-size: 0.76rem;
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
   line-height: 1.5;
 }
 
@@ -39,7 +39,7 @@
   align-items: center;
   gap: 5px;
   font-size: 0.62rem;
-  color: var(--text-subtle);
+  color: var(--theme-text-subtle);
 }
 
 /* Web sharing illustration */
@@ -66,18 +66,18 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: hsl(38 66% 62% / 0.1);
-  border: 2px solid hsl(38 66% 62% / 0.4);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
+  border: 2px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .rl-network-dm span {
   font-size: 0.6rem;
   font-weight: 700;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -89,7 +89,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--semantic-success);
+  background: var(--theme-feedback-success-foreground);
   animation: rl-pulse 2s ease infinite;
 }
 
@@ -107,8 +107,8 @@
   gap: 8px;
   padding: 6px 10px;
   border-radius: 8px;
-  background: hsl(226 25% 11% / 0.7);
-  border: 1px solid hsl(220 20% 18% / 0.6);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-surfaces-raised) 60%, transparent);
 }
 
 .rl-network-player__avatar {
@@ -124,27 +124,27 @@
 }
 
 .rl-network-player--connected .rl-network-player__avatar {
-  background: hsl(270 52% 70% / 0.15);
-  color: var(--accent-amethyst);
-  border: 1px solid hsl(270 52% 70% / 0.3);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 15%, transparent);
+  color: var(--theme-accents-secondary-foreground);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
 }
 .rl-network-player--offline .rl-network-player__avatar {
-  background: hsl(220 20% 18%);
-  color: var(--text-subtle);
-  border: 1px solid hsl(220 20% 22%);
+  background: var(--theme-surfaces-raised);
+  color: var(--theme-text-subtle);
+  border: 1px solid var(--theme-surfaces-interactive-hover);
 }
 
 .rl-network-player span {
   font-size: 0.68rem;
-  color: var(--text-secondary);
+  color: var(--theme-text-secondary);
   flex: 1;
 }
 
-.rl-network-player--offline span { color: var(--text-subtle); }
+.rl-network-player--offline span { color: var(--theme-text-subtle); }
 
 .rl-network-player__status {
   display: flex;
   align-items: center;
 }
-.status--online  { color: var(--semantic-success); }
-.status--offline { color: hsl(220 20% 35%); }
+.status--online  { color: var(--theme-feedback-success-foreground); }
+.status--offline { color: var(--theme-borders-strong); }

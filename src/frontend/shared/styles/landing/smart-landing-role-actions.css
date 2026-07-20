@@ -1,11 +1,11 @@
 .smart-role-card--dm:hover .smart-role-card__cta,
 .smart-role-card--dm:focus-visible .smart-role-card__cta {
-  box-shadow: 0 6px 20px hsla(255, 85%, 65%, 0.45);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-activity-system-foreground) 45%, transparent);
 }
 
 .smart-role-card--player .smart-role-card__cta {
-  border: 1.5px solid hsla(175, 85%, 45%, 0.5);
-  color: var(--secondary);
+  border: 1.5px solid color-mix(in srgb, var(--theme-activity-tag-foreground) 50%, transparent);
+  color: var(--theme-accents-secondary-foreground);
   background: transparent;
   box-shadow: none;
 }

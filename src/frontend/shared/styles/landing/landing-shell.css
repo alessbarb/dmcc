@@ -2,6 +2,51 @@ body:has(.rl-root) .watermark {
   display: none;
 }
 
+/* The public landing page is a standalone marketing surface with its own
+   fixed cinematic identity — it must not follow the visitor's light/dark
+   app preference. Pinning the theme tokens it consumes to their dark
+   values here, scoped to .rl-root, keeps every rule below written in
+   terms of the same semantic --theme-* names (so the palette stays
+   auditable and consistent with the rest of the codebase) without
+   inheriting the switchable global theme. */
+.rl-root {
+  --theme-accents-primary-active: hsl(37 60% 54%);
+  --theme-accents-primary-background: hsl(38 66% 62% / 0.14);
+  --theme-accents-primary-foreground: hsl(38 66% 62%);
+  --theme-accents-primary-hover: hsl(39 76% 70%);
+  --theme-accents-primary-on-accent: hsl(228 36% 8%);
+  --theme-accents-secondary-active: hsl(270 44% 60%);
+  --theme-accents-secondary-background: hsl(270 52% 70% / 0.14);
+  --theme-accents-secondary-foreground: hsl(270 52% 70%);
+  --theme-accents-secondary-hover: hsl(270 60% 78%);
+  --theme-accents-secondary-on-accent: hsl(228 36% 8%);
+  --theme-activity-system-foreground: hsl(255 85% 65%);
+  --theme-activity-tag-foreground: hsl(175 85% 45%);
+  --theme-borders-default: hsl(36 20% 28%);
+  --theme-borders-strong: hsl(37 26% 36%);
+  --theme-canvas-selection: hsl(38 66% 62% / 0.12);
+  --theme-entities-faction-foreground: hsl(230 70% 68%);
+  --theme-entities-location-foreground: hsl(158 52% 58%);
+  --theme-entities-npc-foreground: hsl(255 70% 72%);
+  --theme-entities-quest-foreground: hsl(43 85% 60%);
+  --theme-feedback-danger-foreground: hsl(3 72% 68%);
+  --theme-feedback-info-foreground: hsl(204 66% 68%);
+  --theme-feedback-success-foreground: hsl(145 48% 61%);
+  --theme-feedback-warning-foreground: hsl(44 78% 65%);
+  --theme-narrative-rumor-foreground: hsl(193 55% 65%);
+  --theme-narrative-secret-foreground: hsl(277 58% 72%);
+  --theme-surfaces-base: hsl(226 25% 10%);
+  --theme-surfaces-canvas: hsl(228 36% 6%);
+  --theme-surfaces-interactive-hover: hsl(222 20% 20%);
+  --theme-surfaces-raised: hsl(224 20% 17%);
+  --theme-surfaces-subtle: hsl(224 21% 14%);
+  --theme-text-disabled: hsl(32 9% 52%);
+  --theme-text-on-media: hsl(0 0% 100%);
+  --theme-text-primary: hsl(42 30% 94%);
+  --theme-text-secondary: hsl(35 18% 78%);
+  --theme-text-subtle: hsl(32 12% 66%);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    ROOT NetworkDING (MainLanding) — Cinematic H2+H3 Hybrid
 ═══════════════════════════════════════════════════════════════ */
@@ -10,7 +55,7 @@ body:has(.rl-root) .watermark {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-abyss);
+  background: var(--theme-surfaces-canvas);
   overflow-x: hidden;
 }
 
@@ -27,10 +72,10 @@ body:has(.rl-root) .watermark {
   justify-content: space-between;
   padding: 0 32px;
   height: 56px;
-  background: hsl(228 36% 6% / 0.75);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 75%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid hsl(220 20% 18% / 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-raised) 50%, transparent);
 }
 
 .rl-nav__logo {
@@ -40,7 +85,7 @@ body:has(.rl-root) .watermark {
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -57,15 +102,15 @@ body:has(.rl-root) .watermark {
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--theme-text-secondary);
   padding: 6px 12px;
   border-radius: 6px;
   transition: color 0.2s, background 0.2s;
 }
 
 .rl-nav__login:hover {
-  color: var(--text-primary);
-  background: hsl(220 20% 20% / 0.5);
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive-hover) 50%, transparent);
 }
 
 /* ── Hero ─────────────────────────────────────────────────── */
@@ -115,8 +160,8 @@ body:has(.rl-root) .watermark {
   inset: 0;
   background:
     radial-gradient(ellipse 60% 45% at 50% 38%,
-      hsl(38 80% 55% / 0.09) 0%,
-      hsl(270 60% 60% / 0.05) 45%,
+      color-mix(in srgb, var(--theme-accents-primary-foreground) 9%, transparent) 0%,
+      color-mix(in srgb, var(--theme-accents-secondary-foreground) 5%, transparent) 45%,
       transparent 70%
     );
   z-index: 2;
@@ -127,10 +172,10 @@ body:has(.rl-root) .watermark {
   inset: 0;
   background:
     linear-gradient(180deg,
-      hsl(228 36% 6% / 0.55) 0%,
-      hsl(228 36% 6% / 0.28) 38%,
-      hsl(228 36% 6% / 0.65) 78%,
-      hsl(228 36% 6% / 1) 100%
+      color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent) 0%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent) 38%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 65%, transparent) 78%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 100%, transparent) 100%
     );
   z-index: 3;
 }
@@ -148,7 +193,7 @@ body:has(.rl-root) .watermark {
 
 .rl-hero__badge {
   margin-bottom: 24px;
-  box-shadow: 0 0 24px hsl(38 66% 62% / 0.18);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
 }
 
 .rl-hero__title {
@@ -168,5 +213,5 @@ body:has(.rl-root) .watermark {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 2px 24px hsl(228 36% 4% / 0.85));
+  filter: drop-shadow(0 2px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent));
 }

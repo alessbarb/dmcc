@@ -35,7 +35,7 @@
 /* ── Showcase Section ─────────────────────────────────────── */
 
 .rl-showcase {
-  background: var(--bg-abyss);
+  background: var(--theme-surfaces-canvas);
   position: relative;
   z-index: 5;
 }
@@ -52,7 +52,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   margin-bottom: 14px;
 }
 
@@ -60,7 +60,7 @@
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
   margin-bottom: 20px;
   letter-spacing: -0.01em;
   line-height: 1.15;

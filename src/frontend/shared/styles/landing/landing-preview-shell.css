@@ -1,5 +1,5 @@
 .rl-cta-secondary:hover {
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
 }
 
 /* ── App Preview ──────────────────────────────────────────── */
@@ -19,16 +19,16 @@
   height: clamp(300px, 30vw, 420px);
   border-radius: 12px 12px 0 0;
   overflow: hidden;
-  border: 1px solid hsl(38 66% 62% / 0.4);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent);
   border-bottom: none;
   box-shadow:
-    0 0 0 1px hsl(38 66% 62% / 0.1),
-    0 -8px 60px hsl(38 66% 62% / 0.12),
-    0 0 120px hsl(38 66% 62% / 0.06),
-    0 30px 100px hsl(228 36% 4% / 0.95);
+    0 0 0 1px color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent),
+    0 -8px 60px var(--theme-canvas-selection),
+    0 0 120px color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent),
+    0 30px 100px color-mix(in srgb, var(--theme-surfaces-canvas) 95%, transparent);
   transform: perspective(1600px) rotateX(3deg);
   transform-origin: bottom center;
-  background: var(--bg-mist);
+  background: var(--theme-surfaces-base);
 }
 
 /* Bottom fade mask */
@@ -38,7 +38,7 @@
   left: 0;
   right: 0;
   height: 120px;
-  background: linear-gradient(to bottom, transparent, var(--bg-abyss));
+  background: linear-gradient(to bottom, transparent, var(--theme-surfaces-canvas));
   z-index: 20;
   pointer-events: none;
 }
@@ -47,8 +47,8 @@
 .rl-preview-sidebar {
   width: 44px;
   flex-shrink: 0;
-  background: var(--bg-abyss);
-  border-right: 1px solid hsl(220 20% 14% / 0.8);
+  background: var(--theme-surfaces-canvas);
+  border-right: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 80%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,7 +58,7 @@
 
 .rl-preview-sidebar__logo {
   font-size: 13px;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   margin-bottom: 10px;
 }
 
@@ -75,12 +75,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: hsl(32 12% 45%);
+  color: var(--theme-text-disabled);
 }
 
 .rl-preview-sidebar__item--active {
-  color: var(--accent-fire);
-  background: hsl(38 66% 62% / 0.1);
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent);
 }
 
 /* Main panel */
@@ -97,15 +97,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
-  border-bottom: 1px solid hsl(220 20% 14% / 0.8);
-  background: hsl(226 25% 9% / 0.7);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-surfaces-subtle) 80%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 70%, transparent);
   flex-shrink: 0;
 }
 
 .rl-preview-topbar__title {
   font-family: var(--font-display);
   font-size: 0.6rem;
-  color: var(--accent-fire);
+  color: var(--theme-accents-primary-foreground);
   letter-spacing: 0.06em;
   font-weight: 600;
   overflow: hidden;
@@ -125,9 +125,9 @@
   border-radius: 50%;
 }
 
-.rl-preview-dot--red { background: hsl(3 72% 55% / 0.7); }
-.rl-preview-dot--amber { background: hsl(44 78% 55% / 0.7); }
-.rl-preview-dot--green { background: hsl(145 48% 45% / 0.7); }
+.rl-preview-dot--red { background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 70%, transparent); }
+.rl-preview-dot--amber { background: color-mix(in srgb, var(--theme-feedback-warning-foreground) 70%, transparent); }
+.rl-preview-dot--green { background: color-mix(in srgb, var(--theme-feedback-success-foreground) 70%, transparent); }
 
 .rl-preview-body {
   padding: 14px;
@@ -141,6 +141,7 @@
 .rl-preview-cover {
   height: 110px;
   border-radius: 8px;
+  background-image: url("/assets/campaigns/campaign-template-oracle.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
@@ -151,7 +152,7 @@
 .rl-preview-cover__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, hsl(228 36% 6% / 0.85) 0%, transparent 55%);
+  background: linear-gradient(to top, color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent) 0%, transparent 55%);
 }
 
 .rl-preview-cover__title {
@@ -161,6 +162,6 @@
   font-family: var(--font-display);
   font-size: 0.62rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
   z-index: 2;
 }
