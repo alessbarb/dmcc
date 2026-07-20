@@ -107,4 +107,36 @@ describe("theme runtime", () => {
 
     controller.dispose();
   });
+
+  it("serializes fantasy theme artwork tokens into CSS custom properties", () => {
+    const serialized = serializeThemeVariant(getTheme("fantasy").variants.dark);
+
+    expect(serialized.get("--theme-artwork-app-background-image")).toBe(
+      "url('/assets/themes/fantasy/app-background.webp')",
+    );
+    expect(serialized.get("--theme-artwork-app-background-opacity")).toBe("0.22");
+    expect(serialized.get("--theme-artwork-app-background-position")).toBe("center top");
+    expect(serialized.get("--theme-artwork-app-background-position-compact")).toBe("58% top");
+  });
+
+  it("updates artwork custom properties when switching from fantasy to default theme", () => {
+    const { target, properties } = createTarget();
+    const runtime = createEnvironment(true);
+    const controller = createThemeController(target, runtime.environment);
+
+    controller.apply({ themeId: "fantasy", colorMode: "dark" });
+    expect(properties.get("--theme-artwork-app-background-image")).toBe(
+      "url('/assets/themes/fantasy/app-background.webp')",
+    );
+
+    controller.apply({ themeId: "default", colorMode: "dark" });
+    expect(properties.get("--theme-artwork-app-background-image")).toBe(
+      "url('/assets/themes/default/app-background.webp')",
+    );
+    expect(properties.get("--theme-artwork-app-background-opacity")).toBe("0.20");
+
+    controller.dispose();
+  });
 });
+
+

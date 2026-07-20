@@ -1,19 +1,78 @@
+:root {
+  --sidebar-width: 260px;
+}
+
+.sidebar--collapsed {
+  --sidebar-width: 64px;
+}
+
 .mobile-dock,
 .mobile-dock-overlay {
   display: none;
 }
 
 .app-container {
+  position: relative;
+  isolation: isolate;
   display: flex;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding-bottom: var(--app-footer-height);
+  background: var(--theme-surfaces-canvas);
+}
+
+.app-container--campaign-shell::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--sidebar-width, 260px);
+  z-index: -2;
+  pointer-events: none;
+  transition: left 0.2s ease-in-out;
+
+  background-image: var(--theme-artwork-app-background-image);
+  background-position: var(--theme-artwork-app-background-position);
+  background-size: var(--theme-artwork-app-background-size);
+  background-repeat: no-repeat;
+
+  opacity: var(--theme-artwork-app-background-opacity);
+}
+
+.app-container--campaign-shell::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--sidebar-width, 260px);
+  z-index: -1;
+  pointer-events: none;
+  transition: left 0.2s ease-in-out;
+
+  background: var(--theme-artwork-app-background-veil);
+}
+
+.app-container--campaign-shell.app-container--sidebar-collapsed::before,
+.app-container--campaign-shell.app-container--sidebar-collapsed::after,
+.app-container--campaign-shell:has(.sidebar--collapsed)::before,
+.app-container--campaign-shell:has(.sidebar--collapsed)::after {
+  left: 64px;
+}
+
+.app-container--canvas::before {
+  opacity: 0;
+}
+
+.app-container--canvas::after {
+  background: transparent;
 }
 
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - var(--app-footer-height));
+  height: calc(100dvh - var(--app-footer-height));
   overflow-y: auto;
 }
 
@@ -22,6 +81,25 @@
   max-width: 1400px;
   width: 100%;
   margin: 0 auto;
+}
+
+@media (max-width: 48rem) {
+  .app-container--campaign-shell::before,
+  .app-container--campaign-shell::after {
+    left: 0;
+  }
+
+  .app-container--campaign-shell::before {
+    background-position: var(--theme-artwork-app-background-position-compact);
+    background-size: var(--theme-artwork-app-background-size-compact);
+  }
+}
+
+@media (max-height: 32rem) and (orientation: landscape) {
+  .app-container--campaign-shell::before {
+    background-size: cover;
+    background-position: center;
+  }
 }
 
 @media (max-width: 768px) {

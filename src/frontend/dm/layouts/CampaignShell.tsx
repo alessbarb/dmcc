@@ -179,8 +179,9 @@ export function CampaignShell() {
 
   return (
     <div
-      className={`app-container app-container--campaign-shell ${isCanvasRoute ? "app-container--canvas" : ""
-        }`}
+      className={`app-container app-container--campaign-shell ${
+        sidebarCollapsed ? "app-container--sidebar-collapsed" : ""
+      } ${isCanvasRoute ? "app-container--canvas" : ""}`}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
