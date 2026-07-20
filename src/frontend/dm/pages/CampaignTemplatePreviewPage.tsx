@@ -15,10 +15,8 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore, type CampaignStateStore, type Entity, type Relation } from "../../shared/stores/campaignStore.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { EntityRelationsTab } from "../entities/relations/EntityRelationsTab.js";
-import { buildEntityNeighborhood } from "../entities/relations/entityRelationshipNeighborhood.js";
 import { TemplateEntityPreviewModal } from "./TemplateEntityPreviewModal.js";
 import {
-  CONFIDENCE_LABEL_KEYS,
   DIFFICULTY_LABEL_KEYS,
   ENTITY_TYPE_LABEL_KEYS,
   FACT_KIND_LABEL_KEYS,
@@ -94,12 +92,6 @@ function runCampaignTemplatePreviewAction(operation: Promise<unknown>, errorMess
     console.error(errorMessage, error);
   });
 }
-
-/** How much of the reference lists an unregistered visitor sees before the
- *  rest blurs behind a "create your copy" gate — enough to prove the depth
- *  of the content without functioning as a free full read. */
-const SESSIONS_FREE_PREVIEW_COUNT = 1;
-const FACTS_FREE_PREVIEW_COUNT = 2;
 
 interface PreviewSecretFact {
   factId: string;
@@ -241,6 +233,18 @@ export function CampaignTemplatePreviewPage() {
       .filter(isDefined);
     return (selected.length ? selected : template.facts).slice(0, 10);
   }, [template]);
+
+  // "Lo que todos creen" vs "lo que el DM sabe" — same underlying facts,
+  // split by kind so canon reads as lore and secrets read as protected
+  // spoilers instead of one undifferentiated list.
+  const canonFacts = useMemo(
+    () => featuredFacts.filter((fact) => fact.kind === "canon" || fact.kind === "rumor"),
+    [featuredFacts],
+  );
+  const secretFacts = useMemo(
+    () => featuredFacts.filter((fact) => fact.kind !== "canon" && fact.kind !== "rumor"),
+    [featuredFacts],
+  );
 
   const featuredRelations = useMemo(() => {
     if (!template) return [];
@@ -562,93 +566,93 @@ export function CampaignTemplatePreviewPage() {
           </section>
         ) : null}
 
-        <section className="card campaign-template-preview-card">
-          <div className="campaign-template-preview-section-heading">
-            <h2>{t("campaignTemplatePreview.sessionsTitle")}</h2>
-            <span>{t("campaignTemplatePreview.sessionsDesc")}</span>
-          </div>
-          <div className="campaign-template-preview-list">
-            {template.sessions.slice(0, SESSIONS_FREE_PREVIEW_COUNT).map((session) => (
-              <article key={session.sessionId}>
-                <strong>{session.title}</strong>
-                <p>{session.prep?.summary || session.prep?.openingPrompt || t("campaignTemplatePreview.noSummary")}</p>
-                <span>
-                  {t("campaignTemplatePreview.sessionPrepared", {
-                    goals: String(session.prep?.goals?.length ?? 0),
-                    checklist: String(session.prep?.checklist?.length ?? 0),
-                  })}
-                </span>
-              </article>
-            ))}
-          </div>
-          {template.sessions.length > SESSIONS_FREE_PREVIEW_COUNT && (
-            <div className="campaign-template-preview-gated">
-              <div className="campaign-template-preview-list campaign-template-preview-gated__blur" aria-hidden="true">
-                {template.sessions.slice(SESSIONS_FREE_PREVIEW_COUNT).map((session) => (
-                  <article key={session.sessionId}>
-                    <strong>{session.title}</strong>
-                    <p>{session.prep?.summary || session.prep?.openingPrompt || t("campaignTemplatePreview.noSummary")}</p>
-                  </article>
-                ))}
-              </div>
-              <div className="campaign-template-preview-gated__overlay">
-                <Lock size={18} />
-                <p>
-                  {t("campaignTemplatePreview.sessionsGateHint", {
-                    count: String(template.sessions.length - SESSIONS_FREE_PREVIEW_COUNT),
-                  })}
-                </p>
-                <button type="button" className="btn btn-primary btn-sm" onClick={requestCreateCopy}>
+        {template.sessions.length > 0 && (
+          <section className="campaign-template-preview-first-session">
+            <div className="campaign-template-preview-section-heading">
+              <h2>{t("campaignTemplatePreview.firstSessionTitle")}</h2>
+              <span>{t("campaignTemplatePreview.sessionsDesc")}</span>
+            </div>
+            <article className="campaign-template-preview-first-session__card">
+              <strong>{template.sessions[0].title}</strong>
+              <p>
+                {template.sessions[0].prep?.summary
+                  || template.sessions[0].prep?.openingPrompt
+                  || t("campaignTemplatePreview.noSummary")}
+              </p>
+              <span>
+                {t("campaignTemplatePreview.sessionPrepared", {
+                  goals: String(template.sessions[0].prep?.goals?.length ?? 0),
+                  checklist: String(template.sessions[0].prep?.checklist?.length ?? 0),
+                })}
+              </span>
+            </article>
+            {template.sessions.length > 1 && (
+              <p className="campaign-template-preview-first-session__more">
+                {t("campaignTemplatePreview.sessionsGateHint", { count: String(template.sessions.length - 1) })}{" "}
+                <button type="button" className="campaign-template-preview-hero__explore" onClick={requestCreateCopy}>
                   {t("campaignTemplatePreview.createCopy")}
                 </button>
-              </div>
+              </p>
+            )}
+          </section>
+        )}
+
+        {featuredEntities.length > 0 && (
+          <section className="campaign-template-preview-world">
+            <div className="campaign-template-preview-section-heading">
+              <h2>{t("campaignTemplatePreview.worldTitle")}</h2>
+              <span>{t("campaignTemplatePreview.featuredEntitiesDesc")}</span>
             </div>
-          )}
-        </section>
-
-        <section className="card campaign-template-preview-card">
-          <div className="campaign-template-preview-section-heading">
-            <h2>{t("campaignTemplatePreview.featuredEntitiesTitle")}</h2>
-            <span>{t("campaignTemplatePreview.featuredEntitiesDesc")}</span>
-          </div>
-          <div className="campaign-template-preview-list campaign-template-preview-list--compact">
-            {featuredEntities.map((entity) => (
-              <article key={entity.entityId}>
-                <div className="campaign-template-preview-item-heading">
+            <div className="campaign-template-preview-world__mosaic">
+              <article className="campaign-template-preview-world__tile campaign-template-preview-world__tile--dominant">
+                <span className="campaign-template-preview-badge">
+                  {labelFor(featuredEntities[0].entityType, ENTITY_TYPE_LABEL_KEYS, t)}
+                </span>
+                <strong>{featuredEntities[0].title}</strong>
+                <p>{featuredEntities[0].subtitle || featuredEntities[0].summary}</p>
+              </article>
+              {featuredEntities.slice(1, 4).map((entity) => (
+                <article key={entity.entityId} className="campaign-template-preview-world__tile">
+                  <span className="campaign-template-preview-badge">
+                    {labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}
+                  </span>
                   <strong>{entity.title}</strong>
-                  <span className="campaign-template-preview-badge">{labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}</span>
-                </div>
-                <p>{entity.subtitle || entity.summary || labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}</p>
-                <span>{visibilityLabel(entity.visibility, t)}</span>
-              </article>
-            ))}
-          </div>
-        </section>
+                  <p>{entity.subtitle || entity.summary}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
-        <section className="card campaign-template-preview-card">
-          <div className="campaign-template-preview-section-heading">
-            <h2>{t("campaignTemplatePreview.factsTitle")}</h2>
-            <span>{t("campaignTemplatePreview.factsDesc")}</span>
-          </div>
-          <div className="campaign-template-preview-list campaign-template-preview-list--compact">
-            {featuredFacts.slice(0, FACTS_FREE_PREVIEW_COUNT).map((fact) => (
-              <article key={fact.factId}>
-                <div className="campaign-template-preview-item-heading">
-                  <strong>{labelFor(fact.kind, FACT_KIND_LABEL_KEYS, t)}</strong>
-                  <span className="campaign-template-preview-badge">{labelFor(fact.confidence, CONFIDENCE_LABEL_KEYS, t)}</span>
-                </div>
-                <p>{fact.statement}</p>
-                <span>{visibilityLabel(fact.visibility, t)}</span>
-              </article>
-            ))}
-          </div>
-          {featuredFacts.length > FACTS_FREE_PREVIEW_COUNT && (
+        {canonFacts.length > 0 && (
+          <section className="campaign-template-preview-canon">
+            <div className="campaign-template-preview-section-heading">
+              <h2>{t("campaignTemplatePreview.canonTitle")}</h2>
+              <span>{t("campaignTemplatePreview.canonDesc")}</span>
+            </div>
+            <div className="campaign-template-preview-canon__list">
+              {canonFacts.map((fact) => (
+                <blockquote key={fact.factId} className="campaign-template-preview-canon__item">
+                  <span aria-hidden="true">“</span>
+                  <p>{fact.statement}</p>
+                </blockquote>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {secretFacts.length > 0 && (
+          <section className="card campaign-template-preview-card campaign-template-preview-secrets-card">
+            <div className="campaign-template-preview-section-heading">
+              <h2>{t("campaignTemplatePreview.secretsTitle")}</h2>
+              <span>{t("campaignTemplatePreview.secretsDesc")}</span>
+            </div>
             <div className="campaign-template-preview-gated">
               <div
                 className="campaign-template-preview-list campaign-template-preview-list--compact campaign-template-preview-gated__blur"
                 aria-hidden="true"
               >
-                {featuredFacts.slice(FACTS_FREE_PREVIEW_COUNT).map((fact) => (
+                {secretFacts.map((fact) => (
                   <article key={fact.factId}>
                     <strong>{labelFor(fact.kind, FACT_KIND_LABEL_KEYS, t)}</strong>
                     <p>{fact.statement}</p>
@@ -657,18 +661,14 @@ export function CampaignTemplatePreviewPage() {
               </div>
               <div className="campaign-template-preview-gated__overlay">
                 <Lock size={18} />
-                <p>
-                  {t("campaignTemplatePreview.factsGateHint", {
-                    count: String(featuredFacts.length - FACTS_FREE_PREVIEW_COUNT),
-                  })}
-                </p>
+                <p>{t("campaignTemplatePreview.secretsGateHint", { count: String(secretFacts.length) })}</p>
                 <button type="button" className="btn btn-primary btn-sm" onClick={requestCreateCopy}>
                   {t("campaignTemplatePreview.createCopy")}
                 </button>
               </div>
             </div>
-          )}
-        </section>
+          </section>
+        )}
 
         <section className="card campaign-template-preview-card">
           <div className="campaign-template-preview-section-heading">

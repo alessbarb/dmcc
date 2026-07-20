@@ -256,3 +256,148 @@
   border-radius: 999px;
   background: var(--theme-surfaces-raised);
 }
+
+/* ── First session: a protagonist block, not one row in a list ── */
+
+.campaign-template-preview-first-session {
+  max-width: 900px;
+  margin: 0 auto 48px;
+  padding: 0 28px;
+}
+
+.campaign-template-preview-first-session__card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 32px;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, var(--theme-borders-default));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 92%, transparent);
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+.campaign-template-preview-first-session__card strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+}
+
+.campaign-template-preview-first-session__card p {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  line-height: 1.6;
+}
+
+.campaign-template-preview-first-session__card > span {
+  color: var(--theme-text-subtle);
+  font-size: 0.8rem;
+}
+
+.campaign-template-preview-first-session__more {
+  margin: 14px 4px 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.88rem;
+}
+
+/* ── World mosaic: one dominant tile + secondaries, not a uniform grid ── */
+
+.campaign-template-preview-world {
+  max-width: 1180px;
+  margin: 0 auto 48px;
+  padding: 0 28px;
+}
+
+.campaign-template-preview-world__mosaic {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  grid-template-rows: repeat(2, auto);
+  gap: 14px;
+}
+
+.campaign-template-preview-world__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 22px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 14px;
+  background: var(--theme-surfaces-raised);
+}
+
+.campaign-template-preview-world__tile p {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.campaign-template-preview-world__tile strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.campaign-template-preview-world__tile--dominant {
+  grid-row: 1 / 3;
+  padding: 32px;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-raised));
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, var(--theme-borders-default));
+}
+
+.campaign-template-preview-world__tile--dominant strong {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+}
+
+@media (max-width: 720px) {
+  .campaign-template-preview-world__mosaic {
+    grid-template-columns: 1fr;
+  }
+
+  .campaign-template-preview-world__tile--dominant {
+    grid-row: auto;
+  }
+}
+
+/* ── Canon facts: read as lore clippings, not database rows ── */
+
+.campaign-template-preview-canon {
+  max-width: 900px;
+  margin: 0 auto 48px;
+  padding: 0 28px;
+}
+
+.campaign-template-preview-canon__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.campaign-template-preview-canon__item {
+  position: relative;
+  margin: 0;
+  padding: 4px 0 4px 28px;
+  border-left: 2px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 45%, transparent);
+}
+
+.campaign-template-preview-canon__item span {
+  position: absolute;
+  left: -4px;
+  top: -6px;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: color-mix(in srgb, var(--theme-accents-primary-foreground) 60%, transparent);
+}
+
+.campaign-template-preview-canon__item p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ── Secrets: fully gated, framed as spoiler protection ── */
+
+.campaign-template-preview-secrets-card {
+  max-width: 1180px;
+  margin: 0 auto 48px;
+}
