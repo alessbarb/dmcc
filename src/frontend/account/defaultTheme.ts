@@ -212,6 +212,34 @@ const dark: ThemeVariant = {
     appBackgroundVeil:
       "linear-gradient(180deg, hsl(228 36% 6% / 0.46), hsl(228 36% 6% / 0.84))",
   },
+  ornaments: {
+    panelCornerPrimaryMask:
+      "url('/assets/themes/default/ornaments/panel-corner-primary.svg')",
+    panelCornerSecondaryMask:
+      "url('/assets/themes/default/ornaments/panel-corner-secondary.svg')",
+    panelEdgeAccentMask:
+      "url('/assets/themes/default/ornaments/panel-edge-accent.svg')",
+    narrativeDividerMask:
+      "url('/assets/themes/default/ornaments/narrative-divider.svg')",
+    ambientMarkMask:
+      "url('/assets/themes/default/ornaments/ambient-mark.svg')",
+
+    primary: "hsl(35 18% 78%)",
+    secondary: "hsl(32 12% 66%)",
+    highlight: "hsl(38 66% 62%)",
+
+    panelCornerPrimaryOpacity: "0.28",
+    panelCornerSecondaryOpacity: "0.18",
+    panelEdgeAccentOpacity: "0.22",
+    narrativeDividerOpacity: "0.28",
+    ambientMarkOpacity: "0.12",
+
+    panelCornerPrimarySize: "9rem",
+    panelCornerSecondarySize: "6rem",
+    panelEdgeAccentSize: "8rem",
+    narrativeDividerSize: "14rem",
+    ambientMarkSize: "8rem",
+  },
   identityPalette: [
     "hsl(238 78% 74%)",
     "hsl(158 52% 58%)",
@@ -339,6 +367,34 @@ const light: ThemeVariant = {
     appBackgroundOpacity: "0.05",
     appBackgroundVeil:
       "linear-gradient(180deg, hsl(42 30% 96% / 0.78), hsl(42 30% 96% / 0.95))",
+  },
+  ornaments: {
+    panelCornerPrimaryMask:
+      "url('/assets/themes/default/ornaments/panel-corner-primary.svg')",
+    panelCornerSecondaryMask:
+      "url('/assets/themes/default/ornaments/panel-corner-secondary.svg')",
+    panelEdgeAccentMask:
+      "url('/assets/themes/default/ornaments/panel-edge-accent.svg')",
+    narrativeDividerMask:
+      "url('/assets/themes/default/ornaments/narrative-divider.svg')",
+    ambientMarkMask:
+      "url('/assets/themes/default/ornaments/ambient-mark.svg')",
+
+    primary: "hsl(30 20% 42%)",
+    secondary: "hsl(223 12% 43%)",
+    highlight: "hsl(30 70% 38%)",
+
+    panelCornerPrimaryOpacity: "0.22",
+    panelCornerSecondaryOpacity: "0.14",
+    panelEdgeAccentOpacity: "0.18",
+    narrativeDividerOpacity: "0.24",
+    ambientMarkOpacity: "0.08",
+
+    panelCornerPrimarySize: "9rem",
+    panelCornerSecondarySize: "6rem",
+    panelEdgeAccentSize: "8rem",
+    narrativeDividerSize: "14rem",
+    ambientMarkSize: "8rem",
   },
   identityPalette: [
     "hsl(238 62% 46%)",
