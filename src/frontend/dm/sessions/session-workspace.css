@@ -15,3 +15,287 @@
 .session-active-workspace {
   gap: var(--space-5);
 }
+
+/* ==========================================================================
+   Story threads panel (SessionsIndexPage backlog) and session story steps
+   (SessionDetailPage scheduled steps). Migrated from the old standalone
+   Plan Narrativo view (src/frontend/dm/story/plan/*) when that page was
+   removed, plus a handful of freshly authored rules for the new compact
+   backlog layout introduced by StoryThreadsPanel.tsx.
+   ========================================================================== */
+
+/* --- New layout, authored fresh for StoryThreadsPanel.tsx --- */
+.story-threads-panel {
+  gap: var(--space-3);
+}
+
+.story-thread-card {
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  overflow: hidden;
+}
+
+.story-thread-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px 12px 20px;
+  border-top: 1px solid var(--theme-borders-default);
+}
+
+.story-thread-backlog-step {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+/* --- Migrated from story-plan-foundation.css / story-plan-components.css --- */
+.threads-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.story-threads-panel .thread-item-btn {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-left-width: 3px;
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  background: transparent;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.story-threads-panel .thread-item-btn:hover {
+  border-color: var(--theme-borders-default);
+  background: var(--theme-surfaces-interactive-hover);
+}
+
+.story-threads-panel .thread-item-btn.selected {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-interactive));
+  box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground);
+  color: var(--theme-accents-primary-foreground);
+}
+
+.story-threads-panel .thread-item-btn[data-status="active"] {
+  border-left-color: var(--theme-accents-primary-foreground);
+}
+
+.story-threads-panel .thread-item-btn[data-status="resolved"] {
+  border-left-color: var(--theme-feedback-success-foreground);
+}
+
+.story-threads-panel .thread-item-btn[data-status]:not([data-status="active"]):not([data-status="resolved"]) {
+  border-left-color: var(--theme-text-secondary);
+}
+
+/* --- Migrated from story-plan-interactions.css --- */
+.story-plan-thread-title {
+  width: 100%;
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.story-plan-thread-status {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+.story-plan-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.story-plan-step-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.story-plan-schedule-form {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --- Migrated from story-plan-details.css / story-plan-components.css --- */
+.story-plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.story-plan-actions--compact {
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.story-plan-actions--end {
+  justify-content: flex-end;
+}
+
+.story-plan-step-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.story-plan-step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.story-plan-step-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.session-story-steps .story-plan-heading__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.session-story-steps .story-plan-heading__title--small {
+  font-size: 1rem;
+}
+
+/* --- Migrated from story-plan-responsive.css / story-plan-states.css --- */
+.story-plan-empty {
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.story-plan-empty--threads {
+  padding: 20px 0;
+  font-size: 0.85rem;
+}
+
+.story-plan-empty--steps {
+  padding: 40px 0;
+}
+
+.story-plan-create-form {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--theme-surfaces-canvas);
+}
+
+.story-plan-field-spaced {
+  margin-bottom: 8px;
+}
+
+.story-plan-form-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+}
+
+.story-plan-form-label--standard {
+  font-size: 0.85rem;
+}
+
+/* --- Migrated from story-plan-overlays.css / story-plan-advanced.css --- */
+.story-plan-step-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  border-top: 1px solid var(--theme-borders-default);
+  padding-top: 8px;
+}
+
+.story-plan-modal-overlay {
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.story-plan-modal {
+  display: flex;
+  width: min(480px, calc(100vw - 32px));
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--theme-borders-default);
+  padding: 24px;
+  background: var(--theme-surfaces-base);
+}
+
+.story-plan-modal-actions {
+  margin-top: 12px;
+}
+
+/* --- Migrated from story-plan-foundation.css / story-plan-layout.css (glass-form / step-card surfaces) --- */
+.story-threads-panel .glass-form,
+.session-story-steps .step-card {
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 78%, var(--theme-surfaces-base));
+}
+
+.session-story-steps .step-card {
+  padding: 15px;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
+}
+
+.session-story-steps .step-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 28%, var(--theme-borders-default));
+}
+
+.session-story-steps .step-card.status-active,
+.session-story-steps .step-card.status-ready {
+  box-shadow:
+    inset 3px 0 0 var(--theme-accents-primary-foreground),
+    0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
+}
+
+.session-story-steps .badge {
+  min-height: 22px;
+  font-size: 0.68rem;
+}
+
+/* --- Migrated from story-plan-layout.css (form controls; previously scoped to the removed .story-plan-workspace wrapper, rescoped here to the two surviving containers to avoid leaking to unrelated .form-control usages elsewhere) --- */
+.story-threads-panel .form-control,
+.story-threads-panel .form-control-sm,
+.session-story-steps .form-control,
+.session-story-steps .form-control-sm {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+  font: inherit;
+}
+
+.story-threads-panel textarea.form-control,
+.session-story-steps textarea.form-control {
+  min-height: 84px;
+  resize: vertical;
+}

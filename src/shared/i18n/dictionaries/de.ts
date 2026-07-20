@@ -1064,7 +1064,6 @@ export const de: TranslationDictionary = {
       people: "Spieler",
       messages: "Nachrichten",
       notebooks: "Notizbücher",
-      storyPlan: "Erzählplan",
     },
     meta: {
       canvasTitle: "Kampagnen-Canvas",

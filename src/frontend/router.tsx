@@ -112,9 +112,6 @@ const NetworkViewLazy = React.lazy(() =>
 const StoryWorkspacePageLazy = React.lazy(() =>
   import("./dm/story/StoryWorkspacePage.js").then((module) => ({ default: module.StoryWorkspacePage })),
 );
-const StoryPlanViewLazy = React.lazy(() =>
-  import("./dm/story/plan/StoryPlanView.js").then((module) => ({ default: module.StoryPlanView })),
-);
 const CampaignHistoryViewLazy = React.lazy(() =>
   import("./dm/story/history/CampaignHistoryView.js").then((module) => ({ default: module.CampaignHistoryView })),
 );
@@ -483,12 +480,6 @@ const storyHistoryRoute = createRoute({
   path: "/history",
   component: withSuspense(CampaignHistoryViewLazy),
 });
-const storyPlanRoute = createRoute({
-  getParentRoute: () => storyRoute,
-  path: "/plan",
-  component: withSuspense(StoryPlanViewLazy),
-});
-
 // People Workspace
 const peopleRoute = createRoute({
   getParentRoute: () => campaignRoute,
@@ -659,7 +650,6 @@ const routeTree = rootRoute.addChildren([
     storyRoute.addChildren([
       storyIndexRoute,
       storyHistoryRoute,
-      storyPlanRoute,
     ]),
     peopleRoute.addChildren([
       peopleIndexRoute,
