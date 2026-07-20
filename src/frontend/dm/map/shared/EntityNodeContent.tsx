@@ -4,6 +4,7 @@ import type { Entity } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import "../../../shared/styles/features/canvas-entity-node.css";
 
 export interface EntityNodeContentProps {
   entity: Entity;
