@@ -6,6 +6,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { errorMessage, runSessionAction } from "./sessionFormSubmit.js";
 import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
+import { StoryThreadsPanel } from "./components/StoryThreadsPanel.js";
 import "./session-workspace.css";
 import "./components/session-idle.css";
 import "./components/prepared-session.css";
@@ -191,6 +192,8 @@ export function SessionsIndexPage() {
                 />
               </section>
             )}
+
+            <StoryThreadsPanel plannedSessions={preparedSessions} />
           </main>
 
           <aside className="session-history-panel surface-panel" aria-labelledby="recent-sessions-heading">
