@@ -77,8 +77,8 @@
 
 /* Selection */
 .rg-card--selected {
-  border-color: var(--theme-accents-primary-foreground) !important;
-  box-shadow: 0 0 0 2px var(--theme-accents-primary-foreground), 0 6px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent), var(--theme-shadows-accent) !important;
+  border-color: var(--theme-accents-primary-foreground);
+  box-shadow: 0 0 0 2px var(--theme-accents-primary-foreground), 0 6px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent), var(--theme-shadows-accent);
 }
 
 /* Importance auras */

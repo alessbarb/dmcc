@@ -64,8 +64,8 @@
 }
 
 .dropdown-item:hover {
-  background-color: var(--theme-surfaces-interactive) !important;
-  color: var(--theme-accents-primary-foreground) !important;
+  background-color: var(--theme-surfaces-interactive);
+  color: var(--theme-accents-primary-foreground);
 }
 
 @keyframes dropdownFadeIn {

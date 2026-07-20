@@ -49,12 +49,12 @@
 }
 
 .inspector-dm-notes {
-  background-color: color-mix(in srgb, var(--theme-activity-system-foreground) 2%, transparent) !important;
-  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 15%, transparent) !important;
+  background-color: color-mix(in srgb, var(--theme-activity-system-foreground) 2%, transparent);
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 15%, transparent);
 }
 
 .inspector-dm-notes:focus {
-  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 40%, transparent) !important;
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 40%, transparent);
 }
 
 .inspector-actions {
@@ -72,33 +72,33 @@
 
 /* Campaign Canvas Inline & Bulk Operations styles */
 .main-content--canvas {
-  overflow: hidden !important;
+  overflow: hidden;
 }
 
 .main-content--canvas .canvas-page-container {
-  height: 100% !important;
-  width: 100% !important;
-  max-height: none !important;
-  max-width: none !important;
+  height: 100%;
+  width: 100%;
+  max-height: none;
+  max-width: none;
 }
 
 /* Visibility badges styling */
 .rg-card__dm-badge--secret {
-  background-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 85%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 50%, transparent) !important;
-  color: var(--theme-text-on-media) !important;
+  background-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 50%, transparent);
+  color: var(--theme-text-on-media);
 }
 
 .rg-card__dm-badge--revealed {
-  background-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 85%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 50%, transparent) !important;
-  color: var(--theme-text-on-media) !important;
+  background-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 50%, transparent);
+  color: var(--theme-text-on-media);
 }
 
 .rg-card__dm-badge--partial {
-  background-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 85%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent) !important;
-  color: var(--theme-text-on-media) !important;
+  background-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent);
+  color: var(--theme-text-on-media);
 }
 
 /* Floating multi-select actions bar */
@@ -149,7 +149,7 @@
 
 /* Node direction toolbar styles */
 .rg-card.has-direction-toolbar {
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .node-direction-toolbar {

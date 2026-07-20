@@ -156,11 +156,11 @@
 }
 
 .note-node.selected {
-  box-shadow: var(--theme-shadows-accent), 0 4px 10px color-mix(in srgb, var(--theme-surfaces-canvas) 35%, transparent) !important;
+  box-shadow: var(--theme-shadows-accent), 0 4px 10px color-mix(in srgb, var(--theme-surfaces-canvas) 35%, transparent);
 }
 
 .note-node .canvas-handle {
-  border-color: var(--theme-borders-strong) !important;
+  border-color: var(--theme-borders-strong);
 }
 
 .note-yellow { background-color: var(--theme-feedback-warning-background); }

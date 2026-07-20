@@ -119,7 +119,7 @@
 }
 .fact-node--selected {
   border-color: var(--fact-color, var(--theme-accents-secondary-foreground));
-  box-shadow: 0 0 0 2px var(--fact-color, var(--theme-accents-secondary-foreground)), 0 4px 16px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent) !important;
+  box-shadow: 0 0 0 2px var(--fact-color, var(--theme-accents-secondary-foreground)), 0 4px 16px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
 }
 .fact-node__banner {
   display: flex;
