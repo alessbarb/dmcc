@@ -19,6 +19,8 @@ import { MobileDock } from "../../shared/components/MobileDock.js";
 import { buildPlayerMobileDockItems, type PlayerDockTab } from "../navigation/playerMobileDockItems.js";
 import { usePlayerCampaignHome, type PlayerCampaignTab } from "./PlayerCampaignTabContent.js";
 import "./playerCampaignShell.css";
+import "../../shared/styles/features/player-portal.css";
+import "../../shared/styles/features/player-campaign.css";
 
 const TABS: Array<{ id: PlayerCampaignTab; labelKey: TranslationKey; Icon: React.ComponentType<{ size?: number }> }> = [
   { id: "overview", labelKey: "playerPortal.tabs.home", Icon: Home },

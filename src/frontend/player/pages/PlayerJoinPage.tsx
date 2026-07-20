@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Ticket } from "lucide-react";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
+import "../../shared/styles/features/player-portal.css";
 
 function normalizeInvitationToken(value: string): string {
   const trimmed = value.trim();

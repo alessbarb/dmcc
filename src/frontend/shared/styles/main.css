@@ -45,8 +45,6 @@
 @import "./features/landing-archive.css";
 @import "./features/kanban.css";
 @import "./features/campaign-canvas.css";
-@import "./features/player-portal.css";
-@import "./features/player-campaign.css";
 @import "./features/auth.css";
 @import "./features/campaign-template.css";
 @import "./features/dm-dashboard.css";
