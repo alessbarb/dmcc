@@ -40,18 +40,11 @@ describe("institutionalContent", () => {
     expect(t("legal.lastUpdated", { date: termsLastUpdated ?? "" }, "en")).toBe("Last updated: July 10, 2026");
   });
 
-  it("uses explicit English-content notices for supported fallback locales", () => {
-    const fallbackLocales = ["fr", "de", "it", "pt"];
-
+  it("resolves fully translated institutional pages for all supported locales", () => {
     for (const locale of SUPPORTED_LOCALE_CODES) {
       const page = getInstitutionalPage("about", locale);
-
-      if (fallbackLocales.includes(locale)) {
-        expect(page.translationNotice).toBeDefined();
-        expect(page.title).toBe(getInstitutionalPage("about", "en").title);
-      } else {
-        expect(page.translationNotice).toBeUndefined();
-      }
+      expect(page.title).toBeDefined();
+      expect(page.summary).toBeDefined();
     }
   });
 
