@@ -1,3 +1,4 @@
+import { en } from "./en.js";
 import type { TranslationDictionary } from "../types.js";
 
 export const de: TranslationDictionary = {
@@ -23,6 +24,7 @@ export const de: TranslationDictionary = {
   institutional: {
     navAriaLabel: "Institutionelle Seiten",
     translationNotice: "Diese Seite ist auf Englisch verfügbar, während wir die Übersetzung fertigstellen.",
+    pages: en.institutional.pages,
   },
   contact: {
     cardTitle: "Fragen oder Feedback?",

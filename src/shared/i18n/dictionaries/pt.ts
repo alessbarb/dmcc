@@ -1,3 +1,5 @@
+import { en } from "./en.js";
+
 export const pt = {
   footer: {
     about: "Sobre o DMCC",
@@ -21,6 +23,7 @@ export const pt = {
   institutional: {
     navAriaLabel: "Páginas institucionais",
     translationNotice: "Esta página está disponível em inglês enquanto concluímos a tradução.",
+    pages: en.institutional.pages,
   },
   contact: {
     cardTitle: "Perguntas ou feedback?",
