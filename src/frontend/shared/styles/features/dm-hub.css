@@ -1,8 +1,8 @@
-@import "./dm-hub/dm-hub-01.css";
-@import "./dm-hub/dm-hub-02.css";
-@import "./dm-hub/dm-hub-03.css";
-@import "./dm-hub/dm-hub-04.css";
-@import "./dm-hub/dm-hub-05.css";
-@import "./dm-hub/dm-hub-06.css";
-@import "./dm-hub/dm-hub-07.css";
-@import "./dm-hub/dm-hub-08.css";
+@import "./dm-hub/hub-shell.css";
+@import "./dm-hub/hub-welcome.css";
+@import "./dm-hub/hub-campaign-cards.css";
+@import "./dm-hub/hub-campaign-actions.css";
+@import "./dm-hub/hub-summary.css";
+@import "./dm-hub/hub-active-tables.css";
+@import "./dm-hub/hub-alerts-and-actions.css";
+@import "./dm-hub/hub-action-details.css";

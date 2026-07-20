@@ -1,7 +1,7 @@
-@import "./dm-dashboard/dm-dashboard-01.css";
-@import "./dm-dashboard/dm-dashboard-02.css";
-@import "./dm-dashboard/dm-dashboard-03.css";
-@import "./dm-dashboard/dm-dashboard-04.css";
-@import "./dm-dashboard/dm-dashboard-05.css";
-@import "./dm-dashboard/dm-dashboard-06.css";
-@import "./dm-dashboard/dm-dashboard-07.css";
+@import "./dm-dashboard/dashboard-shell.css";
+@import "./dm-dashboard/dashboard-workspace.css";
+@import "./dm-dashboard/dashboard-metrics-and-memory.css";
+@import "./dm-dashboard/dashboard-history.css";
+@import "./dm-dashboard/live-table-dialog.css";
+@import "./dm-dashboard/live-table-content.css";
+@import "./dm-dashboard/live-table-responsive.css";
