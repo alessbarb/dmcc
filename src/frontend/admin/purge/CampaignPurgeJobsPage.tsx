@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AdminShell } from "../AdminShell.js";
 import { fetchPurgeJobs, retryPurgeJob, type PurgeJobSummary } from "../adminClient.js";
 import { Play, RotateCw, CheckCircle, XCircle, AlertCircle, RefreshCw, Loader } from "lucide-react";
+import "../../shared/styles/features/admin-purge.css";
 
 export function CampaignPurgeJobsPage() {
   const [jobs, setJobs] = useState<PurgeJobSummary[]>([]);

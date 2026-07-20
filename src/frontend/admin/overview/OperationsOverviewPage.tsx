@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AdminShell } from "../AdminShell.js";
 import { fetchAdminOverview, type AdminOverview } from "../adminClient.js";
 import { Users, Layers, ShieldAlert, RefreshCw } from "lucide-react";
+import "../../shared/styles/features/admin-overview.css";
 
 export function OperationsOverviewPage() {
   const [metrics, setMetrics] = useState<AdminOverview | null>(null);

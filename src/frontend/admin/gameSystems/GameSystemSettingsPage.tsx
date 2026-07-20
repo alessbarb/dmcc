@@ -6,6 +6,7 @@ import {
   type GameSystemSetting,
 } from "../adminClient.js";
 import { CheckCircle2, XCircle, Loader } from "lucide-react";
+import "../../shared/styles/features/admin-game-systems.css";
 
 export function GameSystemSettingsPage() {
   const [systems, setSystems] = useState<GameSystemSetting[]>([]);

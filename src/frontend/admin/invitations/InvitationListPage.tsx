@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AdminShell } from "../AdminShell.js";
 import { fetchInvitations, revokeInvitation, type InvitationSummary } from "../adminClient.js";
 import { Ban, Loader } from "lucide-react";
+import "../../shared/styles/features/admin-invitations.css";
 
 export function InvitationListPage() {
   const [invitations, setInvitations] = useState<InvitationSummary[]>([]);

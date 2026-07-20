@@ -6,6 +6,7 @@ import {
   type CampaignTemplateSetting,
 } from "../adminClient.js";
 import { Eye, EyeOff, Star, Loader } from "lucide-react";
+import "../../shared/styles/features/admin-template-settings.css";
 
 export function CampaignTemplateSettingsPage() {
   const [templates, setTemplates] = useState<CampaignTemplateSetting[]>([]);

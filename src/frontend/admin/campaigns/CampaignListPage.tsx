@@ -3,6 +3,8 @@ import { AdminShell } from "../AdminShell.js";
 import { fetchAdminCampaigns, purgeCampaign, restoreCampaign, type AdminCampaignSummary } from "../adminClient.js";
 import { ConfirmPasswordDialog } from "../security/ConfirmPasswordDialog.js";
 import { Search, Trash2, RotateCcw, Loader } from "lucide-react";
+import "../../shared/styles/features/admin-campaigns.css";
+import "../../shared/styles/features/admin-purge.css";
 
 export function CampaignListPage() {
   const [campaigns, setCampaigns] = useState<AdminCampaignSummary[]>([]);

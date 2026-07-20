@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AdminShell } from "../AdminShell.js";
 import { fetchAuditLog, type AuditLogSummary } from "../adminClient.js";
 import { RefreshCw, Eye } from "lucide-react";
+import "../../shared/styles/features/admin-audit.css";
 
 export function AuditLogPage() {
   const [logs, setLogs] = useState<AuditLogSummary[]>([]);

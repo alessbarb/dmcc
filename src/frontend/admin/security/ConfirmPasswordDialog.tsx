@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Lock, X } from "lucide-react";
+import "../../shared/styles/features/admin-security.css";
 
 interface ConfirmPasswordDialogProps {
   title: string;

@@ -9,6 +9,7 @@ import {
   type AnnouncementInput,
 } from "../adminClient.js";
 import { Plus, Archive, Power, Loader, X } from "lucide-react";
+import "../../shared/styles/features/admin-announcements.css";
 
 const EMPTY_FORM: AnnouncementInput = {
   content: { title: "", body: "" },
