@@ -1,0 +1,122 @@
+.template-entity-preview-modal {
+  max-width: 640px;
+}
+
+.template-entity-preview-modal__header {
+  align-items: flex-start;
+}
+
+.template-entity-preview-modal__heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.template-entity-preview-modal__heading h2 {
+  margin: 2px 0 0;
+  font-size: 1.15rem;
+}
+
+.template-entity-preview-modal__icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--theme-shapes-radius-medium);
+}
+
+.template-entity-preview-modal__type {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-text-secondary);
+}
+
+.template-entity-preview-modal__badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.template-entity-preview-modal__badges .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.template-entity-preview-modal__subtitle {
+  color: var(--theme-text-secondary);
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.template-entity-preview-modal__summary {
+  margin: 0 0 18px;
+  line-height: 1.55;
+}
+
+.template-entity-preview-modal__section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--theme-borders-default);
+}
+
+.template-entity-preview-modal__section h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--theme-text-secondary);
+}
+
+.template-entity-preview-modal__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.template-entity-preview-modal__facts li {
+  padding: 10px 12px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-raised);
+}
+
+.template-entity-preview-modal__fact-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+.template-entity-preview-modal__fact-heading span {
+  color: var(--theme-text-secondary);
+}
+
+.template-entity-preview-modal__facts p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.template-entity-preview-modal__footer {
+  justify-content: space-between;
+}
+
+.template-entity-preview-modal__footer-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+}
