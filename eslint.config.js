@@ -15,8 +15,11 @@ export default defineConfig(
     ".worktrees/**",
     ".playwright-mcp/**",
     ".tmp/**",
+    "**/.tmp/**",
     ".artifacts/**",
     "scratch/**",
+    "tmp/**",
+    "**/git-state-*/**",
   ]),
 
   {

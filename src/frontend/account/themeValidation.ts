@@ -1,7 +1,7 @@
 import {
   THEME_CONTRACT_VERSION,
   THEME_ENTITY_TYPES,
-  type ThemePackageV1,
+  type ThemePackage,
 } from "./themeContract.js";
 
 export type ThemeValidationIssue = {
@@ -10,7 +10,7 @@ export type ThemeValidationIssue = {
 };
 
 export type ThemeValidationResult =
-  | { valid: true; value: ThemePackageV1; issues: [] }
+  | { valid: true; value: ThemePackage; issues: [] }
   | { valid: false; issues: ThemeValidationIssue[] };
 
 type Shape = "string" | "boolean" | "identityPalette" | { readonly [key: string]: Shape };
@@ -173,6 +173,15 @@ export const THEME_VARIANT_SHAPE = {
     unreadMarker: "string",
     mentionBackground: "string",
   },
+  artwork: {
+    appBackgroundImage: "string",
+    appBackgroundPosition: "string",
+    appBackgroundPositionCompact: "string",
+    appBackgroundSize: "string",
+    appBackgroundSizeCompact: "string",
+    appBackgroundOpacity: "string",
+    appBackgroundVeil: "string",
+  },
   identityPalette: "identityPalette",
 } as const satisfies Shape;
 
@@ -300,7 +309,7 @@ export function validateThemePackage(value: unknown): ThemeValidationResult {
     return { valid: false, issues };
   }
 
-  // Every field was checked above; issues.length === 0 means value now conforms to ThemePackageV1.
+  // Every field was checked above; issues.length === 0 means value now conforms to ThemePackage.
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  return { valid: true, value: value as ThemePackageV1, issues: [] };
+  return { valid: true, value: value as ThemePackage, issues: [] };
 }

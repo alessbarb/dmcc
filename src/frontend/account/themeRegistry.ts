@@ -1,13 +1,11 @@
 import { defaultTheme } from "./defaultTheme.js";
 import { fantasyTheme } from "./fantasyTheme.js";
 import { sciFiTheme } from "./sciFiTheme.js";
-import type { ThemePackageV1 } from "./themeContract.js";
+import type { ThemePackage } from "./themeContract.js";
 import { assertThemeContrast } from "./themeContrast.js";
 import { validateThemePackage } from "./themeValidation.js";
 
-export type ThemePackage = ThemePackageV1;
-
-function assertThemePackage(value: unknown): ThemePackageV1 {
+function assertThemePackage(value: unknown): ThemePackage {
   const result = validateThemePackage(value);
   if (!result.valid) {
     const details = result.issues
@@ -22,7 +20,7 @@ function assertThemePackage(value: unknown): ThemePackageV1 {
 
 export const themes = new Map<string, ThemePackage>();
 
-function registerTheme(value: unknown): ThemePackageV1 {
+function registerTheme(value: unknown): ThemePackage {
   const theme = assertThemePackage(value);
   if (themes.has(theme.id)) {
     throw new Error(`Theme "${theme.id}" is already registered`);

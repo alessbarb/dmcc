@@ -1,4 +1,4 @@
-import type { ThemePackageV1, ThemeVariant } from "./themeContract.js";
+import type { ThemePackage, ThemeVariant } from "./themeContract.js";
 
 export type ThemeContrastIssue = {
   path: string;
@@ -105,7 +105,7 @@ function criticalPairs(variant: ThemeVariant): ContrastPair[] {
   ];
 }
 
-export function validateThemeContrast(theme: ThemePackageV1): ThemeContrastIssue[] {
+export function validateThemeContrast(theme: ThemePackage): ThemeContrastIssue[] {
   const issues: ThemeContrastIssue[] = [];
 
   for (const mode of ["light", "dark"] as const) {
@@ -124,7 +124,7 @@ export function validateThemeContrast(theme: ThemePackageV1): ThemeContrastIssue
   return issues;
 }
 
-export function assertThemeContrast(theme: ThemePackageV1): void {
+export function assertThemeContrast(theme: ThemePackage): void {
   const issues = validateThemeContrast(theme);
   if (issues.length === 0) return;
 

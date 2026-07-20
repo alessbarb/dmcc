@@ -1,4 +1,4 @@
-export const THEME_CONTRACT_VERSION = 1 as const;
+export const THEME_CONTRACT_VERSION = 2 as const;
 
 export const THEME_ENTITY_TYPES = [
   "player",
@@ -177,6 +177,16 @@ export type ThemeMessaging = {
   mentionBackground: string;
 };
 
+export type ThemeArtwork = {
+  appBackgroundImage: string;
+  appBackgroundPosition: string;
+  appBackgroundPositionCompact: string;
+  appBackgroundSize: string;
+  appBackgroundSizeCompact: string;
+  appBackgroundOpacity: string;
+  appBackgroundVeil: string;
+};
+
 export type ThemeIdentityPalette = readonly [
   string,
   string,
@@ -212,10 +222,11 @@ export type ThemeVariant = {
   canvas: ThemeCanvas;
   media: ThemeMedia;
   messaging: ThemeMessaging;
+  artwork: ThemeArtwork;
   identityPalette: ThemeIdentityPalette;
 };
 
-export type ThemePackageV1 = {
+export type ThemePackage = {
   id: string;
   contractVersion: typeof THEME_CONTRACT_VERSION;
   labelKey: string;
