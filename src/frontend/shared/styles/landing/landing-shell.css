@@ -1,4 +1,4 @@
-body:has(.rl-root) .watermark {
+body[data-watermark="hidden"] .watermark {
   display: none;
 }
 
