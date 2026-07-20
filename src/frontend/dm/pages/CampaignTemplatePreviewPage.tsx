@@ -2,14 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import {
   ArrowLeft,
-  BookOpen,
   CheckCircle2,
   Eye,
   EyeOff,
-  GitFork,
-  Layers,
   Lock,
-  ScrollText,
   Sparkles,
   Wand2,
 } from "lucide-react";
@@ -382,35 +378,59 @@ export function CampaignTemplatePreviewPage() {
           {t("campaignTemplatePreview.backToCampaigns")}
         </button>
 
-        <div className="campaign-template-preview-hero__body">
+        <div className="campaign-template-preview-hero__stage">
           <div className="campaign-template-preview-hero__eyebrow">
             <Eye size={16} />
             {t("campaignTemplatePreview.eyebrow")}
           </div>
           <h1>{template.title}</h1>
-          <p>{template.pitch || template.summary || template.description}</p>
-          <div className="campaign-template-preview-hero__meta">
-            <span>{labelFor(template.system, SYSTEM_LABEL_KEYS, t)}</span>
-            <span>{labelFor(template.difficulty, DIFFICULTY_LABEL_KEYS, t)}</span>
-            <span>{t("campaignTemplatePreview.version", { version: template.version })}</span>
-          </div>
-          <div className="campaign-template-template-card__tags" aria-label={t("landing.campaignTemplateTagsLabel")}>
-            {template.tags.map((tag) => (
-              <span key={tag}>{tag}</span>
-            ))}
+          <p className="campaign-template-preview-hero__pitch">
+            {template.pitch || template.summary || template.description}
+          </p>
+          <div className="campaign-template-preview-hero__ctas">
+            <button type="button" className="btn btn-primary" onClick={requestCreateCopy} disabled={importing || loading}>
+              <Wand2 size={16} />
+              {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
+            </button>
+            <button
+              type="button"
+              className="campaign-template-preview-hero__explore"
+              onClick={() => {
+                document.getElementById("campaign-template-preview-graph")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              {t("campaignTemplatePreview.exploreCta")}
+            </button>
           </div>
         </div>
 
-        <div className="campaign-template-preview-hero__actions">
-          <button type="button" className="btn btn-primary" onClick={requestCreateCopy} disabled={importing || loading}>
-            <Wand2 size={16} />
-            {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
-          </button>
+        <div className="campaign-template-preview-hero__credits">
+          <span>{t("campaignTemplatePreview.eyebrow")}</span>
+          <span aria-hidden="true">·</span>
+          <span>{labelFor(template.system, SYSTEM_LABEL_KEYS, t)}</span>
+          <span aria-hidden="true">·</span>
+          <span>{labelFor(template.difficulty, DIFFICULTY_LABEL_KEYS, t)}</span>
+          <span aria-hidden="true">·</span>
+          <span>{t("campaignTemplatePreview.version", { version: template.version })}</span>
+          {template.tags.map((tag) => (
+            <span key={tag} className="campaign-template-preview-hero__credit-tag">
+              #{tag}
+            </span>
+          ))}
         </div>
       </header>
 
+      <p className="campaign-template-preview-stats-sentence">
+        {t("campaignTemplatePreview.statsSentence", {
+          entities: String(template.entities.filter((entity) => !isGuideEntity(entity)).length),
+          relations: String(template.relations.length),
+          sessions: String(template.sessions.length),
+          facts: String(template.facts.length),
+        })}
+      </p>
+
       {graphCenterEntity && (
-        <section className="card campaign-template-preview-card campaign-template-preview-graph-card">
+        <section id="campaign-template-preview-graph" className="campaign-template-preview-graph-card">
           <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.graphTitle")}</h2>
             <span>{t("campaignTemplatePreview.graphDesc")}</span>
@@ -460,29 +480,6 @@ export function CampaignTemplatePreviewPage() {
           <strong>{t("campaignTemplatePreview.readOnlyTitle")}</strong>
           <p>{t("campaignTemplatePreview.readOnlyDesc")}</p>
         </div>
-      </section>
-
-      <section className="campaign-template-preview-stats" aria-label={t("campaignTemplatePreview.statsLabel")}>
-        <article className="card">
-          <Layers size={18} />
-          <strong>{template.entities.filter((entity) => !isGuideEntity(entity)).length}</strong>
-          <span>{t("campaignTemplatePreview.entities")}</span>
-        </article>
-        <article className="card">
-          <GitFork size={18} />
-          <strong>{template.relations.length}</strong>
-          <span>{t("campaignTemplatePreview.relations")}</span>
-        </article>
-        <article className="card">
-          <BookOpen size={18} />
-          <strong>{template.sessions.length}</strong>
-          <span>{t("campaignTemplatePreview.sessions")}</span>
-        </article>
-        <article className="card">
-          <ScrollText size={18} />
-          <strong>{template.facts.length}</strong>
-          <span>{t("campaignTemplatePreview.facts")}</span>
-        </article>
       </section>
 
       <div className="campaign-template-editorial-grid">
