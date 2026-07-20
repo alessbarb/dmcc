@@ -15,9 +15,67 @@ import {
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import { fetchSession } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
-import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import { useCampaignStore, type CampaignStateStore, type Entity, type Relation } from "../../shared/stores/campaignStore.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
+import { EntityRelationsTab } from "../entities/relations/EntityRelationsTab.js";
 import "../../shared/styles/features/campaign-template.css";
+
+type PreviewCampaignState = NonNullable<CampaignStateStore["campaignState"]>;
+
+/** `EntityRelationsTab` expects live-campaign `Entity`/`Relation` records; the
+ *  template only carries the subset it needs to import, so the rest is
+ *  padded with inert defaults purely to satisfy the shape. */
+function toPreviewEntity(entity: {
+  entityId: string;
+  entityType: string;
+  title: string;
+  subtitle?: string;
+  summary?: string;
+  content?: string;
+  status?: string;
+  importance?: string;
+  visibility?: VisibilityRule;
+  metadata?: Record<string, unknown>;
+}): Entity {
+  return {
+    entityId: entity.entityId,
+    campaignId: "preview",
+    entityType: entity.entityType,
+    title: entity.title,
+    subtitle: entity.subtitle,
+    summary: entity.summary,
+    content: entity.content,
+    status: entity.status ?? "active",
+    importance: entity.importance ?? "minor",
+    visibility: entity.visibility ?? { kind: "dm_only" },
+    metadata: entity.metadata ?? {},
+    tagIds: [],
+    archived: false,
+    createdAt: "",
+    updatedAt: "",
+  };
+}
+
+function toPreviewRelation(relation: {
+  relationId: string;
+  sourceEntityId: string;
+  targetEntityId: string;
+  relationType: string;
+  description?: string;
+  visibility?: VisibilityRule;
+}): Relation {
+  return {
+    relationId: relation.relationId,
+    campaignId: "preview",
+    sourceEntityId: relation.sourceEntityId,
+    targetEntityId: relation.targetEntityId,
+    relationType: relation.relationType,
+    status: "active",
+    description: relation.description,
+    visibility: relation.visibility ?? { kind: "dm_only" },
+    archived: false,
+  };
+}
 
 function runCampaignTemplatePreviewAction(operation: Promise<unknown>, errorMessage: string): void {
   void operation.catch((error: unknown) => {
@@ -238,6 +296,51 @@ export function CampaignTemplatePreviewPage() {
     return (selected.length ? selected : template.relations).slice(0, 10);
   }, [template]);
 
+  const graphEntities = useMemo(() => (template ? template.entities.map(toPreviewEntity) : []), [template]);
+  const graphRelations = useMemo(() => (template ? template.relations.map(toPreviewRelation) : []), [template]);
+
+  const graphPreviewState: PreviewCampaignState = useMemo(
+    () => ({
+      campaign: null,
+      entities: graphEntities,
+      relations: graphRelations,
+      facts: [],
+      sessions: [],
+      players: [],
+      canvases: [],
+      notebooks: [],
+      notebookItems: [],
+      storyThreads: [],
+      storySteps: [],
+    }),
+    [graphEntities, graphRelations],
+  );
+
+  const graphDefaultCenterEntity = useMemo(() => {
+    if (!graphEntities.length) return null;
+    const degreeById = new Map<string, number>();
+    for (const relation of graphRelations) {
+      degreeById.set(relation.sourceEntityId, (degreeById.get(relation.sourceEntityId) ?? 0) + 1);
+      degreeById.set(relation.targetEntityId, (degreeById.get(relation.targetEntityId) ?? 0) + 1);
+    }
+    const highlighted = (template?.highlightEntityIds ?? [])
+      .map((entityId) => graphEntities.find((entity) => entity.entityId === entityId))
+      .find((entity) => entity && (degreeById.get(entity.entityId) ?? 0) > 0);
+    if (highlighted) return highlighted;
+    return [...graphEntities].sort((a, b) => (degreeById.get(b.entityId) ?? 0) - (degreeById.get(a.entityId) ?? 0))[0] ?? null;
+  }, [graphEntities, graphRelations, template]);
+
+  const [graphFocusEntityId, setGraphFocusEntityId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setGraphFocusEntityId(null);
+  }, [templateId]);
+
+  const graphCenterEntity = useMemo(() => {
+    const focused = graphFocusEntityId ? graphEntities.find((entity) => entity.entityId === graphFocusEntityId) : null;
+    return focused ?? graphDefaultCenterEntity;
+  }, [graphFocusEntityId, graphEntities, graphDefaultCenterEntity]);
+
   const handleCreateCopy = async (options: { title: string; summary?: string; importMode: CampaignTemplateImportMode; openAfterCreate: boolean }) => {
     if (!template) return;
     try {
@@ -334,6 +437,21 @@ export function CampaignTemplatePreviewPage() {
           <p>{t("campaignTemplatePreview.readOnlyDesc")}</p>
         </div>
       </section>
+
+      {graphCenterEntity && (
+        <section className="card campaign-template-preview-card campaign-template-preview-graph-card">
+          <div className="campaign-template-preview-section-heading">
+            <h2>{t("campaignTemplatePreview.graphTitle")}</h2>
+            <span>{t("campaignTemplatePreview.graphDesc")}</span>
+          </div>
+          <EntityRelationsTab
+            entity={graphCenterEntity}
+            campaignState={graphPreviewState}
+            onNavigateEntity={setGraphFocusEntityId}
+          />
+          <p className="campaign-template-preview-graph-hint">{t("campaignTemplatePreview.graphHint")}</p>
+        </section>
+      )}
 
       <section className="campaign-template-preview-stats" aria-label={t("campaignTemplatePreview.statsLabel")}>
         <article className="card">

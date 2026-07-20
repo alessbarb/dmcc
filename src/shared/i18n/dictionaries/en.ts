@@ -1527,6 +1527,9 @@ export const en = {
     createCopy: "Create editable copy",
     importing: "Creating copy…",
     backToCampaigns: "Back to campaigns",
+    graphTitle: "Explore the narrative graph",
+    graphDesc: "Drag, zoom, and navigate connected entities — this is DMCC in motion",
+    graphHint: "Interactive: click a neighbor to recenter the graph on it.",
     notFoundTitle: "I can’t find this example campaign",
     notFoundDesc:
       "The template may not exist or the campaign template catalog may be unavailable.",

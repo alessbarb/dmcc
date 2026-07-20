@@ -1547,6 +1547,9 @@ export const es: TranslationDictionary = {
     createCopy: "Crear copia editable",
     importing: "Creando copia…",
     backToCampaigns: "Volver a campañas",
+    graphTitle: "Explora el grafo narrativo",
+    graphDesc: "Arrastra, haz zoom y navega entre entidades conectadas — así se ve DMCC en marcha",
+    graphHint: "Interactivo: haz clic en un vecino para recentrar el grafo en él.",
     notFoundTitle: "No encuentro esta campaña de ejemplo",
     notFoundDesc:
       "Puede que el template no exista o que el catálogo de plantillas de campaña no esté disponible.",

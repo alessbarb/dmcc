@@ -42,6 +42,12 @@
   font-size: 1.05rem;
 }
 
+.campaign-template-preview-graph-hint {
+  margin: 10px 0 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.82rem;
+}
+
 .campaign-template-preview-section-heading span {
   color: var(--theme-text-secondary);
   font-size: 0.82rem;
