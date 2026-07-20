@@ -1,12 +1,57 @@
+@import "../landing.css";
+@import "./player-portal.css";
+
+/* ═══════════════════════════════════════════════════════════════
+   AUTH & LOGIN PAGE SHELL — Landing Theme & Glassmorphism Aesthetic
+   ═══════════════════════════════════════════════════════════════ */
+
 .auth-page-shell {
+  --theme-accents-primary-active: hsl(37 60% 54%);
+  --theme-accents-primary-background: hsl(38 66% 62% / 0.14);
+  --theme-accents-primary-foreground: hsl(38 66% 62%);
+  --theme-accents-primary-hover: hsl(39 76% 70%);
+  --theme-accents-primary-on-accent: hsl(228 36% 8%);
+  --theme-accents-secondary-active: hsl(270 44% 60%);
+  --theme-accents-secondary-background: hsl(270 52% 70% / 0.14);
+  --theme-accents-secondary-foreground: hsl(270 52% 70%);
+  --theme-accents-secondary-hover: hsl(270 60% 78%);
+  --theme-accents-secondary-on-accent: hsl(228 36% 8%);
+  --theme-activity-system-foreground: hsl(255 85% 65%);
+  --theme-activity-tag-foreground: hsl(175 85% 45%);
+  --theme-borders-default: hsl(36 20% 28%);
+  --theme-borders-strong: hsl(37 26% 36%);
+  --theme-canvas-selection: hsl(38 66% 62% / 0.12);
+  --theme-feedback-danger-foreground: hsl(3 72% 68%);
+  --theme-feedback-info-foreground: hsl(204 66% 68%);
+  --theme-feedback-success-foreground: hsl(145 48% 61%);
+  --theme-feedback-warning-foreground: hsl(44 78% 65%);
+  --theme-surfaces-base: hsl(226 25% 10%);
+  --theme-surfaces-canvas: hsl(228 36% 6%);
+  --theme-surfaces-interactive: hsl(224 21% 14%);
+  --theme-surfaces-interactive-hover: hsl(222 20% 20%);
+  --theme-surfaces-raised: hsl(224 20% 17%);
+  --theme-surfaces-subtle: hsl(224 21% 14%);
+  --theme-text-disabled: hsl(32 9% 52%);
+  --theme-text-on-media: hsl(0 0% 100%);
+  --theme-text-primary: hsl(42 30% 94%);
+  --theme-text-secondary: hsl(35 18% 78%);
+  --theme-text-subtle: hsl(32 12% 66%);
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--theme-surfaces-canvas);
+  color: var(--theme-text-primary);
+  position: relative;
+  overflow-x: hidden;
 }
 
 .auth-page-content {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 40px;
 }
 
 .auth-page-loading {
@@ -17,35 +62,164 @@
   color: var(--theme-text-secondary);
 }
 
+/* ── Glassmorphism Portal Card ────────────────────────────── */
+
+.auth-page-shell .join-portal-card {
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 22%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 80%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 12px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent),
+    0 0 60px color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
+}
+
+.auth-page-shell .join-portal-icon-wrapper {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent),
+    color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, transparent);
+  color: var(--theme-accents-primary-foreground);
+}
+
 .auth-page-title {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  letter-spacing: -0.02em;
 }
 
 .auth-page-subtitle {
   color: var(--theme-text-secondary);
-  margin: 4px 0 0;
+  font-size: 0.9rem;
+  margin-top: 6px;
 }
 
 .auth-page-subtitle--compact {
   font-size: 0.85rem;
 }
 
+/* ── Form Controls & Inputs ────────────────────────────────── */
+
+.auth-page-shell .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-page-shell .form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--theme-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.auth-page-shell .join-portal-input {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  background-color: color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent);
+  border: 1px solid var(--theme-borders-default);
+  color: var(--theme-text-primary);
+  border-radius: var(--theme-shapes-radius-medium);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.auth-page-shell .join-portal-input:focus {
+  outline: none;
+  border-color: var(--theme-accents-primary-foreground);
+  background-color: color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent);
+}
+
+.auth-page-shell .access-code-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.auth-page-shell .access-code-input-wrapper .join-portal-input {
+  padding-right: 42px;
+}
+
 .auth-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
   background: none;
   border: none;
-  padding: 0;
+  padding: 6px;
+  color: var(--theme-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--theme-shapes-radius-small);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.auth-password-toggle:hover {
+  color: var(--theme-text-primary);
+  background-color: color-mix(in srgb, var(--theme-text-on-media) 10%, transparent);
+}
+
+/* ── Primary & Secondary Buttons ───────────────────────────── */
+
+.auth-page-shell .join-portal-btn {
+  background: linear-gradient(
+    135deg,
+    var(--theme-accents-primary-foreground) 0%,
+    hsl(37 60% 48%) 100%
+  );
+  color: var(--theme-accents-primary-on-accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 12px 20px;
+  border-radius: var(--theme-shapes-radius-medium);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent);
+}
+
+.auth-page-shell .join-portal-btn:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--theme-accents-primary-hover) 0%,
+    hsl(38 66% 55%) 100%
+  );
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent);
 }
 
 .auth-page-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 40%, transparent);
 }
 
 .auth-page-action {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: var(--theme-shapes-radius-medium);
+  background: color-mix(in srgb, var(--theme-surfaces-raised) 50%, transparent);
+  border: 1px solid var(--theme-borders-default);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.auth-page-action:hover {
+  background: color-mix(in srgb, var(--theme-surfaces-interactive-hover) 75%, transparent);
+  border-color: var(--theme-borders-strong);
+  transform: translateY(-1px);
 }
 
 .auth-back-icon {
