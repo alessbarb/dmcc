@@ -5,6 +5,7 @@ import type { Entity, PlayerProfile, CampaignStateStore } from "../../shared/sto
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatVisibility } from "@shared/i18n/index.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import { MarkdownContent } from "../../shared/components/MarkdownContent.js";
 import "./entity-summary.css";
 import "./entity-summary-character-sheet.css";
 
@@ -73,7 +74,7 @@ export function ResumenTab({
           <h4 className="entity-summary__section-title">
             Resumen
           </h4>
-          <p className="entity-summary__text">{entity.summary}</p>
+          <MarkdownContent value={entity.summary} className="entity-summary__text" />
         </div>
       )}
 
@@ -82,9 +83,7 @@ export function ResumenTab({
           <h4 className="entity-summary__section-title">
             Notas y descripción
           </h4>
-          <p className="entity-summary__text entity-summary__text--notes">
-            {entity.content}
-          </p>
+          <MarkdownContent value={entity.content} className="entity-summary__text entity-summary__text--notes" />
         </div>
       )}
 

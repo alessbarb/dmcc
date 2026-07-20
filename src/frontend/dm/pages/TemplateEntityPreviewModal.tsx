@@ -6,6 +6,7 @@ import { getEntityVisual } from "../entities/entityVisuals.js";
 import { buildEntityNeighborhood } from "../entities/relations/entityRelationshipNeighborhood.js";
 import { EntityRelationsList } from "../entities/relations/EntityRelationsList.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { MarkdownContent } from "../../shared/components/MarkdownContent.js";
 import {
   ENTITY_TYPE_LABEL_KEYS,
   FACT_KIND_LABEL_KEYS,
@@ -96,9 +97,14 @@ export function TemplateEntityPreviewModal({
           </div>
 
           {entity.subtitle && <p className="template-entity-preview-modal__subtitle">{entity.subtitle}</p>}
-          <p className="template-entity-preview-modal__summary">
-            {entity.summary || entity.content || t("campaignTemplatePreview.noSummary")}
-          </p>
+          {entity.summary || entity.content ? (
+            <MarkdownContent
+              value={entity.summary || entity.content}
+              className="template-entity-preview-modal__summary"
+            />
+          ) : (
+            <p className="template-entity-preview-modal__summary">{t("campaignTemplatePreview.noSummary")}</p>
+          )}
 
           {relatedFacts.length > 0 && (
             <section className="template-entity-preview-modal__section">
