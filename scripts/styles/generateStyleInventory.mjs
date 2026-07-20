@@ -178,77 +178,77 @@ const directConsumers = [...records.values()]
   .sort();
 
 const lines = [
-  "# Inventario del sistema de estilos compartido",
+  "# Shared Style System Inventory",
   "",
-  "> Inventario generado desde `src/frontend/shared/styles`. No contiene CSS numerado, carpetas `-parts` ni carpetas `-styles`.",
-  "> Para regenerarlo: `npm run styles:inventory`. Para comprobar que no está obsoleto: `npm run styles:inventory:check`.",
+  "> Inventory generated from `src/frontend/shared/styles`. Does not contain numbered CSS, `-parts` folders or `-styles` folders.",
+  "> To regenerate: `npm run styles:inventory`. To verify up-to-date status: `npm run styles:inventory:check`.",
   "",
-  "## Alcance",
+  "## Scope",
   "",
-  `- **${records.size} hojas CSS** inventariadas en el checkout actual.`,
-  "- El grafo distingue tres relaciones: `Importa` (CSS → CSS), `Consumido por` (TS/TSX → CSS) y `Agrupado por` (CSS → wrapper CSS).",
-  "- `main.css` es la entrada global. Las hojas de feature se cargan desde sus consumidores; `account.css` sigue siendo una excepción global documentada en la arquitectura.",
-  "- La métrica de selectores es mecánica y sirve para localizar cambios; no sustituye la revisión visual.",
-  "- Los informes intermedios de auditoría viven en `.artifacts/`, se regeneran al ejecutar los scripts y no forman parte del código versionado.",
+  `- **${records.size} CSS stylesheets** inventoried in current checkout.`,
+  "- Graph distinguishes three relationships: `Imports` (CSS → CSS), `Consumed by` (TS/TSX → CSS) and `Grouped by` (CSS → wrapper CSS).",
+  "- `main.css` is the global entrypoint. Feature stylesheets are loaded by their consumers; `account.css` remains a documented architecture exception.",
+  "- Selector metric is mechanical to help locate changes; it does not replace visual review.",
+  "- Intermediate audit reports live in `.artifacts/`, regenerated on script execution and not version controlled.",
   "",
-  "## Consumidores directos de la aplicación",
+  "## Application Direct Consumers",
   "",
-  directConsumers.length ? directConsumers.map((consumer) => `- \`${consumer}\``).join("\n") : "- Ninguno detectado.",
+  directConsumers.length ? directConsumers.map((consumer) => `- \`${consumer}\``).join("\n") : "- None detected.",
   "",
-  "## Convenciones de lectura",
+  "## Reading Conventions",
   "",
-  "- **Responsabilidad**: papel de la hoja dentro de la arquitectura.",
-  "- **Resumen**: comentario funcional existente o descripción derivada de sus selectores cuando la hoja no tiene comentario.",
-  "- **Métricas**: líneas, selectores, variables CSS definidas y número de imports.",
-  "- **Consumido por**: imports directos desde TS/TSX. Si aparece vacío, la hoja solo puede estar alcanzada desde otra hoja CSS o necesita revisión del auditor de huérfanos.",
+  "- **Responsibility**: role of the stylesheet in the architecture.",
+  "- **Summary**: existing functional comment or summary derived from selectors when stylesheet lacks comment.",
+  "- **Metrics**: lines, selectors, defined CSS variables, and import count.",
+  "- **Consumed by**: direct imports from TS/TSX. If empty, the sheet is either reached transitively or needs orphan auditor review.",
   "",
-  "## Auditoría global de la aplicación",
+  "## Application Global Audit",
   "",
-  "> Esta sección integra el último informe de `npm run styles:audit:report`. El comando de inventario lo ejecuta antes de regenerar este README para que la documentación y los controles compartan la misma fotografía.",
+  "> This section integrates the latest `npm run styles:audit:report` output.",
   "",
-  "| Métrica | Valor |",
+  "| Metric | Value |",
   "| --- | ---: |",
   ...Object.entries(auditReport.summary).map(([key, value]) => `| \`${key}\` | ${value} |`),
   "",
-  "El auditor cubre los CSS y los ficheros de frontend configurados, y además comprueba colores literales, estilos inline, variables CSS, hojas huérfanas, selectores entre componentes, reglas `!important` y hojas que requieren más atomización.",
+  "The auditor covers CSS and configured frontend files, checking literal colors, inline styles, CSS variables, orphan sheets, cross-component selectors, `!important` rules, and sheets needing atomization.",
   "",
-  "## Hallazgos del auditor",
+  "## Auditor Findings",
   "",
-  "Los hallazgos se conservan aquí para que el inventario sea accionable y no solo descriptivo.",
+  "Findings are preserved here to keep the inventory actionable.",
   "",
-  "| Severidad | Categoría | Ubicación | Motivo |",
+  "| Severity | Category | Location | Reason |",
   "| --- | --- | --- | --- |",
   ...(auditReport.findings.length
     ? auditReport.findings
       .slice()
       .sort((a, b) => a.path.localeCompare(b.path) || a.line - b.line || a.category.localeCompare(b.category))
       .map((finding) => `| ${finding.severity} | ${finding.category} | \`${finding.path}:${finding.line}\` | ${escapeCell(String(finding.reason ?? ""))} |`)
-    : ["| — | — | — | No hay hallazgos registrados. |"]),
+    : ["| — | — | — | No findings recorded. |"]),
   "",
 ];
 
 for (const [group, groupRecords] of groups) {
-  lines.push(`## ${group === "root" ? "Entradas" : humanize(group)}`, "", groupDescriptions[group] ?? "Hojas compartidas sin subgrupo adicional.", "");
-  lines.push("| Fichero | Responsabilidad | Resumen | Importa | Consumido por | Auditoría | Métricas |", "| --- | --- | --- | --- | --- | --- | --- |");
+  lines.push(`## ${group === "root" ? "Entries" : humanize(group)}`, "", groupDescriptions[group] ?? "Shared sheets without additional subgroup.", "");
+  lines.push("| File | Responsibility | Summary | Imports | Consumed by | Audit | Metrics |", "| --- | --- | --- | --- | --- | --- | --- |");
   for (const record of groupRecords.sort((a, b) => a.pathname.localeCompare(b.pathname))) {
     const imports = record.imports.length ? record.imports.map((file) => `\`${file}\``).join(", ") : "—";
     const importedBy = record.importedByCss.length ? record.importedByCss.map((file) => `\`${file}\``).join(", ") : "—";
     const consumers = record.importedBySource.length ? record.importedBySource.map((file) => `\`${file}\``).join(", ") : "—";
     const audit = record.audit
-      ? `${record.audit.layer} / ${record.audit.domain}<br>**Hallazgos:** ${record.auditFindings.length}`
-      : "No auditado";
-    const metrics = `${record.lines} líneas · ${record.selectors.length} selectores · ${record.variables.length} variables · ${record.imports.length} imports`;
-    lines.push(`| \`${escapeCell(record.pathname)}\` | ${record.role}<br>**Agrupado por:** ${importedBy} | ${escapeCell(record.summary)} | ${imports} | ${consumers} | ${audit} | ${metrics} |`);
+      ? `${record.audit.layer} / ${record.audit.domain}<br>**Findings:** ${record.auditFindings.length}`
+      : "Not audited";
+    const metrics = `${record.lines} lines · ${record.selectors.length} selectors · ${record.variables.length} variables · ${record.imports.length} imports`;
+    lines.push(`| \`${escapeCell(record.pathname)}\` | ${record.role}<br>**Grouped by:** ${importedBy} | ${escapeCell(record.summary)} | ${imports} | ${consumers} | ${audit} | ${metrics} |`);
   }
   lines.push("");
 }
 
 lines.push(
-  "## Mantenimiento",
+  "## Maintenance",
   "",
-  "Este fichero es un artefacto derivado del árbol CSS y del grafo de imports del frontend. Si se añade, renombra o elimina una hoja, se debe ejecutar `npm run styles:inventory` y revisar el diff del inventario junto con el diff de código.",
+  "This file is a derived artifact from the CSS tree and frontend import graph. When adding, renaming or deleting a sheet, run `npm run styles:inventory` and include the inventory diff alongside code changes.",
   "",
-  "La ausencia de un consumidor directo no implica por sí sola que una hoja esté muerta: puede ser una dependencia CSS transitiva. La decisión de eliminarla debe apoyarse en `npm run styles:audit:check` y en la búsqueda de consumidores.",
+  "Absence of a direct consumer does not mean a sheet is dead: it may be a transitive CSS dependency. Deletion decisions should be backed by `npm run styles:audit:check` and consumer searches.",
   "",
 );
 
