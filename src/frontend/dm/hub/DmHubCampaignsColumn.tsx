@@ -111,7 +111,7 @@ export function DmHubCampaignsColumn({
                   </button>
                 </div>
               ) : campaigns.length === 0 ? (
-                <div className="dm-empty-state">
+                <div className="dm-empty-state empty-state--ornamented">
                   <Shield size={32} className="dm-empty-state__icon" />
                   <p className="dm-empty-state__title">
                     Todavía no tienes campañas

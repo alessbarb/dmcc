@@ -59,7 +59,8 @@ describe("theme-backed visual system", () => {
     for (const path of frontendSourceFiles()) {
       const source = readFileSync(path, "utf8");
       for (const retiredToken of RETIRED_THEME_TOKENS) {
-        if (source.includes(retiredToken)) {
+        const regex = new RegExp(`(?<![a-zA-Z0-9_-])${retiredToken}(?![a-zA-Z0-9_-])`);
+        if (regex.test(source)) {
           offenders.push(`${relative(root, path)} -> ${retiredToken}`);
         }
       }

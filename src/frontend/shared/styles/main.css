@@ -16,6 +16,7 @@
 @import "./primitives/menu.css";
 @import "./primitives/toolbar.css";
 @import "./primitives/empty-state.css";
+@import "./primitives/ornament.css";
 @import "./primitives/status.css";
 @import "./primitives/toast.css";
 

@@ -1,0 +1,176 @@
+/* ==========================================================================
+   Ornament Primitives System
+   Theme-driven semantic ornamentation for dialogs, panels, dividers, and empty states.
+   ========================================================================== */
+
+.ornamented-frame {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+}
+
+.ornamented-frame::before,
+.ornamented-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+
+  background: linear-gradient(
+    135deg,
+    var(--theme-ornaments-highlight),
+    var(--theme-ornaments-primary) 42%,
+    var(--theme-ornaments-secondary)
+  );
+
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+
+/* Primary Corner Ornament (Top Left) */
+.ornamented-frame::before {
+  top: -1rem;
+  left: -1rem;
+  width: var(--theme-ornaments-panel-corner-primary-size);
+  aspect-ratio: 4 / 3;
+
+  mask-image: var(--theme-ornaments-panel-corner-primary-mask);
+  mask-position: top left;
+  -webkit-mask-image: var(--theme-ornaments-panel-corner-primary-mask);
+  -webkit-mask-position: top left;
+
+  opacity: var(--theme-ornaments-panel-corner-primary-opacity);
+}
+
+/* Secondary Corner Ornament (Bottom Right) */
+.ornamented-frame::after {
+  right: -0.75rem;
+  bottom: -0.75rem;
+  width: var(--theme-ornaments-panel-corner-secondary-size);
+  aspect-ratio: 6 / 5;
+
+  mask-image: var(--theme-ornaments-panel-corner-secondary-mask);
+  mask-position: bottom right;
+  -webkit-mask-image: var(--theme-ornaments-panel-corner-secondary-mask);
+  -webkit-mask-position: bottom right;
+
+  opacity: var(--theme-ornaments-panel-corner-secondary-opacity);
+}
+
+/* Variant: Primary Corner Only */
+.ornamented-frame--primary-corner::after {
+  display: none;
+}
+
+/* Variant: Inset Ornaments (no overflow outside container bounds) */
+.ornamented-frame--inset::before {
+  top: 0;
+  left: 0;
+}
+
+.ornamented-frame--inset::after {
+  right: 0;
+  bottom: 0;
+}
+
+/* Edge Accent Element */
+.ornamented-frame__edge {
+  position: absolute;
+  top: -0.25rem;
+  left: 1rem;
+  z-index: 3;
+  width: var(--theme-ornaments-panel-edge-accent-size);
+  height: 2rem;
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    var(--theme-ornaments-secondary),
+    var(--theme-ornaments-primary),
+    var(--theme-ornaments-highlight)
+  );
+
+  mask-image: var(--theme-ornaments-panel-edge-accent-mask);
+  mask-repeat: no-repeat;
+  mask-position: left center;
+  mask-size: contain;
+  -webkit-mask-image: var(--theme-ornaments-panel-edge-accent-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: left center;
+  -webkit-mask-size: contain;
+
+  opacity: var(--theme-ornaments-panel-edge-accent-opacity);
+}
+
+/* Narrative Divider Primitive */
+.narrative-divider {
+  width: min(var(--theme-ornaments-narrative-divider-size), 80%);
+  height: 2.5rem;
+  margin-block: var(--space-6, 1.5rem);
+  margin-inline: auto;
+
+  background: linear-gradient(
+    90deg,
+    var(--theme-ornaments-secondary),
+    var(--theme-ornaments-highlight),
+    var(--theme-ornaments-primary)
+  );
+
+  mask-image: var(--theme-ornaments-narrative-divider-mask);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-image: var(--theme-ornaments-narrative-divider-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+
+  opacity: var(--theme-ornaments-narrative-divider-opacity);
+}
+
+/* Ambient Mark Watermark for Empty States */
+.empty-state--ornamented {
+  position: relative;
+  isolation: isolate;
+}
+
+.empty-state--ornamented::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+
+  width: var(--theme-ornaments-ambient-mark-size);
+  aspect-ratio: 1;
+  pointer-events: none;
+
+  background: var(--theme-ornaments-primary);
+
+  mask-image: var(--theme-ornaments-ambient-mark-mask);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-image: var(--theme-ornaments-ambient-mark-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+
+  opacity: var(--theme-ornaments-ambient-mark-opacity);
+  transform: translate(-50%, -50%);
+}
+
+/* Responsive Adaptations */
+@media (max-width: 48rem) {
+  .ornamented-frame::after {
+    display: none;
+  }
+
+  .ornamented-frame::before {
+    top: -0.5rem;
+    left: -0.5rem;
+    width: calc(var(--theme-ornaments-panel-corner-primary-size) * 0.65);
+  }
+}
