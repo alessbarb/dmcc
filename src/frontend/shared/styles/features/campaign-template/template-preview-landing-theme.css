@@ -1,0 +1,138 @@
+/* The template preview is reached straight from the public landing page
+   (marketing surface, no account) — it must read as a continuation of
+   that page's fixed cinematic identity, not as another screen of the
+   authenticated app. Same rationale and same values as `.rl-root` in
+   landing-shell.css: pin the semantic --theme-* tokens this page and its
+   portaled modal consume to their dark values, ignoring the visitor's
+   light/dark app preference.
+   `.campaign-template-preview-portal` is applied to the entity-detail
+   modal's overlay, which portals into document.body outside this page's
+   DOM subtree and therefore needs its own copy of the same variables. */
+.campaign-template-preview-page,
+.campaign-template-preview-portal {
+  /* `color` is inherited by computed value, not re-evaluated per var() —
+     declaring it here (not just the custom properties) forces every
+     descendant that doesn't set its own color to actually pick up the
+     overridden --theme-text-primary instead of the value already
+     resolved higher up the tree (e.g. on <body>, from the visitor's
+     live light/dark app theme). */
+  color: var(--theme-text-primary);
+  --theme-accents-primary-active: hsl(37 60% 54%);
+  --theme-accents-primary-background: hsl(38 66% 62% / 0.14);
+  --theme-accents-primary-foreground: hsl(38 66% 62%);
+  --theme-accents-primary-hover: hsl(39 76% 70%);
+  --theme-accents-primary-on-accent: hsl(228 36% 8%);
+  --theme-accents-secondary-active: hsl(270 44% 60%);
+  --theme-accents-secondary-background: hsl(270 52% 70% / 0.14);
+  --theme-accents-secondary-foreground: hsl(270 52% 70%);
+  --theme-accents-secondary-hover: hsl(270 60% 78%);
+  --theme-accents-secondary-on-accent: hsl(228 36% 8%);
+  --theme-borders-default: hsl(36 20% 28%);
+  --theme-borders-strong: hsl(37 26% 36%);
+  --theme-borders-interactive: hsl(36 20% 28%);
+  --theme-borders-interactive-hover: hsl(37 26% 36%);
+  --theme-borders-overlay: hsl(36 20% 28%);
+  --theme-feedback-danger-foreground: hsl(3 72% 68%);
+  --theme-feedback-danger-background: hsl(3 72% 68% / 0.14);
+  --theme-feedback-danger-border: hsl(3 72% 68% / 0.35);
+  --theme-feedback-danger-strong: hsl(3 55% 45%);
+  --theme-feedback-danger-on-strong: hsl(0 0% 100%);
+  --theme-feedback-info-foreground: hsl(204 66% 68%);
+  --theme-feedback-success-foreground: hsl(145 48% 61%);
+  --theme-feedback-success-background: hsl(145 48% 61% / 0.14);
+  --theme-feedback-success-strong: hsl(145 40% 38%);
+  --theme-feedback-success-on-strong: hsl(0 0% 100%);
+  --theme-feedback-warning-foreground: hsl(44 78% 65%);
+  --theme-feedback-warning-background: hsl(44 78% 65% / 0.14);
+  --theme-feedback-warning-border: hsl(44 78% 65% / 0.35);
+  --theme-feedback-warning-strong: hsl(44 60% 45%);
+  --theme-feedback-warning-on-strong: hsl(228 36% 8%);
+  --theme-media-overlay-strong: hsl(228 36% 6% / 0.65);
+  --theme-surfaces-base: hsl(226 25% 10%);
+  --theme-surfaces-canvas: hsl(228 36% 6%);
+  --theme-surfaces-interactive: hsl(224 20% 15%);
+  --theme-surfaces-interactive-hover: hsl(222 20% 20%);
+  --theme-surfaces-overlay: hsl(228 36% 6% / 0.75);
+  --theme-surfaces-raised: hsl(224 20% 17%);
+  --theme-surfaces-subtle: hsl(224 21% 14%);
+  --theme-text-disabled: hsl(32 9% 52%);
+  --theme-text-on-media: hsl(0 0% 100%);
+  --theme-text-primary: hsl(42 30% 94%);
+  --theme-text-secondary: hsl(35 18% 78%);
+  --theme-text-subtle: hsl(32 12% 66%);
+}
+
+/* ── Shapes: landing's illustration-card language (14px radius, glass
+   surface, soft cinematic shadow, no dashboard hover-lift) replaces the
+   app-standard `.card` (radius-large, translateY hover) within this page
+   and its portaled modal. ── */
+.campaign-template-preview-page .card,
+.campaign-template-preview-portal .modal-content {
+  border-radius: 14px;
+  border-color: color-mix(in srgb, var(--theme-surfaces-raised) 70%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 92%, transparent);
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+.campaign-template-preview-page .card:hover {
+  transform: none;
+  border-color: color-mix(in srgb, var(--theme-surfaces-raised) 70%, transparent);
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+}
+
+.campaign-template-preview-portal .modal-header,
+.campaign-template-preview-portal .modal-footer {
+  border-color: color-mix(in srgb, var(--theme-surfaces-raised) 70%, transparent);
+}
+
+/* ── Typography: landing's display headings ── */
+.campaign-template-preview-page h1 {
+  background: linear-gradient(168deg, hsl(210 14% 90%) 0%, hsl(36 14% 80%) 60%, hsl(34 18% 68%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.campaign-template-preview-page h2,
+.campaign-template-preview-portal h2 {
+  font-family: var(--font-display);
+}
+
+/* ── Buttons: landing's cinematic gold outline CTA replaces the app's
+   solid-fill primary/secondary buttons, at a size that survives being
+   repeated several times down the page (unlike the oversized hero CTA). ── */
+.campaign-template-preview-page .btn-primary,
+.campaign-template-preview-portal .btn-primary {
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 65%, transparent);
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, transparent);
+  transition: color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.campaign-template-preview-page .btn-primary:hover,
+.campaign-template-preview-portal .btn-primary:hover {
+  color: var(--theme-accents-primary-hover);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 85%, transparent);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--theme-accents-primary-foreground) 28%, transparent);
+  transform: translateY(-2px);
+}
+
+.campaign-template-preview-page .btn-secondary,
+.campaign-template-preview-portal .btn-secondary {
+  color: var(--theme-text-secondary);
+  background: color-mix(in srgb, var(--theme-surfaces-raised) 60%, transparent);
+  border-color: color-mix(in srgb, var(--theme-borders-default) 80%, transparent);
+}
+
+.campaign-template-preview-page .btn-secondary:hover,
+.campaign-template-preview-portal .btn-secondary:hover {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive-hover) 80%, transparent);
+}

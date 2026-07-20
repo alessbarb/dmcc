@@ -59,7 +59,7 @@ export function TemplateEntityPreviewModal({
   );
 
   return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay campaign-template-preview-portal" onClick={onClose}>
       <div
         className="modal-content template-entity-preview-modal"
         onClick={(event) => event.stopPropagation()}
