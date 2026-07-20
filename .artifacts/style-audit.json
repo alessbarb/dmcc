@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T10:24:48.713Z",
+  "generatedAt": "2026-07-20T10:33:31.325Z",
   "summary": {
     "cssFiles": 378,
     "tsxFilesWithInlineStyles": 15,
@@ -548,9 +548,11 @@
       "path": "src/frontend/admin/announcements/AnnouncementListPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 241,
+      "lineCount": 242,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-announcements.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -559,9 +561,11 @@
       "path": "src/frontend/admin/audit/AuditLogPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 202,
+      "lineCount": 203,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-audit.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -570,9 +574,11 @@
       "path": "src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 136,
+      "lineCount": 137,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-template-settings.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -581,9 +587,12 @@
       "path": "src/frontend/admin/campaigns/CampaignListPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 214,
+      "lineCount": 216,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-campaigns.css",
+        "src/frontend/shared/styles/features/admin-purge.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -592,9 +601,11 @@
       "path": "src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 115,
+      "lineCount": 116,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-game-systems.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -603,9 +614,11 @@
       "path": "src/frontend/admin/invitations/InvitationListPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 134,
+      "lineCount": 135,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-invitations.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -614,9 +627,11 @@
       "path": "src/frontend/admin/overview/OperationsOverviewPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 133,
+      "lineCount": 134,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-overview.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -625,9 +640,11 @@
       "path": "src/frontend/admin/purge/CampaignPurgeJobsPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 178,
+      "lineCount": 179,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-purge.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -636,9 +653,11 @@
       "path": "src/frontend/admin/security/ConfirmPasswordDialog.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 94,
+      "lineCount": 95,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-security.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -647,9 +666,11 @@
       "path": "src/frontend/admin/users/UserListPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 267,
+      "lineCount": 268,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/admin-users.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -1091,9 +1112,24 @@
       "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 913,
+      "lineCount": 927,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-canvas.css",
+        "src/frontend/shared/styles/features/canvas-board-dialogs.css",
+        "src/frontend/shared/styles/features/canvas-bulk-actions.css",
+        "src/frontend/shared/styles/features/canvas-dialog-forms.css",
+        "src/frontend/shared/styles/features/canvas-entity-node.css",
+        "src/frontend/shared/styles/features/canvas-flow.css",
+        "src/frontend/shared/styles/features/canvas-group-hulls.css",
+        "src/frontend/shared/styles/features/canvas-inspector.css",
+        "src/frontend/shared/styles/features/canvas-mystery-health.css",
+        "src/frontend/shared/styles/features/canvas-narrative-lint.css",
+        "src/frontend/shared/styles/features/canvas-page-header.css",
+        "src/frontend/shared/styles/features/canvas-palette.css",
+        "src/frontend/shared/styles/features/canvas-toolbar.css",
+        "src/frontend/shared/styles/features/canvas-presentation.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -1300,9 +1336,11 @@
       "path": "src/frontend/dm/entities/EntityCreateModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 696,
+      "lineCount": 697,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/entity-create.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -1380,9 +1418,11 @@
       "path": "src/frontend/dm/entities/TrazabilidadTab.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 191,
+      "lineCount": 192,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/entity-trace.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -1932,10 +1972,11 @@
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 380,
+      "lineCount": 381,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/dm/entities/relations/relationshipGraph.css"
+        "src/frontend/dm/entities/relations/relationshipGraph.css",
+        "src/frontend/shared/styles/features/entity-relations.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -2202,9 +2243,12 @@
       "path": "src/frontend/dm/hub/DmHubPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 519,
+      "lineCount": 521,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/dm-hub.css",
+        "src/frontend/shared/styles/features/dm-hub-dashboard.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -3575,9 +3619,12 @@
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 691,
+      "lineCount": 693,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/dashboard-overview.css",
+        "src/frontend/shared/styles/features/dm-dashboard.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -3610,9 +3657,11 @@
       "path": "src/frontend/dm/pages/OnboardingPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 146,
+      "lineCount": 147,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/dm-onboarding.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6012,10 +6061,12 @@
       "path": "src/frontend/player/pages/PlayerCampaignShell.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 143,
+      "lineCount": 145,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/player/pages/playerCampaignShell.css"
+        "src/frontend/player/pages/playerCampaignShell.css",
+        "src/frontend/shared/styles/features/player-portal.css",
+        "src/frontend/shared/styles/features/player-campaign.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -6047,9 +6098,11 @@
       "path": "src/frontend/player/pages/PlayerCampaignsPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 85,
+      "lineCount": 86,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6058,9 +6111,11 @@
       "path": "src/frontend/player/pages/PlayerJoinPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 70,
+      "lineCount": 71,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/player-portal.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6323,9 +6378,11 @@
       "path": "src/frontend/shared/components/CampaignMessagingPanel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 325,
+      "lineCount": 326,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-messaging.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6909,7 +6966,7 @@
         "src/frontend/shared/styles/features/admin-announcements/admin-announcements-actions.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/announcements/AnnouncementListPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -7016,7 +7073,7 @@
         "src/frontend/shared/styles/features/admin-audit/admin-audit-details.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/audit/AuditLogPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -7122,7 +7179,7 @@
         "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-actions.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/campaigns/CampaignListPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -7135,7 +7192,7 @@
       "selectorCount": 23,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -7172,7 +7229,7 @@
       "selectorCount": 26,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/invitations/InvitationListPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -7218,7 +7275,7 @@
       "selectorCount": 24,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/overview/OperationsOverviewPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -7354,7 +7411,8 @@
         "src/frontend/shared/styles/features/admin-purge/admin-purge-actions.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/campaigns/CampaignListPage.tsx",
+        "src/frontend/admin/purge/CampaignPurgeJobsPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -7367,7 +7425,7 @@
       "selectorCount": 15,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/security/ConfirmPasswordDialog.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -7395,7 +7453,7 @@
       "selectorCount": 24,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -7529,7 +7587,7 @@
         "src/frontend/shared/styles/features/admin-users/admin-users-actions.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/admin/users/UserListPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -8048,7 +8106,7 @@
         "src/frontend/shared/styles/features/campaign-canvas/canvas-interactions.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -8164,7 +8222,7 @@
         "src/frontend/shared/styles/features/campaign-messaging/messaging-tones.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/components/CampaignMessagingPanel.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -8420,7 +8478,7 @@
       "selectorCount": 27,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8453,7 +8511,7 @@
       "selectorCount": 1,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -8466,7 +8524,7 @@
       "selectorCount": 13,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8481,7 +8539,7 @@
       "selectorCount": 23,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8510,7 +8568,7 @@
       "selectorCount": 5,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8530,7 +8588,7 @@
       "selectorCount": 3,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -8543,7 +8601,7 @@
       "selectorCount": 14,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8566,7 +8624,7 @@
       "selectorCount": 13,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8591,7 +8649,7 @@
       "selectorCount": 14,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8617,7 +8675,7 @@
       "selectorCount": 17,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8648,7 +8706,7 @@
       "selectorCount": 30,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8679,7 +8737,7 @@
       "selectorCount": 1,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8694,7 +8752,7 @@
       "selectorCount": 5,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/pages/CanvasPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8816,7 +8874,7 @@
         "src/frontend/shared/styles/features/dashboard-overview/dashboard-activity.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/overview/OverviewPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -9009,7 +9067,7 @@
         "src/frontend/shared/styles/features/dm-dashboard/live-table-responsive.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/overview/OverviewPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -9557,7 +9615,7 @@
         "src/frontend/shared/styles/features/dm-hub-dashboard/dm-hub-dialogs.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/hub/DmHubPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -9579,7 +9637,7 @@
         "src/frontend/shared/styles/features/dm-hub/hub-action-details.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/hub/DmHubPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -9592,7 +9650,7 @@
       "selectorCount": 19,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/pages/OnboardingPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9615,7 +9673,7 @@
       "selectorCount": 6,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/entities/EntityCreateModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9742,7 +9800,7 @@
         "src/frontend/shared/styles/features/entity-relations/entity-graph.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/entities/relations/EntityRelationsTab.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -9755,7 +9813,7 @@
       "selectorCount": 18,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/entities/TrazabilidadTab.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10431,7 +10489,7 @@
         "src/frontend/shared/styles/features/player-campaign/player-campaign-objectives-and-notes.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/player/pages/PlayerCampaignShell.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -10789,7 +10847,9 @@
         "src/frontend/shared/styles/features/player-portal/player-messages.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/player/pages/PlayerCampaignShell.tsx",
+        "src/frontend/player/pages/PlayerCampaignsPage.tsx",
+        "src/frontend/player/pages/PlayerJoinPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -12779,7 +12839,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 92,
+      "lineCount": 57,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -12821,28 +12881,8 @@
         "src/frontend/shared/styles/features/quick-capture.css",
         "src/frontend/shared/styles/features/landing-archive.css",
         "src/frontend/shared/styles/features/kanban.css",
-        "src/frontend/shared/styles/features/campaign-canvas.css",
-        "src/frontend/shared/styles/features/player-portal.css",
-        "src/frontend/shared/styles/features/player-campaign.css",
         "src/frontend/shared/styles/features/auth.css",
         "src/frontend/shared/styles/features/campaign-template.css",
-        "src/frontend/shared/styles/features/dm-dashboard.css",
-        "src/frontend/shared/styles/features/dm-hub.css",
-        "src/frontend/shared/styles/features/dm-hub-dashboard.css",
-        "src/frontend/shared/styles/features/dashboard-overview.css",
-        "src/frontend/shared/styles/features/admin-audit.css",
-        "src/frontend/shared/styles/features/admin-overview.css",
-        "src/frontend/shared/styles/features/admin-purge.css",
-        "src/frontend/shared/styles/features/admin-users.css",
-        "src/frontend/shared/styles/features/admin-campaigns.css",
-        "src/frontend/shared/styles/features/admin-invitations.css",
-        "src/frontend/shared/styles/features/admin-announcements.css",
-        "src/frontend/shared/styles/features/admin-template-settings.css",
-        "src/frontend/shared/styles/features/admin-game-systems.css",
-        "src/frontend/shared/styles/features/admin-security.css",
-        "src/frontend/shared/styles/features/entity-relations.css",
-        "src/frontend/shared/styles/features/entity-create.css",
-        "src/frontend/shared/styles/features/campaign-messaging.css",
         "src/frontend/shared/styles/features/image-picker-button.css",
         "src/frontend/shared/styles/features/image-picker-modal.css",
         "src/frontend/shared/styles/features/system-announcements.css",
@@ -12850,22 +12890,7 @@
         "src/frontend/shared/styles/features/player-profile-modal.css",
         "src/frontend/shared/styles/features/pwa-update-banner.css",
         "src/frontend/shared/styles/features/relation-edge-label.css",
-        "src/frontend/shared/styles/features/dm-onboarding.css",
-        "src/frontend/shared/styles/features/entity-trace.css",
-        "src/frontend/shared/styles/features/canvas-page-header.css",
-        "src/frontend/shared/styles/features/canvas-board-dialogs.css",
-        "src/frontend/shared/styles/features/canvas-palette.css",
-        "src/frontend/shared/styles/features/canvas-entity-node.css",
-        "src/frontend/shared/styles/features/canvas-inspector.css",
-        "src/frontend/shared/styles/features/canvas-narrative-lint.css",
-        "src/frontend/shared/styles/features/canvas-bulk-actions.css",
-        "src/frontend/shared/styles/features/canvas-group-hulls.css",
-        "src/frontend/shared/styles/features/session-prep-form.css",
-        "src/frontend/shared/styles/features/canvas-toolbar.css",
-        "src/frontend/shared/styles/features/canvas-flow.css",
-        "src/frontend/shared/styles/features/canvas-dialog-forms.css",
-        "src/frontend/shared/styles/features/canvas-mystery-health.css",
-        "src/frontend/shared/styles/features/canvas-presentation.css"
+        "src/frontend/shared/styles/features/session-prep-form.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -18197,6 +18222,37 @@
       "src/frontend/account/account/account-details.css",
       "src/frontend/account/account/account-states.css"
     ],
+    "src/frontend/admin/announcements/AnnouncementListPage.tsx": [
+      "src/frontend/shared/styles/features/admin-announcements.css"
+    ],
+    "src/frontend/admin/audit/AuditLogPage.tsx": [
+      "src/frontend/shared/styles/features/admin-audit.css"
+    ],
+    "src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx": [
+      "src/frontend/shared/styles/features/admin-template-settings.css"
+    ],
+    "src/frontend/admin/campaigns/CampaignListPage.tsx": [
+      "src/frontend/shared/styles/features/admin-campaigns.css",
+      "src/frontend/shared/styles/features/admin-purge.css"
+    ],
+    "src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx": [
+      "src/frontend/shared/styles/features/admin-game-systems.css"
+    ],
+    "src/frontend/admin/invitations/InvitationListPage.tsx": [
+      "src/frontend/shared/styles/features/admin-invitations.css"
+    ],
+    "src/frontend/admin/overview/OperationsOverviewPage.tsx": [
+      "src/frontend/shared/styles/features/admin-overview.css"
+    ],
+    "src/frontend/admin/purge/CampaignPurgeJobsPage.tsx": [
+      "src/frontend/shared/styles/features/admin-purge.css"
+    ],
+    "src/frontend/admin/security/ConfirmPasswordDialog.tsx": [
+      "src/frontend/shared/styles/features/admin-security.css"
+    ],
+    "src/frontend/admin/users/UserListPage.tsx": [
+      "src/frontend/shared/styles/features/admin-users.css"
+    ],
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
     ],
@@ -18210,6 +18266,25 @@
     ],
     "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-foundation.css"
+    ],
+    "src/frontend/dm/canvas/pages/CanvasPage.tsx": [
+      "src/frontend/shared/styles/features/campaign-canvas.css",
+      "src/frontend/shared/styles/features/canvas-board-dialogs.css",
+      "src/frontend/shared/styles/features/canvas-bulk-actions.css",
+      "src/frontend/shared/styles/features/canvas-dialog-forms.css",
+      "src/frontend/shared/styles/features/canvas-entity-node.css",
+      "src/frontend/shared/styles/features/canvas-flow.css",
+      "src/frontend/shared/styles/features/canvas-group-hulls.css",
+      "src/frontend/shared/styles/features/canvas-inspector.css",
+      "src/frontend/shared/styles/features/canvas-mystery-health.css",
+      "src/frontend/shared/styles/features/canvas-narrative-lint.css",
+      "src/frontend/shared/styles/features/canvas-page-header.css",
+      "src/frontend/shared/styles/features/canvas-palette.css",
+      "src/frontend/shared/styles/features/canvas-toolbar.css",
+      "src/frontend/shared/styles/features/canvas-presentation.css"
+    ],
+    "src/frontend/dm/entities/EntityCreateModal.tsx": [
+      "src/frontend/shared/styles/features/entity-create.css"
     ],
     "src/frontend/dm/entities/EntityDetailModal.tsx": [
       "src/frontend/dm/entities/entity-detail-modal.css",
@@ -18228,6 +18303,9 @@
       "src/frontend/dm/entities/entity-summary.css",
       "src/frontend/dm/entities/entity-summary-character-sheet.css"
     ],
+    "src/frontend/dm/entities/TrazabilidadTab.tsx": [
+      "src/frontend/shared/styles/features/entity-trace.css"
+    ],
     "src/frontend/dm/entities/TypeMetadataForm.tsx": [
       "src/frontend/dm/entities/type-metadata-form.css"
     ],
@@ -18245,10 +18323,15 @@
       "src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css"
     ],
     "src/frontend/dm/entities/relations/EntityRelationsTab.tsx": [
-      "src/frontend/dm/entities/relations/relationshipGraph.css"
+      "src/frontend/dm/entities/relations/relationshipGraph.css",
+      "src/frontend/shared/styles/features/entity-relations.css"
     ],
     "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx": [
       "src/frontend/dm/entities/relations/relationshipGraph.css"
+    ],
+    "src/frontend/dm/hub/DmHubPage.tsx": [
+      "src/frontend/shared/styles/features/dm-hub.css",
+      "src/frontend/shared/styles/features/dm-hub-dashboard.css"
     ],
     "src/frontend/dm/layouts/CampaignShell.tsx": [
       "src/frontend/dm/layouts/campaign-route-transitions.css"
@@ -18313,8 +18396,15 @@
       "src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-states.css",
       "src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-responsive.css"
     ],
+    "src/frontend/dm/overview/OverviewPage.tsx": [
+      "src/frontend/shared/styles/features/dashboard-overview.css",
+      "src/frontend/shared/styles/features/dm-dashboard.css"
+    ],
     "src/frontend/dm/pages/CampaignMessagesPage.tsx": [
       "src/frontend/dm/pages/campaignMessagesPage.css"
+    ],
+    "src/frontend/dm/pages/OnboardingPage.tsx": [
+      "src/frontend/shared/styles/features/dm-onboarding.css"
     ],
     "src/frontend/dm/pages/RulesPage.tsx": [
       "src/frontend/dm/pages/rulesPage.css"
@@ -18460,7 +18550,18 @@
       "src/frontend/shared/styles/main.css"
     ],
     "src/frontend/player/pages/PlayerCampaignShell.tsx": [
-      "src/frontend/player/pages/playerCampaignShell.css"
+      "src/frontend/player/pages/playerCampaignShell.css",
+      "src/frontend/shared/styles/features/player-portal.css",
+      "src/frontend/shared/styles/features/player-campaign.css"
+    ],
+    "src/frontend/player/pages/PlayerCampaignsPage.tsx": [
+      "src/frontend/shared/styles/features/player-portal.css"
+    ],
+    "src/frontend/player/pages/PlayerJoinPage.tsx": [
+      "src/frontend/shared/styles/features/player-portal.css"
+    ],
+    "src/frontend/shared/components/CampaignMessagingPanel.tsx": [
+      "src/frontend/shared/styles/features/campaign-messaging.css"
     ],
     "src/frontend/shared/components/EntityImageReframeDialog.tsx": [
       "src/frontend/shared/components/entityImageReframeDialog.css"
@@ -18720,28 +18821,8 @@
       "src/frontend/shared/styles/features/quick-capture.css",
       "src/frontend/shared/styles/features/landing-archive.css",
       "src/frontend/shared/styles/features/kanban.css",
-      "src/frontend/shared/styles/features/campaign-canvas.css",
-      "src/frontend/shared/styles/features/player-portal.css",
-      "src/frontend/shared/styles/features/player-campaign.css",
       "src/frontend/shared/styles/features/auth.css",
       "src/frontend/shared/styles/features/campaign-template.css",
-      "src/frontend/shared/styles/features/dm-dashboard.css",
-      "src/frontend/shared/styles/features/dm-hub.css",
-      "src/frontend/shared/styles/features/dm-hub-dashboard.css",
-      "src/frontend/shared/styles/features/dashboard-overview.css",
-      "src/frontend/shared/styles/features/admin-audit.css",
-      "src/frontend/shared/styles/features/admin-overview.css",
-      "src/frontend/shared/styles/features/admin-purge.css",
-      "src/frontend/shared/styles/features/admin-users.css",
-      "src/frontend/shared/styles/features/admin-campaigns.css",
-      "src/frontend/shared/styles/features/admin-invitations.css",
-      "src/frontend/shared/styles/features/admin-announcements.css",
-      "src/frontend/shared/styles/features/admin-template-settings.css",
-      "src/frontend/shared/styles/features/admin-game-systems.css",
-      "src/frontend/shared/styles/features/admin-security.css",
-      "src/frontend/shared/styles/features/entity-relations.css",
-      "src/frontend/shared/styles/features/entity-create.css",
-      "src/frontend/shared/styles/features/campaign-messaging.css",
       "src/frontend/shared/styles/features/image-picker-button.css",
       "src/frontend/shared/styles/features/image-picker-modal.css",
       "src/frontend/shared/styles/features/system-announcements.css",
@@ -18749,22 +18830,7 @@
       "src/frontend/shared/styles/features/player-profile-modal.css",
       "src/frontend/shared/styles/features/pwa-update-banner.css",
       "src/frontend/shared/styles/features/relation-edge-label.css",
-      "src/frontend/shared/styles/features/dm-onboarding.css",
-      "src/frontend/shared/styles/features/entity-trace.css",
-      "src/frontend/shared/styles/features/canvas-page-header.css",
-      "src/frontend/shared/styles/features/canvas-board-dialogs.css",
-      "src/frontend/shared/styles/features/canvas-palette.css",
-      "src/frontend/shared/styles/features/canvas-entity-node.css",
-      "src/frontend/shared/styles/features/canvas-inspector.css",
-      "src/frontend/shared/styles/features/canvas-narrative-lint.css",
-      "src/frontend/shared/styles/features/canvas-bulk-actions.css",
-      "src/frontend/shared/styles/features/canvas-group-hulls.css",
-      "src/frontend/shared/styles/features/session-prep-form.css",
-      "src/frontend/shared/styles/features/canvas-toolbar.css",
-      "src/frontend/shared/styles/features/canvas-flow.css",
-      "src/frontend/shared/styles/features/canvas-dialog-forms.css",
-      "src/frontend/shared/styles/features/canvas-mystery-health.css",
-      "src/frontend/shared/styles/features/canvas-presentation.css"
+      "src/frontend/shared/styles/features/session-prep-form.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"
