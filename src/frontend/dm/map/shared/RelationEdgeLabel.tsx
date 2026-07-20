@@ -1,4 +1,5 @@
 import React from "react";
+import "../../../shared/styles/features/relation-edge-label.css";
 
 export interface RelationEdgeLabelProps {
   label: string;

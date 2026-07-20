@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
+import "../../../shared/styles/features/session-prep-form.css";
 
 export function SessionPrepForm({
   activeSession,

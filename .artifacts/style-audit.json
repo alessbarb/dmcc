@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T10:33:31.325Z",
+  "generatedAt": "2026-07-20T10:37:40.458Z",
   "summary": {
     "cssFiles": 378,
     "tsxFilesWithInlineStyles": 15,
@@ -679,9 +679,11 @@
       "path": "src/frontend/auth/LoginPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 102,
+      "lineCount": 103,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/auth.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -690,9 +692,11 @@
       "path": "src/frontend/auth/RegisterPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 99,
+      "lineCount": 100,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/auth.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -970,9 +974,11 @@
       "path": "src/frontend/dm/canvas/components/SessionPrepForm.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 139,
+      "lineCount": 140,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/session-prep-form.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -1314,9 +1320,11 @@
       "path": "src/frontend/dm/capture/QuickCaptureFAB.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 192,
+      "lineCount": 193,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/quick-capture.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -2199,9 +2207,11 @@
       "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 94,
+      "lineCount": 95,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -2312,10 +2322,11 @@
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 322,
+      "lineCount": 323,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/dm/layouts/campaign-route-transitions.css"
+        "src/frontend/dm/layouts/campaign-route-transitions.css",
+        "src/frontend/shared/styles/features/sidebar-nav.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -2357,9 +2368,12 @@
       "path": "src/frontend/dm/library/boards/EntityBoardsView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 482,
+      "lineCount": 484,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/kanban-board.css",
+        "src/frontend/shared/styles/features/kanban.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
@@ -3185,9 +3199,11 @@
       "path": "src/frontend/dm/map/shared/RelationEdgeLabel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 18,
+      "lineCount": 19,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/relation-edge-label.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -3646,9 +3662,11 @@
       "path": "src/frontend/dm/pages/CampaignTemplatePreviewPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 533,
+      "lineCount": 534,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/campaign-template.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -3670,10 +3688,11 @@
       "path": "src/frontend/dm/pages/RulesPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 236,
+      "lineCount": 237,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/dm/pages/rulesPage.css"
+        "src/frontend/dm/pages/rulesPage.css",
+        "src/frontend/shared/styles/features/rules-workspace.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -3950,9 +3969,11 @@
       "path": "src/frontend/dm/people/group/components/PlayerProfileModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 143,
+      "lineCount": 144,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/player-profile-modal.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -5468,9 +5489,11 @@
       "path": "src/frontend/dm/shortcuts/ShortcutsPanel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 95,
+      "lineCount": 96,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/shortcuts-panel.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6004,9 +6027,11 @@
       "path": "src/frontend/invitations/InvitationPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 103,
+      "lineCount": 104,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/auth.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6437,9 +6462,11 @@
       "path": "src/frontend/shared/components/ImagePickerButton.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 172,
+      "lineCount": 173,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/image-picker-button.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6448,9 +6475,11 @@
       "path": "src/frontend/shared/components/ImagePickerModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 328,
+      "lineCount": 329,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/image-picker-modal.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6481,9 +6510,11 @@
       "path": "src/frontend/shared/components/PwaUpdateBanner.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 32,
+      "lineCount": 33,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/pwa-update-banner.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6524,9 +6555,11 @@
       "path": "src/frontend/shared/components/SystemAnnouncements.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 107,
+      "lineCount": 108,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/features/system-announcements.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -7600,7 +7633,9 @@
       "selectorCount": 15,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/auth/LoginPage.tsx",
+        "src/frontend/auth/RegisterPage.tsx",
+        "src/frontend/invitations/InvitationPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -8465,7 +8500,8 @@
         "src/frontend/shared/styles/features/campaign-template/template-import-progress.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
+        "src/frontend/dm/pages/CampaignTemplatePreviewPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -9870,7 +9906,7 @@
       "selectorCount": 11,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/components/ImagePickerButton.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9897,7 +9933,7 @@
       "selectorCount": 28,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/components/ImagePickerModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9930,7 +9966,7 @@
       "selectorCount": 26,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/library/boards/EntityBoardsView.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -9987,7 +10023,7 @@
       "selectorCount": 17,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/library/boards/EntityBoardsView.tsx"
       ],
       "variableDefinitions": [
         "--quest",
@@ -10862,7 +10898,7 @@
       "selectorCount": 4,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/people/group/components/PlayerProfileModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -10875,7 +10911,7 @@
       "selectorCount": 2,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/components/PwaUpdateBanner.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10897,7 +10933,7 @@
       "selectorCount": 17,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/capture/QuickCaptureFAB.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10934,7 +10970,7 @@
       "selectorCount": 2,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/map/shared/RelationEdgeLabel.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10952,7 +10988,7 @@
       "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/pages/RulesPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10977,7 +11013,7 @@
       "selectorCount": 9,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/canvas/components/SessionPrepForm.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10996,7 +11032,7 @@
       "selectorCount": 11,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/shortcuts/ShortcutsPanel.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -11016,7 +11052,7 @@
       "selectorCount": 2,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/layouts/CampaignShell.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -11036,7 +11072,7 @@
       "selectorCount": 12,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/shared/components/SystemAnnouncements.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -12839,7 +12875,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 57,
+      "lineCount": 42,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -12861,9 +12897,6 @@
         "src/frontend/shared/styles/primitives/empty-state.css",
         "src/frontend/shared/styles/primitives/status.css",
         "src/frontend/shared/styles/primitives/toast.css",
-        "src/frontend/shared/styles/features/rules-workspace.css",
-        "src/frontend/shared/styles/features/kanban-board.css",
-        "src/frontend/shared/styles/features/sidebar-nav.css",
         "src/frontend/shared/styles/features/graph-search.css",
         "src/frontend/shared/styles/features/timeline.css",
         "src/frontend/shared/styles/layout/workspace.css",
@@ -12878,19 +12911,7 @@
         "src/frontend/shared/styles/landing.css",
         "src/frontend/account/account.css",
         "src/frontend/shared/styles/layout/campaign-navigation.css",
-        "src/frontend/shared/styles/features/quick-capture.css",
-        "src/frontend/shared/styles/features/landing-archive.css",
-        "src/frontend/shared/styles/features/kanban.css",
-        "src/frontend/shared/styles/features/auth.css",
-        "src/frontend/shared/styles/features/campaign-template.css",
-        "src/frontend/shared/styles/features/image-picker-button.css",
-        "src/frontend/shared/styles/features/image-picker-modal.css",
-        "src/frontend/shared/styles/features/system-announcements.css",
-        "src/frontend/shared/styles/features/shortcuts-panel.css",
-        "src/frontend/shared/styles/features/player-profile-modal.css",
-        "src/frontend/shared/styles/features/pwa-update-banner.css",
-        "src/frontend/shared/styles/features/relation-edge-label.css",
-        "src/frontend/shared/styles/features/session-prep-form.css"
+        "src/frontend/shared/styles/features/landing-archive.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -18253,8 +18274,17 @@
     "src/frontend/admin/users/UserListPage.tsx": [
       "src/frontend/shared/styles/features/admin-users.css"
     ],
+    "src/frontend/auth/LoginPage.tsx": [
+      "src/frontend/shared/styles/features/auth.css"
+    ],
+    "src/frontend/auth/RegisterPage.tsx": [
+      "src/frontend/shared/styles/features/auth.css"
+    ],
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
+    ],
+    "src/frontend/dm/canvas/components/SessionPrepForm.tsx": [
+      "src/frontend/shared/styles/features/session-prep-form.css"
     ],
     "src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-foundation.css": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation.css"
@@ -18282,6 +18312,9 @@
       "src/frontend/shared/styles/features/canvas-palette.css",
       "src/frontend/shared/styles/features/canvas-toolbar.css",
       "src/frontend/shared/styles/features/canvas-presentation.css"
+    ],
+    "src/frontend/dm/capture/QuickCaptureFAB.tsx": [
+      "src/frontend/shared/styles/features/quick-capture.css"
     ],
     "src/frontend/dm/entities/EntityCreateModal.tsx": [
       "src/frontend/shared/styles/features/entity-create.css"
@@ -18329,16 +18362,24 @@
     "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx": [
       "src/frontend/dm/entities/relations/relationshipGraph.css"
     ],
+    "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx": [
+      "src/frontend/shared/styles/features/campaign-template.css"
+    ],
     "src/frontend/dm/hub/DmHubPage.tsx": [
       "src/frontend/shared/styles/features/dm-hub.css",
       "src/frontend/shared/styles/features/dm-hub-dashboard.css"
     ],
     "src/frontend/dm/layouts/CampaignShell.tsx": [
-      "src/frontend/dm/layouts/campaign-route-transitions.css"
+      "src/frontend/dm/layouts/campaign-route-transitions.css",
+      "src/frontend/shared/styles/features/sidebar-nav.css"
     ],
     "src/frontend/dm/library/LibraryWorkspacePage.tsx": [
       "src/frontend/dm/library/boards/entityBoards.css",
       "src/frontend/dm/library/notebooks/notebooksWorkspace.css"
+    ],
+    "src/frontend/dm/library/boards/EntityBoardsView.tsx": [
+      "src/frontend/shared/styles/features/kanban-board.css",
+      "src/frontend/shared/styles/features/kanban.css"
     ],
     "src/frontend/dm/library/boards/entityBoards.css": [
       "src/frontend/dm/library/boards/entity-board/entity-board-foundation.css",
@@ -18377,6 +18418,9 @@
       "src/frontend/dm/map/network/network-flow/network-flow-advanced.css",
       "src/frontend/dm/map/network/network-flow/network-flow-media.css"
     ],
+    "src/frontend/dm/map/shared/RelationEdgeLabel.tsx": [
+      "src/frontend/shared/styles/features/relation-edge-label.css"
+    ],
     "src/frontend/dm/onboarding/CampaignGuidedTour.tsx": [
       "src/frontend/dm/onboarding/campaign-guided-tour.css"
     ],
@@ -18403,11 +18447,15 @@
     "src/frontend/dm/pages/CampaignMessagesPage.tsx": [
       "src/frontend/dm/pages/campaignMessagesPage.css"
     ],
+    "src/frontend/dm/pages/CampaignTemplatePreviewPage.tsx": [
+      "src/frontend/shared/styles/features/campaign-template.css"
+    ],
     "src/frontend/dm/pages/OnboardingPage.tsx": [
       "src/frontend/shared/styles/features/dm-onboarding.css"
     ],
     "src/frontend/dm/pages/RulesPage.tsx": [
-      "src/frontend/dm/pages/rulesPage.css"
+      "src/frontend/dm/pages/rulesPage.css",
+      "src/frontend/shared/styles/features/rules-workspace.css"
     ],
     "src/frontend/dm/pages/SettingsPage.tsx": [
       "src/frontend/dm/pages/settingsPage.css"
@@ -18429,6 +18477,9 @@
     ],
     "src/frontend/dm/people/group/GroupView.tsx": [
       "src/frontend/dm/people/group/groupWorkspace.css"
+    ],
+    "src/frontend/dm/people/group/components/PlayerProfileModal.tsx": [
+      "src/frontend/shared/styles/features/player-profile-modal.css"
     ],
     "src/frontend/dm/people/group/groupWorkspace.css": [
       "src/frontend/dm/people/group/group-workspace/group-workspace-foundation.css",
@@ -18516,6 +18567,9 @@
       "src/frontend/dm/sessions/narrativeMap/narrative-map/narrative-map-components.css",
       "src/frontend/dm/sessions/narrativeMap/narrative-map/narrative-map-details.css"
     ],
+    "src/frontend/dm/shortcuts/ShortcutsPanel.tsx": [
+      "src/frontend/shared/styles/features/shortcuts-panel.css"
+    ],
     "src/frontend/dm/story/StoryWorkspacePage.tsx": [
       "src/frontend/dm/story/plan/storyPlanWorkspace.css"
     ],
@@ -18546,6 +18600,9 @@
       "src/frontend/institutional/institutional/institutional-foundation.css",
       "src/frontend/institutional/institutional/institutional-layout.css"
     ],
+    "src/frontend/invitations/InvitationPage.tsx": [
+      "src/frontend/shared/styles/features/auth.css"
+    ],
     "src/frontend/main.tsx": [
       "src/frontend/shared/styles/main.css"
     ],
@@ -18565,6 +18622,18 @@
     ],
     "src/frontend/shared/components/EntityImageReframeDialog.tsx": [
       "src/frontend/shared/components/entityImageReframeDialog.css"
+    ],
+    "src/frontend/shared/components/ImagePickerButton.tsx": [
+      "src/frontend/shared/styles/features/image-picker-button.css"
+    ],
+    "src/frontend/shared/components/ImagePickerModal.tsx": [
+      "src/frontend/shared/styles/features/image-picker-modal.css"
+    ],
+    "src/frontend/shared/components/PwaUpdateBanner.tsx": [
+      "src/frontend/shared/styles/features/pwa-update-banner.css"
+    ],
+    "src/frontend/shared/components/SystemAnnouncements.tsx": [
+      "src/frontend/shared/styles/features/system-announcements.css"
     ],
     "src/frontend/shared/components/Watermark.tsx": [
       "src/frontend/shared/components/watermark.css"
@@ -18801,9 +18870,6 @@
       "src/frontend/shared/styles/primitives/empty-state.css",
       "src/frontend/shared/styles/primitives/status.css",
       "src/frontend/shared/styles/primitives/toast.css",
-      "src/frontend/shared/styles/features/rules-workspace.css",
-      "src/frontend/shared/styles/features/kanban-board.css",
-      "src/frontend/shared/styles/features/sidebar-nav.css",
       "src/frontend/shared/styles/features/graph-search.css",
       "src/frontend/shared/styles/features/timeline.css",
       "src/frontend/shared/styles/layout/workspace.css",
@@ -18818,19 +18884,7 @@
       "src/frontend/shared/styles/landing.css",
       "src/frontend/account/account.css",
       "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "src/frontend/shared/styles/features/quick-capture.css",
-      "src/frontend/shared/styles/features/landing-archive.css",
-      "src/frontend/shared/styles/features/kanban.css",
-      "src/frontend/shared/styles/features/auth.css",
-      "src/frontend/shared/styles/features/campaign-template.css",
-      "src/frontend/shared/styles/features/image-picker-button.css",
-      "src/frontend/shared/styles/features/image-picker-modal.css",
-      "src/frontend/shared/styles/features/system-announcements.css",
-      "src/frontend/shared/styles/features/shortcuts-panel.css",
-      "src/frontend/shared/styles/features/player-profile-modal.css",
-      "src/frontend/shared/styles/features/pwa-update-banner.css",
-      "src/frontend/shared/styles/features/relation-edge-label.css",
-      "src/frontend/shared/styles/features/session-prep-form.css"
+      "src/frontend/shared/styles/features/landing-archive.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

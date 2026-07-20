@@ -4,6 +4,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useNavigate } from "@tanstack/react-router";
+import "../../shared/styles/features/quick-capture.css";
 
 type QuickEntityType = "npc" | "location" | "quest" | "clue" | "note" | "item";
 

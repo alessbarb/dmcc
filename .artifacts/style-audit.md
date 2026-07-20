@@ -195,7 +195,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-users/admin-users-layout.css` | feature | shared | 32 | 10 | 1 |
 | `src/frontend/shared/styles/features/admin-users/admin-users-table.css` | feature | shared | 11 | 10 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | feature | shared | 5 | 0 | 1 |
-| `src/frontend/shared/styles/features/auth.css` | feature | shared | 60 | 15 | 1 |
+| `src/frontend/shared/styles/features/auth.css` | feature | shared | 60 | 15 | 3 |
 | `src/frontend/shared/styles/features/campaign-canvas/canvas-dashboard.css` | feature | shared | 119 | 25 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas/canvas-density.css` | feature | shared | 108 | 24 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas/canvas-inspector.css` | feature | shared | 173 | 24 | 1 |
@@ -223,7 +223,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/campaign-template/template-preview-lists.css` | feature | shared | 89 | 15 | 1 |
 | `src/frontend/shared/styles/features/campaign-template/template-preview-meta.css` | feature | shared | 74 | 10 | 1 |
 | `src/frontend/shared/styles/features/campaign-template/template-preview-sections.css` | feature | shared | 65 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template.css` | feature | shared | 11 | 0 | 1 |
+| `src/frontend/shared/styles/features/campaign-template.css` | feature | shared | 11 | 0 | 2 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | feature | shared | 28 | 27 | 1 |
 | `src/frontend/shared/styles/features/canvas-bulk-actions.css` | feature | shared | 7 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-dialog-forms.css` | feature | shared | 65 | 13 | 1 |
@@ -388,7 +388,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/workspace/workspace-tabs.css` | layout | shared | 62 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-variants.css` | layout | shared | 81 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 57 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 42 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 12 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 12 | 1 |

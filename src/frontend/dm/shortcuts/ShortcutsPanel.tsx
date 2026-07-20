@@ -5,6 +5,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { campaignResourceLocation } from "../../shared/resources/resourceNavigation.js";
 import { useCampaignShortcuts } from "./useCampaignShortcuts.js";
 import type { ShortcutTargetType } from "@core/domain/resource/resourceType.js";
+import "../../shared/styles/features/shortcuts-panel.css";
 
 const TARGET_ICON: Record<ShortcutTargetType, React.ComponentType<{ size?: number }>> = {
   entity: User,

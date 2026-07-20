@@ -19,9 +19,6 @@
 @import "./primitives/status.css";
 @import "./primitives/toast.css";
 
-@import "./features/rules-workspace.css";
-@import "./features/kanban-board.css";
-@import "./features/sidebar-nav.css";
 @import "./features/graph-search.css";
 @import "./features/timeline.css";
 
@@ -41,12 +38,4 @@
 
 /* Domain slices retain their original cascade order during migration. */
 @import "./layout/campaign-navigation.css";
-@import "./features/quick-capture.css";
 @import "./features/landing-archive.css";
-@import "./features/kanban.css";
-@import "./features/system-announcements.css";
-@import "./features/shortcuts-panel.css";
-@import "./features/player-profile-modal.css";
-@import "./features/pwa-update-banner.css";
-@import "./features/relation-edge-label.css";
-@import "./features/session-prep-form.css";

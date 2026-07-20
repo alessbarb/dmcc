@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AlertTriangle, Info, X, Megaphone } from "lucide-react";
 import { apiFetch } from "../api/apiClient.js";
+import "../styles/features/system-announcements.css";
 
 interface Announcement {
   announcementId: string;

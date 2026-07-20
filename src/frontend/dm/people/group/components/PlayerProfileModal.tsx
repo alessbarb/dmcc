@@ -4,6 +4,7 @@ import type { CampaignStateStore, PlayerProfile } from "../../../../shared/store
 import type { ToastKind } from "../../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../../shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../../../shared/components/ImagePickerButton.js";
+import "../../../../shared/styles/features/player-profile-modal.css";
 
 interface PlayerFormValues {
   name: string;

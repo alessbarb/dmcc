@@ -1,4 +1,5 @@
 import { useRegisterSW } from "virtual:pwa-register/react";
+import "../styles/features/pwa-update-banner.css";
 
 function runPwaUpdateAction(operation: Promise<unknown>, errorMessage: string): void {
   void operation.catch((error: unknown) => {

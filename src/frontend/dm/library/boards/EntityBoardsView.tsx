@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import type { Entity } from "../../../shared/stores/campaignStore.js";
+import "../../../shared/styles/features/kanban-board.css";
+import "../../../shared/styles/features/kanban.css";
 import {
   AlertTriangle,
   Archive,

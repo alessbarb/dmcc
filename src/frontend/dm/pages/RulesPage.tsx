@@ -16,6 +16,7 @@ import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { RULE_CATEGORY_IDS } from "@shared/rules/categories.js";
 import { useBodyWatermark } from "../../shared/hooks/useBodyWatermark.js";
 import "./rulesPage.css";
+import "../../shared/styles/features/rules-workspace.css";
 
 interface RuleEntry {
   id: string;
