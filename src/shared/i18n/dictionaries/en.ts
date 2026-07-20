@@ -1530,6 +1530,8 @@ export const en = {
     graphTitle: "Explore the narrative graph",
     graphDesc: "Drag, zoom, and navigate connected entities — this is DMCC in motion",
     graphHint: "Interactive: click a neighbor to recenter the graph on it.",
+    graphCtaTitle: "Is this what you want for your campaign?",
+    graphCtaDesc: "Create your editable copy in 30 seconds and start building your own narrative network.",
     notFoundTitle: "I can’t find this example campaign",
     notFoundDesc:
       "The template may not exist or the campaign template catalog may be unavailable.",

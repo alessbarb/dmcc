@@ -1258,6 +1258,8 @@ export const pt = {
     graphTitle: "Explore o grafo narrativo",
     graphDesc: "Arraste, dê zoom e navegue entre entidades conectadas — assim é o DMCC em ação",
     graphHint: "Interativo: clique num vizinho para recentrar o grafo nele.",
+    graphCtaTitle: "É isto que queres para a tua campanha?",
+    graphCtaDesc: "Cria a tua cópia editável em 30 segundos e começa a construir a tua própria rede narrativa.",
     notFoundTitle: "Não encontro esta campanha de exemplo",
     notFoundDesc: "O template pode não existir ou o catálogo de modelos de campanha pode estar indisponível.",
     statsLabel: "Resumo da campanha de exemplo",

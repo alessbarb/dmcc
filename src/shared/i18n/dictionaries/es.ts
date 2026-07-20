@@ -1550,6 +1550,8 @@ export const es: TranslationDictionary = {
     graphTitle: "Explora el grafo narrativo",
     graphDesc: "Arrastra, haz zoom y navega entre entidades conectadas — así se ve DMCC en marcha",
     graphHint: "Interactivo: haz clic en un vecino para recentrar el grafo en él.",
+    graphCtaTitle: "¿Esto es lo que quieres para tu campaña?",
+    graphCtaDesc: "Crea tu copia editable en 30 segundos y empieza a construir tu propia red narrativa.",
     notFoundTitle: "No encuentro esta campaña de ejemplo",
     notFoundDesc:
       "Puede que el template no exista o que el catálogo de plantillas de campaña no esté disponible.",

@@ -42,6 +42,49 @@
   font-size: 1.05rem;
 }
 
+.campaign-template-preview-graph-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1180px;
+  margin: -8px auto 20px;
+  padding: 18px 22px;
+  border-radius: var(--theme-shapes-radius-large);
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, var(--theme-surfaces-base)),
+    var(--theme-surfaces-base)
+  );
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, var(--theme-borders-default));
+}
+
+.campaign-template-preview-graph-cta strong {
+  font-size: 1.05rem;
+}
+
+.campaign-template-preview-graph-cta p {
+  margin: 4px 0 0;
+  color: var(--theme-text-secondary);
+}
+
+.campaign-template-preview-graph-cta .btn {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 720px) {
+  .campaign-template-preview-graph-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .campaign-template-preview-graph-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .campaign-template-preview-graph-card {
   max-width: 1180px;
   margin: 0 auto 20px;

@@ -1275,6 +1275,8 @@ export const de: TranslationDictionary = {
     graphTitle: "Erkunde den Beziehungsgraphen",
     graphDesc: "Ziehen, zoomen und durch verbundene Entitäten navigieren — so sieht DMCC in Aktion aus",
     graphHint: "Interaktiv: Klicke auf einen Nachbarn, um den Graphen auf ihn zu zentrieren.",
+    graphCtaTitle: "Ist das, was du dir für deine Kampagne wünschst?",
+    graphCtaDesc: "Erstelle deine editierbare Kopie in 30 Sekunden und beginne, dein eigenes narratives Netzwerk aufzubauen.",
     notFoundTitle: "Diese Beispielkampagne wurde nicht gefunden",
     notFoundDesc: "Das Template existiert möglicherweise nicht oder der Katalog für Kampagnenvorlagen ist nicht verfügbar.",
     statsLabel: "Zusammenfassung der Beispielkampagne",

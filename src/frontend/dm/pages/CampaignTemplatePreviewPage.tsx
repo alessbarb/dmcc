@@ -430,14 +430,6 @@ export function CampaignTemplatePreviewPage() {
         </div>
       </header>
 
-      <section className="campaign-template-readonly-banner" role="note">
-        <Lock size={18} />
-        <div>
-          <strong>{t("campaignTemplatePreview.readOnlyTitle")}</strong>
-          <p>{t("campaignTemplatePreview.readOnlyDesc")}</p>
-        </div>
-      </section>
-
       {graphCenterEntity && (
         <section className="card campaign-template-preview-card campaign-template-preview-graph-card">
           <div className="campaign-template-preview-section-heading">
@@ -452,6 +444,25 @@ export function CampaignTemplatePreviewPage() {
           <p className="campaign-template-preview-graph-hint">{t("campaignTemplatePreview.graphHint")}</p>
         </section>
       )}
+
+      <section className="campaign-template-preview-graph-cta">
+        <div>
+          <strong>{t("campaignTemplatePreview.graphCtaTitle")}</strong>
+          <p>{t("campaignTemplatePreview.graphCtaDesc")}</p>
+        </div>
+        <button type="button" className="btn btn-primary" onClick={requestCreateCopy} disabled={importing || loading}>
+          <Wand2 size={16} />
+          {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
+        </button>
+      </section>
+
+      <section className="campaign-template-readonly-banner" role="note">
+        <Lock size={18} />
+        <div>
+          <strong>{t("campaignTemplatePreview.readOnlyTitle")}</strong>
+          <p>{t("campaignTemplatePreview.readOnlyDesc")}</p>
+        </div>
+      </section>
 
       <section className="campaign-template-preview-stats" aria-label={t("campaignTemplatePreview.statsLabel")}>
         <article className="card">

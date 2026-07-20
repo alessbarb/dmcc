@@ -1275,6 +1275,8 @@ export const fr: TranslationDictionary = {
     graphTitle: "Explorez le graphe narratif",
     graphDesc: "Faites glisser, zoomez et naviguez entre les entités connectées — voici DMCC en action",
     graphHint: "Interactif : cliquez sur un voisin pour recentrer le graphe sur lui.",
+    graphCtaTitle: "C'est ce que vous voulez pour votre campagne ?",
+    graphCtaDesc: "Créez votre copie modifiable en 30 secondes et commencez à construire votre propre réseau narratif.",
     notFoundTitle: "Campagne d’exemple introuvable",
     notFoundDesc: "Le modèle n’existe peut-être pas ou le catalogue de modèles de campagne est indisponible.",
     statsLabel: "Résumé de la campagne d’exemple",
