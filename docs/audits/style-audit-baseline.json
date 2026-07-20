@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T08:09:02.116Z",
+  "generatedAt": "2026-07-20T08:09:54.792Z",
   "summary": {
     "cssFiles": 386,
     "tsxFilesWithInlineStyles": 15,
@@ -6807,7 +6807,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-01.css",
+      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -6831,7 +6831,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-02.css",
+      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -6858,7 +6858,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-03.css",
+      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -6877,7 +6877,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-04.css",
+      "path": "src/frontend/shared/styles/features/admin-announcements/admin-announcements-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 8,
@@ -6903,10 +6903,10 @@
       "lineCount": 5,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-01.css",
-        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-02.css",
-        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-03.css",
-        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-04.css"
+        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-01.css",
+        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-02.css",
+        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-03.css",
+        "src/frontend/shared/styles/features/admin-announcements/admin-announcements-04.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -6915,7 +6915,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-01.css",
+      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 52,
@@ -6938,7 +6938,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-02.css",
+      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 30,
@@ -6966,7 +6966,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-03.css",
+      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 15,
@@ -6987,7 +6987,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-04.css",
+      "path": "src/frontend/shared/styles/features/admin-audit/admin-audit-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 23,
@@ -7010,10 +7010,10 @@
       "lineCount": 5,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-01.css",
-        "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-02.css",
-        "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-03.css",
-        "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-04.css"
+        "src/frontend/shared/styles/features/admin-audit/admin-audit-01.css",
+        "src/frontend/shared/styles/features/admin-audit/admin-audit-02.css",
+        "src/frontend/shared/styles/features/admin-audit/admin-audit-03.css",
+        "src/frontend/shared/styles/features/admin-audit/admin-audit-04.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7022,7 +7022,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-01.css",
+      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -7042,7 +7042,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-02.css",
+      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -7069,7 +7069,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-03.css",
+      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -7088,7 +7088,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-04.css",
+      "path": "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 7,
@@ -7116,10 +7116,10 @@
       "lineCount": 5,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-01.css",
-        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-02.css",
-        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-03.css",
-        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-04.css"
+        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-01.css",
+        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-02.css",
+        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-03.css",
+        "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-04.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7247,7 +7247,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-01.css",
+      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -7276,7 +7276,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-02.css",
+      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 12,
@@ -7305,7 +7305,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-03.css",
+      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -7325,7 +7325,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-04.css",
+      "path": "src/frontend/shared/styles/features/admin-purge/admin-purge-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -7348,10 +7348,10 @@
       "lineCount": 5,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-01.css",
-        "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-02.css",
-        "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-03.css",
-        "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-04.css"
+        "src/frontend/shared/styles/features/admin-purge/admin-purge-01.css",
+        "src/frontend/shared/styles/features/admin-purge/admin-purge-02.css",
+        "src/frontend/shared/styles/features/admin-purge/admin-purge-03.css",
+        "src/frontend/shared/styles/features/admin-purge/admin-purge-04.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7427,7 +7427,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-users/admin-users-parts-01.css",
+      "path": "src/frontend/shared/styles/features/admin-users/admin-users-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 32,
@@ -7447,7 +7447,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-users/admin-users-parts-02.css",
+      "path": "src/frontend/shared/styles/features/admin-users/admin-users-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -7471,7 +7471,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-users/admin-users-parts-03.css",
+      "path": "src/frontend/shared/styles/features/admin-users/admin-users-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -7491,7 +7491,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/admin-users/admin-users-parts-04.css",
+      "path": "src/frontend/shared/styles/features/admin-users/admin-users-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 16,
@@ -7523,10 +7523,10 @@
       "lineCount": 5,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/admin-users/admin-users-parts-01.css",
-        "src/frontend/shared/styles/features/admin-users/admin-users-parts-02.css",
-        "src/frontend/shared/styles/features/admin-users/admin-users-parts-03.css",
-        "src/frontend/shared/styles/features/admin-users/admin-users-parts-04.css"
+        "src/frontend/shared/styles/features/admin-users/admin-users-01.css",
+        "src/frontend/shared/styles/features/admin-users/admin-users-02.css",
+        "src/frontend/shared/styles/features/admin-users/admin-users-03.css",
+        "src/frontend/shared/styles/features/admin-users/admin-users-04.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -8097,7 +8097,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-01.css",
+      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -8115,7 +8115,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-02.css",
+      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -8142,7 +8142,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-03.css",
+      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -8164,7 +8164,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-04.css",
+      "path": "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -8201,10 +8201,10 @@
       "lineCount": 5,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-01.css",
-        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-02.css",
-        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-03.css",
-        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-04.css"
+        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-01.css",
+        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-02.css",
+        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-03.css",
+        "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-04.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -8213,7 +8213,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-01.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 78,
@@ -8237,7 +8237,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-02.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 70,
@@ -8257,7 +8257,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-03.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 74,
@@ -8281,7 +8281,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-04.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 65,
@@ -8299,7 +8299,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-05.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 89,
@@ -8319,7 +8319,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-06.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-06.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 66,
@@ -8338,7 +8338,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-07.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 89,
@@ -8362,7 +8362,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-08.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-08.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 81,
@@ -8386,7 +8386,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-09.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-09.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 75,
@@ -8409,7 +8409,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-10.css",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-10.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 51,
@@ -8438,16 +8438,16 @@
       "lineCount": 11,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-01.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-02.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-03.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-04.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-05.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-06.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-08.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-09.css",
-        "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-10.css"
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-01.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-02.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-03.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-04.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-05.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-06.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-07.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-08.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-09.css",
+        "src/frontend/shared/styles/features/campaign-template/campaign-template-10.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -8747,7 +8747,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -8771,7 +8771,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-02.css",
+      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -8789,7 +8789,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-03.css",
+      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -8805,7 +8805,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-04.css",
+      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -8828,7 +8828,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-05.css",
+      "path": "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
@@ -8852,11 +8852,11 @@
       "lineCount": 6,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-01.css",
-        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-02.css",
-        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-03.css",
-        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-04.css",
-        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-05.css"
+        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-01.css",
+        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-02.css",
+        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-03.css",
+        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-04.css",
+        "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-05.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -8865,7 +8865,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 90,
@@ -8896,7 +8896,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-02.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 80,
@@ -8922,7 +8922,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-03.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 71,
@@ -8945,7 +8945,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-04.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 91,
@@ -8974,7 +8974,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-05.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 80,
@@ -9005,7 +9005,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-06.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-06.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 70,
@@ -9024,7 +9024,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-07.css",
+      "path": "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-07.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 31,
@@ -9043,13 +9043,13 @@
       "lineCount": 8,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-01.css",
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-02.css",
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-03.css",
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-04.css",
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-05.css",
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-06.css",
-        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-07.css"
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-01.css",
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-02.css",
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-03.css",
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-04.css",
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-05.css",
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-06.css",
+        "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-07.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -9058,7 +9058,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-01.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 84,
@@ -9082,7 +9082,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-02.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 79,
@@ -9107,7 +9107,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-03.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 86,
@@ -9136,7 +9136,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-04.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 94,
@@ -9165,7 +9165,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-05.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 77,
@@ -9193,7 +9193,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-06.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-06.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 77,
@@ -9218,7 +9218,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-07.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-07.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 85,
@@ -9247,7 +9247,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-08.css",
+      "path": "src/frontend/shared/styles/features/dm-hub/dm-hub-08.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 14,
@@ -9612,14 +9612,14 @@
       "lineCount": 9,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-01.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-02.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-03.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-04.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-05.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-06.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-07.css",
-        "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-08.css"
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-01.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-02.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-03.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-04.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-05.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-06.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-07.css",
+        "src/frontend/shared/styles/features/dm-hub/dm-hub-08.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -9667,7 +9667,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-01.css",
+      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -9695,7 +9695,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-02.css",
+      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
@@ -9717,7 +9717,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-03.css",
+      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 12,
@@ -9738,7 +9738,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-04.css",
+      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 12,
@@ -9756,7 +9756,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-05.css",
+      "path": "src/frontend/shared/styles/features/entity-relations/entity-relations-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 9,
@@ -9778,11 +9778,11 @@
       "lineCount": 6,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-01.css",
-        "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-02.css",
-        "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-03.css",
-        "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-04.css",
-        "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-05.css"
+        "src/frontend/shared/styles/features/entity-relations/entity-relations-01.css",
+        "src/frontend/shared/styles/features/entity-relations/entity-relations-02.css",
+        "src/frontend/shared/styles/features/entity-relations/entity-relations-03.css",
+        "src/frontend/shared/styles/features/entity-relations/entity-relations-04.css",
+        "src/frontend/shared/styles/features/entity-relations/entity-relations-05.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -10025,7 +10025,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-01.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 119,
@@ -10069,7 +10069,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-02.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 84,
@@ -10102,7 +10102,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-03.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 83,
@@ -10134,7 +10134,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-04.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 75,
@@ -10162,7 +10162,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-05.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 85,
@@ -10209,7 +10209,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-06.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-06.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 81,
@@ -10237,7 +10237,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-07.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-07.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 66,
@@ -10260,7 +10260,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-08.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 65,
@@ -10286,7 +10286,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-09.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-09.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 64,
@@ -10303,7 +10303,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-10.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-10.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 60,
@@ -10326,7 +10326,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-11.css",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-11.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 102,
@@ -10358,17 +10358,17 @@
       "lineCount": 12,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-01.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-02.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-03.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-04.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-05.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-06.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-07.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-09.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-10.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-11.css"
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-01.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-02.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-03.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-04.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-05.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-06.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-07.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-08.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-09.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-10.css",
+        "src/frontend/shared/styles/features/landing-archive/landing-archive-11.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -10377,14 +10377,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-01.css",
+      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 9,
       "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10395,14 +10395,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-02.css",
+      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
       "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10412,14 +10412,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-03.css",
+      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
       "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10430,14 +10430,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-04.css",
+      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
       "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10445,14 +10445,14 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-05.css",
+      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 7,
       "selectorCount": 5,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -10461,17 +10461,17 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css",
+      "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 6,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-01.css",
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-02.css",
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-03.css",
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-04.css",
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-05.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-01.css",
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-02.css",
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-03.css",
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-04.css",
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-05.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/features/player-campaign.css"
@@ -10486,7 +10486,7 @@
       "lineCount": 2,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+        "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -10495,7 +10495,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-01.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 110,
@@ -10517,7 +10517,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-02.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 72,
@@ -10536,7 +10536,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-03.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-03.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 105,
@@ -10570,7 +10570,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-04.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 75,
@@ -10603,7 +10603,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-05.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-05.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 90,
@@ -10634,7 +10634,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-06.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-06.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 39,
@@ -10662,7 +10662,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-07.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-07.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 48,
@@ -10681,7 +10681,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-08.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-08.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 77,
@@ -10704,7 +10704,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-09.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-09.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 81,
@@ -10731,7 +10731,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-10.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-10.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 63,
@@ -10757,7 +10757,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 144,
@@ -10777,7 +10777,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-12.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-12.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 79,
@@ -10806,7 +10806,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-13.css",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-13.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 52,
@@ -10832,19 +10832,19 @@
       "lineCount": 14,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-01.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-02.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-03.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-05.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-06.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-07.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-08.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-09.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-10.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-12.css",
-        "src/frontend/shared/styles/features/player-portal/player-portal-parts-13.css"
+        "src/frontend/shared/styles/features/player-portal/player-portal-01.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-02.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-03.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-04.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-05.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-06.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-07.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-08.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-09.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-10.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-12.css",
+        "src/frontend/shared/styles/features/player-portal/player-portal-13.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -11063,7 +11063,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/timeline/timeline-parts-01.css",
+      "path": "src/frontend/shared/styles/features/timeline/timeline-01.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 112,
@@ -11132,7 +11132,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/timeline/timeline-parts-02.css",
+      "path": "src/frontend/shared/styles/features/timeline/timeline-02.css",
       "layer": "feature",
       "domain": "shared",
       "lineCount": 105,
@@ -11174,8 +11174,8 @@
       "lineCount": 3,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/timeline/timeline-parts-01.css",
-        "src/frontend/shared/styles/features/timeline/timeline-parts-02.css"
+        "src/frontend/shared/styles/features/timeline/timeline-01.css",
+        "src/frontend/shared/styles/features/timeline/timeline-02.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12069,221 +12069,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-01.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 24,
-      "selectorCount": 3,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": []
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 142,
-      "selectorCount": 16,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css"
-      ],
-      "variableDefinitions": [
-        "--app-footer-height",
-        "--campaign-mobile-header-height",
-        "--mobile-dock-height"
-      ],
-      "variableReferences": [
-        "--mobile-dock-height",
-        "--campaign-mobile-header-height",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-text-primary",
-        "--campaign-mobile-header-height",
-        "--mobile-dock-height",
-        "--mobile-dock-height"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 156,
-      "selectorCount": 16,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--mobile-dock-height",
-        "--campaign-mobile-header-height",
-        "--mobile-dock-height",
-        "--campaign-mobile-header-height",
-        "--mobile-dock-height",
-        "--mobile-dock-height",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--mobile-dock-height",
-        "--theme-borders-default",
-        "--theme-borders-default",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-surfaces-interactive",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 145,
-      "selectorCount": 16,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-shapes-radius-small",
-        "--theme-surfaces-interactive",
-        "--theme-text-primary",
-        "--mobile-dock-height",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary",
-        "--theme-activity-system-foreground",
-        "--theme-accents-primary-background",
-        "--theme-text-primary"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-02.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 114,
-      "selectorCount": 12,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-surfaces-interactive-hover",
-        "--theme-accents-secondary-foreground",
-        "--theme-borders-default",
-        "--theme-surfaces-subtle",
-        "--theme-text-primary",
-        "--theme-activity-system-foreground",
-        "--theme-accents-primary-background"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-01.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 55,
-      "selectorCount": 6,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-base",
-        "--theme-shapes-radius-medium",
-        "--theme-borders-default",
-        "--theme-shapes-radius-small",
-        "--transition-fast",
-        "--theme-text-secondary",
-        "--font-sans",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-text-on-media",
-        "--theme-feedback-success-foreground",
-        "--theme-activity-attachment-foreground"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 4,
-      "selectorCount": 0,
-      "imports": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-01.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css"
-      ],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": []
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 3,
-      "selectorCount": 0,
-      "imports": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-02.css"
-      ],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": []
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css",
-      "layer": "layout",
-      "domain": "shared",
-      "lineCount": 4,
-      "selectorCount": 0,
-      "imports": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-01.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css"
-      ],
-      "importedBy": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-02.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": []
-    },
-    {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-01.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-01.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 75,
@@ -12318,13 +12104,227 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-02.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 55,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-surfaces-base",
+        "--theme-shapes-radius-medium",
+        "--theme-borders-default",
+        "--theme-shapes-radius-small",
+        "--transition-fast",
+        "--theme-text-secondary",
+        "--font-sans",
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-text-on-media",
+        "--theme-feedback-success-foreground",
+        "--theme-activity-attachment-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 24,
+      "selectorCount": 3,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 142,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css"
+      ],
+      "variableDefinitions": [
+        "--app-footer-height",
+        "--campaign-mobile-header-height",
+        "--mobile-dock-height"
+      ],
+      "variableReferences": [
+        "--mobile-dock-height",
+        "--campaign-mobile-header-height",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-text-primary",
+        "--campaign-mobile-header-height",
+        "--mobile-dock-height",
+        "--mobile-dock-height"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 156,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--mobile-dock-height",
+        "--campaign-mobile-header-height",
+        "--mobile-dock-height",
+        "--campaign-mobile-header-height",
+        "--mobile-dock-height",
+        "--mobile-dock-height",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--mobile-dock-height",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-text-primary",
+        "--theme-borders-default",
+        "--theme-surfaces-interactive",
+        "--theme-text-primary",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 145,
+      "selectorCount": 16,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-text-primary",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive",
+        "--theme-text-primary",
+        "--mobile-dock-height",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas",
+        "--theme-text-secondary",
+        "--theme-activity-system-foreground",
+        "--theme-accents-primary-background",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-02.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 114,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-surfaces-canvas",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-surfaces-interactive-hover",
+        "--theme-accents-secondary-foreground",
+        "--theme-borders-default",
+        "--theme-surfaces-subtle",
+        "--theme-text-primary",
+        "--theme-activity-system-foreground",
+        "--theme-accents-primary-background"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 3,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-02.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 4,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 2,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation.css"
@@ -12333,7 +12333,7 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 88,
@@ -12360,9 +12360,9 @@
       "lineCount": 4,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-01.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-02.css",
-        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css"
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-01.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css",
+        "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12510,7 +12510,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-01.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-01.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 80,
@@ -12527,7 +12527,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-02.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-02.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 81,
@@ -12549,7 +12549,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-03.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-03.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 87,
@@ -12575,7 +12575,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-04.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-04.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 69,
@@ -12598,7 +12598,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-05.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-05.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 61,
@@ -12619,7 +12619,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-06.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-06.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 73,
@@ -12646,7 +12646,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-07.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-07.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 62,
@@ -12669,7 +12669,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-08.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-08.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 78,
@@ -12692,7 +12692,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-09.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-09.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 63,
@@ -12717,7 +12717,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-10.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-10.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 76,
@@ -12745,7 +12745,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-11.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-11.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 162,
@@ -12790,7 +12790,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-12.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-12.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 81,
@@ -12813,7 +12813,7 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/layout/workspace/workspace-parts-13.css",
+      "path": "src/frontend/shared/styles/layout/workspace/workspace-13.css",
       "layer": "layout",
       "domain": "shared",
       "lineCount": 62,
@@ -12838,19 +12838,19 @@
       "lineCount": 14,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-01.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-02.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-03.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-04.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-05.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-06.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-07.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-08.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-09.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-10.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-11.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-12.css",
-        "src/frontend/shared/styles/layout/workspace/workspace-parts-13.css"
+        "src/frontend/shared/styles/layout/workspace/workspace-01.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-02.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-03.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-04.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-05.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-06.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-07.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-08.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-09.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-10.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-11.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-12.css",
+        "src/frontend/shared/styles/layout/workspace/workspace-13.css"
       ],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -17720,8 +17720,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css",
+      "id": "important:src/frontend/shared/styles/features/campaign-template/campaign-template-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-07.css",
       "line": 5,
       "column": 17,
       "severity": "high",
@@ -17732,8 +17732,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css",
+      "id": "important:src/frontend/shared/styles/features/campaign-template/campaign-template-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-07.css",
       "line": 10,
       "column": 38,
       "severity": "high",
@@ -17744,8 +17744,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css:!important",
-      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css",
+      "id": "important:src/frontend/shared/styles/features/campaign-template/campaign-template-07.css:!important",
+      "path": "src/frontend/shared/styles/features/campaign-template/campaign-template-07.css",
       "line": 11,
       "column": 21,
       "severity": "high",
@@ -17756,8 +17756,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css:!important",
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css",
+      "id": "important:src/frontend/shared/styles/features/landing-archive/landing-archive-08.css:!important",
+      "path": "src/frontend/shared/styles/features/landing-archive/landing-archive-08.css",
       "line": 42,
       "column": 17,
       "severity": "high",
@@ -17768,8 +17768,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-04.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-04.css",
       "line": 50,
       "column": 32,
       "severity": "high",
@@ -17780,8 +17780,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-04.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-04.css",
       "line": 61,
       "column": 94,
       "severity": "high",
@@ -17792,8 +17792,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-04.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-04.css",
       "line": 62,
       "column": 101,
       "severity": "high",
@@ -17804,8 +17804,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
       "line": 43,
       "column": 20,
       "severity": "high",
@@ -17816,8 +17816,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
       "line": 51,
       "column": 20,
       "severity": "high",
@@ -17828,8 +17828,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
       "line": 56,
       "column": 19,
       "severity": "high",
@@ -17840,8 +17840,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:!important",
-      "path": "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
+      "id": "important:src/frontend/shared/styles/features/player-portal/player-portal-11.css:!important",
+      "path": "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
       "line": 57,
       "column": 21,
       "severity": "high",
@@ -17876,8 +17876,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 11,
       "column": 20,
       "severity": "high",
@@ -17888,8 +17888,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 15,
       "column": 83,
       "severity": "high",
@@ -17900,8 +17900,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 19,
       "column": 19,
       "severity": "high",
@@ -17912,8 +17912,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 87,
       "column": 17,
       "severity": "high",
@@ -17924,8 +17924,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 88,
       "column": 18,
       "severity": "high",
@@ -17936,8 +17936,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 89,
       "column": 18,
       "severity": "high",
@@ -17948,8 +17948,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 90,
       "column": 127,
       "severity": "high",
@@ -17960,8 +17960,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
       "line": 92,
       "column": 23,
       "severity": "high",
@@ -17972,8 +17972,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css",
       "line": 14,
       "column": 93,
       "severity": "high",
@@ -17984,8 +17984,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css",
       "line": 18,
       "column": 19,
       "severity": "high",
@@ -17996,8 +17996,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css",
       "line": 22,
       "column": 123,
       "severity": "high",
@@ -18008,8 +18008,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css",
       "line": 80,
       "column": 19,
       "severity": "high",
@@ -18020,8 +18020,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 15,
       "column": 17,
       "severity": "high",
@@ -18032,8 +18032,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 16,
       "column": 21,
       "severity": "high",
@@ -18044,8 +18044,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 20,
       "column": 23,
       "severity": "high",
@@ -18056,8 +18056,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 21,
       "column": 22,
       "severity": "high",
@@ -18068,8 +18068,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 26,
       "column": 19,
       "severity": "high",
@@ -18080,8 +18080,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 30,
       "column": 23,
       "severity": "high",
@@ -18092,8 +18092,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 34,
       "column": 19,
       "severity": "high",
@@ -18104,8 +18104,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 35,
       "column": 29,
       "severity": "high",
@@ -18116,8 +18116,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 36,
       "column": 12,
       "severity": "high",
@@ -18128,8 +18128,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 37,
       "column": 41,
       "severity": "high",
@@ -18140,8 +18140,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 41,
       "column": 19,
       "severity": "high",
@@ -18152,8 +18152,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 45,
       "column": 23,
       "severity": "high",
@@ -18164,8 +18164,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 50,
       "column": 29,
       "severity": "high",
@@ -18176,8 +18176,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 61,
       "column": 21,
       "severity": "high",
@@ -18188,8 +18188,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 84,
       "column": 21,
       "severity": "high",
@@ -18200,8 +18200,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:!important",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css",
+      "id": "important:src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:!important",
+      "path": "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css",
       "line": 85,
       "column": 45,
       "severity": "high",
@@ -18556,34 +18556,34 @@
       "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css"
     ],
     "src/frontend/shared/styles/features/admin-announcements.css": [
-      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-01.css",
-      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-02.css",
-      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-03.css",
-      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-04.css"
+      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-01.css",
+      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-02.css",
+      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-03.css",
+      "src/frontend/shared/styles/features/admin-announcements/admin-announcements-04.css"
     ],
     "src/frontend/shared/styles/features/admin-audit.css": [
-      "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-01.css",
-      "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-02.css",
-      "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-03.css",
-      "src/frontend/shared/styles/features/admin-audit/admin-audit-parts-04.css"
+      "src/frontend/shared/styles/features/admin-audit/admin-audit-01.css",
+      "src/frontend/shared/styles/features/admin-audit/admin-audit-02.css",
+      "src/frontend/shared/styles/features/admin-audit/admin-audit-03.css",
+      "src/frontend/shared/styles/features/admin-audit/admin-audit-04.css"
     ],
     "src/frontend/shared/styles/features/admin-campaigns.css": [
-      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-01.css",
-      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-02.css",
-      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-03.css",
-      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-04.css"
+      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-01.css",
+      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-02.css",
+      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-03.css",
+      "src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-04.css"
     ],
     "src/frontend/shared/styles/features/admin-purge.css": [
-      "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-01.css",
-      "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-02.css",
-      "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-03.css",
-      "src/frontend/shared/styles/features/admin-purge/admin-purge-parts-04.css"
+      "src/frontend/shared/styles/features/admin-purge/admin-purge-01.css",
+      "src/frontend/shared/styles/features/admin-purge/admin-purge-02.css",
+      "src/frontend/shared/styles/features/admin-purge/admin-purge-03.css",
+      "src/frontend/shared/styles/features/admin-purge/admin-purge-04.css"
     ],
     "src/frontend/shared/styles/features/admin-users.css": [
-      "src/frontend/shared/styles/features/admin-users/admin-users-parts-01.css",
-      "src/frontend/shared/styles/features/admin-users/admin-users-parts-02.css",
-      "src/frontend/shared/styles/features/admin-users/admin-users-parts-03.css",
-      "src/frontend/shared/styles/features/admin-users/admin-users-parts-04.css"
+      "src/frontend/shared/styles/features/admin-users/admin-users-01.css",
+      "src/frontend/shared/styles/features/admin-users/admin-users-02.css",
+      "src/frontend/shared/styles/features/admin-users/admin-users-03.css",
+      "src/frontend/shared/styles/features/admin-users/admin-users-04.css"
     ],
     "src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-09.css": [
       "src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-09/campaign-canvas-09-01.css",
@@ -18604,38 +18604,38 @@
       "src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-10.css"
     ],
     "src/frontend/shared/styles/features/campaign-messaging.css": [
-      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-01.css",
-      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-02.css",
-      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-03.css",
-      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-04.css"
+      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-01.css",
+      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-02.css",
+      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-03.css",
+      "src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-04.css"
     ],
     "src/frontend/shared/styles/features/campaign-template.css": [
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-01.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-02.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-03.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-04.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-05.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-06.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-08.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-09.css",
-      "src/frontend/shared/styles/features/campaign-template/campaign-template-parts-10.css"
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-01.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-02.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-03.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-04.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-05.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-06.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-07.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-08.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-09.css",
+      "src/frontend/shared/styles/features/campaign-template/campaign-template-10.css"
     ],
     "src/frontend/shared/styles/features/dashboard-overview.css": [
-      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-01.css",
-      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-02.css",
-      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-03.css",
-      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-04.css",
-      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-05.css"
+      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-01.css",
+      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-02.css",
+      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-03.css",
+      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-04.css",
+      "src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-05.css"
     ],
     "src/frontend/shared/styles/features/dm-dashboard.css": [
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-01.css",
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-02.css",
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-03.css",
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-04.css",
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-05.css",
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-06.css",
-      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-07.css"
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-01.css",
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-02.css",
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-03.css",
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-04.css",
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-05.css",
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-06.css",
+      "src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-07.css"
     ],
     "src/frontend/shared/styles/features/dm-hub-dashboard.css": [
       "src/frontend/shared/styles/features/dm-hub-dashboard/dm-hub-shell.css",
@@ -18650,63 +18650,63 @@
       "src/frontend/shared/styles/features/dm-hub-dashboard/dm-hub-dialogs.css"
     ],
     "src/frontend/shared/styles/features/dm-hub.css": [
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-01.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-02.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-03.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-04.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-05.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-06.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-07.css",
-      "src/frontend/shared/styles/features/dm-hub/dm-hub-parts-08.css"
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-01.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-02.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-03.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-04.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-05.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-06.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-07.css",
+      "src/frontend/shared/styles/features/dm-hub/dm-hub-08.css"
     ],
     "src/frontend/shared/styles/features/entity-relations.css": [
-      "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-01.css",
-      "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-02.css",
-      "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-03.css",
-      "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-04.css",
-      "src/frontend/shared/styles/features/entity-relations/entity-relations-parts-05.css"
+      "src/frontend/shared/styles/features/entity-relations/entity-relations-01.css",
+      "src/frontend/shared/styles/features/entity-relations/entity-relations-02.css",
+      "src/frontend/shared/styles/features/entity-relations/entity-relations-03.css",
+      "src/frontend/shared/styles/features/entity-relations/entity-relations-04.css",
+      "src/frontend/shared/styles/features/entity-relations/entity-relations-05.css"
     ],
     "src/frontend/shared/styles/features/landing-archive.css": [
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-01.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-02.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-03.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-04.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-05.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-06.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-07.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-09.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-10.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-archive-parts-11.css"
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-01.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-02.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-03.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-04.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-05.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-06.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-07.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-08.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-09.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-10.css",
+      "src/frontend/shared/styles/features/landing-archive/landing-archive-11.css"
     ],
-    "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css": [
-      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-01.css",
-      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-02.css",
-      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-03.css",
-      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-04.css",
-      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-05.css"
+    "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css": [
+      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-01.css",
+      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-02.css",
+      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-03.css",
+      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-04.css",
+      "src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-05.css"
     ],
     "src/frontend/shared/styles/features/player-campaign.css": [
-      "src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css"
+      "src/frontend/shared/styles/features/player-campaign/player-campaign-01.css"
     ],
     "src/frontend/shared/styles/features/player-portal.css": [
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-01.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-02.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-03.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-05.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-06.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-07.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-08.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-09.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-10.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-12.css",
-      "src/frontend/shared/styles/features/player-portal/player-portal-parts-13.css"
+      "src/frontend/shared/styles/features/player-portal/player-portal-01.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-02.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-03.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-04.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-05.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-06.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-07.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-08.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-09.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-10.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-11.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-12.css",
+      "src/frontend/shared/styles/features/player-portal/player-portal-13.css"
     ],
     "src/frontend/shared/styles/features/timeline.css": [
-      "src/frontend/shared/styles/features/timeline/timeline-parts-01.css",
-      "src/frontend/shared/styles/features/timeline/timeline-parts-02.css"
+      "src/frontend/shared/styles/features/timeline/timeline-01.css",
+      "src/frontend/shared/styles/features/timeline/timeline-02.css"
     ],
     "src/frontend/shared/styles/landing/landing-05.css": [
       "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
@@ -18736,42 +18736,42 @@
       "src/frontend/shared/styles/landing/landing-15.css",
       "src/frontend/shared/styles/landing/landing-16.css"
     ],
-    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css": [
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-01.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css"
+    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css"
     ],
-    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css": [
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-02.css"
+    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-02.css"
     ],
-    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css": [
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-01.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css"
+    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css"
     ],
-    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-02.css": [
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css"
+    "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css": [
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css"
     ],
     "src/frontend/shared/styles/layout/campaign-navigation.css": [
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-01.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-02.css",
-      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css"
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-01.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css",
+      "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css"
     ],
     "src/frontend/shared/styles/layout/workspace.css": [
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-01.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-02.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-03.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-04.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-05.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-06.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-07.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-08.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-09.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-10.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-11.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-12.css",
-      "src/frontend/shared/styles/layout/workspace/workspace-parts-13.css"
+      "src/frontend/shared/styles/layout/workspace/workspace-01.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-02.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-03.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-04.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-05.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-06.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-07.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-08.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-09.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-10.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-11.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-12.css",
+      "src/frontend/shared/styles/layout/workspace/workspace-13.css"
     ],
     "src/frontend/shared/styles/main.css": [
       "src/frontend/shared/styles/foundation/fonts.css",

@@ -165,35 +165,35 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css` | component | shared-components | 184 | 23 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 3 | 0 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 4 | 1 |
-| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-01.css` | feature | shared | 10 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-02.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-03.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-parts-04.css` | feature | shared | 8 | 7 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-announcements/admin-announcements-04.css` | feature | shared | 8 | 7 | 1 |
 | `src/frontend/shared/styles/features/admin-announcements.css` | feature | shared | 5 | 0 | 1 |
-| `src/frontend/shared/styles/features/admin-audit/admin-audit-parts-01.css` | feature | shared | 52 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-audit/admin-audit-parts-02.css` | feature | shared | 30 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-audit/admin-audit-parts-03.css` | feature | shared | 15 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-audit/admin-audit-parts-04.css` | feature | shared | 23 | 14 | 1 |
+| `src/frontend/shared/styles/features/admin-audit/admin-audit-01.css` | feature | shared | 52 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-audit/admin-audit-02.css` | feature | shared | 30 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-audit/admin-audit-03.css` | feature | shared | 15 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-audit/admin-audit-04.css` | feature | shared | 23 | 14 | 1 |
 | `src/frontend/shared/styles/features/admin-audit.css` | feature | shared | 5 | 0 | 1 |
-| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-01.css` | feature | shared | 10 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-02.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-03.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-parts-04.css` | feature | shared | 7 | 6 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-campaigns/admin-campaigns-04.css` | feature | shared | 7 | 6 | 1 |
 | `src/frontend/shared/styles/features/admin-campaigns.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/admin-game-systems.css` | feature | shared | 24 | 23 | 1 |
 | `src/frontend/shared/styles/features/admin-invitations.css` | feature | shared | 27 | 26 | 1 |
 | `src/frontend/shared/styles/features/admin-overview.css` | feature | shared | 28 | 24 | 1 |
-| `src/frontend/shared/styles/features/admin-purge/admin-purge-parts-01.css` | feature | shared | 10 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-purge/admin-purge-parts-02.css` | feature | shared | 12 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-purge/admin-purge-parts-03.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-purge/admin-purge-parts-04.css` | feature | shared | 11 | 6 | 1 |
+| `src/frontend/shared/styles/features/admin-purge/admin-purge-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-purge/admin-purge-02.css` | feature | shared | 12 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-purge/admin-purge-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-purge/admin-purge-04.css` | feature | shared | 11 | 6 | 1 |
 | `src/frontend/shared/styles/features/admin-purge.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/admin-security.css` | feature | shared | 16 | 15 | 1 |
 | `src/frontend/shared/styles/features/admin-template-settings.css` | feature | shared | 25 | 24 | 1 |
-| `src/frontend/shared/styles/features/admin-users/admin-users-parts-01.css` | feature | shared | 32 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-users/admin-users-parts-02.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-users/admin-users-parts-03.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/admin-users/admin-users-parts-04.css` | feature | shared | 16 | 11 | 1 |
+| `src/frontend/shared/styles/features/admin-users/admin-users-01.css` | feature | shared | 32 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-users/admin-users-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-users/admin-users-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/admin-users/admin-users-04.css` | feature | shared | 16 | 11 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/auth.css` | feature | shared | 60 | 15 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-01.css` | feature | shared | 206 | 25 | 1 |
@@ -211,21 +211,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-09.css` | feature | shared | 5 | 0 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-10.css` | feature | shared | 161 | 21 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | feature | shared | 11 | 0 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-01.css` | feature | shared | 10 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-02.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-03.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-parts-04.css` | feature | shared | 10 | 8 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging/campaign-messaging-04.css` | feature | shared | 10 | 8 | 1 |
 | `src/frontend/shared/styles/features/campaign-messaging.css` | feature | shared | 5 | 0 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-01.css` | feature | shared | 78 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-02.css` | feature | shared | 70 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-03.css` | feature | shared | 74 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-04.css` | feature | shared | 65 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-05.css` | feature | shared | 89 | 15 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-06.css` | feature | shared | 66 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css` | feature | shared | 89 | 11 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-08.css` | feature | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-09.css` | feature | shared | 75 | 10 | 1 |
-| `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-10.css` | feature | shared | 51 | 6 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-01.css` | feature | shared | 78 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-02.css` | feature | shared | 70 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-03.css` | feature | shared | 74 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-04.css` | feature | shared | 65 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-05.css` | feature | shared | 89 | 15 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-06.css` | feature | shared | 66 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-07.css` | feature | shared | 89 | 11 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-08.css` | feature | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-09.css` | feature | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-template/campaign-template-10.css` | feature | shared | 51 | 6 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | feature | shared | 11 | 0 | 1 |
 | `src/frontend/shared/styles/features/canvas-board-dialogs.css` | feature | shared | 28 | 27 | 1 |
 | `src/frontend/shared/styles/features/canvas-bulk-actions.css` | feature | shared | 7 | 1 | 1 |
@@ -240,28 +240,28 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-palette.css` | feature | shared | 195 | 30 | 1 |
 | `src/frontend/shared/styles/features/canvas-presentation.css` | feature | shared | 11 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-toolbar.css` | feature | shared | 24 | 5 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-01.css` | feature | shared | 10 | 10 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-02.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-03.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-04.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-parts-05.css` | feature | shared | 10 | 5 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-01.css` | feature | shared | 10 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-03.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-04.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview/dashboard-overview-05.css` | feature | shared | 10 | 5 | 1 |
 | `src/frontend/shared/styles/features/dashboard-overview.css` | feature | shared | 6 | 0 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-01.css` | feature | shared | 90 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-02.css` | feature | shared | 80 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-03.css` | feature | shared | 71 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-04.css` | feature | shared | 91 | 13 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-05.css` | feature | shared | 80 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-06.css` | feature | shared | 70 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-parts-07.css` | feature | shared | 31 | 5 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-01.css` | feature | shared | 90 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-02.css` | feature | shared | 80 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-03.css` | feature | shared | 71 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-04.css` | feature | shared | 91 | 13 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-05.css` | feature | shared | 80 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-06.css` | feature | shared | 70 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-dashboard/dm-dashboard-07.css` | feature | shared | 31 | 5 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | feature | shared | 8 | 0 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-01.css` | feature | shared | 84 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-02.css` | feature | shared | 79 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-03.css` | feature | shared | 86 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-04.css` | feature | shared | 94 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-05.css` | feature | shared | 77 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-06.css` | feature | shared | 77 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-07.css` | feature | shared | 85 | 10 | 1 |
-| `src/frontend/shared/styles/features/dm-hub/dm-hub-parts-08.css` | feature | shared | 14 | 2 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-01.css` | feature | shared | 84 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-02.css` | feature | shared | 79 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-03.css` | feature | shared | 86 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-04.css` | feature | shared | 94 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-05.css` | feature | shared | 77 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-06.css` | feature | shared | 77 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-07.css` | feature | shared | 85 | 10 | 1 |
+| `src/frontend/shared/styles/features/dm-hub/dm-hub-08.css` | feature | shared | 14 | 2 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard/dm-hub-activity.css` | feature | shared | 156 | 20 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard/dm-hub-campaign-cards.css` | feature | shared | 240 | 30 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard/dm-hub-campaign-layout.css` | feature | shared | 223 | 30 | 1 |
@@ -276,11 +276,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/dm-hub.css` | feature | shared | 9 | 0 | 1 |
 | `src/frontend/shared/styles/features/dm-onboarding.css` | feature | shared | 20 | 19 | 1 |
 | `src/frontend/shared/styles/features/entity-create.css` | feature | shared | 32 | 6 | 1 |
-| `src/frontend/shared/styles/features/entity-relations/entity-relations-parts-01.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/entity-relations/entity-relations-parts-02.css` | feature | shared | 11 | 10 | 1 |
-| `src/frontend/shared/styles/features/entity-relations/entity-relations-parts-03.css` | feature | shared | 12 | 10 | 1 |
-| `src/frontend/shared/styles/features/entity-relations/entity-relations-parts-04.css` | feature | shared | 12 | 10 | 1 |
-| `src/frontend/shared/styles/features/entity-relations/entity-relations-parts-05.css` | feature | shared | 9 | 7 | 1 |
+| `src/frontend/shared/styles/features/entity-relations/entity-relations-01.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations/entity-relations-02.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations/entity-relations-03.css` | feature | shared | 12 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations/entity-relations-04.css` | feature | shared | 12 | 10 | 1 |
+| `src/frontend/shared/styles/features/entity-relations/entity-relations-05.css` | feature | shared | 9 | 7 | 1 |
 | `src/frontend/shared/styles/features/entity-relations.css` | feature | shared | 6 | 0 | 1 |
 | `src/frontend/shared/styles/features/entity-trace.css` | feature | shared | 23 | 18 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | feature | shared | 77 | 8 | 1 |
@@ -288,38 +288,38 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/image-picker-modal.css` | feature | shared | 215 | 28 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | feature | shared | 177 | 26 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | feature | shared | 104 | 17 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-01.css` | feature | shared | 119 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-02.css` | feature | shared | 84 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-03.css` | feature | shared | 83 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-04.css` | feature | shared | 75 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-05.css` | feature | shared | 85 | 12 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-06.css` | feature | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-07.css` | feature | shared | 66 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css` | feature | shared | 65 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-09.css` | feature | shared | 64 | 12 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-10.css` | feature | shared | 60 | 11 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-11.css` | feature | shared | 102 | 25 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-01.css` | feature | shared | 119 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-02.css` | feature | shared | 84 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-03.css` | feature | shared | 83 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-04.css` | feature | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-05.css` | feature | shared | 85 | 12 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-06.css` | feature | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-07.css` | feature | shared | 66 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-08.css` | feature | shared | 65 | 10 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-09.css` | feature | shared | 64 | 12 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-10.css` | feature | shared | 60 | 11 | 1 |
+| `src/frontend/shared/styles/features/landing-archive/landing-archive-11.css` | feature | shared | 102 | 25 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | feature | shared | 12 | 0 | 1 |
-| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-01.css` | feature | shared | 9 | 8 | 1 |
-| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-02.css` | feature | shared | 10 | 8 | 1 |
-| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-03.css` | feature | shared | 10 | 8 | 1 |
-| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-04.css` | feature | shared | 10 | 8 | 1 |
-| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-parts-01-05.css` | feature | shared | 7 | 5 | 1 |
-| `src/frontend/shared/styles/features/player-campaign/player-campaign-parts-01.css` | feature | shared | 6 | 0 | 1 |
+| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-01.css` | feature | shared | 9 | 8 | 1 |
+| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-02.css` | feature | shared | 10 | 8 | 1 |
+| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-03.css` | feature | shared | 10 | 8 | 1 |
+| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-04.css` | feature | shared | 10 | 8 | 1 |
+| `src/frontend/shared/styles/features/player-campaign/player-campaign-01-split/player-campaign-01-05.css` | feature | shared | 7 | 5 | 1 |
+| `src/frontend/shared/styles/features/player-campaign/player-campaign-01.css` | feature | shared | 6 | 0 | 1 |
 | `src/frontend/shared/styles/features/player-campaign.css` | feature | shared | 2 | 0 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-01.css` | feature | shared | 110 | 15 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-02.css` | feature | shared | 72 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-03.css` | feature | shared | 105 | 12 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css` | feature | shared | 75 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-05.css` | feature | shared | 90 | 12 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-06.css` | feature | shared | 39 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-07.css` | feature | shared | 48 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-08.css` | feature | shared | 77 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-09.css` | feature | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-10.css` | feature | shared | 63 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css` | feature | shared | 144 | 23 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-12.css` | feature | shared | 79 | 10 | 1 |
-| `src/frontend/shared/styles/features/player-portal/player-portal-parts-13.css` | feature | shared | 52 | 8 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-01.css` | feature | shared | 110 | 15 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-02.css` | feature | shared | 72 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-03.css` | feature | shared | 105 | 12 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-04.css` | feature | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-05.css` | feature | shared | 90 | 12 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-06.css` | feature | shared | 39 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-07.css` | feature | shared | 48 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-08.css` | feature | shared | 77 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-09.css` | feature | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-10.css` | feature | shared | 63 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-11.css` | feature | shared | 144 | 23 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-12.css` | feature | shared | 79 | 10 | 1 |
+| `src/frontend/shared/styles/features/player-portal/player-portal-13.css` | feature | shared | 52 | 8 | 1 |
 | `src/frontend/shared/styles/features/player-portal.css` | feature | shared | 14 | 0 | 1 |
 | `src/frontend/shared/styles/features/player-profile-modal.css` | feature | shared | 18 | 4 | 1 |
 | `src/frontend/shared/styles/features/pwa-update-banner.css` | feature | shared | 30 | 2 | 1 |
@@ -330,8 +330,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/shortcuts-panel.css` | feature | shared | 66 | 11 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | feature | shared | 15 | 2 | 1 |
 | `src/frontend/shared/styles/features/system-announcements.css` | feature | shared | 91 | 12 | 1 |
-| `src/frontend/shared/styles/features/timeline/timeline-parts-01.css` | feature | shared | 112 | 21 | 1 |
-| `src/frontend/shared/styles/features/timeline/timeline-parts-02.css` | feature | shared | 105 | 14 | 1 |
+| `src/frontend/shared/styles/features/timeline/timeline-01.css` | feature | shared | 112 | 21 | 1 |
+| `src/frontend/shared/styles/features/timeline/timeline-02.css` | feature | shared | 105 | 14 | 1 |
 | `src/frontend/shared/styles/features/timeline.css` | feature | shared | 3 | 0 | 1 |
 | `src/frontend/shared/styles/foundation/accessibility.css` | foundation | shared | 8 | 2 | 1 |
 | `src/frontend/shared/styles/foundation/color-scheme.css` | foundation | shared | 12 | 3 | 1 |
@@ -364,37 +364,37 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing.css` | feature | shared | 17 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 7 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-01.css` | layout | shared | 24 | 3 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css` | layout | shared | 142 | 16 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css` | layout | shared | 156 | 16 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css` | layout | shared | 145 | 16 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-02.css` | layout | shared | 114 | 12 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-01.css` | layout | shared | 55 | 6 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-02.css` | layout | shared | 4 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-parts-02-parts-01-03.css` | layout | shared | 3 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-parts-02-parts-01.css` | layout | shared | 4 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-01.css` | layout | shared | 75 | 10 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-02.css` | layout | shared | 2 | 0 | 1 |
-| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css` | layout | shared | 88 | 15 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-01.css` | layout | shared | 75 | 10 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-01.css` | layout | shared | 55 | 6 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-01.css` | layout | shared | 24 | 3 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css` | layout | shared | 142 | 16 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css` | layout | shared | 156 | 16 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02.css` | layout | shared | 4 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css` | layout | shared | 145 | 16 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-02.css` | layout | shared | 114 | 12 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03.css` | layout | shared | 3 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01.css` | layout | shared | 4 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02.css` | layout | shared | 2 | 0 | 1 |
+| `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css` | layout | shared | 88 | 15 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 4 | 0 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 202 | 30 | 1 |
 | `src/frontend/shared/styles/layout/footer.css` | layout | shared | 128 | 16 | 1 |
 | `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 5 | 1 |
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 11 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-01.css` | layout | shared | 80 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-02.css` | layout | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-03.css` | layout | shared | 87 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-04.css` | layout | shared | 69 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-05.css` | layout | shared | 61 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-06.css` | layout | shared | 73 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-07.css` | layout | shared | 62 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-08.css` | layout | shared | 78 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-09.css` | layout | shared | 63 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-10.css` | layout | shared | 76 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-11.css` | layout | shared | 162 | 26 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-12.css` | layout | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-parts-13.css` | layout | shared | 62 | 12 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-01.css` | layout | shared | 80 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-02.css` | layout | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-03.css` | layout | shared | 87 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-04.css` | layout | shared | 69 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-05.css` | layout | shared | 61 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-06.css` | layout | shared | 73 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-07.css` | layout | shared | 62 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-08.css` | layout | shared | 78 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-09.css` | layout | shared | 63 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-10.css` | layout | shared | 76 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-11.css` | layout | shared | 162 | 26 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-12.css` | layout | shared | 81 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-13.css` | layout | shared | 62 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
 | `src/frontend/shared/styles/main.css` | foundation | shared | 92 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
@@ -776,47 +776,47 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-10.css:8` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-10.css:9` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas/campaign-canvas-10.css:13` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css:5` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/campaign-template/campaign-template-parts-07.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/landing-archive/landing-archive-parts-08.css:42` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css:50` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-04.css:62` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:43` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:51` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:56` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-parts-11.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-template/campaign-template-07.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-template/campaign-template-07.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/campaign-template/campaign-template-07.css:11` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/landing-archive/landing-archive-08.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-04.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-04.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-04.css:62` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-11.css:43` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-11.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-11.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal/player-portal-11.css:57` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:19` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:87` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:88` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:89` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:90` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-02.css:92` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css:14` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css:18` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-parts-02-parts-01-02-03.css:22` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-parts-02-parts-01-03-01.css:80` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:16` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:20` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:21` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:26` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:30` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:36` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:45` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:50` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:84` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-parts-03.css:85` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:11` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:87` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:88` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:89` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:90` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-02.css:92` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:18` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-02/campaign-navigation-02-01-02-03.css:22` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-02/campaign-navigation-02-01-split/campaign-navigation-02-01-03/campaign-navigation-02-01-03-01.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:20` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:21` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:45` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:84` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-03.css:85` | Important declarations bypass the intended cascade. |
 | medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/card.css:7` | Generic selector has global collision risk. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/dialog.css:44` | Generic selector has global collision risk. |
