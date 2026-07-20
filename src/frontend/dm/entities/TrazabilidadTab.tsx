@@ -57,7 +57,7 @@ function buildTrazabilidad(
   // Not available in campaignState directly — derive from entity.visibility history if ever present
   // No-op for now (events are in timeline store, not campaignState)
 
-  // 3. Relaciones que involucran esta entidad
+  // 3. Relations involving this entity
   const entityRelations = relations.filter(
     (r: Relation) =>
       !r.archived &&
@@ -77,7 +77,7 @@ function buildTrazabilidad(
     });
   }
 
-  // 4. Hechos asociados
+  // 4. Associated facts
   const entityFacts = facts.filter(
     (f: Fact) =>
       !f.archived &&

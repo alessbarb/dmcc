@@ -369,7 +369,7 @@ function buildIncomingRoute({
     sourceSide: "right",
     targetSide: "left",
 
-    // Próxima al vecino, no al nudo central.
+    // Close to neighbor, not central node.
     labelPoint: pointAtPathFraction(
       points,
       0.2,
@@ -431,7 +431,7 @@ function buildOutgoingRoute({
     sourceSide: "right",
     targetSide: "left",
 
-    // Próxima al vecino exterior.
+    // Close to outer neighbor.
     labelPoint: pointAtPathFraction(
       points,
       0.8,
