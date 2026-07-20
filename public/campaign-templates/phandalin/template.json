@@ -39,7 +39,7 @@
       "metadata": {
         "regionKey": "sword_coast_frontier"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/phandalin.png"
+      "imageUrl": "/assets/premades/phandalin/locations/phandalin.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_trail",
@@ -51,7 +51,7 @@
       "metadata": {
         "type": "route"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/triboar_trail.png"
+      "imageUrl": "/assets/premades/phandalin/locations/triboar_trail.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_hideout",
@@ -63,7 +63,7 @@
       "metadata": {
         "type": "dungeon"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/cragmaw_hideout.png"
+      "imageUrl": "/assets/premades/phandalin/locations/cragmaw_hideout.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_tresendar",
@@ -75,7 +75,7 @@
       "metadata": {
         "type": "urban_dungeon"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/tresendar_manor.png"
+      "imageUrl": "/assets/premades/phandalin/locations/tresendar_manor.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_wave_echo",
@@ -87,7 +87,7 @@
       "metadata": {
         "type": "final dungeon"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/wave_echo_cave.png"
+      "imageUrl": "/assets/premades/phandalin/locations/wave_echo_cave.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_gundren",
@@ -100,7 +100,7 @@
         "roleKey": "opening_patron",
         "desireKey": "recover_family_mine"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/gundren_rockseeker.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/gundren_rockseeker.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_sildar",
@@ -112,7 +112,7 @@
       "metadata": {
         "roleKey": "campaign_mentor"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/sildar_hallwinter.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/sildar_hallwinter.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_redbrands",
@@ -124,7 +124,7 @@
       "metadata": {
         "agendaKey": "maintain_social_control"
       },
-      "imageUrl": "/assets/premades/phandalin/factions/redbrands.png"
+      "imageUrl": "/assets/premades/phandalin/factions/redbrands.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_iarno",
@@ -137,7 +137,7 @@
         "publicMask": "mago perdido",
         "secretIdentity": "Glasstaff"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/iarno_albrek_glasstaff.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/iarno_albrek_glasstaff.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_nezznar",
@@ -149,7 +149,7 @@
       "metadata": {
         "role": "antagonista final"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/nezznar_the_black_spider.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/nezznar_the_black_spider.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_gundren",
@@ -161,7 +161,7 @@
       "metadata": {
         "objectiveKey": "rescue_gundren_and_recover_map"
       },
-      "imageUrl": "/assets/premades/phandalin/quests/find_gundren.png"
+      "imageUrl": "/assets/premades/phandalin/quests/find_gundren.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_dead_horses",
@@ -174,7 +174,7 @@
         "delivery": "escena inicial",
         "pointsTo": "ent_tpl_phandalin_hideout"
       },
-      "imageUrl": "/assets/premades/phandalin/clues/dead_horses_on_the_road.png"
+      "imageUrl": "/assets/premades/phandalin/clues/dead_horses_on_the_road.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_iarno",
@@ -189,7 +189,7 @@
         ],
         "revealImpact": "cambia la confianza en los aliados adultos"
       },
-      "imageUrl": "/assets/premades/phandalin/secrets/iarno_is_glasstaff.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/iarno_is_glasstaff.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_consequence_town",
@@ -201,7 +201,7 @@
       "metadata": {
         "trigger": "derrotar o exponer a los Redbrands"
       },
-      "imageUrl": "/assets/premades/phandalin/consequences/phandalin_finds_its_voice.png"
+      "imageUrl": "/assets/premades/phandalin/consequences/phandalin_finds_its_voice.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_inn",
@@ -210,7 +210,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/stonehill_inn.png"
+      "imageUrl": "/assets/premades/phandalin/locations/stonehill_inn.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_shrine",
@@ -219,7 +219,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/locations/shrine_of_luck.png"
+      "imageUrl": "/assets/premades/phandalin/locations/shrine_of_luck.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_toblen",
@@ -228,7 +228,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/toblen_stonehill.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/toblen_stonehill.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_linene",
@@ -237,7 +237,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/linene_graywind.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/linene_graywind.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_halia",
@@ -246,7 +246,7 @@
       "visibility": {
         "kind": "dm_only"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/halia_thornton.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/halia_thornton.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_qelline",
@@ -255,7 +255,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/npcs/qelline_alderleaf.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/qelline_alderleaf.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_break_fear",
@@ -264,7 +264,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/quests/break_the_redbrands_hold.png"
+      "imageUrl": "/assets/premades/phandalin/quests/break_the_redbrands_hold.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_blackseal",
@@ -273,7 +273,7 @@
       "visibility": {
         "kind": "dm_only"
       },
-      "imageUrl": "/assets/premades/phandalin/clues/black_sealed_note.png"
+      "imageUrl": "/assets/premades/phandalin/clues/black_sealed_note.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_redclay",
@@ -282,7 +282,7 @@
       "visibility": {
         "kind": "dm_only"
       },
-      "imageUrl": "/assets/premades/phandalin/clues/red_clay_boots.png"
+      "imageUrl": "/assets/premades/phandalin/clues/red_clay_boots.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_rumor_well",
@@ -291,7 +291,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/rumors/the_old_well_sings_at_night.png"
+      "imageUrl": "/assets/premades/phandalin/rumors/the_old_well_sings_at_night.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_handout_map",
@@ -300,7 +300,7 @@
       "visibility": {
         "kind": "party"
       },
-      "imageUrl": "/assets/premades/phandalin/handouts/gundrens_torn_map.png"
+      "imageUrl": "/assets/premades/phandalin/handouts/gundrens_torn_map.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_encounter_street",
@@ -309,7 +309,7 @@
       "visibility": {
         "kind": "dm_only"
       },
-      "imageUrl": "/assets/premades/phandalin/encounters/fight_on_the_main_street.png"
+      "imageUrl": "/assets/premades/phandalin/encounters/fight_on_the_main_street.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_consequence_people_rise",
@@ -318,7 +318,7 @@
       "visibility": {
         "kind": "dm_only"
       },
-      "imageUrl": "/assets/premades/phandalin/consequences/the_town_begins_to_organize.png"
+      "imageUrl": "/assets/premades/phandalin/consequences/the_town_begins_to_organize.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_nezznar_funds",
@@ -327,7 +327,7 @@
       "visibility": {
         "kind": "dm_only"
       },
-      "imageUrl": "/assets/premades/phandalin/secrets/the_black_spider_funds_chaos_from_afar.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_black_spider_funds_chaos_from_afar.webp"
     },
     {
       "entityId": "ent_tpl_phandalin_pc_aric",
@@ -363,8 +363,8 @@
           "intimidation"
         ]
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/player_characters/aric_veldan.png"
+      "imageUrl": "/assets/premades/phandalin/player_characters/aric_veldan.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_pc_mira",
@@ -401,8 +401,8 @@
           "deception"
         ]
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/player_characters/mira_nightrill.png"
+      "imageUrl": "/assets/premades/phandalin/player_characters/mira_nightrill.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_pc_brom",
@@ -439,8 +439,8 @@
           "history"
         ]
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/player_characters/brom_cindermug.png"
+      "imageUrl": "/assets/premades/phandalin/player_characters/brom_cindermug.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_pc_nim",
@@ -477,8 +477,8 @@
           "insight"
         ]
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/player_characters/nimue_ashbottle.png"
+      "imageUrl": "/assets/premades/phandalin/player_characters/nimue_ashbottle.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_barthen",
@@ -488,8 +488,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/locations/barthens_provisions.png"
+      "imageUrl": "/assets/premades/phandalin/locations/barthens_provisions.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_lionshield",
@@ -499,8 +499,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/locations/lionshield_coster.png"
+      "imageUrl": "/assets/premades/phandalin/locations/lionshield_coster.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_sleeping_giant",
@@ -510,8 +510,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/locations/sleeping_giant.png"
+      "imageUrl": "/assets/premades/phandalin/locations/sleeping_giant.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_townmaster",
@@ -521,8 +521,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/locations/townmasters_hall.png"
+      "imageUrl": "/assets/premades/phandalin/locations/townmasters_hall.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_edermath",
@@ -532,8 +532,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/locations/edermath_orchard.png"
+      "imageUrl": "/assets/premades/phandalin/locations/edermath_orchard.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_alderleaf",
@@ -543,8 +543,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/locations/alderleaf_farm.png"
+      "imageUrl": "/assets/premades/phandalin/locations/alderleaf_farm.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_miners_exchange",
@@ -554,8 +554,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/locations/miners_exchange.png"
+      "imageUrl": "/assets/premades/phandalin/locations/miners_exchange.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_cragmaw_castle",
@@ -565,8 +565,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/locations/cragmaw_castle.png"
+      "imageUrl": "/assets/premades/phandalin/locations/cragmaw_castle.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_forge_of_spells",
@@ -576,8 +576,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/locations/forge_of_spells.png"
+      "imageUrl": "/assets/premades/phandalin/locations/forge_of_spells.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_conyberry",
@@ -587,8 +587,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/locations/conyberry_ruins.png"
+      "imageUrl": "/assets/premades/phandalin/locations/conyberry_ruins.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_agatha_lair",
@@ -598,8 +598,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/locations/agathas_lair.png"
+      "imageUrl": "/assets/premades/phandalin/locations/agathas_lair.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_old_owl_well",
@@ -609,8 +609,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/locations/old_owl_well.png"
+      "imageUrl": "/assets/premades/phandalin/locations/old_owl_well.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_wyvern_tor",
@@ -620,8 +620,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/locations/wyvern_tor.png"
+      "imageUrl": "/assets/premades/phandalin/locations/wyvern_tor.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_thundertree",
@@ -631,8 +631,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/locations/thundertree.png"
+      "imageUrl": "/assets/premades/phandalin/locations/thundertree.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_town",
@@ -644,8 +644,8 @@
       "metadata": {
         "agenda": "Sobrevivir, trabajar y que alguien ponga límites a los abusos."
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/factions/phandalin_townsfolk.png"
+      "imageUrl": "/assets/premades/phandalin/factions/phandalin_townsfolk.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_cragmaw",
@@ -657,8 +657,8 @@
       "metadata": {
         "agenda": "Cobrar por Gundren, conservar el mapa y no morir por órdenes ajenas."
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/factions/cragmaw_clan.png"
+      "imageUrl": "/assets/premades/phandalin/factions/cragmaw_clan.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_rockseeker",
@@ -670,8 +670,8 @@
       "metadata": {
         "agenda": "Recuperar la mina perdida y honrar el trabajo familiar."
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/factions/rockseeker_brothers.png"
+      "imageUrl": "/assets/premades/phandalin/factions/rockseeker_brothers.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_lords_alliance",
@@ -683,8 +683,8 @@
       "metadata": {
         "agenda": "Restaurar orden sin admitir cuánto se les ha escapado la región."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/factions/lords_alliance.png"
+      "imageUrl": "/assets/premades/phandalin/factions/lords_alliance.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_zhentarim",
@@ -696,8 +696,8 @@
       "metadata": {
         "agenda": "Convertir el vacío de poder en ventaja comercial."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/factions/zhentarim.png"
+      "imageUrl": "/assets/premades/phandalin/factions/zhentarim.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_order_gauntlet",
@@ -709,8 +709,8 @@
       "metadata": {
         "agenda": "Que la región no normalice el miedo como gobierno."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/factions/order_of_the_gauntlet.png"
+      "imageUrl": "/assets/premades/phandalin/factions/order_of_the_gauntlet.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_emerald_enclave",
@@ -722,8 +722,8 @@
       "metadata": {
         "agenda": "Evitar que ruinas, dragones y magia minera rompan el equilibrio local."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/factions/emerald_enclave.png"
+      "imageUrl": "/assets/premades/phandalin/factions/emerald_enclave.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_wyvern_orcs",
@@ -735,8 +735,8 @@
       "metadata": {
         "agenda": "Robar, probar fuerza y retirarse antes de una respuesta organizada."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/factions/wyvern_tor_orcs.png"
+      "imageUrl": "/assets/premades/phandalin/factions/wyvern_tor_orcs.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_ash_zombies",
@@ -748,8 +748,8 @@
       "metadata": {
         "agenda": "Ser recordatorio físico de que algunas ruinas no perdonan curiosidad."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/factions/thundertree_ash_zombies.png"
+      "imageUrl": "/assets/premades/phandalin/factions/thundertree_ash_zombies.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_elmar",
@@ -761,8 +761,8 @@
       "metadata": {
         "desire": "Que la caravana llegue y el pueblo no se rompa por miedo."
       },
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/npcs/elmar_barthen.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/elmar_barthen.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_trilena",
@@ -774,8 +774,8 @@
       "metadata": {
         "desire": "Que alguien actúe sin que su familia pague el precio."
       },
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/npcs/trilena_stonehill.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/trilena_stonehill.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_harbin",
@@ -787,8 +787,8 @@
       "metadata": {
         "desire": "Sobrevivir políticamente y físicamente; en ese orden variable."
       },
-      "status": "known",
-      "imageUrl": "/assets/premades/phandalin/npcs/harbin_wester.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/harbin_wester.webp",
+      "status": "known"
     },
     {
       "entityId": "ent_tpl_phandalin_garaele",
@@ -800,8 +800,8 @@
       "metadata": {
         "desire": "Obtener respuestas sin poner a inocentes en manos de fuerzas antiguas."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/npcs/sister_garaele.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/sister_garaele.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_daran",
@@ -813,8 +813,8 @@
       "metadata": {
         "desire": "Que la próxima generación no aprenda a vivir arrodillada."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/npcs/daran_edermath.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/daran_edermath.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_carp",
@@ -826,8 +826,8 @@
       "metadata": {
         "desire": "Ser tratado como útil, no como estorbo."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/npcs/carp_alderleaf.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/carp_alderleaf.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_mirna",
@@ -839,8 +839,8 @@
       "metadata": {
         "desire": "Sacar a sus hijos del sótano y reconstruir una vida."
       },
-      "status": "missing",
-      "imageUrl": "/assets/premades/phandalin/npcs/mirna_dendrar.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/mirna_dendrar.webp",
+      "status": "missing"
     },
     {
       "entityId": "ent_tpl_phandalin_glasstaff",
@@ -852,8 +852,8 @@
       "metadata": {
         "desire": "Separar al mago respetable del jefe criminal."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/glasstaff.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/glasstaff.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_nothic",
@@ -865,8 +865,8 @@
       "metadata": {
         "desire": "Comer, sobrevivir y saborear secretos ajenos."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/tresendar_nothic.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/tresendar_nothic.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_grista",
@@ -878,8 +878,8 @@
       "metadata": {
         "desire": "Que nadie destroce su negocio ni la arrastre a una guerra."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/npcs/grista.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/grista.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_klarg",
@@ -891,8 +891,8 @@
       "metadata": {
         "desire": "Ser visto como jefe temible aunque otros muevan piezas más grandes."
       },
-      "status": "active",
-      "imageUrl": "/assets/premades/phandalin/npcs/klarg.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/klarg.webp",
+      "status": "active"
     },
     {
       "entityId": "ent_tpl_phandalin_yeemik",
@@ -904,8 +904,8 @@
       "metadata": {
         "desire": "Reemplazar a Klarg y salir vivo."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/npcs/yeemik.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/yeemik.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_grol",
@@ -917,8 +917,8 @@
       "metadata": {
         "desire": "Sacar precio máximo por Gundren y el mapa."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/king_grol.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/king_grol.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_vyerith",
@@ -930,8 +930,8 @@
       "metadata": {
         "desire": "Asegurar que el mapa llegue a la Araña Negra aunque Grol negocie."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/vyerith.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/vyerith.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_nundro",
@@ -943,8 +943,8 @@
       "metadata": {
         "desire": "Sobrevivir, hallar a Gundren y llorar a Tharden cuando haya tiempo."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/nundro_rockseeker.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/nundro_rockseeker.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_tharden",
@@ -956,8 +956,8 @@
       "metadata": {
         "desire": "Funciona como consecuencia emocional, no como PNJ activo."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/tharden_rockseeker.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/tharden_rockseeker.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_hamun",
@@ -969,8 +969,8 @@
       "metadata": {
         "desire": "Estudiar la ruina sin que aventureros simplifiquen su presencia."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/hamun_kost.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/hamun_kost.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_reidoth",
@@ -982,8 +982,8 @@
       "metadata": {
         "desire": "Que la gente entienda que algunos lugares no se conquistan, se respetan."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/reidoth.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/reidoth.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_agatha",
@@ -995,8 +995,8 @@
       "metadata": {
         "desire": "Ser recordada, respetada y no reducida a una máquina de respuestas."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/agatha.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/agatha.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_brughor",
@@ -1008,8 +1008,8 @@
       "metadata": {
         "desire": "Medir si Phandalin sigue siendo presa fácil."
       },
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/npcs/brughor_axe_biter.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/brughor_axe_biter.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_venomfang",
@@ -1021,8 +1021,8 @@
       "metadata": {
         "desire": "Convertir a intrusos en herramientas o comida, según convenga."
       },
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/npcs/venomfang.png"
+      "imageUrl": "/assets/premades/phandalin/npcs/venomfang.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_escort",
@@ -1034,8 +1034,8 @@
       "metadata": {
         "successState": "Las provisiones llegan y el grupo gana un punto de anclaje social en Barthen."
       },
-      "status": "completed",
-      "imageUrl": "/assets/premades/phandalin/quests/deliver_the_supplies.png"
+      "imageUrl": "/assets/premades/phandalin/quests/deliver_the_supplies.webp",
+      "status": "completed"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_dendrar",
@@ -1045,8 +1045,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/quests/rescue_the_dendrar_family.png"
+      "imageUrl": "/assets/premades/phandalin/quests/rescue_the_dendrar_family.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_find_castle",
@@ -1056,8 +1056,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "pending",
-      "imageUrl": "/assets/premades/phandalin/quests/find_cragmaw_castle.png"
+      "imageUrl": "/assets/premades/phandalin/quests/find_cragmaw_castle.webp",
+      "status": "pending"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_wave_echo",
@@ -1067,8 +1067,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/quests/reach_wave_echo_cave.png"
+      "imageUrl": "/assets/premades/phandalin/quests/reach_wave_echo_cave.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_black_spider",
@@ -1078,8 +1078,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/quests/unmask_the_black_spider.png"
+      "imageUrl": "/assets/premades/phandalin/quests/unmask_the_black_spider.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_lionshield",
@@ -1089,8 +1089,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/quests/recover_the_lionshield_shipment.png"
+      "imageUrl": "/assets/premades/phandalin/quests/recover_the_lionshield_shipment.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_agatha",
@@ -1100,8 +1100,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/quests/question_agatha.png"
+      "imageUrl": "/assets/premades/phandalin/quests/question_agatha.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_old_owl",
@@ -1111,8 +1111,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/quests/investigate_old_owl_well.png"
+      "imageUrl": "/assets/premades/phandalin/quests/investigate_old_owl_well.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_wyvern_tor",
@@ -1122,8 +1122,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available",
-      "imageUrl": "/assets/premades/phandalin/quests/drive_out_the_wyvern_tor_orcs.png"
+      "imageUrl": "/assets/premades/phandalin/quests/drive_out_the_wyvern_tor_orcs.webp",
+      "status": "available"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_thundertree",
@@ -1133,8 +1133,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/quests/deal_with_thundertree.png"
+      "imageUrl": "/assets/premades/phandalin/quests/deal_with_thundertree.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_future",
@@ -1144,8 +1144,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/quests/decide_phandalins_future.png"
+      "imageUrl": "/assets/premades/phandalin/quests/decide_phandalins_future.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_goblin_trail",
@@ -1155,8 +1155,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed",
-      "imageUrl": "/assets/premades/phandalin/clues/goblin_trail_to_the_stream.png"
+      "imageUrl": "/assets/premades/phandalin/clues/goblin_trail_to_the_stream.webp",
+      "status": "revealed"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_sildar_warning",
@@ -1166,8 +1166,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed",
-      "imageUrl": "/assets/premades/phandalin/clues/sildars_warning.png"
+      "imageUrl": "/assets/premades/phandalin/clues/sildars_warning.webp",
+      "status": "revealed"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_redbrand_threats",
@@ -1177,8 +1177,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed",
-      "imageUrl": "/assets/premades/phandalin/clues/red_cloak_threats.png"
+      "imageUrl": "/assets/premades/phandalin/clues/red_cloak_threats.webp",
+      "status": "revealed"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_town_fears",
@@ -1188,8 +1188,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed",
-      "imageUrl": "/assets/premades/phandalin/clues/the_towns_fear.png"
+      "imageUrl": "/assets/premades/phandalin/clues/the_towns_fear.webp",
+      "status": "revealed"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_carp_tunnel",
@@ -1199,8 +1199,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/carp_saw_a_secret_entrance.png"
+      "imageUrl": "/assets/premades/phandalin/clues/carp_saw_a_secret_entrance.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_giant_boast",
@@ -1210,8 +1210,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/sleeping_giant_boast.png"
+      "imageUrl": "/assets/premades/phandalin/clues/sleeping_giant_boast.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_ledger",
@@ -1221,8 +1221,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/redbrand_debt_ledger.png"
+      "imageUrl": "/assets/premades/phandalin/clues/redbrand_debt_ledger.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_glasstaff_letter",
@@ -1232,8 +1232,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/blue_crystal_letter.png"
+      "imageUrl": "/assets/premades/phandalin/clues/blue_crystal_letter.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_nothic_whispers",
@@ -1243,8 +1243,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/whispers_beneath_tresendar.png"
+      "imageUrl": "/assets/premades/phandalin/clues/whispers_beneath_tresendar.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_mirna_heirloom",
@@ -1254,8 +1254,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/mirnas_heirloom.png"
+      "imageUrl": "/assets/premades/phandalin/clues/mirnas_heirloom.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_halia_offer",
@@ -1265,8 +1265,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/halias_offer.png"
+      "imageUrl": "/assets/premades/phandalin/clues/halias_offer.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_harbin_notice",
@@ -1276,8 +1276,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/townmasters_hall_notices.png"
+      "imageUrl": "/assets/premades/phandalin/clues/townmasters_hall_notices.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_daran_report",
@@ -1287,8 +1287,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/darans_old_report.png"
+      "imageUrl": "/assets/premades/phandalin/clues/darans_old_report.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_linene_cargo",
@@ -1298,8 +1298,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/lionshield_shipment_marks.png"
+      "imageUrl": "/assets/premades/phandalin/clues/lionshield_shipment_marks.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_castle_marks",
@@ -1309,8 +1309,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/marks_toward_the_castle.png"
+      "imageUrl": "/assets/premades/phandalin/clues/marks_toward_the_castle.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_ransom",
@@ -1320,8 +1320,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/cragmaw_ransom_message.png"
+      "imageUrl": "/assets/premades/phandalin/clues/cragmaw_ransom_message.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_vyerith_disguise",
@@ -1331,8 +1331,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/details_that_do_not_fit.png"
+      "imageUrl": "/assets/premades/phandalin/clues/details_that_do_not_fit.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_grol_bargain",
@@ -1342,8 +1342,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/grols_bargain.png"
+      "imageUrl": "/assets/premades/phandalin/clues/grols_bargain.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_nundro_testimony",
@@ -1353,8 +1353,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/nundros_testimony.png"
+      "imageUrl": "/assets/premades/phandalin/clues/nundros_testimony.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_spider_sigil",
@@ -1364,8 +1364,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/black_spider_sigil.png"
+      "imageUrl": "/assets/premades/phandalin/clues/black_spider_sigil.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_mine_map",
@@ -1375,8 +1375,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/gundrens_map.png"
+      "imageUrl": "/assets/premades/phandalin/clues/gundrens_map.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_forge_echo",
@@ -1386,8 +1386,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/magical_echo_in_the_rock.png"
+      "imageUrl": "/assets/premades/phandalin/clues/magical_echo_in_the_rock.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_tharden_body",
@@ -1397,8 +1397,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/thardens_fate.png"
+      "imageUrl": "/assets/premades/phandalin/clues/thardens_fate.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_reidoth_warning",
@@ -1408,8 +1408,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/reidoths_warning.png"
+      "imageUrl": "/assets/premades/phandalin/clues/reidoths_warning.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_dragon_signs",
@@ -1419,8 +1419,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/signs_of_a_dragon.png"
+      "imageUrl": "/assets/premades/phandalin/clues/signs_of_a_dragon.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_old_owl_signs",
@@ -1430,8 +1430,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/signs_at_old_owl_well.png"
+      "imageUrl": "/assets/premades/phandalin/clues/signs_at_old_owl_well.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_agatha_memory",
@@ -1441,8 +1441,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/agathas_memory.png"
+      "imageUrl": "/assets/premades/phandalin/clues/agathas_memory.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_wyvern_raids",
@@ -1452,8 +1452,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/wyvern_tor_raid_traces.png"
+      "imageUrl": "/assets/premades/phandalin/clues/wyvern_tor_raid_traces.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_power_vacuum",
@@ -1463,8 +1463,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared",
-      "imageUrl": "/assets/premades/phandalin/clues/power_vacuum_in_phandalin.png"
+      "imageUrl": "/assets/premades/phandalin/clues/power_vacuum_in_phandalin.webp",
+      "status": "prepared"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_nezznar",
@@ -1474,8 +1474,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_black_spider_coordinates_the_region.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_black_spider_coordinates_the_region.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_castle",
@@ -1485,8 +1485,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/cragmaw_castle_is_hidden_by_false_routes.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/cragmaw_castle_is_hidden_by_false_routes.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_map",
@@ -1496,8 +1496,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/gundrens_map_is_the_real_key.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/gundrens_map_is_the_real_key.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_halia",
@@ -1507,8 +1507,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/halia_wants_to_inherit_the_power_vacuum.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/halia_wants_to_inherit_the_power_vacuum.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_harbin",
@@ -1518,8 +1518,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/harbin_knows_more_than_he_admits.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/harbin_knows_more_than_he_admits.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_cragmaw",
@@ -1529,8 +1529,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_cragmaws_can_be_divided.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_cragmaws_can_be_divided.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_forge",
@@ -1540,8 +1540,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_forge_of_spells_partially_works.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_forge_of_spells_partially_works.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_dendrars",
@@ -1551,8 +1551,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_dendrar_family_is_still_alive.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_dendrar_family_is_still_alive.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_nothic",
@@ -1562,8 +1562,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_nothic_knows_tresendars_secrets.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_nothic_knows_tresendars_secrets.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_hostages",
@@ -1573,8 +1573,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_redbrands_plan_to_move_the_hostages.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_redbrands_plan_to_move_the_hostages.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_vyerith",
@@ -1584,8 +1584,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/vyerith_is_not_who_she_appears.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/vyerith_is_not_who_she_appears.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_tharden",
@@ -1595,8 +1595,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/tharden_already_died_in_the_mine.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/tharden_already_died_in_the_mine.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_hamun",
@@ -1606,8 +1606,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/hamun_kost_is_not_the_main_villain.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/hamun_kost_is_not_the_main_villain.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_venomfang",
@@ -1617,8 +1617,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/venomfang_prefers_manipulation_to_combat.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/venomfang_prefers_manipulation_to_combat.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_agatha",
@@ -1628,8 +1628,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/agatha_knows_more_than_one_answer.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/agatha_knows_more_than_one_answer.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_wyvern",
@@ -1639,8 +1639,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/the_orcs_are_testing_phandalins_weakness.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/the_orcs_are_testing_phandalins_weakness.webp",
+      "status": "hidden"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_power_vacuum",
@@ -1650,8 +1650,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden",
-      "imageUrl": "/assets/premades/phandalin/secrets/freeing_phandalin_opens_a_political_struggle.png"
+      "imageUrl": "/assets/premades/phandalin/secrets/freeing_phandalin_opens_a_political_struggle.webp",
+      "status": "hidden"
     }
   ],
   "relations": [

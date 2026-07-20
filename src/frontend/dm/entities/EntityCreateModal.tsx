@@ -324,7 +324,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                   })
                 }
                 catalog="entities"
-                defaultImage="/assets/entities/default_npc.png"
+                defaultImage="/assets/entities/default_npc.webp"
                 shape="circle"
               />
             </div>

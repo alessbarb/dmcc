@@ -135,7 +135,7 @@ body[data-watermark="hidden"] .watermark {
 .rl-hero__scenic {
   position: absolute;
   inset: 0;
-  background-image: url('/assets/ui/portal_background.png');
+  background-image: url('/assets/ui/portal_background.webp');
   background-size: cover;
   background-position: center 15%;
   opacity: 0.45;

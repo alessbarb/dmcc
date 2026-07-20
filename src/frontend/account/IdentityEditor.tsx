@@ -99,7 +99,7 @@ export function IdentityEditor({
             value={avatarUrl}
             onChange={setAvatarUrl}
             catalog="avatars"
-            defaultImage="/assets/avatars/default-avatar.png"
+            defaultImage="/assets/avatars/default-avatar.webp"
             shape="circle"
           />
         </div>

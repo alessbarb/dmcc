@@ -10,7 +10,7 @@
   z-index: 850;
   pointer-events: none;
   user-select: none;
-  background-image: url("/assets/ui/watermark.png");
+  background-image: url("/assets/ui/watermark.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-size: clamp(360px, 58vw, 860px);

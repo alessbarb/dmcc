@@ -101,36 +101,36 @@ export function getRelationVisual(relationType: string, edgeStyle = ""): Relatio
 export function getEntityDefaultImage(type: string): string {
   switch (type) {
     case "location":
-      return "/assets/entities/default_location.png";
+      return "/assets/entities/default_location.webp";
     case "scene":
-      return "/assets/entities/default_scene.png";
+      return "/assets/entities/default_scene.webp";
     case "npc":
-      return "/assets/entities/default_npc.png";
+      return "/assets/entities/default_npc.webp";
     case "player":
-      return "/assets/entities/default_player.png";
+      return "/assets/entities/default_player.webp";
     case "player_character":
-      return "/assets/entities/default_player_character.png";
+      return "/assets/entities/default_player_character.webp";
     case "creature":
-      return "/assets/entities/default_creature.png";
+      return "/assets/entities/default_creature.webp";
     case "quest":
-      return "/assets/entities/default_quest.png";
+      return "/assets/entities/default_quest.webp";
     case "objective":
-      return "/assets/entities/default_objective.png";
+      return "/assets/entities/default_objective.webp";
     case "clue":
-      return "/assets/entities/default_clue.png";
+      return "/assets/entities/default_clue.webp";
     case "rumor":
-      return "/assets/entities/default_rumor.png";
+      return "/assets/entities/default_rumor.webp";
     case "secret":
-      return "/assets/entities/default_secret.png";
+      return "/assets/entities/default_secret.webp";
     case "consequence":
-      return "/assets/entities/default_consequence.png";
+      return "/assets/entities/default_consequence.webp";
     case "clock":
-      return "/assets/entities/default_clock.png";
+      return "/assets/entities/default_clock.webp";
     case "fact":
-      return "/assets/entities/default_fact.png";
+      return "/assets/entities/default_fact.webp";
     case "item":
-      return "/assets/entities/default_item.png";
+      return "/assets/entities/default_item.webp";
     default:
-      return "/assets/entities/default_other.png";
+      return "/assets/entities/default_other.webp";
   }
 }

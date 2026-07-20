@@ -65,7 +65,7 @@ export function PlayerCampaignsPage() {
                   })}
                 >
                   <span className="card-body row-layout">
-                    <span className="avatar-frame"><img src={campaign.coverUrl || "/assets/avatars/default-avatar.png"} alt="" /></span>
+                    <span className="avatar-frame"><img src={campaign.coverUrl || "/assets/avatars/default-avatar.webp"} alt="" /></span>
                     <span className="profile-details">
                       <strong className="profile-name">{campaign.title}</strong>
                       <span className="campaign-link-name">{t("playerCampaigns.openCampaignHint")}</span>

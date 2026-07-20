@@ -123,7 +123,7 @@ export function PlayerProfileModal({
                 value={form.imageUrl || form.avatarUrl || ""}
                 onChange={(path) => setForm({ ...form, imageUrl: path, avatarUrl: "" })}
                 catalog="avatars"
-                defaultImage="/assets/avatars/default-avatar.png"
+                defaultImage="/assets/avatars/default-avatar.webp"
                 shape="circle"
               />
             </div>

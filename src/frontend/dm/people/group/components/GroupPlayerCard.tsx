@@ -21,7 +21,7 @@ export function GroupPlayerCard({
       <div className="group-player-card__header">
         <div className="group-player-card__identity">
           <div className="group-player-card__avatar">
-            <img src={player.avatarUrl || player.imageUrl || "/assets/avatars/default-avatar.png"} alt="" />
+            <img src={player.avatarUrl || player.imageUrl || "/assets/avatars/default-avatar.webp"} alt="" />
           </div>
           <div className="group-player-card__names">
             <h3>{displayName}</h3>

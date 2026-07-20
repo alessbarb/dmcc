@@ -37,7 +37,7 @@ export function DmHubHero({
             <div className="dm-hub-hero__avatar-ring">
               <img
                 className="dm-hub-hero__avatar"
-                src={dmProfile?.avatarUrl || "/assets/avatars/default-avatar.png"}
+                src={dmProfile?.avatarUrl || "/assets/avatars/default-avatar.webp"}
                 alt={dmDisplayName}
               />
             </div>

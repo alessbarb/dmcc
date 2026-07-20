@@ -50,7 +50,7 @@ export default defineConfig({
           /^\/workbox-/,
           /\.[^/]+$/,
         ],
-        globPatterns: ["**/*.{js,css,html,svg,woff2}", "icons/*.png", "assets/ui/watermark.png", "campaign-templates/**/*.json"],
+        globPatterns: ["**/*.{js,css,html,svg,woff2}", "icons/*.png", "assets/ui/watermark.webp", "campaign-templates/**/*.json"],
         runtimeCaching: [
           {
             urlPattern: /^\/api\//,

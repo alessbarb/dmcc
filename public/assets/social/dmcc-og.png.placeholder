@@ -1,7 +1,7 @@
 Placeholder for the DMCC Open Graph preview image.
 
 Expected production asset:
-- Path: public/assets/social/dmcc-og.png
+- Path: public/assets/social/dmcc-og.webp
 - Size: 1200x630 px
 - Format: PNG
 - Content: mock or screenshot of the DMCC dashboard/Canvas
