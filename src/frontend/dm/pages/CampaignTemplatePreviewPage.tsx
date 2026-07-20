@@ -5,6 +5,7 @@ import {
   BookOpen,
   CheckCircle2,
   Eye,
+  EyeOff,
   GitFork,
   Layers,
   Lock,
@@ -18,6 +19,21 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore, type CampaignStateStore, type Entity, type Relation } from "../../shared/stores/campaignStore.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { EntityRelationsTab } from "../entities/relations/EntityRelationsTab.js";
+import { buildEntityNeighborhood } from "../entities/relations/entityRelationshipNeighborhood.js";
+import { TemplateEntityPreviewModal } from "./TemplateEntityPreviewModal.js";
+import {
+  CONFIDENCE_LABEL_KEYS,
+  DIFFICULTY_LABEL_KEYS,
+  ENTITY_TYPE_LABEL_KEYS,
+  FACT_KIND_LABEL_KEYS,
+  RELATION_LABEL_KEYS,
+  SYSTEM_LABEL_KEYS,
+  isDefined,
+  isGuideEntity,
+  labelFor,
+  visibilityLabel,
+  type TranslateFn,
+} from "./campaignTemplatePreviewLabels.js";
 import "../../shared/styles/features/campaign-template.css";
 
 type PreviewCampaignState = NonNullable<CampaignStateStore["campaignState"]>;
@@ -83,114 +99,57 @@ function runCampaignTemplatePreviewAction(operation: Promise<unknown>, errorMess
   });
 }
 
-type TranslateFn = (key: string, vars?: Record<string, string>) => string;
+/** How much of the reference lists an unregistered visitor sees before the
+ *  rest blurs behind a "create your copy" gate — enough to prove the depth
+ *  of the content without functioning as a free full read. */
+const SESSIONS_FREE_PREVIEW_COUNT = 1;
+const FACTS_FREE_PREVIEW_COUNT = 2;
 
-const ENTITY_TYPE_LABEL_KEYS: Record<string, string> = {
-  player_character: "campaignTemplatePreview.entityType.playerCharacter",
-  npc: "campaignTemplatePreview.entityType.npc",
-  location: "campaignTemplatePreview.entityType.location",
-  faction: "campaignTemplatePreview.entityType.faction",
-  quest: "campaignTemplatePreview.entityType.quest",
-  clue: "campaignTemplatePreview.entityType.clue",
-  secret: "campaignTemplatePreview.entityType.secret",
-  item: "campaignTemplatePreview.entityType.item",
-  creature: "campaignTemplatePreview.entityType.creature",
-  encounter: "campaignTemplatePreview.entityType.encounter",
-  scene: "campaignTemplatePreview.entityType.scene",
-  front: "campaignTemplatePreview.entityType.front",
-  clock: "campaignTemplatePreview.entityType.clock",
-  decision: "campaignTemplatePreview.entityType.decision",
-  consequence: "campaignTemplatePreview.entityType.consequence",
-  rumor: "campaignTemplatePreview.entityType.rumor",
-  rule_reference: "campaignTemplatePreview.entityType.ruleReference",
-  handout: "campaignTemplatePreview.entityType.handout",
-  note: "campaignTemplatePreview.entityType.note",
-};
-
-const RELATION_LABEL_KEYS: Record<string, string> = {
-  ally_of: "campaignTemplatePreview.relationType.allyOf",
-  blocks: "campaignTemplatePreview.relationType.blocks",
-  causes: "campaignTemplatePreview.relationType.causes",
-  contains: "campaignTemplatePreview.relationType.contains",
-  depends_on: "campaignTemplatePreview.relationType.dependsOn",
-  enemy_of: "campaignTemplatePreview.relationType.enemyOf",
-  hides: "campaignTemplatePreview.relationType.hides",
-  knows: "campaignTemplatePreview.relationType.knows",
-  leader_of: "campaignTemplatePreview.relationType.leaderOf",
-  located_in: "campaignTemplatePreview.relationType.locatedIn",
-  points_to: "campaignTemplatePreview.relationType.pointsTo",
-  protects: "campaignTemplatePreview.relationType.protects",
-  reveals: "campaignTemplatePreview.relationType.reveals",
-  threatens: "campaignTemplatePreview.relationType.threatens",
-  unlocks: "campaignTemplatePreview.relationType.unlocks",
-};
-
-const FACT_KIND_LABEL_KEYS: Record<string, string> = {
-  canon: "campaignTemplatePreview.factKind.canon",
-  dm_secret: "campaignTemplatePreview.factKind.dmSecret",
-  rumor: "campaignTemplatePreview.factKind.rumor",
-  lie: "campaignTemplatePreview.factKind.lie",
-  player_theory: "campaignTemplatePreview.factKind.playerTheory",
-  mistake: "campaignTemplatePreview.factKind.mistake",
-  retcon: "campaignTemplatePreview.factKind.retcon",
-  unknown: "campaignTemplatePreview.factKind.unknown",
-};
-
-const CONFIDENCE_LABEL_KEYS: Record<string, string> = {
-  unconfirmed: "campaignTemplatePreview.confidence.unconfirmed",
-  suspected: "campaignTemplatePreview.confidence.suspected",
-  likely: "campaignTemplatePreview.confidence.likely",
-  confirmed: "campaignTemplatePreview.confidence.confirmed",
-  false: "campaignTemplatePreview.confidence.false",
-};
-
-const SYSTEM_LABEL_KEYS: Record<string, string> = {
-  dnd_5e: "campaignTemplatePreview.system.dndSrd521",
-  pathfinder_2e: "campaignTemplatePreview.system.custom",
-  shadowdark: "campaignTemplatePreview.system.custom",
-  custom: "campaignTemplatePreview.system.custom",
-};
-
-const DIFFICULTY_LABEL_KEYS: Record<string, string> = {
-  starter: "campaignTemplatePreview.difficulty.starter",
-  medium: "campaignTemplatePreview.difficulty.medium",
-  advanced: "campaignTemplatePreview.difficulty.advanced",
-};
-
-function isDefined<T>(value: T | null | undefined): value is T {
-  return value !== null && value !== undefined;
+interface PreviewSecretFact {
+  factId: string;
+  statement: string;
+  relatedEntityIds?: string[];
 }
 
-function tokenFallback(value: string): string {
-  return value
-    .split(/[_.-]+/g)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
+function SecretRevealCard({
+  secret,
+  entityTitle,
+  t,
+}: {
+  secret: PreviewSecretFact;
+  entityTitle: string | null;
+  t: TranslateFn;
+}) {
+  const [revealed, setRevealed] = useState(false);
 
-function labelFor(value: string | undefined, labels: Record<string, string>, t: TranslateFn): string {
-  if (!value) return "";
-  const key = labels[value];
-  return key ? t(key) : tokenFallback(value);
-}
-
-function visibilityLabel(visibility: VisibilityRule | undefined, t: TranslateFn): string {
-  const kind = visibility?.kind ?? "dm_only";
-  switch (kind) {
-    case "public":
-      return t("campaignTemplatePreview.visibilityPublic");
-    case "party":
-      return t("campaignTemplatePreview.visibilityParty");
-    case "dm_only":
-      return t("campaignTemplatePreview.visibilityDmOnly");
-    default:
-      return tokenFallback(kind);
-  }
-}
-
-function isGuideEntity(entity: { entityType: string; metadata?: Record<string, unknown> }): boolean {
-  return entity.entityType === "note" || entity.metadata?.previewRole === "guide";
+  return (
+    <section className="card campaign-template-preview-card campaign-template-preview-secret-card">
+      <div className="campaign-template-preview-section-heading">
+        <h2>{t("campaignTemplatePreview.secretMomentTitle")}</h2>
+        <span>{entityTitle ?? t("campaignTemplatePreview.secretMomentDesc")}</span>
+      </div>
+      <button
+        type="button"
+        className={`campaign-template-preview-secret ${revealed ? "is-revealed" : ""}`}
+        onClick={() => setRevealed(true)}
+        disabled={revealed}
+        aria-live="polite"
+      >
+        <span className="campaign-template-preview-secret__icon">
+          {revealed ? <Eye size={20} /> : <EyeOff size={20} />}
+        </span>
+        <span className="campaign-template-preview-secret__text">
+          {revealed ? secret.statement : t("campaignTemplatePreview.secretMomentHidden")}
+        </span>
+        {!revealed && (
+          <span className="campaign-template-preview-secret__cta">{t("campaignTemplatePreview.secretMomentReveal")}</span>
+        )}
+      </button>
+      {revealed && (
+        <p className="campaign-template-preview-secret__followup">{t("campaignTemplatePreview.secretMomentFollowup")}</p>
+      )}
+    </section>
+  );
 }
 
 export function CampaignTemplatePreviewPage() {
@@ -316,7 +275,7 @@ export function CampaignTemplatePreviewPage() {
     [graphEntities, graphRelations],
   );
 
-  const graphDefaultCenterEntity = useMemo(() => {
+  const graphCenterEntity = useMemo(() => {
     if (!graphEntities.length) return null;
     const degreeById = new Map<string, number>();
     for (const relation of graphRelations) {
@@ -330,16 +289,36 @@ export function CampaignTemplatePreviewPage() {
     return [...graphEntities].sort((a, b) => (degreeById.get(b.entityId) ?? 0) - (degreeById.get(a.entityId) ?? 0))[0] ?? null;
   }, [graphEntities, graphRelations, template]);
 
-  const [graphFocusEntityId, setGraphFocusEntityId] = useState<string | null>(null);
+  // Clicking any node opens the read-only entity modal (matches the real app's
+  // click-to-inspect behavior) instead of silently recentering the background graph.
+  const [modalEntityId, setModalEntityId] = useState<string | null>(null);
 
   useEffect(() => {
-    setGraphFocusEntityId(null);
+    setModalEntityId(null);
   }, [templateId]);
 
-  const graphCenterEntity = useMemo(() => {
-    const focused = graphFocusEntityId ? graphEntities.find((entity) => entity.entityId === graphFocusEntityId) : null;
-    return focused ?? graphDefaultCenterEntity;
-  }, [graphFocusEntityId, graphEntities, graphDefaultCenterEntity]);
+  const modalEntity = useMemo(
+    () => (modalEntityId ? graphEntities.find((entity) => entity.entityId === modalEntityId) ?? null : null),
+    [modalEntityId, graphEntities],
+  );
+
+  const modalFacts = useMemo(() => template?.facts ?? [], [template]);
+
+  const featuredSecret = useMemo(() => {
+    if (!template) return null;
+    const secretFacts = template.facts.filter((fact) => fact.kind === "dm_secret" && fact.statement);
+    if (!secretFacts.length) return null;
+    const preferred = (template.featuredFactIds ?? [])
+      .map((factId) => secretFacts.find((fact) => fact.factId === factId))
+      .find(isDefined);
+    return preferred ?? secretFacts[0];
+  }, [template]);
+
+  const featuredSecretEntityTitle = useMemo(() => {
+    if (!featuredSecret?.relatedEntityIds?.length) return null;
+    const relatedId = featuredSecret.relatedEntityIds[0];
+    return graphEntities.find((entity) => entity.entityId === relatedId)?.title ?? null;
+  }, [featuredSecret, graphEntities]);
 
   const handleCreateCopy = async (options: { title: string; summary?: string; importMode: CampaignTemplateImportMode; openAfterCreate: boolean }) => {
     if (!template) return;
@@ -439,10 +418,25 @@ export function CampaignTemplatePreviewPage() {
           <EntityRelationsTab
             entity={graphCenterEntity}
             campaignState={graphPreviewState}
-            onNavigateEntity={setGraphFocusEntityId}
+            onNavigateEntity={setModalEntityId}
           />
           <p className="campaign-template-preview-graph-hint">{t("campaignTemplatePreview.graphHint")}</p>
         </section>
+      )}
+
+      {modalEntity && (
+        <TemplateEntityPreviewModal
+          entity={modalEntity}
+          entities={graphEntities}
+          relations={graphRelations}
+          facts={modalFacts}
+          onNavigateEntity={setModalEntityId}
+          onClose={() => setModalEntityId(null)}
+          onRequestCopy={() => {
+            setModalEntityId(null);
+            requestCreateCopy();
+          }}
+        />
       )}
 
       <section className="campaign-template-preview-graph-cta">
@@ -455,6 +449,10 @@ export function CampaignTemplatePreviewPage() {
           {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
         </button>
       </section>
+
+      {featuredSecret && (
+        <SecretRevealCard secret={featuredSecret} entityTitle={featuredSecretEntityTitle} t={t} />
+      )}
 
       <section className="campaign-template-readonly-banner" role="note">
         <Lock size={18} />
@@ -573,7 +571,7 @@ export function CampaignTemplatePreviewPage() {
             <span>{t("campaignTemplatePreview.sessionsDesc")}</span>
           </div>
           <div className="campaign-template-preview-list">
-            {template.sessions.map((session) => (
+            {template.sessions.slice(0, SESSIONS_FREE_PREVIEW_COUNT).map((session) => (
               <article key={session.sessionId}>
                 <strong>{session.title}</strong>
                 <p>{session.prep?.summary || session.prep?.openingPrompt || t("campaignTemplatePreview.noSummary")}</p>
@@ -586,6 +584,29 @@ export function CampaignTemplatePreviewPage() {
               </article>
             ))}
           </div>
+          {template.sessions.length > SESSIONS_FREE_PREVIEW_COUNT && (
+            <div className="campaign-template-preview-gated">
+              <div className="campaign-template-preview-list campaign-template-preview-gated__blur" aria-hidden="true">
+                {template.sessions.slice(SESSIONS_FREE_PREVIEW_COUNT).map((session) => (
+                  <article key={session.sessionId}>
+                    <strong>{session.title}</strong>
+                    <p>{session.prep?.summary || session.prep?.openingPrompt || t("campaignTemplatePreview.noSummary")}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="campaign-template-preview-gated__overlay">
+                <Lock size={18} />
+                <p>
+                  {t("campaignTemplatePreview.sessionsGateHint", {
+                    count: String(template.sessions.length - SESSIONS_FREE_PREVIEW_COUNT),
+                  })}
+                </p>
+                <button type="button" className="btn btn-primary btn-sm" onClick={requestCreateCopy}>
+                  {t("campaignTemplatePreview.createCopy")}
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="card campaign-template-preview-card">
@@ -613,7 +634,7 @@ export function CampaignTemplatePreviewPage() {
             <span>{t("campaignTemplatePreview.factsDesc")}</span>
           </div>
           <div className="campaign-template-preview-list campaign-template-preview-list--compact">
-            {featuredFacts.map((fact) => (
+            {featuredFacts.slice(0, FACTS_FREE_PREVIEW_COUNT).map((fact) => (
               <article key={fact.factId}>
                 <div className="campaign-template-preview-item-heading">
                   <strong>{labelFor(fact.kind, FACT_KIND_LABEL_KEYS, t)}</strong>
@@ -624,6 +645,32 @@ export function CampaignTemplatePreviewPage() {
               </article>
             ))}
           </div>
+          {featuredFacts.length > FACTS_FREE_PREVIEW_COUNT && (
+            <div className="campaign-template-preview-gated">
+              <div
+                className="campaign-template-preview-list campaign-template-preview-list--compact campaign-template-preview-gated__blur"
+                aria-hidden="true"
+              >
+                {featuredFacts.slice(FACTS_FREE_PREVIEW_COUNT).map((fact) => (
+                  <article key={fact.factId}>
+                    <strong>{labelFor(fact.kind, FACT_KIND_LABEL_KEYS, t)}</strong>
+                    <p>{fact.statement}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="campaign-template-preview-gated__overlay">
+                <Lock size={18} />
+                <p>
+                  {t("campaignTemplatePreview.factsGateHint", {
+                    count: String(featuredFacts.length - FACTS_FREE_PREVIEW_COUNT),
+                  })}
+                </p>
+                <button type="button" className="btn btn-primary btn-sm" onClick={requestCreateCopy}>
+                  {t("campaignTemplatePreview.createCopy")}
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="card campaign-template-preview-card">
