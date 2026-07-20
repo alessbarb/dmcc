@@ -7,6 +7,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import type { SessionEvent } from "@core/domain/session/types.js";
 import { errorMessage, runSessionAction } from "./sessionFormSubmit.js";
 import { SessionPlanEditor } from "./components/SessionPlanEditor.js";
+import { SessionStorySteps } from "./components/SessionStorySteps.js";
 import { SessionStatusBar } from "./components/SessionStatusBar.js";
 import { ActiveSessionPrepPanel } from "./components/ActiveSessionPrepPanel.js";
 import { QuickCaptureBar } from "./components/QuickCaptureBar.js";
@@ -120,6 +121,10 @@ export function SessionDetailPage() {
           onCancel={() => {
             if (campaignId) runSessionAction(navigate({ to: `/campaigns/${campaignId}/sessions` }), "No se pudo volver a la lista de sesiones.");
           }}
+        />
+        <SessionStorySteps
+          sessionId={session.sessionId}
+          closedSessions={sessions.filter((s) => s.status === "closed")}
         />
       </div>
     );
