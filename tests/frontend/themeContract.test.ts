@@ -120,7 +120,7 @@ describe("theme contract", () => {
     }
   });
 
-  it("ensures all registered themes expose complete artwork configuration", () => {
+  it("ensures all registered themes expose complete artwork and ornaments configuration", () => {
     const themeModules = [
       getTheme("default"),
       getTheme("fantasy"),
@@ -137,6 +137,30 @@ describe("theme contract", () => {
           appBackgroundSizeCompact: expect.any(String),
           appBackgroundOpacity: expect.any(String),
           appBackgroundVeil: expect.any(String),
+        });
+
+        expect(theme.variants[mode].ornaments).toEqual({
+          panelCornerPrimaryMask: expect.any(String),
+          panelCornerSecondaryMask: expect.any(String),
+          panelEdgeAccentMask: expect.any(String),
+          narrativeDividerMask: expect.any(String),
+          ambientMarkMask: expect.any(String),
+
+          primary: expect.any(String),
+          secondary: expect.any(String),
+          highlight: expect.any(String),
+
+          panelCornerPrimaryOpacity: expect.any(String),
+          panelCornerSecondaryOpacity: expect.any(String),
+          panelEdgeAccentOpacity: expect.any(String),
+          narrativeDividerOpacity: expect.any(String),
+          ambientMarkOpacity: expect.any(String),
+
+          panelCornerPrimarySize: expect.any(String),
+          panelCornerSecondarySize: expect.any(String),
+          panelEdgeAccentSize: expect.any(String),
+          narrativeDividerSize: expect.any(String),
+          ambientMarkSize: expect.any(String),
         });
       }
     }

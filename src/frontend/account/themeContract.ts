@@ -187,6 +187,30 @@ export type ThemeArtwork = {
   appBackgroundVeil: string;
 };
 
+export type ThemeOrnaments = {
+  panelCornerPrimaryMask: string;
+  panelCornerSecondaryMask: string;
+  panelEdgeAccentMask: string;
+  narrativeDividerMask: string;
+  ambientMarkMask: string;
+
+  primary: string;
+  secondary: string;
+  highlight: string;
+
+  panelCornerPrimaryOpacity: string;
+  panelCornerSecondaryOpacity: string;
+  panelEdgeAccentOpacity: string;
+  narrativeDividerOpacity: string;
+  ambientMarkOpacity: string;
+
+  panelCornerPrimarySize: string;
+  panelCornerSecondarySize: string;
+  panelEdgeAccentSize: string;
+  narrativeDividerSize: string;
+  ambientMarkSize: string;
+};
+
 export type ThemeIdentityPalette = readonly [
   string,
   string,
@@ -223,6 +247,7 @@ export type ThemeVariant = {
   media: ThemeMedia;
   messaging: ThemeMessaging;
   artwork: ThemeArtwork;
+  ornaments: ThemeOrnaments;
   identityPalette: ThemeIdentityPalette;
 };
 

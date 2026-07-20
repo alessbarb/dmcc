@@ -117,9 +117,13 @@ describe("theme runtime", () => {
     expect(serialized.get("--theme-artwork-app-background-opacity")).toBe("0.22");
     expect(serialized.get("--theme-artwork-app-background-position")).toBe("center top");
     expect(serialized.get("--theme-artwork-app-background-position-compact")).toBe("58% top");
+    expect(serialized.get("--theme-ornaments-panel-corner-primary-mask")).toBe(
+      "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
+    );
+    expect(serialized.get("--theme-ornaments-primary")).toBe("hsl(165 42% 61%)");
   });
 
-  it("updates artwork custom properties when switching from fantasy to default theme", () => {
+  it("updates artwork and ornaments custom properties when switching from fantasy to default theme", () => {
     const { target, properties } = createTarget();
     const runtime = createEnvironment(true);
     const controller = createThemeController(target, runtime.environment);
@@ -128,15 +132,19 @@ describe("theme runtime", () => {
     expect(properties.get("--theme-artwork-app-background-image")).toBe(
       "url('/assets/themes/fantasy/app-background.webp')",
     );
+    expect(properties.get("--theme-ornaments-panel-corner-primary-mask")).toBe(
+      "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
+    );
 
     controller.apply({ themeId: "default", colorMode: "dark" });
     expect(properties.get("--theme-artwork-app-background-image")).toBe(
       "url('/assets/themes/default/app-background.webp')",
     );
     expect(properties.get("--theme-artwork-app-background-opacity")).toBe("0.20");
+    expect(properties.get("--theme-ornaments-panel-corner-primary-mask")).toBe(
+      "url('/assets/themes/default/ornaments/panel-corner-primary.svg')",
+    );
 
     controller.dispose();
   });
 });
-
-

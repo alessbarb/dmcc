@@ -182,6 +182,29 @@ export const THEME_VARIANT_SHAPE = {
     appBackgroundOpacity: "string",
     appBackgroundVeil: "string",
   },
+  ornaments: {
+    panelCornerPrimaryMask: "string",
+    panelCornerSecondaryMask: "string",
+    panelEdgeAccentMask: "string",
+    narrativeDividerMask: "string",
+    ambientMarkMask: "string",
+
+    primary: "string",
+    secondary: "string",
+    highlight: "string",
+
+    panelCornerPrimaryOpacity: "string",
+    panelCornerSecondaryOpacity: "string",
+    panelEdgeAccentOpacity: "string",
+    narrativeDividerOpacity: "string",
+    ambientMarkOpacity: "string",
+
+    panelCornerPrimarySize: "string",
+    panelCornerSecondarySize: "string",
+    panelEdgeAccentSize: "string",
+    narrativeDividerSize: "string",
+    ambientMarkSize: "string",
+  },
   identityPalette: "identityPalette",
 } as const satisfies Shape;
 
