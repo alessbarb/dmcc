@@ -326,10 +326,11 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
     };
   });
 
+  // Public read-only preview: lets prospects view a sample campaign from the
+  // landing page without an account. Writes (import) still require auth below.
   server.get<{ Params: { templateId: string }; Querystring: { locale?: string } }>(
     "/api/campaign-templates/:templateId",
     async (request, reply) => {
-      getRequiredWebUser(request);
       const template = getCampaignTemplateById(request.params.templateId, request.query.locale);
       if (!template) {
         reply.code(404);

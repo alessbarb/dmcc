@@ -151,23 +151,43 @@ export function CampaignTemplatePreviewPage() {
     clearCampaignTemplateImportState,
   } = useCampaignStore();
   const [importDialogOpen, setImportDialogOpen] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
+  const [templateLoaded, setTemplateLoaded] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
   const importing = campaignTemplateImportState.status === "running";
   const importError = campaignTemplateImportState.error ? t(campaignTemplateImportState.error) : null;
 
   useEffect(() => {
     const init = async () => {
       const session = await fetchSession().catch(() => null);
-      if (!session?.sessionValid) {
-        await navigate({ to: "/auth/login" });
-        return;
+      if (session?.sessionValid) {
+        setAuthenticated(true);
+        await Promise.all([fetchCampaignTemplate(templateId), fetchCampaigns().catch(() => {})]);
+      } else {
+        await fetchCampaignTemplate(templateId);
       }
-      await Promise.all([fetchCampaignTemplate(templateId), fetchCampaigns().catch(() => {})]);
-      setAuthChecked(true);
+      setTemplateLoaded(true);
     };
 
     runCampaignTemplatePreviewAction(init(), "No se pudo inicializar la vista previa de aventura preparada.");
-  }, [fetchCampaigns, fetchCampaignTemplate, navigate, templateId]);
+  }, [fetchCampaigns, fetchCampaignTemplate, templateId]);
+
+  const goBack = () => {
+    runCampaignTemplatePreviewAction(
+      navigate({ to: authenticated ? "/dm" : "/" }),
+      "No se pudo volver a campañas.",
+    );
+  };
+
+  const requestCreateCopy = () => {
+    if (!authenticated) {
+      runCampaignTemplatePreviewAction(
+        navigate({ to: "/auth/register" }),
+        "No se pudo abrir el registro.",
+      );
+      return;
+    }
+    setImportDialogOpen(true);
+  };
 
   const template = activeCampaignTemplate?.templateId === templateId ? activeCampaignTemplate : null;
 
@@ -238,7 +258,7 @@ export function CampaignTemplatePreviewPage() {
     }
   };
 
-  if (!authChecked || (loading && !template)) {
+  if (!templateLoaded || (loading && !template)) {
     return (
       <div className="campaign-template-preview-page campaign-template-preview-page--centered">
         <p className="landing-muted">{t("campaignTemplatePreview.loading")}</p>
@@ -256,9 +276,7 @@ export function CampaignTemplatePreviewPage() {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => {
-              runCampaignTemplatePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
-            }}
+            onClick={goBack}
           >
             <ArrowLeft size={14} />
             {t("campaignTemplatePreview.backToCampaigns")}
@@ -302,7 +320,7 @@ export function CampaignTemplatePreviewPage() {
         </div>
 
         <div className="campaign-template-preview-hero__actions">
-          <button type="button" className="btn btn-primary" onClick={() => setImportDialogOpen(true)} disabled={importing || loading}>
+          <button type="button" className="btn btn-primary" onClick={requestCreateCopy} disabled={importing || loading}>
             <Wand2 size={16} />
             {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
           </button>
@@ -505,7 +523,7 @@ export function CampaignTemplatePreviewPage() {
           <h2>{t("campaignTemplatePreview.bottomCtaTitle")}</h2>
           <p>{t("campaignTemplatePreview.bottomCtaDesc")}</p>
         </div>
-        <button type="button" className="btn btn-primary" onClick={() => setImportDialogOpen(true)} disabled={importing || loading}>
+        <button type="button" className="btn btn-primary" onClick={requestCreateCopy} disabled={importing || loading}>
           <Wand2 size={16} />
           {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
         </button>
