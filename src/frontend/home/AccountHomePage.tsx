@@ -7,6 +7,7 @@ import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
 import type { TranslationKey } from "@shared/i18n/types.js";
+import "../shared/styles/landing.css";
 
 type PortalDefinition = {
   id: PlatformRole;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T10:38:55.006Z",
+  "generatedAt": "2026-07-20T10:40:02.045Z",
   "summary": {
     "cssFiles": 362,
     "tsxFilesWithInlineStyles": 15,
@@ -20,9 +20,11 @@
       "path": "src/frontend/MainLanding.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 455,
+      "lineCount": 456,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/landing.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
@@ -5891,9 +5893,11 @@
       "path": "src/frontend/home/AccountHomePage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 108,
+      "lineCount": 109,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/shared/styles/landing.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6124,10 +6128,11 @@
       "path": "src/frontend/player/pages/PlayerCampaignsPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 86,
+      "lineCount": 87,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/shared/styles/features/player-portal.css"
+        "src/frontend/shared/styles/features/player-portal.css",
+        "src/frontend/shared/styles/landing.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -11525,7 +11530,9 @@
         "src/frontend/shared/styles/landing/account-home-actions-and-responsive.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/MainLanding.tsx",
+        "src/frontend/home/AccountHomePage.tsx",
+        "src/frontend/player/pages/PlayerCampaignsPage.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -12373,7 +12380,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 35,
+      "lineCount": 34,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -12404,7 +12411,6 @@
         "src/frontend/shared/styles/layout/admin-shell.css",
         "src/frontend/shared/styles/layout/responsive.css",
         "src/frontend/shared/styles/vendor/react-flow.css",
-        "src/frontend/shared/styles/landing.css",
         "src/frontend/account/account.css"
       ],
       "importedBy": [
@@ -12839,7 +12845,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '22%', left: '16%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 93,
+      "line": 94,
       "column": 51,
       "severity": "info",
       "status": "allowed",
@@ -12852,7 +12858,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '16%', right: '14%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 96,
+      "line": 97,
       "column": 54,
       "severity": "info",
       "status": "allowed",
@@ -12865,7 +12871,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '42%', left: '42%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 99,
+      "line": 100,
       "column": 55,
       "severity": "info",
       "status": "allowed",
@@ -12878,7 +12884,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ bottom: '22%', left: '16%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 102,
+      "line": 103,
       "column": 56,
       "severity": "info",
       "status": "allowed",
@@ -12891,7 +12897,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ bottom: '16%', right: '12%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 105,
+      "line": 106,
       "column": 53,
       "severity": "info",
       "status": "allowed",
@@ -17718,6 +17724,9 @@
     }
   ],
   "importGraph": {
+    "src/frontend/MainLanding.tsx": [
+      "src/frontend/shared/styles/landing.css"
+    ],
     "src/frontend/account/account.css": [
       "src/frontend/account/account/account-foundation.css",
       "src/frontend/account/account/account-layout.css",
@@ -18076,6 +18085,9 @@
       "src/frontend/dm/story/plan/story-plan/story-plan-overlays.css",
       "src/frontend/dm/story/plan/story-plan/story-plan-advanced.css"
     ],
+    "src/frontend/home/AccountHomePage.tsx": [
+      "src/frontend/shared/styles/landing.css"
+    ],
     "src/frontend/institutional/InstitutionalLayout.tsx": [
       "src/frontend/institutional/institutional.css"
     ],
@@ -18095,7 +18107,8 @@
       "src/frontend/shared/styles/features/player-campaign.css"
     ],
     "src/frontend/player/pages/PlayerCampaignsPage.tsx": [
-      "src/frontend/shared/styles/features/player-portal.css"
+      "src/frontend/shared/styles/features/player-portal.css",
+      "src/frontend/shared/styles/landing.css"
     ],
     "src/frontend/player/pages/PlayerJoinPage.tsx": [
       "src/frontend/shared/styles/features/player-portal.css"
@@ -18345,7 +18358,6 @@
       "src/frontend/shared/styles/layout/admin-shell.css",
       "src/frontend/shared/styles/layout/responsive.css",
       "src/frontend/shared/styles/vendor/react-flow.css",
-      "src/frontend/shared/styles/landing.css",
       "src/frontend/account/account.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [

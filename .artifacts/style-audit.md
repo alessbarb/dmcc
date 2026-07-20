@@ -338,7 +338,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing/smart-landing-role-actions.css` | feature | shared | 12 | 2 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 151 | 21 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 184 | 18 | 1 |
-| `src/frontend/shared/styles/landing.css` | feature | shared | 20 | 0 | 1 |
+| `src/frontend/shared/styles/landing.css` | feature | shared | 20 | 0 | 3 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 7 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-controls.css` | layout | shared | 55 | 6 | 2 |
@@ -372,7 +372,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/workspace/workspace-tabs.css` | layout | shared | 62 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-variants.css` | layout | shared | 81 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 35 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 34 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 12 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 12 | 1 |
@@ -668,11 +668,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:93` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:96` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:99` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:102` | Runtime style requires review and CSS custom-property preference. |
-| info | dynamic-style | `src/frontend/MainLanding.tsx:105` | Runtime style requires review and CSS custom-property preference. |
+| info | dynamic-style | `src/frontend/MainLanding.tsx:94` | Runtime style requires review and CSS custom-property preference. |
+| info | dynamic-style | `src/frontend/MainLanding.tsx:97` | Runtime style requires review and CSS custom-property preference. |
+| info | dynamic-style | `src/frontend/MainLanding.tsx:100` | Runtime style requires review and CSS custom-property preference. |
+| info | dynamic-style | `src/frontend/MainLanding.tsx:103` | Runtime style requires review and CSS custom-property preference. |
+| info | dynamic-style | `src/frontend/MainLanding.tsx:106` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:77` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:81` | Important declarations bypass the intended cascade. |

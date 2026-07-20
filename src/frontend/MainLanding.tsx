@@ -21,6 +21,7 @@ import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js"
 import { SiteFooter } from "./institutional/SiteFooter.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { useBodyWatermark } from "./shared/hooks/useBodyWatermark.js";
+import "./shared/styles/landing.css";
 
 // ─── App Preview Mock ────────────────────────────────────────────────────────
 
