@@ -1,4 +1,4 @@
-@import "./narrative-map-parts/narrative-map-parts-01.css";
-@import "./narrative-map-parts/narrative-map-parts-02.css";
-@import "./narrative-map-parts/narrative-map-parts-03.css";
-@import "./narrative-map-parts/narrative-map-parts-04.css";
+@import "./narrative-map/narrative-map-foundation.css";
+@import "./narrative-map/narrative-map-layout.css";
+@import "./narrative-map/narrative-map-components.css";
+@import "./narrative-map/narrative-map-details.css";

@@ -1,3 +1,3 @@
-@import "./campaign-guided-tour-parts/campaign-guided-tour-parts-01.css";
-@import "./campaign-guided-tour-parts/campaign-guided-tour-parts-02.css";
-@import "./campaign-guided-tour-parts/campaign-guided-tour-parts-03.css";
+@import "./campaign-guided-tour/campaign-guided-tour-foundation.css";
+@import "./campaign-guided-tour/campaign-guided-tour-layout.css";
+@import "./campaign-guided-tour/campaign-guided-tour-components.css";

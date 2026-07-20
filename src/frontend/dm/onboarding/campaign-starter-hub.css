@@ -1,6 +1,6 @@
-@import "./campaign-starter-hub-parts/campaign-starter-hub-parts-01.css";
-@import "./campaign-starter-hub-parts/campaign-starter-hub-parts-02.css";
-@import "./campaign-starter-hub-parts/campaign-starter-hub-parts-03.css";
-@import "./campaign-starter-hub-parts/campaign-starter-hub-parts-04.css";
-@import "./campaign-starter-hub-parts/campaign-starter-hub-parts-05.css";
-@import "./campaign-starter-hub-parts/campaign-starter-hub-parts-06.css";
+@import "./campaign-starter-hub/campaign-starter-hub-foundation.css";
+@import "./campaign-starter-hub/campaign-starter-hub-layout.css";
+@import "./campaign-starter-hub/campaign-starter-hub-components.css";
+@import "./campaign-starter-hub/campaign-starter-hub-details.css";
+@import "./campaign-starter-hub/campaign-starter-hub-states.css";
+@import "./campaign-starter-hub/campaign-starter-hub-responsive.css";

@@ -77,7 +77,7 @@ export const STYLE_AUDIT_CONFIG = {
     { match: /shared\/styles\/vendor\//, layer: "vendor", domain: "shared" },
     { match: /shared\/styles\//, layer: "feature", domain: "shared" },
     { match: /account\/account\.css$/, layer: "feature", domain: "account" },
-    { match: /account\/account-styles\//, layer: "feature", domain: "account" },
+    { match: /account\/account\//, layer: "feature", domain: "account" },
     { match: /workspaces?\//, layer: "layout", domain: "workspace" },
     { match: /layouts?\//, layer: "layout", domain: "layout" },
     { match: /institutional\//, layer: "feature", domain: "institutional" },

@@ -1,4 +1,4 @@
-@import "./entity-detail-dialog-parts/entity-detail-dialog-parts-01.css";
-@import "./entity-detail-dialog-parts/entity-detail-dialog-parts-02.css";
-@import "./entity-detail-dialog-parts/entity-detail-dialog-parts-03.css";
-@import "./entity-detail-dialog-parts/entity-detail-dialog-parts-04.css";
+@import "./entity-detail-dialog/entity-detail-dialog-foundation.css";
+@import "./entity-detail-dialog/entity-detail-dialog-layout.css";
+@import "./entity-detail-dialog/entity-detail-dialog-components.css";
+@import "./entity-detail-dialog/entity-detail-dialog-details.css";

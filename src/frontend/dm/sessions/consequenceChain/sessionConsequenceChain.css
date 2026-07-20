@@ -1,5 +1,5 @@
-@import "./consequence-chain-parts/consequence-chain-parts-01.css";
-@import "./consequence-chain-parts/consequence-chain-parts-02.css";
-@import "./consequence-chain-parts/consequence-chain-parts-03.css";
-@import "./consequence-chain-parts/consequence-chain-parts-04.css";
-@import "./consequence-chain-parts/consequence-chain-parts-05.css";
+@import "./consequence-chain/consequence-chain-foundation.css";
+@import "./consequence-chain/consequence-chain-layout.css";
+@import "./consequence-chain/consequence-chain-components.css";
+@import "./consequence-chain/consequence-chain-details.css";
+@import "./consequence-chain/consequence-chain-states.css";

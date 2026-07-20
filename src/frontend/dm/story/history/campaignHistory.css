@@ -1,4 +1,4 @@
-@import "./campaign-history-parts/campaign-history-parts-01.css";
-@import "./campaign-history-parts/campaign-history-parts-02.css";
-@import "./campaign-history-parts/campaign-history-parts-03.css";
-@import "./campaign-history-parts/campaign-history-parts-04.css";
+@import "./campaign-history/campaign-history-foundation.css";
+@import "./campaign-history/campaign-history-layout.css";
+@import "./campaign-history/campaign-history-components.css";
+@import "./campaign-history/campaign-history-details.css";

@@ -1,2 +1,2 @@
-@import "./entity-image-reframe-parts/entity-image-reframe-parts-01.css";
-@import "./entity-image-reframe-parts/entity-image-reframe-parts-02.css";
+@import "./entity-image-reframe/entity-image-reframe-foundation.css";
+@import "./entity-image-reframe/entity-image-reframe-layout.css";

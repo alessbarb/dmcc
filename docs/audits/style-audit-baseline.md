@@ -11,11 +11,11 @@ Generated mechanically by `npm run styles:audit:report`.
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
   "dynamicInlineStyles": 20,
-  "unknownCssVariables": 9,
-  "legacyCssVariables": 121,
+  "unknownCssVariables": 0,
+  "legacyCssVariables": 0,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 0,
-  "crossComponentSelectors": 1,
+  "crossComponentSelectors": 0,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
 }
@@ -25,28 +25,28 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | File | Layer | Domain | Lines | Selectors | Importers |
 |---|---:|---:|---:|---:|---:|
-| `src/frontend/account/account-styles/account-styles-01.css` | feature | account | 171 | 22 | 1 |
-| `src/frontend/account/account-styles/account-styles-02.css` | feature | account | 189 | 29 | 1 |
-| `src/frontend/account/account-styles/account-styles-03.css` | feature | account | 182 | 28 | 1 |
-| `src/frontend/account/account-styles/account-styles-04.css` | feature | account | 171 | 24 | 1 |
-| `src/frontend/account/account-styles/account-styles-05.css` | feature | account | 114 | 15 | 1 |
+| `src/frontend/account/account/account-components.css` | feature | account | 182 | 28 | 1 |
+| `src/frontend/account/account/account-details.css` | feature | account | 171 | 24 | 1 |
+| `src/frontend/account/account/account-foundation.css` | feature | account | 171 | 22 | 1 |
+| `src/frontend/account/account/account-layout.css` | feature | account | 189 | 29 | 1 |
+| `src/frontend/account/account/account-states.css` | feature | account | 114 | 15 | 1 |
 | `src/frontend/account/account.css` | feature | account | 6 | 0 | 1 |
-| `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-01.css` | feature | canvas | 28 | 4 | 1 |
-| `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css` | feature | canvas | 160 | 16 | 1 |
-| `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css` | feature | canvas | 102 | 13 | 1 |
-| `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css` | feature | canvas | 4 | 0 | 1 |
-| `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01.css` | feature | canvas | 2 | 0 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-foundation.css` | feature | canvas | 2 | 0 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css` | feature | canvas | 102 | 13 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-foundation.css` | feature | canvas | 28 | 4 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-layout.css` | feature | canvas | 160 | 16 | 1 |
+| `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation.css` | feature | canvas | 4 | 0 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 2 | 0 | 1 |
-| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-01.css` | feature | entities | 104 | 13 | 1 |
-| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-02.css` | feature | entities | 78 | 12 | 1 |
-| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-03.css` | feature | entities | 103 | 12 | 1 |
-| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-04.css` | feature | entities | 99 | 12 | 1 |
-| `src/frontend/dm/entities/entity-card-parts/entity-card-parts-05.css` | feature | entities | 14 | 2 | 1 |
+| `src/frontend/dm/entities/entity-card/entity-card-components.css` | feature | entities | 103 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card/entity-card-details.css` | feature | entities | 99 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card/entity-card-foundation.css` | feature | entities | 104 | 13 | 1 |
+| `src/frontend/dm/entities/entity-card/entity-card-layout.css` | feature | entities | 78 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card/entity-card-states.css` | feature | entities | 14 | 2 | 1 |
 | `src/frontend/dm/entities/entity-card.css` | feature | entities | 6 | 0 | 1 |
-| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css` | feature | entities | 125 | 12 | 1 |
-| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css` | feature | entities | 75 | 12 | 1 |
-| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css` | feature | entities | 98 | 12 | 1 |
-| `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css` | feature | entities | 100 | 18 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css` | feature | entities | 98 | 12 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css` | feature | entities | 100 | 18 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css` | feature | entities | 125 | 12 | 1 |
+| `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css` | feature | entities | 75 | 12 | 1 |
 | `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 216 | 24 | 2 |
 | `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 2 | 1 |
 | `src/frontend/dm/entities/entity-list-toolbar.css` | feature | entities | 97 | 14 | 1 |
@@ -59,65 +59,65 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 154 | 22 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 14 | 1 |
-| `src/frontend/dm/library/boards/entity-board-parts/entity-board-parts-01.css` | feature | library | 75 | 10 | 1 |
-| `src/frontend/dm/library/boards/entity-board-parts/entity-board-parts-02.css` | feature | library | 82 | 10 | 1 |
-| `src/frontend/dm/library/boards/entity-board-parts/entity-board-parts-03.css` | feature | library | 88 | 14 | 1 |
+| `src/frontend/dm/library/boards/entity-board/entity-board-components.css` | feature | library | 88 | 14 | 1 |
+| `src/frontend/dm/library/boards/entity-board/entity-board-foundation.css` | feature | library | 75 | 10 | 1 |
+| `src/frontend/dm/library/boards/entity-board/entity-board-layout.css` | feature | library | 82 | 10 | 1 |
 | `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 4 | 0 | 1 |
 | `src/frontend/dm/library/list/entity-list-toolbar-controls.css` | feature | library | 118 | 17 | 1 |
 | `src/frontend/dm/library/list/entity-list-view.css` | feature | library | 117 | 18 | 1 |
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 14 | 1 |
-| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-01.css` | feature | library | 56 | 10 | 1 |
-| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-02.css` | feature | library | 63 | 10 | 1 |
-| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-03.css` | feature | library | 79 | 10 | 1 |
-| `src/frontend/dm/library/notebooks/notebooks-workspace-parts/notebooks-workspace-parts-04.css` | feature | library | 98 | 18 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-components.css` | layout | workspace | 79 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-details.css` | layout | workspace | 98 | 18 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-foundation.css` | layout | workspace | 56 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-layout.css` | layout | workspace | 63 | 10 | 1 |
 | `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 5 | 0 | 1 |
 | `src/frontend/dm/map/mapWorkspace.css` | feature | map | 94 | 13 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css` | feature | map | 83 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-02.css` | feature | map | 75 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-03.css` | feature | map | 101 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-04.css` | feature | map | 88 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-05.css` | feature | map | 81 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css` | feature | map | 66 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css` | feature | map | 90 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-08.css` | feature | map | 80 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css` | feature | map | 60 | 10 | 1 |
-| `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-10.css` | feature | map | 115 | 23 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-advanced.css` | feature | map | 60 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-components.css` | feature | map | 101 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-details.css` | feature | map | 88 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-foundation.css` | feature | map | 83 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-interactions.css` | feature | map | 90 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-layout.css` | feature | map | 75 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-media.css` | feature | map | 115 | 23 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-overlays.css` | feature | map | 80 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-responsive.css` | feature | map | 66 | 10 | 1 |
+| `src/frontend/dm/map/network/network-flow/network-flow-states.css` | feature | map | 81 | 10 | 1 |
 | `src/frontend/dm/map/network/networkFlow.css` | feature | map | 11 | 0 | 1 |
-| `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-01.css` | feature | onboarding | 68 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css` | feature | onboarding | 88 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css` | feature | onboarding | 72 | 11 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-components.css` | feature | onboarding | 72 | 11 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-foundation.css` | feature | onboarding | 68 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-layout.css` | feature | onboarding | 88 | 10 | 1 |
 | `src/frontend/dm/onboarding/campaign-guided-tour.css` | feature | onboarding | 4 | 0 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-01.css` | feature | onboarding | 84 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-02.css` | feature | onboarding | 77 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-03.css` | feature | onboarding | 72 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-04.css` | feature | onboarding | 66 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-05.css` | feature | onboarding | 85 | 10 | 1 |
-| `src/frontend/dm/onboarding/campaign-starter-hub-parts/campaign-starter-hub-parts-06.css` | feature | onboarding | 40 | 7 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-components.css` | feature | onboarding | 72 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-details.css` | feature | onboarding | 66 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-foundation.css` | feature | onboarding | 84 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-layout.css` | feature | onboarding | 77 | 10 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-responsive.css` | feature | onboarding | 40 | 7 | 1 |
+| `src/frontend/dm/onboarding/campaign-starter-hub/campaign-starter-hub-states.css` | feature | onboarding | 85 | 10 | 1 |
 | `src/frontend/dm/onboarding/campaign-starter-hub.css` | feature | onboarding | 7 | 0 | 1 |
 | `src/frontend/dm/pages/campaignMessagesPage.css` | feature | pages | 113 | 20 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-01.css` | feature | pages | 45 | 8 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-02.css` | feature | pages | 50 | 8 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-03.css` | feature | pages | 58 | 8 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01-split/rules-page-parts-01-parts-01-04.css` | feature | pages | 32 | 6 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css` | feature | pages | 5 | 0 | 1 |
-| `src/frontend/dm/pages/rules-page-parts/rules-page-parts-01.css` | feature | pages | 2 | 0 | 1 |
+| `src/frontend/dm/pages/rules-page/rules-page-foundation/rules-page-foundation.css` | feature | pages | 5 | 0 | 1 |
+| `src/frontend/dm/pages/rules-page/rules-page-foundation/rules-page-split-foundation/rules-page-components.css` | feature | pages | 58 | 8 | 1 |
+| `src/frontend/dm/pages/rules-page/rules-page-foundation/rules-page-split-foundation/rules-page-details.css` | feature | pages | 32 | 6 | 1 |
+| `src/frontend/dm/pages/rules-page/rules-page-foundation/rules-page-split-foundation/rules-page-foundation.css` | feature | pages | 45 | 8 | 1 |
+| `src/frontend/dm/pages/rules-page/rules-page-foundation/rules-page-split-foundation/rules-page-layout.css` | feature | pages | 50 | 8 | 1 |
+| `src/frontend/dm/pages/rules-page/rules-page-foundation.css` | feature | pages | 2 | 0 | 1 |
 | `src/frontend/dm/pages/rulesPage.css` | feature | pages | 2 | 0 | 1 |
 | `src/frontend/dm/pages/settingsPage.css` | feature | pages | 135 | 19 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-01.css` | feature | people | 85 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-02.css` | feature | people | 69 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-03.css` | feature | people | 75 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-04.css` | feature | people | 85 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-05.css` | feature | people | 72 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-06.css` | feature | people | 70 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-07.css` | feature | people | 66 | 10 | 1 |
-| `src/frontend/dm/people/group/group-workspace-parts/group-workspace-parts-08.css` | feature | people | 116 | 19 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-components.css` | layout | workspace | 75 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-details.css` | layout | workspace | 85 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-foundation.css` | layout | workspace | 85 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-interactions.css` | layout | workspace | 66 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-layout.css` | layout | workspace | 69 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-overlays.css` | layout | workspace | 116 | 19 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-responsive.css` | layout | workspace | 70 | 10 | 1 |
+| `src/frontend/dm/people/group/group-workspace/group-workspace-states.css` | layout | workspace | 72 | 10 | 1 |
 | `src/frontend/dm/people/group/groupWorkspace.css` | feature | people | 9 | 0 | 1 |
-| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-01.css` | feature | people | 73 | 10 | 1 |
-| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-02.css` | feature | people | 76 | 10 | 1 |
-| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-03.css` | feature | people | 75 | 10 | 1 |
-| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-04.css` | feature | people | 67 | 10 | 1 |
-| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-05.css` | feature | people | 72 | 13 | 1 |
-| `src/frontend/dm/people/people-workspace-parts/people-workspace-parts-06.css` | feature | people | 36 | 6 | 1 |
+| `src/frontend/dm/people/people-workspace/people-workspace-components.css` | layout | workspace | 75 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace/people-workspace-details.css` | layout | workspace | 67 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace/people-workspace-foundation.css` | layout | workspace | 73 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace/people-workspace-layout.css` | layout | workspace | 76 | 10 | 1 |
+| `src/frontend/dm/people/people-workspace/people-workspace-responsive.css` | layout | workspace | 36 | 6 | 1 |
+| `src/frontend/dm/people/people-workspace/people-workspace-states.css` | layout | workspace | 72 | 13 | 1 |
 | `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 7 | 0 | 1 |
 | `src/frontend/dm/sessions/components/active-session-prep.css` | feature | sessions | 140 | 22 | 1 |
 | `src/frontend/dm/sessions/components/prepared-session.css` | feature | sessions | 136 | 20 | 2 |
@@ -130,39 +130,39 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/sessions/components/session-idle.css` | feature | sessions | 130 | 21 | 2 |
 | `src/frontend/dm/sessions/components/session-linked-list.css` | feature | sessions | 25 | 4 | 1 |
 | `src/frontend/dm/sessions/components/session-status.css` | feature | sessions | 74 | 9 | 1 |
-| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-01.css` | feature | sessions | 76 | 10 | 1 |
-| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-02.css` | feature | sessions | 78 | 10 | 1 |
-| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-03.css` | feature | sessions | 64 | 10 | 1 |
-| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-04.css` | feature | sessions | 77 | 10 | 1 |
-| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-05.css` | feature | sessions | 31 | 5 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain/consequence-chain-components.css` | feature | sessions | 64 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain/consequence-chain-details.css` | feature | sessions | 77 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain/consequence-chain-foundation.css` | feature | sessions | 76 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain/consequence-chain-layout.css` | feature | sessions | 78 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain/consequence-chain-states.css` | feature | sessions | 31 | 5 | 1 |
 | `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css` | feature | sessions | 6 | 0 | 1 |
-| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-01.css` | feature | sessions | 77 | 10 | 1 |
-| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-02.css` | feature | sessions | 67 | 10 | 1 |
-| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-03.css` | feature | sessions | 67 | 10 | 1 |
-| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-04.css` | feature | sessions | 71 | 9 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map/narrative-map-components.css` | feature | sessions | 67 | 10 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map/narrative-map-details.css` | feature | sessions | 71 | 9 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map/narrative-map-foundation.css` | feature | sessions | 77 | 10 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map/narrative-map-layout.css` | feature | sessions | 67 | 10 | 1 |
 | `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css` | feature | sessions | 5 | 0 | 1 |
 | `src/frontend/dm/sessions/session-workspace.css` | feature | sessions | 18 | 3 | 4 |
-| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-01.css` | feature | story | 88 | 10 | 1 |
-| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-02.css` | feature | story | 85 | 10 | 1 |
-| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-03.css` | feature | story | 76 | 10 | 1 |
-| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-04.css` | feature | story | 49 | 9 | 1 |
+| `src/frontend/dm/story/history/campaign-history/campaign-history-components.css` | feature | story | 76 | 10 | 1 |
+| `src/frontend/dm/story/history/campaign-history/campaign-history-details.css` | feature | story | 49 | 9 | 1 |
+| `src/frontend/dm/story/history/campaign-history/campaign-history-foundation.css` | feature | story | 88 | 10 | 1 |
+| `src/frontend/dm/story/history/campaign-history/campaign-history-layout.css` | feature | story | 85 | 10 | 1 |
 | `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 5 | 0 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css` | feature | story | 75 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css` | feature | story | 102 | 18 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css` | feature | story | 27 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css` | feature | story | 14 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-05.css` | feature | story | 15 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css` | feature | story | 14 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-07.css` | feature | story | 14 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css` | feature | story | 12 | 10 | 1 |
-| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-09.css` | feature | story | 12 | 5 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-advanced.css` | feature | story | 12 | 5 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-components.css` | feature | story | 27 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-details.css` | feature | story | 14 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css` | feature | story | 75 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-interactions.css` | feature | story | 14 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-layout.css` | feature | story | 102 | 18 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-overlays.css` | feature | story | 12 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css` | feature | story | 14 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan/story-plan-states.css` | feature | story | 15 | 10 | 1 |
 | `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 10 | 0 | 1 |
-| `src/frontend/institutional/institutional-parts/institutional-parts-01.css` | feature | institutional | 147 | 16 | 1 |
-| `src/frontend/institutional/institutional-parts/institutional-parts-02.css` | feature | institutional | 128 | 20 | 1 |
+| `src/frontend/institutional/institutional/institutional-foundation.css` | feature | institutional | 147 | 16 | 1 |
+| `src/frontend/institutional/institutional/institutional-layout.css` | feature | institutional | 128 | 20 | 1 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 3 | 0 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 174 | 27 | 1 |
-| `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-01.css` | component | shared-components | 146 | 17 | 1 |
-| `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css` | component | shared-components | 184 | 23 | 1 |
+| `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-foundation.css` | component | shared-components | 146 | 17 | 1 |
+| `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css` | component | shared-components | 184 | 23 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 3 | 0 | 1 |
 | `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 4 | 1 |
 | `src/frontend/shared/styles/features/admin-announcements/admin-announcements-actions.css` | feature | shared | 8 | 7 | 1 |
@@ -346,14 +346,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing/landing-memory-and-network.css` | feature | shared | 151 | 24 | 1 |
 | `src/frontend/shared/styles/landing/landing-network-and-footer.css` | feature | shared | 175 | 23 | 1 |
 | `src/frontend/shared/styles/landing/landing-preview-details.css` | feature | shared | 150 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-preview-shell.css` | feature | shared | 167 | 21 | 1 |
-| `src/frontend/shared/styles/landing/landing-shell.css` | feature | shared | 173 | 18 | 1 |
+| `src/frontend/shared/styles/landing/landing-preview-shell.css` | feature | shared | 168 | 21 | 1 |
+| `src/frontend/shared/styles/landing/landing-shell.css` | feature | shared | 218 | 19 | 1 |
 | `src/frontend/shared/styles/landing/landing-showcase.css` | feature | shared | 68 | 19 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-mobile.css` | feature | shared | 155 | 26 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-responsive-grid.css` | feature | shared | 37 | 7 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-role-actions.css` | feature | shared | 12 | 2 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 151 | 21 | 1 |
-| `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 201 | 20 | 1 |
+| `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 184 | 18 | 1 |
 | `src/frontend/shared/styles/landing.css` | feature | shared | 20 | 0 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 7 | 1 |
@@ -408,110 +408,110 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | Severity | Category | Location | Reason |
 |---|---|---|---|
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css:5` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:44` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:45` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:46` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:47` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:52` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:99` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css:44` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css:45` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css:46` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css:47` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-components.css:99` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-layout.css:5` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:203` | Runtime style requires review and CSS custom-property preference. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:22` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:23` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:24` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:25` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:26` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:30` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:36` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:38` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:39` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:40` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:42` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:43` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:44` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:47` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:51` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:52` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:53` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:55` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:56` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:58` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:59` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:60` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:62` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:63` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:64` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:65` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:77` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:79` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:80` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:90` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:95` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:99` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:100` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:104` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:108` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:113` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:114` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:115` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:124` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:4` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:16` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:18` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:19` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:24` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:27` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:28` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:19` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:23` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:24` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:25` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:26` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:28` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:33` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:45` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:46` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:53` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:65` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:68` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:70` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:71` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:72` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:81` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:14` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:19` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:33` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:39` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:51` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:55` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:56` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:58` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:62` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:72` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:73` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:77` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:79` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:80` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:86` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:23` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:24` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:25` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:28` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:45` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:46` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:65` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:70` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:71` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:72` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-components.css:81` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:39` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:55` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:62` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:72` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:73` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:79` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-details.css:86` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:11` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:22` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:23` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:24` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:25` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:26` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:38` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:39` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:40` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:43` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:44` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:47` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:55` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:56` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:59` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:60` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:62` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:63` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:64` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:65` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:79` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:80` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:90` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:95` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:99` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:100` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:104` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:108` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:113` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:114` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:115` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-foundation.css:124` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:18` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:19` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:24` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:27` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-dialog/entity-detail-dialog-layout.css:28` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:154` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:158` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:159` | Important declarations bypass the intended cascade. |
@@ -599,33 +599,33 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignModals.tsx:367` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:152` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:17` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:21` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:30` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:31` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:32` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:42` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:43` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:48` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:64` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:65` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:4` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:5` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:6` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-07.css:7` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/map/network/network-flow-parts/network-flow-parts-09.css:54` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-advanced.css:54` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-interactions.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-interactions.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-interactions.css:6` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-interactions.css:7` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:17` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:21` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:30` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:31` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:32` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:43` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:48` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:64` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/map/network/network-flow/network-flow-responsive.css:65` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:43` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:66` | Runtime style requires review and CSS custom-property preference. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:77` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:50` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:51` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:52` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-components.css:50` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-components.css:51` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-components.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-components.css:53` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-layout.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/onboarding/campaign-guided-tour/campaign-guided-tour-layout.css:78` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:504` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:7` | Important declarations bypass the intended cascade. |
@@ -642,71 +642,71 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Runtime style requires review and CSS custom-property preference. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:2` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:5` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:6` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:12` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:14` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:16` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:17` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:18` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:33` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:36` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:42` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:46` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:47` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:58` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:59` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:60` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:67` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:68` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:69` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:73` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:4` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:31` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:38` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:52` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:63` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:68` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:14` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:15` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:16` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-components.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-components.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-components.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-details.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:2` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:6` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:12` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:17` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:18` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:46` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:47` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:59` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:60` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:67` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:69` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-foundation.css:73` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:31` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:38` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:63` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-layout.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-overlays.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan/story-plan-responsive.css:10` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:93` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:96` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:99` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:102` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:105` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:77` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:81` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:135` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:136` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:137` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:138` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:139` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:140` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:142` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:143` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:144` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:145` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:146` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:147` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:149` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:150` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:180` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:77` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:81` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:135` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:136` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:137` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:138` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:139` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:140` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:142` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:143` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:144` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:145` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:146` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:147` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:149` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:150` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/components/entity-image-reframe/entity-image-reframe-layout.css:180` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas/canvas-dashboard.css:80` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-canvas/canvas-dashboard.css:81` | Important declarations bypass the intended cascade. |
@@ -781,137 +781,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/player-portal/portal-form.css:62` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-campaign-list.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-featured-campaign.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/account-home-layout.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-animations.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/landing/landing-feature-blocks.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-hero-actions.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-hero-actions.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-local-and-final-cta.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-memory-and-network.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-network-and-footer.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-details.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-preview-shell.css:1` | Legacy CSS variable remains in use. |
-| high | cross-component-selector | `src/frontend/shared/styles/landing/landing-shell.css:1` | Selector depends on another component's DOM structure. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-showcase.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-showcase.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/landing-showcase.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/smart-landing-role-actions.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-role-cards.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/landing/smart-landing-shell.css:1` | Legacy CSS variable remains in use. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:14` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:18` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css:22` | Important declarations bypass the intended cascade. |

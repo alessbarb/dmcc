@@ -1,4 +1,4 @@
-@import "./notebooks-workspace-parts/notebooks-workspace-parts-01.css";
-@import "./notebooks-workspace-parts/notebooks-workspace-parts-02.css";
-@import "./notebooks-workspace-parts/notebooks-workspace-parts-03.css";
-@import "./notebooks-workspace-parts/notebooks-workspace-parts-04.css";
+@import "./notebooks-workspace/notebooks-workspace-foundation.css";
+@import "./notebooks-workspace/notebooks-workspace-layout.css";
+@import "./notebooks-workspace/notebooks-workspace-components.css";
+@import "./notebooks-workspace/notebooks-workspace-details.css";

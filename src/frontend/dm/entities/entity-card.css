@@ -1,5 +1,5 @@
-@import "./entity-card-parts/entity-card-parts-01.css";
-@import "./entity-card-parts/entity-card-parts-02.css";
-@import "./entity-card-parts/entity-card-parts-03.css";
-@import "./entity-card-parts/entity-card-parts-04.css";
-@import "./entity-card-parts/entity-card-parts-05.css";
+@import "./entity-card/entity-card-foundation.css";
+@import "./entity-card/entity-card-layout.css";
+@import "./entity-card/entity-card-components.css";
+@import "./entity-card/entity-card-details.css";
+@import "./entity-card/entity-card-states.css";

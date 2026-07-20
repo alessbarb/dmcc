@@ -1,2 +1,2 @@
-@import "./institutional-parts/institutional-parts-01.css";
-@import "./institutional-parts/institutional-parts-02.css";
+@import "./institutional/institutional-foundation.css";
+@import "./institutional/institutional-layout.css";

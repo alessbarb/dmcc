@@ -1,6 +1,6 @@
-@import "./people-workspace-parts/people-workspace-parts-01.css";
-@import "./people-workspace-parts/people-workspace-parts-02.css";
-@import "./people-workspace-parts/people-workspace-parts-03.css";
-@import "./people-workspace-parts/people-workspace-parts-04.css";
-@import "./people-workspace-parts/people-workspace-parts-05.css";
-@import "./people-workspace-parts/people-workspace-parts-06.css";
+@import "./people-workspace/people-workspace-foundation.css";
+@import "./people-workspace/people-workspace-layout.css";
+@import "./people-workspace/people-workspace-components.css";
+@import "./people-workspace/people-workspace-details.css";
+@import "./people-workspace/people-workspace-states.css";
+@import "./people-workspace/people-workspace-responsive.css";

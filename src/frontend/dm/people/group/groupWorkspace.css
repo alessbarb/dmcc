@@ -1,8 +1,8 @@
-@import "./group-workspace-parts/group-workspace-parts-01.css";
-@import "./group-workspace-parts/group-workspace-parts-02.css";
-@import "./group-workspace-parts/group-workspace-parts-03.css";
-@import "./group-workspace-parts/group-workspace-parts-04.css";
-@import "./group-workspace-parts/group-workspace-parts-05.css";
-@import "./group-workspace-parts/group-workspace-parts-06.css";
-@import "./group-workspace-parts/group-workspace-parts-07.css";
-@import "./group-workspace-parts/group-workspace-parts-08.css";
+@import "./group-workspace/group-workspace-foundation.css";
+@import "./group-workspace/group-workspace-layout.css";
+@import "./group-workspace/group-workspace-components.css";
+@import "./group-workspace/group-workspace-details.css";
+@import "./group-workspace/group-workspace-states.css";
+@import "./group-workspace/group-workspace-responsive.css";
+@import "./group-workspace/group-workspace-interactions.css";
+@import "./group-workspace/group-workspace-overlays.css";

@@ -1,5 +1,5 @@
-@import "./account-styles/account-styles-01.css";
-@import "./account-styles/account-styles-02.css";
-@import "./account-styles/account-styles-03.css";
-@import "./account-styles/account-styles-04.css";
-@import "./account-styles/account-styles-05.css";
+@import "./account/account-foundation.css";
+@import "./account/account-layout.css";
+@import "./account/account-components.css";
+@import "./account/account-details.css";
+@import "./account/account-states.css";
