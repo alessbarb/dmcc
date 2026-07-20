@@ -4,7 +4,39 @@
 
 /* Root layout */
 .dm-hub-root {
+  --theme-accents-primary-active: hsl(37 60% 54%);
+  --theme-accents-primary-background: hsl(38 66% 62% / 0.14);
+  --theme-accents-primary-foreground: hsl(38 66% 62%);
+  --theme-accents-primary-hover: hsl(39 76% 70%);
+  --theme-accents-primary-on-accent: hsl(228 36% 8%);
+  --theme-accents-secondary-active: hsl(270 44% 60%);
+  --theme-accents-secondary-background: hsl(270 52% 70% / 0.14);
+  --theme-accents-secondary-foreground: hsl(270 52% 70%);
+  --theme-accents-secondary-hover: hsl(270 60% 78%);
+  --theme-accents-secondary-on-accent: hsl(228 36% 8%);
+  --theme-activity-system-foreground: hsl(255 85% 65%);
+  --theme-activity-tag-foreground: hsl(175 85% 45%);
+  --theme-borders-default: hsl(36 20% 28%);
+  --theme-borders-strong: hsl(37 26% 36%);
+  --theme-canvas-selection: hsl(38 66% 62% / 0.12);
+  --theme-feedback-danger-foreground: hsl(3 72% 68%);
+  --theme-feedback-info-foreground: hsl(204 66% 68%);
+  --theme-feedback-success-foreground: hsl(145 48% 61%);
+  --theme-feedback-warning-foreground: hsl(44 78% 65%);
+  --theme-surfaces-base: hsl(226 25% 10%);
+  --theme-surfaces-canvas: hsl(228 36% 6%);
+  --theme-surfaces-interactive: hsl(224 21% 14%);
+  --theme-surfaces-interactive-hover: hsl(222 20% 20%);
+  --theme-surfaces-raised: hsl(224 20% 17%);
+  --theme-surfaces-subtle: hsl(224 21% 14%);
+  --theme-text-disabled: hsl(32 9% 52%);
+  --theme-text-on-media: hsl(0 0% 100%);
+  --theme-text-primary: hsl(42 30% 94%);
+  --theme-text-secondary: hsl(35 18% 78%);
+  --theme-text-subtle: hsl(32 12% 66%);
+
   background: var(--theme-surfaces-canvas);
+  color: var(--theme-text-primary);
   min-height: 100vh;
   position: relative;
 }
