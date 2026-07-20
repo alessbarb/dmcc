@@ -1,4 +1,10 @@
+/* 
+ * Global Watermark Styling.
+ * Reserved for future release branding & environment watermarking.
+ * Deactivated by default.
+ */
 .watermark {
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 850;
