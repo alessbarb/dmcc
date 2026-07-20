@@ -77,7 +77,7 @@
   .main-content--canvas .canvas-board-info,
   .main-content--canvas .canvas-header-filters,
   .main-content--canvas .canvas-selector-group .btn {
-    display: none !important;
+    display: none;
   }
 
   .main-content--canvas .canvas-selector-group .canvas-select {

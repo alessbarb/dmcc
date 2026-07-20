@@ -11,15 +11,15 @@
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 22px 12px calc(36px + var(--mobile-dock-height) + env(safe-area-inset-bottom)) !important;
+    padding: 22px 12px calc(36px + var(--mobile-dock-height) + env(safe-area-inset-bottom));
   }
 
   .app-container--campaign-shell .app-footer {
-    display: none !important;
+    display: none;
   }
 
   .canvas-page-container {
-    height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom)) !important;
+    height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom));
     min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom));
   }
 }
