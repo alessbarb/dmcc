@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-20T10:37:40.458Z",
+  "generatedAt": "2026-07-20T10:38:55.006Z",
   "summary": {
-    "cssFiles": 378,
+    "cssFiles": 362,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -12,7 +12,7 @@
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 0,
     "crossComponentSelectors": 0,
-    "importantDeclarations": 381,
+    "importantDeclarations": 380,
     "unclassifiedCssFiles": 0
   },
   "files": [
@@ -2322,10 +2322,11 @@
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 323,
+      "lineCount": 324,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/layouts/campaign-route-transitions.css",
+        "src/frontend/shared/styles/layout/campaign-navigation.css",
         "src/frontend/shared/styles/features/sidebar-nav.css"
       ],
       "importedBy": [],
@@ -9869,36 +9870,6 @@
       ]
     },
     {
-      "path": "src/frontend/shared/styles/features/graph-search.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 77,
-      "selectorCount": 8,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/main.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-activity-system-foreground",
-        "--theme-surfaces-subtle",
-        "--theme-surfaces-base",
-        "--theme-surfaces-interactive",
-        "--theme-activity-other-foreground",
-        "--theme-borders-default",
-        "--theme-shapes-radius-medium",
-        "--theme-surfaces-base",
-        "--theme-shadows-large",
-        "--theme-shapes-radius-small",
-        "--theme-text-primary",
-        "--transition-fast",
-        "--theme-activity-system-foreground",
-        "--theme-accents-primary-background",
-        "--theme-text-primary",
-        "--theme-text-secondary"
-      ]
-    },
-    {
       "path": "src/frontend/shared/styles/features/image-picker-button.css",
       "layer": "feature",
       "domain": "shared",
@@ -10074,358 +10045,6 @@
         "--theme-text-subtle",
         "--theme-text-secondary"
       ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/archive-card.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 75,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-on-media",
-        "--theme-surfaces-canvas",
-        "--theme-activity-system-foreground",
-        "--theme-text-primary",
-        "--font-display",
-        "--transition-fast",
-        "--theme-accents-secondary-foreground",
-        "--theme-shapes-radius-small",
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-info-foreground",
-        "--theme-feedback-info-foreground",
-        "--theme-feedback-info-foreground"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/archive-search-and-grid.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 83,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-surfaces-interactive",
-        "--theme-borders-default",
-        "--theme-shapes-radius-medium",
-        "--transition-fast",
-        "--theme-activity-system-foreground",
-        "--theme-activity-system-foreground",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--transition-fast",
-        "--theme-text-on-media",
-        "--theme-text-primary",
-        "--theme-shapes-radius-large",
-        "--theme-text-on-media",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--transition-normal"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/archive-session-status.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 85,
-      "selectorCount": 12,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground",
-        "--font-mono",
-        "--theme-text-secondary",
-        "--touch-target-min",
-        "--space-4",
-        "--space-2",
-        "--space-4",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-shapes-radius-medium",
-        "--space-2",
-        "--theme-text-inverse",
-        "--font-sans",
-        "--transition-normal",
-        "--theme-accents-primary-hover",
-        "--theme-accents-primary-hover",
-        "--theme-text-inverse",
-        "--theme-shadows-accent",
-        "--theme-shapes-radius-medium",
-        "--theme-feedback-success-foreground",
-        "--theme-feedback-success-foreground",
-        "--theme-feedback-success-foreground",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-text-secondary",
-        "--theme-feedback-success-foreground",
-        "--theme-feedback-success-foreground",
-        "--theme-text-secondary",
-        "--theme-feedback-success-foreground",
-        "--theme-feedback-success-foreground",
-        "--theme-feedback-success-foreground"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/archive-stats.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 81,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-primary",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-shapes-radius-medium",
-        "--transition-fast",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-text-secondary",
-        "--transition-fast",
-        "--theme-accents-secondary-foreground",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-on-media"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-features-and-grid.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 84,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-on-media",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-shapes-radius-medium",
-        "--theme-accents-secondary-foreground",
-        "--transition-fast",
-        "--theme-accents-primary-background",
-        "--theme-activity-system-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--theme-text-on-media",
-        "--theme-shapes-radius-large",
-        "--theme-text-on-media",
-        "--theme-text-primary"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-shell.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 119,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--app-footer-height",
-        "--theme-shapes-radius-large",
-        "--theme-activity-system-foreground",
-        "--theme-surfaces-base",
-        "--theme-activity-tag-foreground",
-        "--theme-surfaces-canvas",
-        "--theme-activity-system-foreground",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-shapes-radius-pill",
-        "--theme-text-on-media",
-        "--theme-text-on-media",
-        "--theme-accents-secondary-foreground",
-        "--theme-surfaces-canvas",
-        "--theme-text-primary",
-        "--theme-surfaces-canvas",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-secondary-foreground",
-        "--theme-activity-system-foreground",
-        "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-surfaces-canvas",
-        "--theme-text-on-media",
-        "--theme-shapes-radius-large",
-        "--transition-normal"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/landing-side-stack.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 66,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-danger-foreground",
-        "--theme-shapes-radius-large",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
-        "--theme-surfaces-canvas",
-        "--theme-text-primary",
-        "--theme-accents-secondary-foreground"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/portal-background.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 64,
-      "selectorCount": 12,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-primary",
-        "--theme-feedback-warning-foreground",
-        "--theme-text-on-media"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/portal-shapes.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 60,
-      "selectorCount": 11,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [
-        "--drift"
-      ],
-      "variableReferences": [
-        "--theme-accents-secondary-foreground",
-        "--theme-activity-tag-foreground",
-        "--theme-accents-primary-hover",
-        "--theme-activity-system-foreground",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/portal-sparks-and-responsive.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 102,
-      "selectorCount": 25,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [
-        "--drift",
-        "--drift",
-        "--drift",
-        "--drift"
-      ],
-      "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--drift",
-        "--app-footer-height",
-        "--app-footer-height"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 65,
-      "selectorCount": 10,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/landing-archive.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-interactive",
-        "--theme-borders-default",
-        "--theme-shapes-radius-medium",
-        "--transition-fast",
-        "--theme-borders-interactive-hover",
-        "--theme-text-on-media",
-        "--theme-accents-primary-background",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-accents-primary-hover",
-        "--theme-text-secondary",
-        "--theme-borders-default"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/landing-archive.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 12,
-      "selectorCount": 0,
-      "imports": [
-        "src/frontend/shared/styles/features/landing-archive/landing-shell.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-features-and-grid.css",
-        "src/frontend/shared/styles/features/landing-archive/archive-search-and-grid.css",
-        "src/frontend/shared/styles/features/landing-archive/archive-card.css",
-        "src/frontend/shared/styles/features/landing-archive/archive-session-status.css",
-        "src/frontend/shared/styles/features/landing-archive/archive-stats.css",
-        "src/frontend/shared/styles/features/landing-archive/landing-side-stack.css",
-        "src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css",
-        "src/frontend/shared/styles/features/landing-archive/portal-background.css",
-        "src/frontend/shared/styles/features/landing-archive/portal-shapes.css",
-        "src/frontend/shared/styles/features/landing-archive/portal-sparks-and-responsive.css"
-      ],
-      "importedBy": [
-        "src/frontend/shared/styles/main.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/features/player-campaign/player-campaign-character.css",
@@ -11099,127 +10718,6 @@
         "--theme-text-primary",
         "--theme-surfaces-interactive-hover"
       ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/timeline/timeline-events.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 112,
-      "selectorCount": 21,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/timeline.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-narrative-canon-foreground",
-        "--theme-narrative-canon-foreground",
-        "--theme-shapes-radius-pill",
-        "--timeline-event-bg",
-        "--theme-surfaces-base",
-        "--timeline-event-color",
-        "--theme-narrative-canon-foreground",
-        "--timeline-event-color",
-        "--theme-narrative-canon-foreground",
-        "--theme-shadows-small",
-        "--transition-normal",
-        "--theme-accents-primary-background",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--timeline-event-color",
-        "--theme-narrative-canon-foreground",
-        "--theme-shapes-radius-medium",
-        "--theme-shadows-small",
-        "--transition-normal",
-        "--theme-borders-interactive-hover",
-        "--theme-shadows-medium",
-        "--space-1",
-        "--theme-text-secondary",
-        "--font-mono",
-        "--timeline-event-color",
-        "--theme-narrative-canon-foreground",
-        "--timeline-event-bg",
-        "--theme-surfaces-base",
-        "--timeline-event-color",
-        "--theme-narrative-canon-foreground",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--theme-narrative-consequence-foreground",
-        "--theme-narrative-consequence-background",
-        "--theme-narrative-consequence-foreground",
-        "--space-3",
-        "--space-1",
-        "--space-3",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--theme-shapes-radius-small",
-        "--theme-surfaces-canvas",
-        "--font-mono",
-        "--space-1",
-        "--space-3",
-        "--theme-borders-default",
-        "--theme-shapes-radius-small",
-        "--theme-surfaces-canvas",
-        "--theme-feedback-success-foreground",
-        "--font-mono",
-        "--space-4",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-text-primary"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/timeline/timeline-filters-and-stats.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 105,
-      "selectorCount": 14,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/shared/styles/features/timeline.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-narrative-consequence-background",
-        "--theme-surfaces-interactive",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-shapes-radius-pill",
-        "--transition-fast",
-        "--theme-surfaces-interactive-hover",
-        "--theme-text-primary",
-        "--theme-borders-interactive-hover",
-        "--theme-accents-primary-background",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-activity-system-foreground",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-shapes-radius-medium",
-        "--theme-shadows-small",
-        "--transition-normal",
-        "--theme-borders-interactive-hover",
-        "--theme-shapes-radius-medium",
-        "--theme-text-primary",
-        "--theme-text-secondary"
-      ]
-    },
-    {
-      "path": "src/frontend/shared/styles/features/timeline.css",
-      "layer": "feature",
-      "domain": "shared",
-      "lineCount": 3,
-      "selectorCount": 0,
-      "imports": [
-        "src/frontend/shared/styles/features/timeline/timeline-events.css",
-        "src/frontend/shared/styles/features/timeline/timeline-filters-and-stats.css"
-      ],
-      "importedBy": [
-        "src/frontend/shared/styles/main.css"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/styles/foundation/accessibility.css",
@@ -12378,7 +11876,7 @@
         "src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-secondary-states.css"
       ],
       "importedBy": [
-        "src/frontend/shared/styles/main.css"
+        "src/frontend/dm/layouts/CampaignShell.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": []
@@ -12875,7 +12373,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 42,
+      "lineCount": 35,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -12897,8 +12395,6 @@
         "src/frontend/shared/styles/primitives/empty-state.css",
         "src/frontend/shared/styles/primitives/status.css",
         "src/frontend/shared/styles/primitives/toast.css",
-        "src/frontend/shared/styles/features/graph-search.css",
-        "src/frontend/shared/styles/features/timeline.css",
         "src/frontend/shared/styles/layout/workspace.css",
         "src/frontend/shared/styles/layout/app-shell.css",
         "src/frontend/shared/styles/layout/navigation.css",
@@ -12909,9 +12405,7 @@
         "src/frontend/shared/styles/layout/responsive.css",
         "src/frontend/shared/styles/vendor/react-flow.css",
         "src/frontend/shared/styles/landing.css",
-        "src/frontend/account/account.css",
-        "src/frontend/shared/styles/layout/campaign-navigation.css",
-        "src/frontend/shared/styles/features/landing-archive.css"
+        "src/frontend/account/account.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -17719,18 +17213,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css:!important",
-      "path": "src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css",
-      "line": 42,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/player-portal/player-history-responsive.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal/player-history-responsive.css",
       "line": 43,
@@ -18371,6 +17853,7 @@
     ],
     "src/frontend/dm/layouts/CampaignShell.tsx": [
       "src/frontend/dm/layouts/campaign-route-transitions.css",
+      "src/frontend/shared/styles/layout/campaign-navigation.css",
       "src/frontend/shared/styles/features/sidebar-nav.css"
     ],
     "src/frontend/dm/library/LibraryWorkspacePage.tsx": [
@@ -18748,19 +18231,6 @@
       "src/frontend/shared/styles/features/entity-relations/entity-connections.css",
       "src/frontend/shared/styles/features/entity-relations/entity-graph.css"
     ],
-    "src/frontend/shared/styles/features/landing-archive.css": [
-      "src/frontend/shared/styles/features/landing-archive/landing-shell.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-features-and-grid.css",
-      "src/frontend/shared/styles/features/landing-archive/archive-search-and-grid.css",
-      "src/frontend/shared/styles/features/landing-archive/archive-card.css",
-      "src/frontend/shared/styles/features/landing-archive/archive-session-status.css",
-      "src/frontend/shared/styles/features/landing-archive/archive-stats.css",
-      "src/frontend/shared/styles/features/landing-archive/landing-side-stack.css",
-      "src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css",
-      "src/frontend/shared/styles/features/landing-archive/portal-background.css",
-      "src/frontend/shared/styles/features/landing-archive/portal-shapes.css",
-      "src/frontend/shared/styles/features/landing-archive/portal-sparks-and-responsive.css"
-    ],
     "src/frontend/shared/styles/features/player-campaign.css": [
       "src/frontend/shared/styles/features/player-campaign/player-campaign-search.css",
       "src/frontend/shared/styles/features/player-campaign/player-campaign-memory.css",
@@ -18782,10 +18252,6 @@
       "src/frontend/shared/styles/features/player-portal/player-history-responsive.css",
       "src/frontend/shared/styles/features/player-portal/player-modes-and-recap.css",
       "src/frontend/shared/styles/features/player-portal/player-messages.css"
-    ],
-    "src/frontend/shared/styles/features/timeline.css": [
-      "src/frontend/shared/styles/features/timeline/timeline-events.css",
-      "src/frontend/shared/styles/features/timeline/timeline-filters-and-stats.css"
     ],
     "src/frontend/shared/styles/landing.css": [
       "src/frontend/shared/styles/landing/landing-shell.css",
@@ -18870,8 +18336,6 @@
       "src/frontend/shared/styles/primitives/empty-state.css",
       "src/frontend/shared/styles/primitives/status.css",
       "src/frontend/shared/styles/primitives/toast.css",
-      "src/frontend/shared/styles/features/graph-search.css",
-      "src/frontend/shared/styles/features/timeline.css",
       "src/frontend/shared/styles/layout/workspace.css",
       "src/frontend/shared/styles/layout/app-shell.css",
       "src/frontend/shared/styles/layout/navigation.css",
@@ -18882,9 +18346,7 @@
       "src/frontend/shared/styles/layout/responsive.css",
       "src/frontend/shared/styles/vendor/react-flow.css",
       "src/frontend/shared/styles/landing.css",
-      "src/frontend/account/account.css",
-      "src/frontend/shared/styles/layout/campaign-navigation.css",
-      "src/frontend/shared/styles/features/landing-archive.css"
+      "src/frontend/account/account.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

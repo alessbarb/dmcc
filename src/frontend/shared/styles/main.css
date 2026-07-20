@@ -19,9 +19,6 @@
 @import "./primitives/status.css";
 @import "./primitives/toast.css";
 
-@import "./features/graph-search.css";
-@import "./features/timeline.css";
-
 @import "./layout/workspace.css";
 @import "./layout/app-shell.css";
 @import "./layout/navigation.css";
@@ -35,7 +32,3 @@
 
 @import "./landing.css";
 @import "../../account/account.css";
-
-/* Domain slices retain their original cascade order during migration. */
-@import "./layout/campaign-navigation.css";
-@import "./features/landing-archive.css";

@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 378,
+  "cssFiles": 362,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -16,7 +16,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 0,
   "crossComponentSelectors": 0,
-  "importantDeclarations": 381,
+  "importantDeclarations": 380,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -280,23 +280,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/entity-relations/entity-relation-list.css` | feature | shared | 12 | 10 | 1 |
 | `src/frontend/shared/styles/features/entity-relations.css` | feature | shared | 6 | 0 | 1 |
 | `src/frontend/shared/styles/features/entity-trace.css` | feature | shared | 23 | 18 | 1 |
-| `src/frontend/shared/styles/features/graph-search.css` | feature | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/image-picker-button.css` | feature | shared | 12 | 11 | 1 |
 | `src/frontend/shared/styles/features/image-picker-modal.css` | feature | shared | 215 | 28 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | feature | shared | 177 | 26 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | feature | shared | 104 | 17 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/archive-card.css` | feature | shared | 75 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/archive-search-and-grid.css` | feature | shared | 83 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/archive-session-status.css` | feature | shared | 85 | 12 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/archive-stats.css` | feature | shared | 81 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-features-and-grid.css` | feature | shared | 84 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-shell.css` | feature | shared | 119 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/landing-side-stack.css` | feature | shared | 66 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/portal-background.css` | feature | shared | 64 | 12 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/portal-shapes.css` | feature | shared | 60 | 11 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/portal-sparks-and-responsive.css` | feature | shared | 102 | 25 | 1 |
-| `src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css` | feature | shared | 65 | 10 | 1 |
-| `src/frontend/shared/styles/features/landing-archive.css` | feature | shared | 12 | 0 | 1 |
 | `src/frontend/shared/styles/features/player-campaign/player-campaign-character.css` | feature | shared | 10 | 8 | 1 |
 | `src/frontend/shared/styles/features/player-campaign/player-campaign-constellation.css` | feature | shared | 10 | 8 | 1 |
 | `src/frontend/shared/styles/features/player-campaign/player-campaign-memory.css` | feature | shared | 10 | 8 | 1 |
@@ -326,9 +313,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/shortcuts-panel.css` | feature | shared | 66 | 11 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | feature | shared | 15 | 2 | 1 |
 | `src/frontend/shared/styles/features/system-announcements.css` | feature | shared | 91 | 12 | 1 |
-| `src/frontend/shared/styles/features/timeline/timeline-events.css` | feature | shared | 112 | 21 | 1 |
-| `src/frontend/shared/styles/features/timeline/timeline-filters-and-stats.css` | feature | shared | 105 | 14 | 1 |
-| `src/frontend/shared/styles/features/timeline.css` | feature | shared | 3 | 0 | 1 |
 | `src/frontend/shared/styles/foundation/accessibility.css` | foundation | shared | 8 | 2 | 1 |
 | `src/frontend/shared/styles/foundation/color-scheme.css` | foundation | shared | 12 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/fonts.css` | foundation | shared | 16 | 0 | 1 |
@@ -388,7 +372,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/workspace/workspace-tabs.css` | layout | shared | 62 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-variants.css` | layout | shared | 81 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 42 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 35 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 12 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 12 | 1 |
@@ -771,7 +755,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-template/template-import-dialog.css:5` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template/template-import-dialog.css:10` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template/template-import-dialog.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/landing-archive/template-options-and-restore.css:42` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/player-portal/player-history-responsive.css:43` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/player-portal/player-history-responsive.css:51` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/player-portal/player-history-responsive.css:56` | Important declarations bypass the intended cascade. |
