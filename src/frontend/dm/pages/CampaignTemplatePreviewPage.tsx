@@ -14,6 +14,8 @@ import { fetchSession } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore, type CampaignStateStore, type Entity, type Relation } from "../../shared/stores/campaignStore.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
+import { MarkdownContent } from "../../shared/components/MarkdownContent.js";
+import { markdownToPlainText } from "../../shared/utils/markdownText.js";
 import { EntityRelationsTab } from "../entities/relations/EntityRelationsTab.js";
 import { TemplateEntityPreviewModal } from "./TemplateEntityPreviewModal.js";
 import {
@@ -140,7 +142,7 @@ function PerspectiveSelector({
         ))}
       </div>
       <div className="campaign-template-preview-perspective__panel">
-        {tab === "story" && <p className="campaign-template-preview-perspective__story">{storyText}</p>}
+        {tab === "story" && <MarkdownContent value={storyText} className="campaign-template-preview-perspective__story" />}
         {tab === "prep" && (
           <>
             <strong>{prepTitle}</strong>
@@ -459,9 +461,10 @@ export function CampaignTemplatePreviewPage() {
             {t("campaignTemplatePreview.eyebrow")}
           </div>
           <h1>{template.title}</h1>
-          <p className="campaign-template-preview-hero__pitch">
-            {template.pitch || template.summary || template.description}
-          </p>
+          <MarkdownContent
+            value={template.pitch || template.summary || template.description}
+            className="campaign-template-preview-hero__pitch"
+          />
           <div className="campaign-template-preview-hero__ctas">
             <button type="button" className="btn btn-primary" onClick={requestCreateCopy} disabled={importing || loading}>
               <Wand2 size={16} />
@@ -625,7 +628,7 @@ export function CampaignTemplatePreviewPage() {
               {guideEntities.map((entity) => (
                 <article key={entity.entityId}>
                   <strong>{entity.title}</strong>
-                  <p>{entity.summary || entity.content || t("campaignTemplatePreview.noSummary")}</p>
+                  <p>{markdownToPlainText(entity.summary || entity.content) || t("campaignTemplatePreview.noSummary")}</p>
                 </article>
               ))}
             </div>
@@ -675,7 +678,7 @@ export function CampaignTemplatePreviewPage() {
                   {labelFor(featuredEntities[0].entityType, ENTITY_TYPE_LABEL_KEYS, t)}
                 </span>
                 <strong>{featuredEntities[0].title}</strong>
-                <p>{featuredEntities[0].subtitle || featuredEntities[0].summary}</p>
+                <p>{featuredEntities[0].subtitle || markdownToPlainText(featuredEntities[0].summary)}</p>
               </article>
               {featuredEntities.slice(1, 4).map((entity) => (
                 <article key={entity.entityId} className="campaign-template-preview-world__tile">
@@ -683,7 +686,7 @@ export function CampaignTemplatePreviewPage() {
                     {labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}
                   </span>
                   <strong>{entity.title}</strong>
-                  <p>{entity.subtitle || entity.summary}</p>
+                  <p>{entity.subtitle || markdownToPlainText(entity.summary)}</p>
                 </article>
               ))}
             </div>

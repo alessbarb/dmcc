@@ -1,6 +1,7 @@
 import { Eye, Sparkles } from "lucide-react";
 import type { I18nContextType } from "../../shared/i18n/I18nContext.js";
 import type { CampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
+import { markdownToPlainText } from "../../shared/utils/markdownText.js";
 import "../../shared/styles/features/campaign-template.css";
 
 interface CampaignTemplateLibrarySectionProps {
@@ -48,7 +49,7 @@ export function CampaignTemplateLibrarySection({
                   </div>
                   <span className="dm-campaign-template-card__version">v{template.version}</span>
                 </div>
-                <p className="dm-campaign-template-card__desc">{template.description}</p>
+                <p className="dm-campaign-template-card__desc">{markdownToPlainText(template.description)}</p>
                 <div className="dm-campaign-template-card__meta">
                   <span>{t("landing.campaignTemplateDifficulty", { difficulty: template.difficulty })}</span>
                   {copies.length > 0 && (
