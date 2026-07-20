@@ -1,3 +1,11 @@
-@import "./campaign-navigation/campaign-navigation-01.css";
-@import "./campaign-navigation/campaign-navigation-02.css";
-@import "./campaign-navigation/campaign-navigation-03.css";
+@import "./campaign-navigation/campaign-navigation-language.css";
+@import "./campaign-navigation/campaign-navigation-responsive.css";
+@import "./campaign-navigation/campaign-navigation-shell.css";
+@import "./campaign-navigation/campaign-navigation-controls.css";
+@import "./campaign-navigation/campaign-navigation-items.css";
+@import "./campaign-navigation/campaign-navigation-items-layout.css";
+@import "./campaign-navigation/campaign-navigation-items-states.css";
+@import "./campaign-navigation/campaign-navigation-items-responsive.css";
+@import "./campaign-navigation/campaign-navigation-secondary.css";
+@import "./campaign-navigation/campaign-navigation-secondary-layout.css";
+@import "./campaign-navigation/campaign-navigation-secondary-states.css";
