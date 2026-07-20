@@ -44,7 +44,6 @@
 @import "./features/quick-capture.css";
 @import "./features/landing-archive.css";
 @import "./features/kanban.css";
-@import "./features/campaign-canvas.css";
 @import "./features/auth.css";
 @import "./features/campaign-template.css";
 @import "./features/dm-dashboard.css";
@@ -62,17 +61,4 @@
 @import "./features/pwa-update-banner.css";
 @import "./features/relation-edge-label.css";
 @import "./features/entity-trace.css";
-@import "./features/canvas-page-header.css";
-@import "./features/canvas-board-dialogs.css";
-@import "./features/canvas-palette.css";
-@import "./features/canvas-entity-node.css";
-@import "./features/canvas-inspector.css";
-@import "./features/canvas-narrative-lint.css";
-@import "./features/canvas-bulk-actions.css";
-@import "./features/canvas-group-hulls.css";
 @import "./features/session-prep-form.css";
-@import "./features/canvas-toolbar.css";
-@import "./features/canvas-flow.css";
-@import "./features/canvas-dialog-forms.css";
-@import "./features/canvas-mystery-health.css";
-@import "./features/canvas-presentation.css";
