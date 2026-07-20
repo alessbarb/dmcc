@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import type { Entity } from "../../../shared/stores/campaignStore.js";
+import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
 import "../../../shared/styles/features/kanban-board.css";
 import "../../../shared/styles/features/kanban.css";
 import {
@@ -179,7 +180,10 @@ function KanbanCard({
         <strong className="kanban-card__title">{entity.title}</strong>
         {entity.summary && (
           <span className="kanban-card__summary">
-            {entity.summary.length > 90 ? `${entity.summary.slice(0, 90)}…` : entity.summary}
+            {(() => {
+              const summary = markdownToPlainText(entity.summary);
+              return summary.length > 90 ? `${summary.slice(0, 90)}…` : summary;
+            })()}
           </span>
         )}
         {entity.importance && entity.importance !== "normal" && (

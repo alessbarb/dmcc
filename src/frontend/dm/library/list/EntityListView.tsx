@@ -8,6 +8,7 @@ import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatVisibility } from "@shared/i18n/index.js";
 import { GuidedEmptyState } from "../../onboarding/CampaignStarterHub.js";
+import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
 import "../../entities/entity-list-toolbar.css";
 import "../../entities/entity-grid.css";
 import "../../entities/entity-card.css";
@@ -293,7 +294,7 @@ export function EntityListView() {
                 <span className="entity-compact-row__title">{entity.title}</span>
                 {entity.subtitle && <span className="entity-compact-row__subtitle">({entity.subtitle})</span>}
               </div>
-              {entity.summary && <span className="entity-compact-row__summary">{entity.summary}</span>}
+              {entity.summary && <span className="entity-compact-row__summary">{markdownToPlainText(entity.summary)}</span>}
             </div>
           </div>
 

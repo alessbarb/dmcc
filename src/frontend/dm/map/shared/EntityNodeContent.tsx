@@ -4,6 +4,7 @@ import type { Entity } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
 import "../../../shared/styles/features/canvas-entity-node.css";
 
 export interface EntityNodeContentProps {
@@ -57,8 +58,9 @@ export function EntityNodeContent({
   const isBlocked = entity.status === "blocked";
   const isResolved = entity.status === "resolved";
 
-  const subtitle = entity.subtitle || (entity.summary && entity.summary.length > 0
-    ? (density === "detailed" ? entity.summary : (entity.summary.length > 48 ? entity.summary.slice(0, 48) + "…" : entity.summary))
+  const summary = markdownToPlainText(entity.summary);
+  const subtitle = entity.subtitle || (summary.length > 0
+    ? (density === "detailed" ? summary : (summary.length > 48 ? summary.slice(0, 48) + "…" : summary))
     : undefined);
 
   return (

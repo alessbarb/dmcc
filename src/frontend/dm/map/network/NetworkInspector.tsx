@@ -4,6 +4,7 @@ import type { Entity, Relation } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatRelationType } from "@shared/i18n/index.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
+import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
 
 export interface NetworkInspectorProps {
   entity: Entity;
@@ -54,7 +55,7 @@ export function NetworkInspector({
         </div>
       </header>
 
-      {entity.summary && <p className="network-inspector__summary">{entity.summary}</p>}
+      {entity.summary && <p className="network-inspector__summary">{markdownToPlainText(entity.summary)}</p>}
 
       <div className="network-inspector__relations">
         <div className="network-inspector__section-title">
