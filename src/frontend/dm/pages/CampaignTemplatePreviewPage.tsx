@@ -557,8 +557,8 @@ export function CampaignTemplatePreviewPage() {
         </div>
       </section>
 
-      <div className="campaign-template-editorial-grid">
-        <section className="card campaign-template-preview-card campaign-template-editorial-card">
+      <div className="campaign-template-editorial-grid campaign-template-editorial-grid--asymmetric">
+        <section className="card campaign-template-preview-card campaign-template-editorial-card campaign-template-editorial-card--dominant">
           <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.whyTitle")}</h2>
             <span>{t("campaignTemplatePreview.whyDesc")}</span>
@@ -574,15 +574,15 @@ export function CampaignTemplatePreviewPage() {
           </ul>
         </section>
 
-        <section className="card campaign-template-preview-card campaign-template-editorial-card">
+        <section className="card campaign-template-preview-card campaign-template-editorial-card campaign-template-editorial-card--sidebar">
           <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.includesTitle")}</h2>
             <span>{t("campaignTemplatePreview.includesDesc")}</span>
           </div>
-          <ul className="campaign-template-preview-check-list">
+          <ul className="campaign-template-preview-check-list campaign-template-preview-check-list--compact">
             {(template.includedMaterial ?? []).map((material) => (
               <li key={material}>
-                <CheckCircle2 size={15} />
+                <CheckCircle2 size={13} />
                 <span>{material}</span>
               </li>
             ))}

@@ -7,10 +7,45 @@
   margin-bottom: 16px;
 }
 
+.campaign-template-editorial-grid--asymmetric {
+  grid-template-columns: 1.7fr 1fr;
+  align-items: start;
+}
+
 .campaign-template-editorial-card p {
   margin: 0 0 14px;
   color: var(--theme-text-secondary);
   line-height: 1.65;
+}
+
+.campaign-template-editorial-card--dominant p {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--theme-text-primary);
+}
+
+.campaign-template-editorial-card--sidebar {
+  background: var(--theme-surfaces-raised);
+}
+
+.campaign-template-editorial-card--sidebar h2 {
+  font-size: 0.95rem;
+}
+
+.campaign-template-preview-check-list--compact {
+  gap: 7px;
+}
+
+.campaign-template-preview-check-list--compact li {
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .campaign-template-editorial-grid--asymmetric {
+    grid-template-columns: 1fr;
+  }
 }
 
 .campaign-template-preview-check-list {
