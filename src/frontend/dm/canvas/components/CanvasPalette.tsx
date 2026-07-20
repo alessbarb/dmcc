@@ -384,8 +384,8 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
     <div className={["canvas-palette", className].filter(Boolean).join(" ")}>
       {onMobileClose && (
         <div className="canvas-mobile-sheet-header">
-          <span>Añadir</span>
-          <button type="button" className="canvas-mobile-sheet-close" onClick={onMobileClose} aria-label="Cerrar panel de añadir">
+          <span>{t("canvas.toolbar.addNode")}</span>
+          <button type="button" className="canvas-mobile-sheet-close" onClick={onMobileClose} aria-label={t("canvas.closeAddPanel")}>
             <X size={16} />
           </button>
         </div>

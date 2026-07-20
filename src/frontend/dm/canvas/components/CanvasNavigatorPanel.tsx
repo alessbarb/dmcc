@@ -89,7 +89,7 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
       <div className="canvas-navigator-panel__header">
         <h2>{t("canvas.navigator.title")}</h2>
         {onMobileClose && (
-          <button type="button" className="canvas-mobile-sheet-close" onClick={onMobileClose} aria-label="Cerrar panel de búsqueda">
+          <button type="button" className="canvas-mobile-sheet-close" onClick={onMobileClose} aria-label={t("canvas.closeSearchPanel")}>
             <X size={16} />
           </button>
         )}

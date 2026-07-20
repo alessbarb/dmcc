@@ -335,7 +335,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                 className="form-textarea"
                 value={entityForm.content}
                 onChange={(e) => setEntityForm({ ...entityForm, content: e.target.value })}
-                placeholder="Historia detallada, reglas, notas..."
+                placeholder={t("entityExtra.historyPlaceholder")}
               />
             </div>
 

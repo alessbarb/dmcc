@@ -26,6 +26,7 @@ import "./shared/styles/landing.css";
 // ─── App Preview Mock ────────────────────────────────────────────────────────
 
 function AppPreviewMock() {
+  const { t } = useTranslation();
   return (
     <div className="rl-preview-frame" aria-hidden="true">
       <div className="rl-preview-sidebar">
@@ -51,22 +52,22 @@ function AppPreviewMock() {
           <div className="rl-preview-cover">
             <div className="rl-preview-cover__overlay" />
             <span className="rl-preview-cover__title">Oracle: La Triple Eclipse</span>
-            <span className="rl-preview-cover__badge"><span className="rl-preview-pulse" />Sesión activa</span>
+            <span className="rl-preview-cover__badge"><span className="rl-preview-pulse" />{t("landingDemo.activeSession")}</span>
           </div>
           <div className="rl-preview-stats">
-            <div className="rl-preview-stat"><Users size={10} /><strong>109</strong><small>entidades</small></div>
-            <div className="rl-preview-stat"><Network size={10} /><strong>228</strong><small>relaciones</small></div>
-            <div className="rl-preview-stat"><Database size={10} /><strong>25</strong><small>hechos</small></div>
+            <div className="rl-preview-stat"><Users size={10} /><strong>109</strong><small>{t("landingDemo.entities")}</small></div>
+            <div className="rl-preview-stat"><Network size={10} /><strong>228</strong><small>{t("landingDemo.relations")}</small></div>
+            <div className="rl-preview-stat"><Database size={10} /><strong>25</strong><small>{t("landingDemo.facts")}</small></div>
           </div>
           <div className="rl-preview-tags">
-            <span className="rl-preview-tag rl-preview-tag--purple">Secreto oculto</span>
-            <span className="rl-preview-tag rl-preview-tag--amber">Pista sin revelar</span>
-            <span className="rl-preview-tag rl-preview-tag--blue">Facción activa</span>
-            <span className="rl-preview-tag rl-preview-tag--green">Sesión preparada</span>
+            <span className="rl-preview-tag rl-preview-tag--purple">{t("landingDemo.hiddenSecret")}</span>
+            <span className="rl-preview-tag rl-preview-tag--amber">{t("landingDemo.unrevealedClue")}</span>
+            <span className="rl-preview-tag rl-preview-tag--blue">{t("landingDemo.activeFaction")}</span>
+            <span className="rl-preview-tag rl-preview-tag--green">{t("landingDemo.preparedSession")}</span>
           </div>
           <div className="rl-preview-alert">
             <Shield size={10} />
-            <span>Qué toca ahora: prepara la escena con las pistas pendientes</span>
+            <span>{t("landingDemo.whatNextText")}</span>
           </div>
         </div>
       </div>
@@ -78,6 +79,7 @@ function AppPreviewMock() {
 // ─── Feature Illustrations ───────────────────────────────────────────────────
 
 function CanvasIllustration() {
+  const { t } = useTranslation();
   return (
     <div className="rl-illus rl-illus-canvas">
       <svg className="rl-illus-canvas__svg" viewBox="0 0 340 260" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,10 +88,10 @@ function CanvasIllustration() {
         <line x1="170" y1="130" x2="90" y2="200" stroke="color-mix(in srgb, var(--theme-entities-location-foreground) 35%, transparent)" strokeWidth="1.5" strokeDasharray="5 4"/>
         <line x1="170" y1="130" x2="270" y2="195" stroke="color-mix(in srgb, var(--theme-entities-quest-foreground) 35%, transparent)" strokeWidth="1.5" strokeDasharray="5 4"/>
         <line x1="90" y1="200" x2="270" y2="195" stroke="color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent)" strokeWidth="1" strokeDasharray="3 6"/>
-        <text x="120" y="100" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">conoce</text>
-        <text x="195" y="95" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">oculta</text>
-        <text x="95" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">dirige</text>
-        <text x="215" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">causa</text>
+        <text x="120" y="100" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">{t("landingDemo.knows")}</text>
+        <text x="195" y="95" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">{t("landingDemo.hides")}</text>
+        <text x="95" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">{t("landingDemo.leads")}</text>
+        <text x="215" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">{t("landingDemo.causes")}</text>
       </svg>
       <div className="rl-cn-node rl-cn-node--npc">
         <Users size={11} /><span>Ragnar</span>
@@ -111,17 +113,18 @@ function CanvasIllustration() {
 }
 
 function MemoryIllustration() {
+  const { t } = useTranslation();
   return (
     <div className="rl-illus rl-illus-memory">
       <div className="rl-mem-card rl-mem-card--canon">
         <div className="rl-mem-card__badge badge--canon">Canon</div>
-        <p className="rl-mem-card__text">Ragnar fue expulsado del Gremio en el año 483.</p>
+        <p className="rl-mem-card__text">{t("landingDemo.sampleRagnarText")}</p>
         <div className="rl-mem-card__meta"><Clock size={9} /> Sesión 3 · revelado</div>
       </div>
       <div className="rl-mem-card rl-mem-card--secret">
-        <div className="rl-mem-card__badge badge--secret">Secreto DM</div>
-        <p className="rl-mem-card__text">El grimorio está oculto en la Torre Norte, nivel 3.</p>
-        <div className="rl-mem-card__meta"><EyeOff size={9} /> Solo visible para el DM</div>
+        <div className="rl-mem-card__badge badge--secret">{t("landingDemo.dmSecretLabel")}</div>
+        <p className="rl-mem-card__text">{t("landingDemo.sampleGrimoireText")}</p>
+        <div className="rl-mem-card__meta"><EyeOff size={9} /> {t("landingDemo.onlyVisibleDM")}</div>
       </div>
       <div className="rl-mem-card rl-mem-card--rumor">
         <div className="rl-mem-card__badge badge--rumor">Rumor</div>

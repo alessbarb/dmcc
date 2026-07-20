@@ -165,13 +165,13 @@ export function DmHubCampaignsColumn({
                             <div
                               className="dm-campaign-card__actions"
                               onClick={(e) => e.stopPropagation()}
-                              aria-label="Acciones de campaña"
+                              aria-label={t("campaignExtra.actions")}
                             >
                               <button
                                 type="button"
                                 className="dm-campaign-card__action"
                                 onClick={() => openEditModal(c)}
-                                aria-label="Editar campaña"
+                                aria-label={t("campaignExtra.edit")}
                               >
                                 <Settings size={11} />
                               </button>
@@ -179,7 +179,7 @@ export function DmHubCampaignsColumn({
                                 type="button"
                                 className="dm-campaign-card__action dm-campaign-card__action--danger"
                                 onClick={() => openDeleteModal(c.campaignId, c.title)}
-                                aria-label="Eliminar campaña"
+                                aria-label={t("campaignExtra.delete")}
                               >
                                 <Trash2 size={11} />
                               </button>

@@ -173,13 +173,13 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
             );
           } else if (kind === "public" || kind === "party") {
             return (
-              <div className="rg-card__dm-badge rg-card__dm-badge--revealed" title="Revelado (Visible para todos los jugadores)">
+              <div className="rg-card__dm-badge rg-card__dm-badge--revealed" title={t("canvas.node.visibilityRevealed")}>
                 <span className="rg-card__visibility-label">👁 Revelado</span>
               </div>
             );
           } else {
             return (
-              <div className="rg-card__dm-badge rg-card__dm-badge--partial" title="Parcialmente descubierto (Visible para algunos jugadores/personajes)">
+              <div className="rg-card__dm-badge rg-card__dm-badge--partial" title={t("canvas.node.visibilityPartial")}>
                 <span className="rg-card__visibility-label">🕯 Parcial</span>
               </div>
             );

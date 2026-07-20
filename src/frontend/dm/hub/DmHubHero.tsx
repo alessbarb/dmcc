@@ -81,18 +81,18 @@ export function DmHubHero({
           </div>
         </header>
 
-        <nav className="dm-hub-mobile-actions" aria-label="Acciones rápidas de campañas">
+        <nav className="dm-hub-mobile-actions" aria-label={t("campaignExtra.quickActionsNav")}>
           <button type="button" className="dm-hub-mobile-action dm-hub-mobile-action--theme-accents-primary-foreground" onClick={onCreateCampaign}>
             <Plus size={16} />
-            <span>Nueva</span>
+            <span>{t("common.create")}</span>
           </button>
           <button type="button" className="dm-hub-mobile-action" onClick={onOpenCampaigns}>
             <FolderOpen size={16} />
-            <span>Campañas</span>
+            <span>{t("nav.activeCampaign")}</span>
           </button>
           <button type="button" className="dm-hub-mobile-action" onClick={onOpenTemplates}>
             <Sparkles size={16} />
-            <span>Aventuras</span>
+            <span>{t("landing.campaignTemplateTitle")}</span>
           </button>
           <button type="button" className="dm-hub-mobile-action" onClick={onRestoreBackup}>
             <RotateCcw size={16} />

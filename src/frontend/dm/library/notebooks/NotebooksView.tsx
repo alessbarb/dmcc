@@ -551,14 +551,14 @@ export function NotebooksView() {
               <div className="notebook-detail-actions">
                 <button type="button" className="btn btn-sm btn-outline-secondary" title={t("notebooks.actions.editNotebook")} onClick={() => setIsEditing(true)}>
                   <Edit2 className="notebooks-action-icon" size={16} />
-                  <span>Editar</span>
+                  <span>{t("common.edit")}</span>
                 </button>
                 <button type="button" className="btn btn-sm btn-outline-primary" title={t("notebooks.actions.addChild")} onClick={() => { setIsCreatingChild(true); setIsCreatingRoot(false); setNewTitle(""); }}>
                   <FolderPlus className="notebooks-action-icon" size={16} />
-                  <span>Subcuaderno</span>
+                  <span>{t("notebooks.actions.addChild")}</span>
                 </button>
                 <ContextMenu
-                  buttonLabel="Más acciones"
+                  buttonLabel={t("common.moreActions")}
                   items={menuItems}
                   align="end"
                 />

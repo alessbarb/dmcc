@@ -225,7 +225,7 @@ function StandardEntityDetailModal({
           <div
             className="entity-detail-tabs"
             role="tablist"
-            aria-label="Secciones de la entidad"
+            aria-label={t("entityExtra.sectionsAriaLabel")}
           >
             {TABS.map((tab) => {
               const isActive = activeTab === tab.id;
@@ -411,6 +411,7 @@ function FullImageDialog({ imageUrl, title, onClose }: { imageUrl: string; title
 }
 
 function StandardEntityDetailWithImageFocus(props: EntityDetailModalProps) {
+  const { t } = useTranslation();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const metadata = props.selectedEntity.metadata ?? {};
   const imageUrl = useMemo(
@@ -501,8 +502,8 @@ function StandardEntityDetailWithImageFocus(props: EntityDetailModalProps) {
                 event.stopPropagation();
                 setIsAdjusting(true);
               }}
-              aria-label="Ajustar encuadre"
-              title="Ajustar encuadre"
+              aria-label={t("entityExtra.fitFrame")}
+              title={t("entityExtra.fitFrame")}
             >
               <Focus size={16} />
             </button>

@@ -505,13 +505,13 @@ export function CanvasToolbar({
         </button>
       </div>
       <div className="canvas-toolbar__divider" />
-      <span className="canvas-mobile-tools-section">Crear</span>
+      <span className="canvas-mobile-tools-section">{t("common.create")}</span>
       <div className="canvas-toolbar__group">
         <button className="canvas-toolbar__btn" onClick={handleAddNote} title={t("canvas.toolbar.quickNote")}><StickyNote size={15} /></button>
         <button className="canvas-toolbar__btn" onClick={handleAddGroup} title={t("canvas.toolbar.visualGroup")}><Frame size={15} /></button>
       </div>
       <div className="canvas-toolbar__divider" />
-      <span className="canvas-mobile-tools-section">Vista</span>
+      <span className="canvas-mobile-tools-section">{t("common.summary")}</span>
       <div className="canvas-toolbar__group">
         <button className="canvas-toolbar__btn" onClick={handleFitView} title={t("canvas.toolbar.fitView")}><Maximize2 size={15} /></button>
         <button className="canvas-toolbar__btn" onClick={handleFocusSelection} title={t("canvas.toolbar.focusSelection")}><Target size={15} /></button>
@@ -521,7 +521,7 @@ export function CanvasToolbar({
         {groupFocusSelect}
       </div>
       <div className="canvas-toolbar__divider" />
-      <span className="canvas-mobile-tools-section">Seguridad</span>
+      <span className="canvas-mobile-tools-section">{t("account.nav.security")}</span>
       <div className="canvas-toolbar__group">
         <button className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`} onClick={handleLockToggle} title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}>
           {isLocked ? <Lock size={15} /> : <Unlock size={15} />}
@@ -551,11 +551,11 @@ export function CanvasToolbar({
       <Panel position="bottom-right" className="canvas-toolbar-panel canvas-toolbar-panel--mobile">
         {isMobileOpen && (
           <>
-            <button type="button" className="canvas-mobile-tools-backdrop" onClick={closeMobileTools} aria-label="Cerrar herramientas del Canvas" />
-            <div className="canvas-mobile-tools-popover" role="dialog" aria-label="Herramientas del Canvas">
+            <button type="button" className="canvas-mobile-tools-backdrop" onClick={closeMobileTools} aria-label={t("canvas.toolsAriaLabel")} />
+            <div className="canvas-mobile-tools-popover" role="dialog" aria-label={t("canvas.toolsAriaLabel")}>
               <div className="canvas-mobile-tools-popover__header">
-                <span>Herramientas</span>
-                <button type="button" onClick={closeMobileTools} aria-label="Cerrar herramientas"><X size={16} /></button>
+                <span>{t("canvas.toolsAriaLabel")}</span>
+                <button type="button" onClick={closeMobileTools} aria-label={t("common.close")}><X size={16} /></button>
               </div>
               {mobileToolbarContent}
             </div>

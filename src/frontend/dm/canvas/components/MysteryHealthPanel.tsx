@@ -2,6 +2,7 @@ import { X } from "lucide-react";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import type { Entity, Fact, Relation } from "../../../shared/stores/campaignStore.js";
 import { analyzeMysteryHealth, type MysteryIssue } from "../analysis/mysteryAnalysis.js";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 
 const severityLabel: Record<MysteryIssue["severity"], string> = {
   error: "Crítico",
@@ -26,15 +27,16 @@ export function MysteryHealthPanel({
   onFocusEntity?: (entityId: string) => void;
   onFocusFact?: (factId: string) => void;
 }) {
+  const { t } = useTranslation();
   const issues = analyzeMysteryHealth({ canvas, entities, facts, relations });
   const criticalCount = issues.filter((issue) => issue.severity === "error").length;
 
   return (
-    <aside className="canvas-inspector canvas-lint-drawer" aria-label="Salud del misterio">
+    <aside className="canvas-inspector canvas-lint-drawer" aria-label={t("canvas.mysteryHealth")}>
       <div className="inspector-header">
         <h2>🔍 Salud del misterio</h2>
         {onClose && (
-          <button type="button" onClick={onClose} className="inspector-close-btn" aria-label="Cerrar salud del misterio">
+          <button type="button" onClick={onClose} className="inspector-close-btn" aria-label={t("common.close")}>
             <X size={16} />
           </button>
         )}

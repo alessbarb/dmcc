@@ -5,6 +5,7 @@ import type { Entity, CampaignStateStore } from "../../shared/stores/campaignSto
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import { useBodyDataAttribute } from "../../shared/hooks/useBodyDataAttribute.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import "./entity-detail-modal.css";
 import "./entityDetailHeroActions.css";
 import "./entityDetailDialog.css";
@@ -60,6 +61,7 @@ function Field({ label, value }: { label: string; value: unknown }) {
 
 export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onClose, onEditEntity }: PlayerCharacterDetailModalProps) {
   useBodyDataAttribute("entityDetailDialogOpen", "true");
+  const { t } = useTranslation();
   const [sheet, setSheet] = useState<CharacterSheetResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -168,10 +170,10 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
 
         <div className="entity-detail-tab-bar">
           <div className="entity-detail-tab-actions">
-            <button type="button" className="btn btn-secondary btn-icon" onClick={onEditEntity} aria-label="Editar entidad" title="Editar entidad">
+            <button type="button" className="btn btn-secondary btn-icon" onClick={onEditEntity} aria-label={t("entityExtra.editEntity")} title={t("entityExtra.editEntity")}>
               <Pencil size={16} />
             </button>
-            <button type="button" className="btn btn-secondary btn-icon" onClick={onClose} aria-label="Cerrar" title="Cerrar">
+            <button type="button" className="btn btn-secondary btn-icon" onClick={onClose} aria-label={t("common.close")} title={t("common.close")}>
               <X size={17} />
             </button>
           </div>

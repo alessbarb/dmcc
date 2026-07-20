@@ -157,10 +157,10 @@ export function CanvasPageHeader({
         type="button"
         className={`btn btn-sm ${isViewPopoverOpen ? "btn-primary" : "btn-secondary"} canvas-header__button`}
         onClick={() => setIsViewPopoverOpen(v => !v)}
-        title="Ajustes de Vista del Canvas"
+        title={t("canvas.viewSettingsTitle")}
       >
         <SlidersHorizontal size={12} />
-        <span>Vista</span>
+        <span>{t("common.summary")}</span>
       </button>
       {isViewPopoverOpen && (
         <div

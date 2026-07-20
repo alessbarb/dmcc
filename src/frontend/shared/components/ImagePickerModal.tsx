@@ -8,6 +8,7 @@ import {
   type ImageCatalogItem,
 } from "./imageCatalog.js";
 import "../styles/features/image-picker-modal.css";
+import { useTranslation } from "../i18n/useTranslation.js";
 
 export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities";
 type ImagePickerView = "groups" | "images";
@@ -91,6 +92,7 @@ function getIsMobilePicker(): boolean {
 }
 
 export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePickerModalProps) {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<ImageCatalogGroups>({});
   const [activeGroup, setActiveGroup] = useState<string>("");
   const [mobileView, setMobileView] = useState<ImagePickerView>("groups");
@@ -195,7 +197,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         <div className="image-picker-modal__header">
           <div className="image-picker-modal__heading">
             {isMobilePicker && mobileView === "images" && (
-              <button type="button" className="btn btn-icon btn-secondary" onClick={() => setMobileView("groups")} aria-label="Volver a catálogos">
+              <button type="button" className="btn btn-icon btn-secondary" onClick={() => setMobileView("groups")} aria-label={t("imagePickerExtra.backToCatalogs")}>
                 <ArrowLeft size={16} />
               </button>
             )}

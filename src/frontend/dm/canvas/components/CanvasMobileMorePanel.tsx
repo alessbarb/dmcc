@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { CalendarDays, Frame, Maximize2, Play, Shield, SlidersHorizontal, StickyNote, X, ZoomIn, ZoomOut } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 
 interface CanvasMobileMorePanelProps {
   isOpen: boolean;
@@ -42,11 +43,12 @@ export function CanvasMobileMorePanel({
   onOpenLegend,
   onOpenLint,
 }: CanvasMobileMorePanelProps) {
+  const { t } = useTranslation();
   return (
-    <div className={`canvas-mobile-more-panel ${isOpen ? "is-open" : ""}`} aria-label="Acciones secundarias del canvas">
+    <div className={`canvas-mobile-more-panel ${isOpen ? "is-open" : ""}`} aria-label={t("canvas.closeMorePanel")}>
       <div className="canvas-mobile-sheet-header">
-        <span>Más acciones</span>
-        <button type="button" className="canvas-mobile-sheet-close" onClick={onClose} aria-label="Cerrar panel de más acciones">
+        <span>{t("common.moreActions")}</span>
+        <button type="button" className="canvas-mobile-sheet-close" onClick={onClose} aria-label={t("canvas.closeMorePanel")}>
           <X size={16} />
         </button>
       </div>

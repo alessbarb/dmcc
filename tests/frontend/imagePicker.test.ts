@@ -44,7 +44,7 @@ describe("ImagePickerModal", () => {
     expect(src).toContain('const [mobileView, setMobileView] = useState<ImagePickerView>("groups")');
     expect(src).toContain("function GroupBrowser");
     expect(src).toContain("onOpenGroup");
-    expect(src).toContain("Volver a catálogos");
+    expect(src).toContain("imagePickerExtra.backToCatalogs");
   });
 
   it("uses the shared stylesheet for the picker shell and scroll regions", () => {

@@ -53,7 +53,7 @@ describe("player character sheet synchronization contract", () => {
     expect(detailModal).toContain("withImageFocalPoint");
     expect(detailModal).toContain("--entity-detail-image-position");
     expect(detailModal).toContain("EntityImageReframeDialog");
-    expect(detailModal).toContain("Ajustar encuadre");
+    expect(detailModal).toContain("entityExtra.fitFrame");
     expect(detailModal).toContain("Ver imagen completa");
 
     const imageDialogStyles = readCssFamily(
