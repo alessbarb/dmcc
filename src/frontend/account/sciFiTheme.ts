@@ -2,7 +2,7 @@ import { defaultTheme } from "./defaultTheme.js";
 import {
   THEME_CONTRACT_VERSION,
   type ThemeDomainColor,
-  type ThemePackageV1,
+  type ThemePackage,
   type ThemeVariant,
 } from "./themeContract.js";
 
@@ -168,6 +168,16 @@ const dark: ThemeVariant = {
     unreadMarker: "hsl(185 88% 55%)",
     mentionBackground: "hsl(49 94% 60% / 0.18)",
   },
+  artwork: {
+    appBackgroundImage: "url('/assets/themes/sci-fi/app-background.webp')",
+    appBackgroundPosition: "center top",
+    appBackgroundPositionCompact: "58% top",
+    appBackgroundSize: "cover",
+    appBackgroundSizeCompact: "auto 100%",
+    appBackgroundOpacity: "0.22",
+    appBackgroundVeil:
+      "linear-gradient(180deg, hsl(222 48% 5% / 0.46), hsl(222 48% 5% / 0.84))",
+  },
   identityPalette: [
     "hsl(190 92% 62%)",
     "hsl(154 75% 55%)",
@@ -285,6 +295,16 @@ const light: ThemeVariant = {
     unreadMarker: "hsl(190 82% 28%)",
     mentionBackground: "hsl(49 84% 48% / 0.16)",
   },
+  artwork: {
+    appBackgroundImage: "url('/assets/themes/sci-fi/app-background.webp')",
+    appBackgroundPosition: "center top",
+    appBackgroundPositionCompact: "58% top",
+    appBackgroundSize: "cover",
+    appBackgroundSizeCompact: "auto 100%",
+    appBackgroundOpacity: "0.05",
+    appBackgroundVeil:
+      "linear-gradient(180deg, hsl(196 36% 96% / 0.78), hsl(196 36% 96% / 0.95))",
+  },
   identityPalette: [
     "hsl(190 70% 35%)",
     "hsl(154 62% 31%)",
@@ -303,4 +323,4 @@ export const sciFiTheme = {
   labelKey: "account.appearance.themeSciFi",
   supportsEnhancedContrast: true,
   variants: { light, dark },
-} satisfies ThemePackageV1;
+} satisfies ThemePackage;

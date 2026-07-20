@@ -1,7 +1,7 @@
 import {
   THEME_CONTRACT_VERSION,
   type ThemeDomainColor,
-  type ThemePackageV1,
+  type ThemePackage,
   type ThemeVariant,
 } from "./themeContract.js";
 
@@ -202,6 +202,16 @@ const dark: ThemeVariant = {
     unreadMarker: "hsl(38 66% 62%)",
     mentionBackground: "hsl(44 78% 65% / 0.18)",
   },
+  artwork: {
+    appBackgroundImage: "url('/assets/themes/default/app-background.webp')",
+    appBackgroundPosition: "center top",
+    appBackgroundPositionCompact: "58% top",
+    appBackgroundSize: "cover",
+    appBackgroundSizeCompact: "auto 100%",
+    appBackgroundOpacity: "0.20",
+    appBackgroundVeil:
+      "linear-gradient(180deg, hsl(228 36% 6% / 0.46), hsl(228 36% 6% / 0.84))",
+  },
   identityPalette: [
     "hsl(238 78% 74%)",
     "hsl(158 52% 58%)",
@@ -320,6 +330,16 @@ const light: ThemeVariant = {
     unreadMarker: "hsl(30 70% 38%)",
     mentionBackground: "hsl(44 80% 50% / 0.16)",
   },
+  artwork: {
+    appBackgroundImage: "url('/assets/themes/default/app-background.webp')",
+    appBackgroundPosition: "center top",
+    appBackgroundPositionCompact: "58% top",
+    appBackgroundSize: "cover",
+    appBackgroundSizeCompact: "auto 100%",
+    appBackgroundOpacity: "0.05",
+    appBackgroundVeil:
+      "linear-gradient(180deg, hsl(42 30% 96% / 0.78), hsl(42 30% 96% / 0.95))",
+  },
   identityPalette: [
     "hsl(238 62% 46%)",
     "hsl(158 58% 32%)",
@@ -338,4 +358,4 @@ export const defaultTheme = {
   labelKey: "account.appearance.themeDefault",
   supportsEnhancedContrast: true,
   variants: { light, dark },
-} satisfies ThemePackageV1;
+} satisfies ThemePackage;
