@@ -45,8 +45,9 @@ checkout actual la migración es incremental:
 * la importación monolítica `index.css` ya fue eliminada;
 * los dominios de navegación, captura rápida, plantillas, dashboard, canvas,
   portal de jugador y archivo de landing ya tienen hojas explícitas;
-* `landing.css` y `account.css` conservan dominios todavía pendientes de
-  subdivisión y no deben recibir estilos nuevos;
+* `landing.css` se carga explícitamente desde las superficies de landing y
+  mantiene la paleta oscura original del producto; `account.css` sigue siendo
+  global porque también alimenta `AccountModal` dentro del shell autenticado;
 * el baseline del auditor es un ratchet de deuda existente, no una aprobación
   de esa deuda como arquitectura final.
 
@@ -79,6 +80,11 @@ Fuera de estos archivos:
 * no gradientes con colores literales;
 * no sombras cromáticas literales;
 * no fallbacks visuales dentro de `var(...)`.
+
+Excepción explícita: el landing público conserva su identidad visual original
+independiente del tema asignado. Sus tokens fijos viven en
+`src/frontend/shared/styles/landing/landing-shell.css` y el auditor los trata
+como una excepción registrada; no deben propagarse a otras superficies.
 
 Ejemplo prohibido:
 
@@ -183,9 +189,9 @@ LibraryWorkspace importa CSS de todas las pestañas
 AppFooter importa CSS de transiciones de rutas
 ```
 
-Actualmente `CampaignShell` carga estilos de detalle de entidad de forma persistente.
-
-`AppFooter` importa una hoja de transiciones de campaña, lo que refleja una dependencia cruzada incorrecta.
+Estas dependencias se tratan como errores de arquitectura y deben resolverse
+moviendo cada import al consumidor real; no se deben añadir nuevos imports de
+dominio desde `CampaignShell` ni desde `AppFooter`.
 
 ---
 
@@ -278,8 +284,10 @@ antes de cerrar el Sprint 2; no se consideran parte de la cascada objetivo.
 import "./shared/styles/main.css";
 ```
 
-La cascada global ya no importa `index.css` ni `p1.css`; los dominios pendientes
-están explícitamente nombrados en `shared/styles/features/`.
+La cascada global ya no importa `index.css` ni `p1.css`; las hojas de dominio
+se cargan explícitamente desde sus consumidores. Las excepciones actuales son
+los layouts globales, el adaptador vendor de React Flow y `account.css`, que
+debe seguir disponible para el modal de cuenta compartido.
 
 ---
 
@@ -413,7 +421,9 @@ src/frontend/dm/canvas/
 
 React Flow debe cargarse una sola vez desde `shared/styles/vendor/react-flow.css`.
 
-Actualmente se importa directamente en canvas, network y relationship graph.
+Se importa una sola vez desde `shared/styles/main.css`; canvas, network y
+relationship graph solo consumen las reglas de adaptación propias de cada
+superficie.
 
 ## Workspaces
 
