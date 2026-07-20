@@ -1,9 +1,0 @@
-
-.dashboard-recap { color: var(--theme-text-secondary); line-height: 1.6; }
-.dashboard-live-table { margin-top: 12px; }
-.dashboard-activity-item { font-size: 13px; color: var(--theme-text-secondary); border-bottom: 1px solid var(--theme-borders-default); padding-bottom: 8px; }
-.dashboard-activity-item strong { color: var(--theme-text-primary); }
-
-@media (max-width: 760px) {
-  .dashboard-session-grid { grid-template-columns: 1fr; }
-}

@@ -1,9 +1,0 @@
-
-.player-search-selection__summary { color: var(--theme-text-secondary); white-space: pre-wrap; }
-.player-memory-layout { display: grid; gap: 14px; }
-.player-campaign-heading { margin-top: 0; }
-.player-campaign-heading--capitalize { text-transform: capitalize; }
-.player-campaign-secondary { color: var(--theme-text-secondary); }
-.player-memory-items { display: grid; gap: 8px; }
-.player-memory-item { border: 1px solid var(--theme-borders-default); border-radius: 12px; padding: 12px; }
-.player-memory-item__summary { margin: 5px 0 0; }

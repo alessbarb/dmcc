@@ -1,0 +1,46 @@
+.admin-purge { max-width: 1200px; margin: 0 auto; }
+.admin-purge__header { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 32px; }
+.admin-purge__title { margin: 0; font-size: 1.8rem; font-weight: 700; }
+.admin-purge__subtitle { margin: 4px 0 0; color: var(--theme-text-secondary); font-size: 0.85rem; }
+.admin-purge__refresh { display: flex; align-items: center; gap: 8px; border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-medium, 8px); padding: 8px 16px; color: inherit; background: var(--theme-surfaces-base); cursor: pointer; font: inherit; font-size: 0.85rem; font-weight: 500; }
+.admin-purge__refresh:hover { border-color: var(--theme-accents-primary-foreground); }
+.admin-purge__error { margin-bottom: 24px; border: 1px solid var(--theme-feedback-danger-foreground); border-radius: var(--theme-shapes-radius-medium, 8px); padding: 16px; color: var(--theme-feedback-danger-foreground); background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent); }
+.admin-purge__zero-margin { margin: 0; }
+.admin-purge__filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-large, 12px); padding: 16px; background: var(--theme-surfaces-base); }
+.admin-purge__filter { border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-medium, 8px); padding: 8px 16px; color: inherit; background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent); cursor: pointer; font: inherit; font-size: 0.85rem; font-weight: 600; text-transform: capitalize; }
+
+
+.admin-purge__filter:hover { border-color: var(--theme-accents-primary-foreground); }
+.admin-purge__filter--active { color: var(--theme-surfaces-canvas); background: var(--theme-accents-primary-foreground); }
+.admin-purge__loading { display: grid; height: 200px; place-items: center; color: var(--theme-text-secondary); }
+.admin-purge__empty { border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-large, 12px); padding: 48px; color: var(--theme-text-secondary); background: var(--theme-surfaces-base); text-align: center; }
+.admin-purge__table-panel { overflow-x: auto; border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-large, 12px); background: var(--theme-surfaces-base); }
+.admin-purge__table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+.admin-purge__table-head { border-bottom: 1px solid var(--theme-borders-default); background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent); }
+.admin-purge__table th,
+.admin-purge__table td { border-bottom: 1px solid var(--theme-borders-default); padding: 16px; }
+.admin-purge__row:hover { background: var(--theme-surfaces-interactive-hover); }
+.admin-purge__icon-cell { width: 40px; vertical-align: middle; }
+
+
+.admin-purge__cell--right { text-align: right; }
+.admin-purge__status-icon--success { color: var(--theme-feedback-success-foreground); }
+.admin-purge__status-icon--danger { color: var(--theme-feedback-danger-foreground); }
+.admin-purge__status-icon--accent { color: var(--theme-accents-primary-foreground); }
+.admin-purge__status-icon--muted { color: var(--theme-text-secondary); }
+.admin-purge__job-id { font-weight: 600; }
+.admin-purge__muted-detail { margin-top: 2px; color: var(--theme-text-secondary); font-size: 0.75rem; }
+.admin-purge__capitalize { text-transform: capitalize; }
+.admin-purge__error-cell { max-width: 300px; }
+.admin-purge__error-code { color: var(--theme-feedback-danger-foreground); font-size: 0.8rem; font-weight: 500; }
+
+
+.admin-purge__truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-purge__actions { display: flex; justify-content: flex-end; gap: 8px; }
+.admin-purge__retry { display: flex; align-items: center; gap: 4px; border: 1px solid var(--theme-borders-default); border-radius: 6px; padding: 6px 12px; color: inherit; background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent); cursor: pointer; font: inherit; font-size: 0.8rem; }
+.admin-purge__retry:hover { border-color: var(--theme-accents-primary-foreground); }
+
+@media (max-width: 600px) {
+  .admin-purge__header { align-items: flex-start; flex-direction: column; }
+  .admin-purge__refresh { align-self: stretch; justify-content: center; }
+}

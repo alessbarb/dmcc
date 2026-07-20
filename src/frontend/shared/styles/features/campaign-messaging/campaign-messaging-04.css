@@ -1,9 +1,0 @@
-
-.campaign-messaging__message--tone-2 { --campaign-message-accent: var(--theme-narrative-rumor-foreground); }
-.campaign-messaging__message--tone-3 { --campaign-message-accent: var(--theme-feedback-danger-foreground); }
-.campaign-messaging__message--tone-4 { --campaign-message-accent: var(--theme-feedback-warning-foreground); }
-.campaign-messaging__message--tone-5 { --campaign-message-accent: var(--theme-feedback-warning-strong); }
-.campaign-messaging__message--tone-6 { --campaign-message-accent: var(--theme-feedback-success-foreground); }
-.campaign-messaging__message--tone-7 { --campaign-message-accent: var(--theme-feedback-success-strong); }
-.campaign-messaging__message--tone-8 { --campaign-message-accent: var(--theme-feedback-info-foreground); }
-.campaign-messaging__message--tone-9 { --campaign-message-accent: var(--theme-narrative-canon-foreground); }
