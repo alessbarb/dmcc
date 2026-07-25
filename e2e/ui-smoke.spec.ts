@@ -146,7 +146,7 @@ test.describe("Player invitation UI flow", () => {
     await page.getByRole("link", { name: /player invitations|invitaciones de jugador/i }).click();
     await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i, level: 3 })).toBeVisible();
 
-    await page.getByRole("button", { name: /generate invitation link|generar enlace de invitación/i }).click();
+    await page.getByRole("button", { name: /generate invitation link|generar enlace de invitación/i }).first().click();
     await expect(page.getByText(/\/invitations\//)).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0);
     await expect(page.getByText(/cannot read properties of undefined \(reading 'slice'\)/i)).toHaveCount(0);
