@@ -11,9 +11,10 @@ export interface DmHubActiveTablesPanelProps {
   triggerMysticalTransition: (campaignId: string) => void;
   navigateToActiveSession: (campaignId: string) => void;
   nextSession: DmHubDashboard["nextSession"];
+  onPlanSession?: () => void;
 }
 
-export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition, navigateToActiveSession, nextSession }: DmHubActiveTablesPanelProps) {
+export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition, navigateToActiveSession, nextSession, onPlanSession }: DmHubActiveTablesPanelProps) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { pageItems, pageCount, clampedPage } = paginate(activeTables, page, TABLES_PAGE_SIZE);
@@ -23,7 +24,7 @@ export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition
       <div className="dm-panel__header">
         <div className="dm-panel__title-group">
           <Activity size={16} className="dm-hub-sidebar__heading-icon" />
-          <h2 className="dm-panel__title">{t("landing.activeTablesNowTitle")}</h2>
+          <h2 className="dm-panel__title">{activeTables.length > 0 ? t("landing.activeTablesNowTitle") : nextSession ? t("landing.nextSessionTitle") : t("landing.planNextSessionTitle")}</h2>
         </div>
       </div>
       {activeTables.length === 0 ? (
@@ -32,9 +33,10 @@ export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition
           <div className="dm-adaptive-state__body"><span className="dm-adaptive-state__eyebrow">{t("landing.nextSessionTitle")}</span><strong>{nextSession.campaignTitle}</strong><span className="dm-adaptive-state__detail">{nextSession.title}{nextSession.plannedDate ? ` · ${new Date(nextSession.plannedDate).toLocaleString(undefined, { weekday: "short", hour: "2-digit", minute: "2-digit" })}` : ""}</span></div>
           <button type="button" className="dm-adaptive-state__action" onClick={() => navigateToActiveSession(nextSession.campaignId)}>{t("landing.prepareNextSession")} <ArrowRight size={12} /></button>
         </div> : <div className="dm-empty-state dm-empty-state--compact">
-          <Activity size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
-          <p>{t("landing.noActiveTablesTitle")}</p>
-          <span>{t("landing.noActiveTablesDesc")}</span>
+          <CalendarDays size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
+          <p>{t("landing.planNextSessionTitle")}</p>
+          <span>{t("landing.planNextSessionDesc")}</span>
+          {onPlanSession && <button type="button" className="dm-adaptive-state__action" onClick={onPlanSession}>{t("landing.planNextSessionTitle")} <ArrowRight size={12} /></button>}
         </div>
       ) : (
         <div className="dm-tables-list" data-dm-hub-scroll="tables">

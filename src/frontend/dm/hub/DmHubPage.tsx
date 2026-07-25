@@ -16,6 +16,7 @@ import { DmHubHero } from "./DmHubHero.js";
 import { DmHubQuickActions } from "./DmHubQuickActions.js";
 import { DmHubDashboardBoard } from "./DmHubDashboardBoard.js";
 import { DmHubTopBar } from "./DmHubTopBar.js";
+import { DmHubContinuationPanel, DmHubPreparationPanel, DmHubStoryThreadsPanel } from "./DmHubCampaignSignals.js";
 import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
@@ -374,6 +375,7 @@ export function DmHubPage() {
   const dmDisplayName = dmProfile?.displayName || dmProfile?.email || "Director de Juego";
   const featuredCampaignTitle = campaigns[0]?.title ?? null;
   const firstActiveTable = dashboard.activeTables[0] ?? null;
+  const featuredPreparationCampaign = dashboard.featuredPreparation ? campaigns.find((campaign) => campaign.campaignId === dashboard.featuredPreparation?.campaignId) ?? null : null;
   const activeTableStatus = firstActiveTable?.sessionTitle ?? null;
   const recentActivitySummary = dashboard.recentActivity[0]?.text ?? null;
   const mobileDetailTitle = (tile: DmHubMobileTile) => ({
@@ -454,12 +456,16 @@ export function DmHubPage() {
           tablesSlot={<DmHubActiveTablesPanel
             activeTables={dashboard.activeTables}
             nextSession={dashboard.nextSession}
+            onPlanSession={() => campaigns[0] && navigateToActiveSession(campaigns[0].campaignId)}
             triggerMysticalTransition={triggerMysticalTransition}
             navigateToActiveSession={navigateToActiveSession}
           />}
           alertsSlot={<DmHubAlertsPanel alerts={dashboard.alerts} preparation={dashboard.preparation} onOpenPreparation={() => { const campaign = campaigns[0]; if (campaign) navigateToCampaignSection(campaign.campaignId, "canvas"); }} />}
           summarySlot={<DmHubSummaryPanel campaigns={campaigns} sessionsCount={dashboard.totals.sessions} completedCampaigns={dashboard.totals.completedCampaigns} />}
           activitySlot={<DmHubActivityPanel recentActivity={dashboard.recentActivity} />}
+          preparationSlot={<DmHubPreparationPanel preparation={dashboard.featuredPreparation} campaignTitle={featuredPreparationCampaign?.title ?? null} onPrepare={() => dashboard.featuredPreparation && navigateToActiveSession(dashboard.featuredPreparation.campaignId)} onOpenSessions={() => dashboard.featuredPreparation && navigateToActiveSession(dashboard.featuredPreparation.campaignId)} />}
+          threadsSlot={<DmHubStoryThreadsPanel threads={dashboard.storyThreads} />}
+          continuationSlot={<DmHubContinuationPanel continuation={dashboard.continuation} />}
         />
         </> : <>
           <DmHubMobileDashboard

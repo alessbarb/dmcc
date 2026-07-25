@@ -10,12 +10,12 @@ export interface DmHubSummaryPanelProps {
 
 export function DmHubSummaryPanel({ campaigns, sessionsCount, completedCampaigns }: DmHubSummaryPanelProps) {
   const { t } = useTranslation();
-  const { active, paused } = computeActiveVsPaused(campaigns);
+  const { active } = computeActiveVsPaused(campaigns);
   const avgSessions = computeAverageSessionsPerCampaign(campaigns);
   const primary = { value: sessionsCount, label: t("landing.sessionsLabel") };
   const items = [
     { value: completedCampaigns, label: t("landing.completedCampaigns") },
-    { value: `${active} / ${paused}`, label: t("landing.activeVsPausedLabel") },
+    { value: active, label: t("landing.activeCampaignsLabel") },
     { value: avgSessions, label: t("landing.avgSessionsPerCampaignLabel") },
   ];
 

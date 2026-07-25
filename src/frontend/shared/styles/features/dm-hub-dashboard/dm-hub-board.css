@@ -1,22 +1,30 @@
 .dm-hub-board {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(250px, .75fr) minmax(250px, .75fr);
-  grid-template-rows: minmax(112px, .58fr) minmax(230px, 1.42fr);
-  grid-template-areas: "campaigns tables alerts" "campaigns summary activity";
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas: "campaigns tables alerts" "campaigns summary activity" "campaigns preparation preparation" "campaigns threads continuation";
   gap: 12px;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 .dm-hub-board__campaigns { grid-area: campaigns; min-height: 0; overflow: hidden; }
 .dm-hub-board__tables { grid-area: tables; min-height: 0; overflow: hidden; }
 .dm-hub-board__alerts { grid-area: alerts; min-height: 0; overflow: hidden; }
 .dm-hub-board__summary { grid-area: summary; min-height: 0; overflow: hidden; }
 .dm-hub-board__activity { grid-area: activity; min-height: 0; overflow: hidden; }
+.dm-hub-board__preparation { grid-area: preparation; min-height: 0; }
+.dm-hub-board__threads { grid-area: threads; min-height: 0; }
+.dm-hub-board__continuation { grid-area: continuation; min-height: 0; }
 .dm-hub-board [class*="__campaigns"] > .dm-panel,
 .dm-hub-board__tables > .dm-panel,
 .dm-hub-board__alerts > .dm-panel,
 .dm-hub-board__summary > .dm-panel,
-.dm-hub-board__activity > .dm-panel { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.dm-hub-board__activity > .dm-panel,
+.dm-hub-board__preparation > .dm-panel,
+.dm-hub-board__threads > .dm-panel,
+.dm-hub-board__continuation > .dm-panel { min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+
+.dm-hub-board [class*="__campaigns"] > .dm-panel { height: 100%; }
 
 /* The campaign column owns the only potentially long content area. Let it
    scroll inside its allocated board cell instead of clipping templates or rows. */
@@ -31,7 +39,33 @@
 .dm-hub-board > .dm-hub-board__tables > .dm-panel,
 .dm-hub-board > .dm-hub-board__alerts > .dm-panel,
 .dm-hub-board > .dm-hub-board__summary > .dm-panel,
-.dm-hub-board > .dm-hub-board__activity > .dm-panel { padding: 14px 16px; }
+.dm-hub-board > .dm-hub-board__activity > .dm-panel,
+.dm-hub-board > .dm-hub-board__preparation > .dm-panel,
+.dm-hub-board > .dm-hub-board__threads > .dm-panel,
+.dm-hub-board > .dm-hub-board__continuation > .dm-panel { padding: 14px 16px; }
+
+.dm-hub-signal-panel .dm-panel__header { margin-bottom: 8px; }
+.dm-preparation-layout { display: grid; grid-template-columns: minmax(180px, .85fr) minmax(0, 1.4fr) auto; align-items: center; gap: 14px; }
+.dm-preparation-next, .dm-continuation { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.dm-preparation-next strong, .dm-continuation strong { overflow: hidden; color: var(--theme-text-primary); font-size: .78rem; text-overflow: ellipsis; white-space: nowrap; }
+.dm-preparation-next > span:last-child, .dm-continuation > span:last-child { color: var(--theme-text-secondary); font-size: .68rem; }
+.dm-signal-eyebrow { color: var(--theme-accents-primary-foreground); font-size: .61rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.dm-signal-metrics { display: flex; flex-wrap: wrap; gap: 7px 14px; }
+.dm-signal-metric { display: inline-flex; align-items: baseline; gap: 4px; color: var(--theme-text-secondary); font-size: .67rem; }
+.dm-signal-metric strong { color: var(--theme-text-primary); font-size: .95rem; }
+.dm-signal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.dm-signal-actions .btn, .dm-continuation .btn { min-height: 28px; padding: 4px 8px; font-size: .65rem; }
+.dm-story-thread-list { display: grid; gap: 5px; }
+.dm-story-thread-row { display: flex; min-width: 0; align-items: center; gap: 7px; padding: 5px 0; border-bottom: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent); color: inherit; text-decoration: none; }
+.dm-story-thread-row:last-child { border-bottom: 0; }
+.dm-story-thread-row__icon { display: grid; flex-shrink: 0; place-items: center; width: 23px; height: 23px; border-radius: 50%; color: var(--theme-accents-primary-foreground); background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent); }
+.dm-story-thread-row__icon--blocked { color: var(--theme-accents-secondary-foreground); background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 10%, transparent); }
+.dm-story-thread-row__body { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 1px; }
+.dm-story-thread-row__body strong { overflow: hidden; color: var(--theme-text-primary); font-size: .7rem; text-overflow: ellipsis; white-space: nowrap; }
+.dm-story-thread-row__body span { color: var(--theme-text-secondary); font-size: .62rem; }
+.dm-story-thread-row > svg { flex-shrink: 0; color: var(--theme-accents-primary-foreground); }
+.dm-signal-empty { margin: 0; font-size: .7rem; }
+.dm-continuation .btn { align-self: flex-start; margin-top: 5px; }
 
 .dm-hub-board .dm-panel__header { margin-bottom: 10px; }
 .dm-hub-board .dm-panel--empty-compact { align-self: start; height: auto; min-height: 0; padding-bottom: 10px; }
@@ -65,5 +99,10 @@
 .dm-hub-featured-campaign__surface:hover .dm-hub-featured-campaign__cover { filter: saturate(1.15); transform: scale(1.02); }
 .dm-hub-featured-campaign__cover { transition: transform .25s ease, filter .25s ease; }
 @media (min-width: 1024px) and (max-width: 1279px) {
-  .dm-hub-board { grid-template-columns: minmax(0, 1fr) minmax(250px, .9fr); grid-template-rows: repeat(3, minmax(0, 1fr)); grid-template-areas: "campaigns tables" "campaigns alerts" "summary activity"; }
+  .dm-hub-board { grid-template-columns: minmax(0, 1fr) minmax(250px, .9fr); grid-template-rows: repeat(7, auto); grid-template-areas: "campaigns tables" "campaigns alerts" "campaigns summary" "campaigns activity" "campaigns preparation" "campaigns threads" "campaigns continuation"; }
+}
+
+@media (max-width: 1100px) and (min-width: 769px) {
+  .dm-preparation-layout { grid-template-columns: 1fr 1fr; }
+  .dm-signal-actions { grid-column: 1 / -1; justify-content: flex-start; }
 }

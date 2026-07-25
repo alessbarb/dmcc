@@ -23,14 +23,14 @@ export function DmHubAlertsPanel({ alerts, preparation, onOpenPreparation }: DmH
       <div className="dm-panel__header">
         <div className="dm-panel__title-group">
           <Bell size={16} className="dm-hub-sidebar__heading-icon" />
-          <h2 className="dm-panel__title">{t("landing.alertsTitle")}</h2>
+          <h2 className="dm-panel__title">{alerts.length > 0 ? t("landing.alertsTitle") : t("landing.preparationTitle")}</h2>
         </div>
       </div>
       {alerts.length === 0 ? (
         <div className="dm-adaptive-state dm-preparation-state">
           <div className="dm-adaptive-state__icon"><CheckCircle2 size={18} /></div>
-          <div className="dm-adaptive-state__body"><span className="dm-adaptive-state__eyebrow">{t("landing.preparationTitle")}</span><strong>{t("landing.hiddenClues", { count: String(preparation.hiddenClues) })}</strong><span className="dm-adaptive-state__detail">{t("landing.openObjectives", { count: String(preparation.openObjectives) })} · {t("landing.changedEntities", { count: String(preparation.changedEntities) })}</span></div>
-          {onOpenPreparation && <button type="button" className="dm-adaptive-state__action" onClick={onOpenPreparation}>{t("landing.openCampaign")} <ArrowRight size={12} /></button>}
+          <div className="dm-adaptive-state__body"><span className="dm-adaptive-state__eyebrow">{t("landing.preparationTitle")}</span><strong>{t("landing.availableCluesCount", { count: String(preparation.hiddenClues) })}</strong><span className="dm-adaptive-state__detail">{t("landing.openObjectives", { count: String(preparation.openObjectives) })}</span></div>
+          {onOpenPreparation && <button type="button" className="dm-adaptive-state__action" onClick={onOpenPreparation}>{t("landing.reviewPreparation")} <ArrowRight size={12} /></button>}
         </div>
       ) : (
         <div className="dm-alerts-list" data-dm-hub-scroll="alerts">
