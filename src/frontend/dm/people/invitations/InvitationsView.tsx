@@ -4,6 +4,7 @@ import { apiFetch } from "../../../shared/api/apiClient.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
 
 type CampaignInvitationStatus = "active" | "exhausted" | "expired" | "revoked";
 
@@ -214,11 +215,15 @@ export function InvitationsView() {
       )}
 
       {invitations.length === 0 && !invitationError ? (
-        <section className="people-empty-state surface-panel">
-          <Users size={34} aria-hidden="true" />
-          <h3>{t("players.playerInvitations")}</h3>
-          <p>{t("players.shareInvitationLink")}</p>
-        </section>
+        <CompactEmptyState
+          title={t("players.playerInvitations")}
+          description={t("players.shareInvitationLink")}
+          size="standard"
+          primaryAction={{
+            label: t("players.createInvitationLink"),
+            onClick: () => void handleCreateInvite()
+          }}
+        />
       ) : (
         <section className="people-invitation-list" aria-label={t("players.activeInvitations")}>
           {invitations.map((invitation) => {

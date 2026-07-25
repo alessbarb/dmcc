@@ -42,7 +42,7 @@
 .group-view-section__eyebrow {
   margin: 0 0 5px;
   color: var(--theme-text-subtle, var(--theme-text-secondary));
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 750;
   letter-spacing: 0.1em;
   text-transform: uppercase;

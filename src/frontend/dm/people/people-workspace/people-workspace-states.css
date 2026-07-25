@@ -16,7 +16,7 @@
 .people-knowledge-table__target span {
   margin-top: 3px;
   color: var(--theme-text-secondary);
-  font-size: 0.74rem;
+  font-size: var(--type-micro);
 }
 
 .people-player-column {
