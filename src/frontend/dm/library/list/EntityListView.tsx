@@ -128,6 +128,13 @@ export function EntityListView() {
     [activeEntities],
   );
 
+  const hasFilters =
+    entitySearchQuery.trim().length > 0 ||
+    entityTypeFilter !== "all" ||
+    statusFilter !== "all" ||
+    importanceFilter !== "all" ||
+    visibilityFilter !== "all";
+
   const filteredEntities = useMemo(() => {
     const query = normalized(entitySearchQuery);
     return activeEntities.filter((entity) => {
@@ -158,8 +165,26 @@ export function EntityListView() {
     return count;
   }, [entityTypeFilter, statusFilter, importanceFilter, visibilityFilter]);
 
+  const relevantNowEntities = useMemo(() => {
+    const criticalOrHigh = activeEntities.filter(
+      (e) => e.importance === "critical" || e.importance === "high"
+    );
+    let result = [...criticalOrHigh];
+    if (result.length < 6) {
+      const remaining = activeEntities.filter((e) => !result.some((r) => r.entityId === e.entityId));
+      remaining.sort((a, b) => {
+        const timeA = new Date(a.updatedAt || a.createdAt).getTime();
+        const timeB = new Date(b.updatedAt || b.createdAt).getTime();
+        return timeB - timeA;
+      });
+      result = [...result, ...remaining.slice(0, 6 - result.length)];
+    }
+    return result.slice(0, 6);
+  }, [activeEntities]);
+
   const sortedEntities = useMemo(() => {
-    const list = [...filteredEntities];
+    const relevantIds = !hasFilters ? new Set(relevantNowEntities.map((e) => e.entityId)) : null;
+    const list = (relevantIds ? filteredEntities.filter((e) => !relevantIds.has(e.entityId)) : filteredEntities).slice();
     const IMPORTANCE_WEIGHTS: Record<string, number> = {
       critical: 4,
       high: 3,
@@ -187,24 +212,7 @@ export function EntityListView() {
     });
 
     return list;
-  }, [filteredEntities, sortBy, locale]);
-
-  const relevantNowEntities = useMemo(() => {
-    const criticalOrHigh = activeEntities.filter(
-      (e) => e.importance === "critical" || e.importance === "high"
-    );
-    let result = [...criticalOrHigh];
-    if (result.length < 6) {
-      const remaining = activeEntities.filter((e) => !result.some((r) => r.entityId === e.entityId));
-      remaining.sort((a, b) => {
-        const timeA = new Date(a.updatedAt || a.createdAt).getTime();
-        const timeB = new Date(b.updatedAt || b.createdAt).getTime();
-        return timeB - timeA;
-      });
-      result = [...result, ...remaining.slice(0, 6 - result.length)];
-    }
-    return result.slice(0, 6);
-  }, [activeEntities]);
+  }, [filteredEntities, sortBy, locale, hasFilters, relevantNowEntities]);
 
   const groupedEntities = useMemo(() => {
     if (groupBy === "none") return null;
@@ -234,13 +242,6 @@ export function EntityListView() {
 
   const visibleEntities = groupBy === "none" ? sortedEntities.slice(0, visibleCount) : sortedEntities;
   const hasMoreEntities = groupBy === "none" && sortedEntities.length > visibleCount;
-
-  const hasFilters =
-    entitySearchQuery.trim().length > 0 ||
-    entityTypeFilter !== "all" ||
-    statusFilter !== "all" ||
-    importanceFilter !== "all" ||
-    visibilityFilter !== "all";
 
   const resetFilters = () => {
     setEntitySearchQuery("");
