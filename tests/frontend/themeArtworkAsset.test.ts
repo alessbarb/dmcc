@@ -17,10 +17,25 @@ describe("theme artwork asset", () => {
 
       const stats = statSync(assetPath);
       expect(stats.isFile()).toBe(true);
+
+      const buffer = readFileSync(assetPath);
+      const isLfsPointer = buffer
+        .toString("utf8", 0, 100)
+        .includes("version https://git-lfs");
+
+      if (isLfsPointer) {
+        expect(stats.size).toBeGreaterThan(50);
+        expect(stats.size).toBeLessThan(500);
+        const content = buffer.toString("utf8");
+        expect(content).toContain("version https://git-lfs.github.com/spec/v1");
+        expect(content).toContain("oid sha256:");
+        expect(content).toContain("size ");
+        continue;
+      }
+
       expect(stats.size).toBeGreaterThan(10_000);
       expect(stats.size).toBeLessThan(700_000);
 
-      const buffer = readFileSync(assetPath);
       const headerRiff = buffer.toString("ascii", 0, 4);
       const headerWebp = buffer.toString("ascii", 8, 12);
       expect(headerRiff).toBe("RIFF");
