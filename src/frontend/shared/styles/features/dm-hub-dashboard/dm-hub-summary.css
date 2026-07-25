@@ -95,6 +95,7 @@
 
 .dm-table-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   padding: 10px;
@@ -103,6 +104,34 @@
   border-radius: 9px;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
+}
+
+.dm-table-row__actions {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.dm-table-row__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 10%, transparent);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--theme-text-secondary);
+  font-size: 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dm-table-row__action:hover,
+.dm-table-row__action--primary {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, transparent);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .dm-table-row:hover {

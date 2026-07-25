@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Activity, ArrowRight, CalendarDays, Clock, Users } from "lucide-react";
+import { Activity, ArrowRight, CalendarDays, Clock, FolderOpen, Play, Users } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { paginate } from "./dmHubPagination.js";
 import type { DmHubDashboard } from "./dmHubTypes.js";
@@ -39,11 +39,9 @@ export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition
       ) : (
         <div className="dm-tables-list" data-dm-hub-scroll="tables">
           {pageItems.map((table) => (
-            <button
+            <div
               key={table.id}
-              type="button"
               className="dm-table-row"
-              onClick={() => (table.href ? navigateToActiveSession(table.campaignId) : triggerMysticalTransition(table.campaignId))}
             >
               <div className="dm-table-row__cover" />
               <div className="dm-table-row__info">
@@ -60,7 +58,15 @@ export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition
                 {table.elapsed && <span className="dm-table-row__time"><Clock size={10} /> {table.elapsed}</span>}
                 <span className="dm-table-row__players"><Users size={10} /> {table.playersPresent}/{table.playersTotal}</span>
               </div>
-            </button>
+              <div className="dm-table-row__actions">
+                <button type="button" className="dm-table-row__action dm-table-row__action--primary" onClick={() => navigateToActiveSession(table.campaignId)}>
+                  <Play size={11} /> {t("landing.continueSession")}
+                </button>
+                <button type="button" className="dm-table-row__action" onClick={() => triggerMysticalTransition(table.campaignId)}>
+                  <FolderOpen size={11} /> {t("landing.openCampaign")}
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       )}
