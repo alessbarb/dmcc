@@ -90,8 +90,12 @@
   margin-top: 14px;
   padding-top: 10px;
   border-top: 1px solid var(--theme-borders-default);
-  font-size: 0.75rem;
+  font-size: var(--type-caption);
   color: var(--theme-text-secondary);
+}
+
+.entity-card__footer-time {
+  color: var(--theme-text-subtle);
 }
 
 /* Compact view styling */

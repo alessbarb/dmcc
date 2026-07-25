@@ -63,7 +63,7 @@
   transform: translateX(-50%);
   background: var(--theme-accents-primary-foreground);
   color: var(--theme-accents-primary-on-accent);
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;

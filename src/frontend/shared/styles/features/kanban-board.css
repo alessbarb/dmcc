@@ -108,7 +108,7 @@
   gap: var(--space-1);
   margin-top: var(--space-3);
   color: var(--theme-text-secondary);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 650;
 }
 

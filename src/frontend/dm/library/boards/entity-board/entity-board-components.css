@@ -21,13 +21,35 @@
   -webkit-line-clamp: 3;
 }
 
+.kanban-card__updated-at {
+  color: var(--theme-text-subtle);
+  font-size: var(--type-micro);
+}
+
+.kanban-card__meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.kanban-card__badge--system {
+  font-size: var(--type-micro);
+}
+
+.kanban-card__move-select {
+  min-height: var(--touch-target-min);
+  font-size: var(--type-control);
+}
+
 .kanban-card__move {
   display: grid;
   gap: 6px;
   padding: 10px 14px 14px;
   border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 72%, transparent);
   color: var(--theme-text-secondary);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;

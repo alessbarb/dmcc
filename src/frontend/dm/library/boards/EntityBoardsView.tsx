@@ -32,6 +32,10 @@ import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { resolveActiveEntity } from "../../entities/relations/resolveActiveEntity.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { formatEntityStatus } from "../../../shared/presentation/formatEntityStatus.js";
+import { formatImportance } from "../../../shared/presentation/formatImportance.js";
+import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
+import { formatSystemName } from "../../../shared/presentation/formatSystemName.js";
 
 type BoardType = "quests" | "clues" | "consequences" | "npcs" | "secrets";
 type BoardState = { key: string; labelKey: string; color: string };
@@ -163,7 +167,7 @@ function KanbanCard({
   onSelect: (entity: Entity) => void;
   onDragStart: (event: React.DragEvent, entity: Entity) => void;
 }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   return (
     <article
       className={cardClassFor(entity)}
@@ -177,7 +181,12 @@ function KanbanCard({
         onClick={() => onSelect(entity)}
         aria-label={entity.title}
       >
-        <strong className="kanban-card__title">{entity.title}</strong>
+        <strong
+          className="kanban-card__title u-truncate u-truncate--block"
+          title={entity.title}
+        >
+          {entity.title}
+        </strong>
         {entity.summary && (
           <span className="kanban-card__summary">
             {(() => {
@@ -186,35 +195,37 @@ function KanbanCard({
             })()}
           </span>
         )}
-        {entity.importance && entity.importance !== "normal" && (
-          <span
-            className={`kanban-card__badge kanban-card__badge--${entity.importance}`}
-          >
-            {entity.importance === "critical"
-              ? t("boards.importanceCritical")
-              : entity.importance === "high"
-                ? t("boards.importanceHigh")
-                : entity.importance === "low"
-                  ? t("boards.importanceLow")
-                  : entity.importance}
+        <div className="kanban-card__meta-row">
+          {entity.importance && entity.importance !== "normal" && (
+            <span className={`kanban-card__badge kanban-card__badge--${entity.importance}`}>
+              {formatImportance(entity.importance, locale)}
+            </span>
+          )}
+          {typeof entity.metadata?.system === "string" && entity.metadata.system && (
+            <span className="badge badge-default kanban-card__badge--system">
+              {formatSystemName(entity.metadata.system, locale)}
+            </span>
+          )}
+          <span className="kanban-card__updated-at">
+            {formatRelativeTime(entity.updatedAt, locale)}
           </span>
-        )}
+        </div>
       </button>
 
       <label className="kanban-card__move">
         <span>{t("boards.moveTo")}</span>
         <select
-          className="form-select"
+          className="form-select kanban-card__move-select"
           value={entity.status}
           disabled={moving}
           onChange={(event) => onMove(entity, event.target.value)}
           aria-label={t("boards.moveLabel", { title: entity.title })}
         >
           {!states.some((state) => state.key === entity.status) && (
-            <option value={entity.status}>{entity.status || t("boards.unknownStatus")}</option>
+            <option value={entity.status}>{formatEntityStatus(entity.status, locale) || t("boards.unknownStatus")}</option>
           )}
           {states.map((state) => (
-            <option key={state.key} value={state.key}>{t(state.labelKey)}</option>
+            <option key={state.key} value={state.key}>{formatEntityStatus(state.key, locale)}</option>
           ))}
         </select>
       </label>
@@ -248,7 +259,7 @@ function KanbanColumn({
   onDragLeave: (event: React.DragEvent) => void;
 }) {
   const Icon = STATE_ICONS[state.key] || HelpCircle;
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const stateStyle: BoardStyle = { "--board-state-color": state.color };
 
   return (
@@ -267,7 +278,7 @@ function KanbanColumn({
       <header className="kanban-column__header">
         <span className="kanban-column__dot" />
         <Icon className="kanban-column__icon" size={14} />
-        <strong id={`kanban-column-${state.key}`}>{t(state.labelKey)}</strong>
+        <strong id={`kanban-column-${state.key}`}>{formatEntityStatus(state.key, locale)}</strong>
         <span className="kanban-column__count">{entities.length}</span>
       </header>
 
@@ -295,7 +306,7 @@ function KanbanColumn({
 export function EntityBoardsView() {
   const { campaignState, updateEntity, archiveEntity } = useCampaignStore();
   const { addToast } = useToast();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [activeBoard, setActiveBoard] = useState<BoardType>("quests");
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
@@ -419,7 +430,7 @@ export function EntityBoardsView() {
             (() => {
               const stateStyle: BoardStyle = { "--board-state-color": state.color };
               return <span key={state.key} className="entity-boards-view__summary-item entity-boards-view__summary-item--state" style={stateStyle}>
-                {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
+                {formatEntityStatus(state.key, locale)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
               </span>;
             })()
           ))}

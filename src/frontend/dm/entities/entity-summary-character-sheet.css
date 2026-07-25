@@ -30,13 +30,13 @@
 }
 
 .entity-summary__stat-label {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   font-weight: 600;
 }
 
 .entity-summary__stat-label--sm {
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   font-weight: 600;
 }
@@ -98,7 +98,7 @@
 }
 
 .entity-summary__attr-short {
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   color: var(--theme-text-secondary);
 }
@@ -111,13 +111,13 @@
 }
 
 .entity-summary__attr-value {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-primary);
 }
 
 /* Saves / skills pill groups */
 .entity-summary__pill-group-title {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   font-weight: 700;
   margin-bottom: 6px;
@@ -131,7 +131,7 @@
 }
 
 .entity-summary__pill {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   padding: 2px 5px;
   background: var(--theme-accents-primary-background);
   border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
@@ -144,14 +144,14 @@
 }
 
 .entity-summary__pill-empty {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   font-style: italic;
 }
 
 /* Spell block */
 .entity-summary__spell-title {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   color: var(--theme-accents-secondary-foreground);
   font-weight: 700;
   text-transform: uppercase;
@@ -165,7 +165,7 @@
 
 /* Notes block */
 .entity-summary__notes-title {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   font-weight: 700;
   text-transform: uppercase;
