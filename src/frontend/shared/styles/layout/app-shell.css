@@ -54,9 +54,7 @@
 }
 
 .app-container--campaign-shell.app-container--sidebar-collapsed::before,
-.app-container--campaign-shell.app-container--sidebar-collapsed::after,
-.app-container--campaign-shell:has(.sidebar--collapsed)::before,
-.app-container--campaign-shell:has(.sidebar--collapsed)::after {
+.app-container--campaign-shell.app-container--sidebar-collapsed::after {
   left: 64px;
 }
 

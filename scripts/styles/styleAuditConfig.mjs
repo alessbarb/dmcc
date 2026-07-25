@@ -8,6 +8,8 @@ export const STYLE_AUDIT_CONFIG = {
   colorLiteralAllow: [
     /^src\/frontend\/account\/(defaultTheme|fantasyTheme|sciFiTheme)\.ts$/,
     /^src\/frontend\/shared\/styles\/landing\//,
+    /^src\/frontend\/shared\/styles\/features\/auth\.css$/,
+    /^src\/frontend\/shared\/styles\/features\/campaign-template\/template-preview-landing-theme\.css$/,
   ],
   cssVariablePrefixes: [
     "--theme-",

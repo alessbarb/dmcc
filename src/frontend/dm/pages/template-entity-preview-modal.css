@@ -19,6 +19,9 @@
 }
 
 .template-entity-preview-modal__icon {
+  --template-icon-bg: transparent;
+  --template-icon-color: inherit;
+
   flex: 0 0 auto;
   display: flex;
   align-items: center;
@@ -26,6 +29,8 @@
   width: 40px;
   height: 40px;
   border-radius: var(--theme-shapes-radius-medium);
+  background: var(--template-icon-bg);
+  color: var(--template-icon-color);
 }
 
 .template-entity-preview-modal__type {

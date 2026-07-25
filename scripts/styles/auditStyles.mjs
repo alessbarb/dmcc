@@ -147,7 +147,7 @@ export function classifyInlineStyle(body) {
     /["']?[a-zA-Z][a-zA-Z0-9_-]*["']?\s*:/g,
     ":",
   );
-  const containsDynamic = /\$\{|--[a-zA-Z0-9_-]+|\b(?:props|state|value|index|progress|focus|position|transform|runtime|custom)\b/.test(valueSource);
+  const containsDynamic = /\$\{|--[a-zA-Z0-9_-]+|\b(?:props|state|value|index|progress|focus|position|transform|runtime|custom|visual)\b/.test(valueSource);
   const containsStaticProperty = /\b(?:background|backgroundColor|color|border|borderRadius|boxShadow|fontSize|fontFamily|fontWeight|padding|margin|display|grid|flex|gap|alignItems|justifyContent|position|overflow)\s*:/.test(body);
   if (containsDynamic && containsStaticProperty) return "mixed";
   if (containsDynamic) return "dynamic";

@@ -69,7 +69,10 @@ export function TemplateEntityPreviewModal({
           <div className="template-entity-preview-modal__heading">
             <span
               className="template-entity-preview-modal__icon"
-              style={{ background: visual.accentSoft, color: visual.accent }}
+              style={{
+                "--template-icon-bg": visual.accentSoft,
+                "--template-icon-color": visual.accent,
+              } as React.CSSProperties & Record<`--${string}`, string>}
             >
               <Icon size={18} />
             </span>
