@@ -2070,6 +2070,7 @@ export const pt: TranslationDictionary = {
     createInvitationLink: "Gerar link de convite",
     creatingInvitation: "Gerando...",
     invitationFallback: "Convite {id}",
+    invitationCreatedAgo: "Criado {relative}",
 
     title: "Jogadores e personagens",
     invitePlayer: "Convidar jogador",

@@ -2161,6 +2161,7 @@ export const en = {
     createInvitationLink: "Generate invitation link",
     creatingInvitation: "Generating...",
     invitationFallback: "Invitation {id}",
+    invitationCreatedAgo: "Created {relative}",
 
     title: "Players and characters",
     invitePlayer: "Invite player",

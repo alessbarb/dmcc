@@ -5,6 +5,7 @@ import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
+import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
 
 type CampaignInvitationStatus = "active" | "exhausted" | "expired" | "revoked";
 
@@ -245,6 +246,9 @@ export function InvitationsView() {
                   </div>
                 </div>
                 <div className="people-invitation-card__meta">
+                  <time dateTime={invitation.createdAt} title={new Date(invitation.createdAt).toLocaleString(locale)}>
+                    {t("players.invitationCreatedAgo", { relative: formatRelativeTime(invitation.createdAt, locale) })}
+                  </time>
                   <span><Users size={14} aria-hidden="true" /> {invitation.usesCount} / {invitation.maxUses}</span>
                   <time dateTime={invitation.expiresAt}>
                     <CalendarClock size={14} aria-hidden="true" />

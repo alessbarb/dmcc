@@ -2184,6 +2184,7 @@ export const es: TranslationDictionary = {
     createInvitationLink: "Generar enlace de invitación",
     creatingInvitation: "Generando...",
     invitationFallback: "Invitación {id}",
+    invitationCreatedAgo: "Creada {relative}",
 
     title: "Jugadores y personajes",
     invitePlayer: "Invitar jugador",
