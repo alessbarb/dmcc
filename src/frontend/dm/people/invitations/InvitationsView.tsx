@@ -103,6 +103,7 @@ export function InvitationsView() {
   const [invitationError, setInvitationError] = useState<string | null>(null);
   const [inviteLoading, setInviteLoading] = useState(false);
   const [newInviteUrl, setNewInviteUrl] = useState<string | null>(null);
+  const [newInviteExpiresAt, setNewInviteExpiresAt] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const fetchInvitations = useCallback(async () => {
@@ -144,6 +145,7 @@ export function InvitationsView() {
       }
       const created = normalizeCreateCampaignInvitationResponse(data);
       setNewInviteUrl(created.invitation.url);
+      setNewInviteExpiresAt(created.invitation.expiresAt);
       await fetchInvitations();
     } catch (error) {
       addToast(error instanceof Error ? error.message : t("players.invitationCreateError"), "error");
@@ -211,18 +213,23 @@ export function InvitationsView() {
               {copied ? <Check size={16} /> : <Copy size={16} />}
             </button>
           </div>
+          {newInviteExpiresAt && (
+            <p className="people-invite-share__expiry">
+              <CalendarClock size={14} aria-hidden="true" />
+              <time dateTime={newInviteExpiresAt}>
+                {t("players.invitationExpiresOn", {
+                  date: new Date(newInviteExpiresAt).toLocaleString(locale, { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+                })}
+              </time>
+            </p>
+          )}
         </section>
       )}
 
       {invitations.length === 0 && !invitationError ? (
         <CompactEmptyState
-          title={t("players.playerInvitations")}
-          description={t("players.shareInvitationLink")}
-          size="standard"
-          primaryAction={{
-            label: t("players.createInvitationLink"),
-            onClick: () => void handleCreateInvite()
-          }}
+          title={t("players.noActiveInvitations")}
+          size="compact"
         />
       ) : (
         <section className="people-invitation-list" aria-label={t("players.activeInvitations")}>

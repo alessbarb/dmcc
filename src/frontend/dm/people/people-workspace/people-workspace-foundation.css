@@ -71,3 +71,12 @@
   padding: 16px;
   border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 40%, var(--theme-borders-default));
 }
+
+.people-invite-share__expiry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: var(--type-caption);
+}
