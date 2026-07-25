@@ -627,7 +627,7 @@ export function OverviewPage() {
         </div>
 
         <div className="dashboard-entity-grids">
-          <Card ornament="accent">
+          <Card>
             <h2 className="dashboard-card__heading">
               <Users size={18} /> {t("dashboard.forgottenNpcs")}
             </h2>
@@ -638,7 +638,7 @@ export function OverviewPage() {
             />
           </Card>
 
-          <Card ornament="accent">
+          <Card>
             <h2 className="dashboard-card__heading">
               <Flag size={18} /> {t("dashboard.blockedQuests")}
             </h2>
@@ -649,7 +649,7 @@ export function OverviewPage() {
             />
           </Card>
 
-          <Card ornament="accent">
+          <Card>
             <h2 className="dashboard-card__heading">
               <EyeOff size={18} /> {t("whatNowPage.criticalClues")}
             </h2>
@@ -660,7 +660,7 @@ export function OverviewPage() {
             />
           </Card>
 
-          <Card ornament="accent">
+          <Card>
             <h2 className="dashboard-card__heading">
               <Flame size={18} /> {t("whatNowPage.readyConsequences")}
             </h2>
@@ -673,7 +673,7 @@ export function OverviewPage() {
         </div>
 
         <div className="dashboard-session-grid">
-          <Card ornament="primary">
+          <Card>
             <h2 className="dashboard-card__heading">
               <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
             </h2>
@@ -691,7 +691,7 @@ export function OverviewPage() {
             {liveTable && <div className="dashboard-live-table"><Pill tone="good">{liveTable.shortCode}</Pill></div>}
           </Card>
 
-          <Card ornament="full">
+          <Card>
             <h2 className="dashboard-card__heading">
               <Activity size={18} /> {t("dashboard.recentlyUpdated")}
             </h2>
