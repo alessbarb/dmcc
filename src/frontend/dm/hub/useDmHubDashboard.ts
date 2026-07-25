@@ -183,6 +183,15 @@ function buildFallbackDashboard(
   const campaigns = rawCampaigns.map(normalizeCampaign);
   const activeTables = buildActiveTables(campaigns, t);
   const totals = normalizeTotals(null, campaigns, activeTables);
+  const nextSession = campaigns
+    .map((campaign) => {
+      const metadata = isRecord(campaign.metadata) ? campaign.metadata : {};
+      const raw = isRecord(metadata.nextSession) ? metadata.nextSession : null;
+      if (!raw || typeof raw.title !== "string") return null;
+      return { campaignId: campaign.campaignId, campaignTitle: campaign.title, title: raw.title, plannedDate: getString(raw.plannedDate) ?? null, href: `/campaigns/${campaign.campaignId}/sessions` };
+    })
+    .filter((session): session is NonNullable<typeof session> => Boolean(session))
+    .sort((left, right) => String(left.plannedDate).localeCompare(String(right.plannedDate)))[0] ?? null;
 
   return {
     campaigns,
@@ -190,6 +199,8 @@ function buildFallbackDashboard(
     activeTables,
     alerts: [],
     recentActivity: [],
+    nextSession,
+    preparation: { plannedSessions: 0, hiddenClues: 0, openObjectives: 0, changedEntities: 0 },
     totals,
   };
 }
@@ -274,6 +285,19 @@ function normalizeRemoteDashboard(
     recentActivity: Array.isArray(data.recentActivity)
       ? data.recentActivity.map(normalizeActivityItem).filter((x): x is DmHubActivityItem => x !== null)
       : [],
+    nextSession: isRecord(data.nextSession) ? {
+      campaignId: getString(data.nextSession.campaignId) ?? "",
+      campaignTitle: getString(data.nextSession.campaignTitle) ?? "",
+      title: getString(data.nextSession.title) ?? "",
+      plannedDate: getString(data.nextSession.plannedDate) ?? null,
+      href: getString(data.nextSession.href) ?? "",
+    } : null,
+    preparation: isRecord(data.preparation) ? {
+      plannedSessions: getNumber(data.preparation.plannedSessions),
+      hiddenClues: getNumber(data.preparation.hiddenClues),
+      openObjectives: getNumber(data.preparation.openObjectives),
+      changedEntities: getNumber(data.preparation.changedEntities),
+    } : { plannedSessions: 0, hiddenClues: 0, openObjectives: 0, changedEntities: 0 },
     totals: normalizeTotals(data.totals, campaigns, activeTables),
   };
 }

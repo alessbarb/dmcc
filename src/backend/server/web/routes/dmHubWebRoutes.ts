@@ -21,7 +21,7 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
     const now = new Date();
 
     const campaigns = await Promise.all(accessibleCampaigns.map(async (campaign) => {
-      const [players, entities, sessions, liveTables] = await Promise.all([
+      const [players, entities, sessions, liveTables, clues, objectives] = await Promise.all([
         db.select().from(schema.playerProfiles)
           .where(eq(schema.playerProfiles.campaignId, campaign.campaignId)),
         db.select().from(schema.campaignEntities)
@@ -33,10 +33,17 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
           eq(schema.liveTables.status, "active"),
           gt(schema.liveTables.expiresAt, now),
         )),
+        db.select().from(schema.campaignClues)
+          .where(eq(schema.campaignClues.campaignId, campaign.campaignId)),
+        db.select().from(schema.campaignObjectives)
+          .where(eq(schema.campaignObjectives.campaignId, campaign.campaignId)),
       ]);
       const metadata = campaignMetadata(campaign.metadata);
       const activeSession = sessions.find((session) => session.status === "active");
       const activeTable = liveTables[0] ?? null;
+      const nextSession = sessions
+        .filter((session) => session.status === "planned" && session.plannedDate)
+        .sort((left, right) => String(left.plannedDate).localeCompare(String(right.plannedDate)))[0] ?? null;
 
       return {
         campaignId: campaign.campaignId,
@@ -60,6 +67,19 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
           sessionsCount: sessions.filter((session) => session.status !== "archived").length,
           activeSession: activeSession?.title ?? (activeTable ? "Active table" : null),
         },
+        nextSession: nextSession ? {
+          campaignId: campaign.campaignId,
+          campaignTitle: campaign.title,
+          title: nextSession.title,
+          plannedDate: nextSession.plannedDate,
+          href: `/campaigns/${campaign.campaignId}/sessions`,
+        } : null,
+        preparation: {
+          plannedSessions: sessions.filter((session) => session.status === "planned").length,
+          hiddenClues: clues.filter((clue) => clue.status === "hidden").length,
+          openObjectives: objectives.filter((objective) => objective.status === "open").length,
+          changedEntities: entities.filter((entity) => entity.updatedAt && entity.updatedAt > new Date(Date.now() - 7 * 86400000)).length,
+        },
         activeTable,
       };
     }));
@@ -78,11 +98,35 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
         playersTotal: campaign.stats.playersCount,
       }));
 
+    const nextSession = campaigns
+      .map((campaign) => campaign.nextSession)
+      .filter((session): session is NonNullable<typeof session> => Boolean(session))
+      .sort((left, right) => String(left.plannedDate).localeCompare(String(right.plannedDate)))[0] ?? null;
+    const preparation = campaigns.reduce((summary, campaign) => ({
+      plannedSessions: summary.plannedSessions + campaign.preparation.plannedSessions,
+      hiddenClues: summary.hiddenClues + campaign.preparation.hiddenClues,
+      openObjectives: summary.openObjectives + campaign.preparation.openObjectives,
+      changedEntities: summary.changedEntities + campaign.preparation.changedEntities,
+    }), { plannedSessions: 0, hiddenClues: 0, openObjectives: 0, changedEntities: 0 });
+    const recentActivity = campaigns
+      .filter((campaign) => campaign.updatedAt)
+      .sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt)))
+      .slice(0, 3)
+      .map((campaign) => ({
+        id: `campaign-${campaign.campaignId}`,
+        icon: "campaign" as const,
+        text: `${campaign.title} updated`,
+        time: campaign.updatedAt ?? "",
+        href: `/campaigns/${campaign.campaignId}/overview`,
+      }));
+
     return {
       campaigns,
       activeTables,
       alerts: [],
-      recentActivity: [],
+      recentActivity,
+      nextSession,
+      preparation,
       totals: {
         campaigns: campaigns.length,
         activeTables: activeTables.length,

@@ -47,12 +47,29 @@ export type DmHubActivityItem = {
   href?: string;
 };
 
+export type DmHubNextSession = {
+  campaignId: string;
+  campaignTitle: string;
+  title: string;
+  plannedDate: string | null;
+  href: string;
+};
+
+export type DmHubPreparationSummary = {
+  plannedSessions: number;
+  hiddenClues: number;
+  openObjectives: number;
+  changedEntities: number;
+};
+
 export type DmHubDashboard = {
   campaigns: DmHubCampaign[];
   campaignTemplates: CampaignTemplateSummary[];
   activeTables: DmHubActiveTable[];
   alerts: DmHubAlert[];
   recentActivity: DmHubActivityItem[];
+  nextSession: DmHubNextSession | null;
+  preparation: DmHubPreparationSummary;
   totals: {
     campaigns: number;
     activeTables: number;
