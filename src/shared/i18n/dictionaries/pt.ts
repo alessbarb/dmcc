@@ -1143,6 +1143,11 @@ export const pt: TranslationDictionary = {
     emptyItemsDescription: "Este caderno está vazio. Adicione personagens, sessões ou quadros para reunir aqui a preparação relacionada.",
     selectPlaceholderTitle: "Gerir cadernos da campanha",
     selectPlaceholderDesc: "Crie cadernos hierárquicos para organizar entidades, sessões e canvas da campanha.",
+    itemUnavailable: "Elemento não disponível",
+    sessionStatusActive: "Em curso",
+    sessionStatusCompleted: "Concluída",
+    sessionStatusPrepared: "Preparada",
+    searchNotebooksPlaceholder: "Pesquisar...",
     actions: {
       addRoot: "Criar caderno principal",
       addChild: "Criar subcaderno",
@@ -1169,6 +1174,11 @@ export const pt: TranslationDictionary = {
       resourceType: "Tipo de recurso",
       resourceSelect: "Recurso",
       selectOption: "Selecionar",
+      selectResourceExplanation: "Pesquise e selecione um ou vários elementos para associar a este caderno.",
+      searchCandidatesPlaceholder: "Pesquisar personagens, sessões ou quadros...",
+      alreadyLinked: "Associado",
+      noCandidates: "Nenhum elemento disponível para associar com este filtro.",
+      linking: "A associar...",
     },
     feedback: {
       createSuccess: "Caderno criado",
@@ -1188,6 +1198,7 @@ export const pt: TranslationDictionary = {
       duplicateItem: "O recurso já está no caderno",
     },
     types: {
+      all: "Todos",
       entity: "Entidade",
       session: "Sessão",
       canvas: "Canvas",

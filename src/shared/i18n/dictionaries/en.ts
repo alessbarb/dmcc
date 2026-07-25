@@ -1201,6 +1201,11 @@ export const en = {
     emptyItemsDescription: "This notebook is empty. Add characters, sessions, or boards to gather related preparation here.",
     selectPlaceholderTitle: "Manage campaign notebooks",
     selectPlaceholderDesc: "Create hierarchical notebooks to organize campaign entities, sessions, and canvases.",
+    itemUnavailable: "Item not available",
+    sessionStatusActive: "In progress",
+    sessionStatusCompleted: "Finished",
+    sessionStatusPrepared: "Prepared",
+    searchNotebooksPlaceholder: "Search...",
     actions: {
       addRoot: "Create root notebook",
       addChild: "Create sub-notebook",
@@ -1227,6 +1232,11 @@ export const en = {
       resourceType: "Resource type",
       resourceSelect: "Resource",
       selectOption: "Select",
+      selectResourceExplanation: "Search and select one or more items to link to this notebook.",
+      searchCandidatesPlaceholder: "Search characters, sessions, or boards...",
+      alreadyLinked: "Linked",
+      noCandidates: "No items available to link with this filter.",
+      linking: "Linking...",
     },
     feedback: {
       createSuccess: "Notebook created successfully",
@@ -1246,6 +1256,7 @@ export const en = {
       duplicateItem: "Resource is already in the notebook",
     },
     types: {
+      all: "All",
       entity: "Entity",
       session: "Session",
       canvas: "Canvas",

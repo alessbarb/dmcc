@@ -1156,6 +1156,11 @@ export const de: TranslationDictionary = {
     emptyItemsDescription: "Dieses Notizbuch ist leer. Füge Charaktere, Sitzungen oder Boards hinzu, um die zugehörige Vorbereitung hier zu sammeln.",
     selectPlaceholderTitle: "Kampagnen-Notizbücher verwalten",
     selectPlaceholderDesc: "Erstelle hierarchische Notizbücher für Kampagnenentitäten, Sitzungen und Canvas.",
+    itemUnavailable: "Element nicht verfügbar",
+    sessionStatusActive: "Läuft",
+    sessionStatusCompleted: "Abgeschlossen",
+    sessionStatusPrepared: "Vorbereitet",
+    searchNotebooksPlaceholder: "Suchen...",
     actions: {
       addRoot: "Stammnotizbuch erstellen",
       addChild: "Unternotizbuch erstellen",
@@ -1182,6 +1187,11 @@ export const de: TranslationDictionary = {
       resourceType: "Ressourcentyp",
       resourceSelect: "Ressource",
       selectOption: "Auswählen",
+      selectResourceExplanation: "Suche und wähle ein oder mehrere Elemente aus, um sie mit diesem Notizbuch zu verknüpfen.",
+      searchCandidatesPlaceholder: "Charaktere, Sitzungen oder Boards suchen...",
+      alreadyLinked: "Verknüpft",
+      noCandidates: "Keine Elemente mit diesem Filter verfügbar.",
+      linking: "Wird verknüpft...",
     },
     feedback: {
       createSuccess: "Notizbuch erstellt",
@@ -1201,6 +1211,7 @@ export const de: TranslationDictionary = {
       duplicateItem: "Ressource befindet sich bereits im Notizbuch",
     },
     types: {
+      all: "Alle",
       entity: "Entität",
       session: "Sitzung",
       canvas: "Canvas",

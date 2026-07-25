@@ -378,7 +378,7 @@ export function NotebooksView() {
       const entity = campaignState?.entities.find((candidate) => candidate.entityId === item.targetId);
       const visual = entity ? getEntityVisual(entity.entityType) : null;
       return {
-        title: entity?.title ?? item.targetId,
+        title: entity?.title ?? t("notebooks.itemUnavailable"),
         subtitle: entity ? t(visual?.labelKey || "notebooks.types.entity") : t("notebooks.types.entity"),
         icon: visual?.icon ?? User,
         color: visual?.accent ?? "var(--theme-text-subtle)",
@@ -387,17 +387,22 @@ export function NotebooksView() {
     }
     if (item.targetType === "session") {
       const session = campaignState?.sessions.find((candidate) => candidate.sessionId === item.targetId);
+      const sessionStatusKey = session?.status === "active"
+        ? "notebooks.sessionStatusActive"
+        : session?.status === "completed"
+          ? "notebooks.sessionStatusCompleted"
+          : "notebooks.sessionStatusPrepared";
       return {
-        title: session?.title ?? item.targetId,
+        title: session?.title ?? t("notebooks.itemUnavailable"),
         subtitle: t("notebooks.types.session"),
         icon: FileText,
         color: "var(--theme-feedback-info-foreground)",
-        description: session ? `${session.status === "active" ? "En curso" : session.status === "completed" ? "Finalizada" : "Preparada"}` : "",
+        description: session ? t(sessionStatusKey) : "",
       };
     }
     const canvas = campaignState?.canvases.find((candidate) => candidate.id === item.targetId);
     return {
-      title: canvas?.title ?? item.targetId,
+      title: canvas?.title ?? t("notebooks.itemUnavailable"),
       subtitle: t("notebooks.types.canvas"),
       icon: Layers,
       color: "var(--theme-narrative-secret-foreground)",
@@ -490,7 +495,7 @@ export function NotebooksView() {
           <Search size={14} className="search-icon" />
           <input
             type="search"
-            placeholder="Buscar..."
+            placeholder={t("notebooks.searchNotebooksPlaceholder")}
             value={notebookSearch}
             onChange={(e) => setNotebookSearch(e.target.value)}
           />
@@ -688,21 +693,21 @@ export function NotebooksView() {
             
             <div className="modal-body">
               <p className="explanation">
-                Busca y selecciona uno o varios elementos para vincularlos a este cuaderno.
+                {t("notebooks.form.selectResourceExplanation")}
               </p>
-              
+
               {/* Search Control */}
               <div className="search-control">
                 <Search size={16} className="search-icon" />
                 <input
                   type="search"
-                  placeholder="Buscar personajes, sesiones o tableros..."
+                  placeholder={t("notebooks.form.searchCandidatesPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
                 />
               </div>
-              
+
               {/* Filter Tabs */}
               <div className="filter-tabs">
                 <button
@@ -710,7 +715,7 @@ export function NotebooksView() {
                   className={`tab-btn ${filterType === "all" ? "active" : ""}`}
                   onClick={() => setFilterType("all")}
                 >
-                  Todos
+                  {t("notebooks.types.all")}
                 </button>
                 <button
                   type="button"
@@ -757,13 +762,13 @@ export function NotebooksView() {
                           <strong>{candidate.title}</strong>
                           <span>{candidate.subtitle}</span>
                         </div>
-                        {isLinked && <span className="linked-badge">Vinculado</span>}
+                        {isLinked && <span className="linked-badge">{t("notebooks.form.alreadyLinked")}</span>}
                       </label>
                     );
                   })
                 ) : (
                   <div className="no-candidates">
-                    <p>No hay elementos disponibles para vincular con este filtro.</p>
+                    <p>{t("notebooks.form.noCandidates")}</p>
                   </div>
                 )}
               </div>
@@ -779,7 +784,7 @@ export function NotebooksView() {
                 disabled={selectedItemIds.size === 0 || isLinking}
                 onClick={() => void handleLinkMultiple()}
               >
-                {isLinking ? "Vinculando..." : `${t("notebooks.actions.link")} (${selectedItemIds.size})`}
+                {isLinking ? t("notebooks.form.linking") : `${t("notebooks.actions.link")} (${selectedItemIds.size})`}
               </button>
             </div>
           </div>

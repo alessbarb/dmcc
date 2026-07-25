@@ -1155,6 +1155,11 @@ export const it: TranslationDictionary = {
     emptyItemsDescription: "Questo taccuino è vuoto. Aggiungi personaggi, sessioni o bacheche per raccogliere qui la preparazione correlata.",
     selectPlaceholderTitle: "Gestisci i quaderni della campagna",
     selectPlaceholderDesc: "Crea quaderni gerarchici per organizzare entità, sessioni e canvas della campagna.",
+    itemUnavailable: "Elemento non disponibile",
+    sessionStatusActive: "In corso",
+    sessionStatusCompleted: "Conclusa",
+    sessionStatusPrepared: "Preparata",
+    searchNotebooksPlaceholder: "Cerca...",
     actions: {
       addRoot: "Crea quaderno principale",
       addChild: "Crea sottoquaderno",
@@ -1181,6 +1186,11 @@ export const it: TranslationDictionary = {
       resourceType: "Tipo di risorsa",
       resourceSelect: "Risorsa",
       selectOption: "Seleziona",
+      selectResourceExplanation: "Cerca e seleziona uno o più elementi da collegare a questo quaderno.",
+      searchCandidatesPlaceholder: "Cerca personaggi, sessioni o bacheche...",
+      alreadyLinked: "Collegato",
+      noCandidates: "Nessun elemento disponibile da collegare con questo filtro.",
+      linking: "Collegamento in corso...",
     },
     feedback: {
       createSuccess: "Quaderno creato",
@@ -1200,6 +1210,7 @@ export const it: TranslationDictionary = {
       duplicateItem: "La risorsa è già presente nel quaderno",
     },
     types: {
+      all: "Tutti",
       entity: "Entità",
       session: "Sessione",
       canvas: "Canvas",

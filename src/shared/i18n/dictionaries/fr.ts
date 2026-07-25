@@ -1166,6 +1166,11 @@ export const fr: TranslationDictionary = {
     emptyItemsDescription: "Ce carnet est vide. Ajoutez des personnages, des sessions ou des tableaux pour rassembler la préparation associée ici.",
     selectPlaceholderTitle: "Gérer les carnets de campagne",
     selectPlaceholderDesc: "Créez des carnets hiérarchiques pour organiser les entités, sessions et canevas de la campagne.",
+    itemUnavailable: "Élément indisponible",
+    sessionStatusActive: "En cours",
+    sessionStatusCompleted: "Terminée",
+    sessionStatusPrepared: "Préparée",
+    searchNotebooksPlaceholder: "Rechercher...",
     actions: {
       addRoot: "Créer un carnet racine",
       addChild: "Créer un sous-carnet",
@@ -1192,6 +1197,11 @@ export const fr: TranslationDictionary = {
       resourceType: "Type de ressource",
       resourceSelect: "Ressource",
       selectOption: "Sélectionner",
+      selectResourceExplanation: "Recherchez et sélectionnez un ou plusieurs éléments à lier à ce carnet.",
+      searchCandidatesPlaceholder: "Rechercher des personnages, sessions ou tableaux...",
+      alreadyLinked: "Lié",
+      noCandidates: "Aucun élément disponible à lier avec ce filtre.",
+      linking: "Liaison en cours...",
     },
     feedback: {
       createSuccess: "Carnet créé",
@@ -1211,6 +1221,7 @@ export const fr: TranslationDictionary = {
       duplicateItem: "La ressource est déjà dans le carnet",
     },
     types: {
+      all: "Tous",
       entity: "Entité",
       session: "Session",
       canvas: "Canevas",
