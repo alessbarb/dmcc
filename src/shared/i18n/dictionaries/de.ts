@@ -921,6 +921,7 @@ export const de: TranslationDictionary = {
       enemy: "Feind",
       neutral: "Neutral",
       dmOnly: "Nur SL",
+      available: "Verfügbar",
     },
     empty: "Leer",
     importanceCritical: "Kritisch",

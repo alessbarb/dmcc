@@ -963,6 +963,7 @@ export const es: TranslationDictionary = {
       enemy: "Enemigo",
       neutral: "Neutral",
       dmOnly: "Solo DM",
+      available: "Disponible",
     },
     empty: "Vacío",
     importanceCritical: "Crítico",

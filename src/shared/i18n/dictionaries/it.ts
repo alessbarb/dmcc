@@ -920,6 +920,7 @@ export const it: TranslationDictionary = {
       enemy: "Nemico",
       neutral: "Neutrale",
       dmOnly: "Solo DM",
+      available: "Disponibile",
     },
     empty: "Vuoto",
     importanceCritical: "Critico",

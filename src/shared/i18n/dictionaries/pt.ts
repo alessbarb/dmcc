@@ -911,6 +911,7 @@ export const pt: TranslationDictionary = {
       enemy: "Inimigo",
       neutral: "Neutro",
       dmOnly: "Apenas MJ",
+      available: "Disponível",
     },
     empty: "Vazio",
     importanceCritical: "Crítico",

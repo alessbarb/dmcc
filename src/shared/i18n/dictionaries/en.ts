@@ -951,6 +951,7 @@ export const en = {
       enemy: "Enemy",
       neutral: "Neutral",
       dmOnly: "DM only",
+      available: "Available",
     },
     empty: "Empty",
     importanceCritical: "Critical",
