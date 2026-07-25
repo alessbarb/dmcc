@@ -130,3 +130,19 @@
   color: var(--theme-text-secondary);
   margin-bottom: 2px;
 }
+
+.dm-hub-hero__calendar-next {
+  overflow: hidden;
+  color: var(--theme-text-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dm-hub-hero__calendar-actions {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 7px;
+}

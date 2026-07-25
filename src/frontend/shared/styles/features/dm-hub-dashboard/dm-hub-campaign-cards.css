@@ -246,6 +246,7 @@
 .dm-campaign-row__title { font-weight: 700; color: var(--theme-text-primary); font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
 .dm-campaign-row__meta, .dm-campaign-row__stats { font-size: .72rem; color: var(--theme-text-secondary); display: flex; align-items: center; gap: 4px; }
 .dm-campaign-row__narrative { max-width: 100%; overflow: hidden; color: color-mix(in srgb, var(--theme-accents-primary-foreground) 78%, var(--theme-text-secondary)); font-size: .7rem; font-style: italic; text-overflow: ellipsis; white-space: nowrap; }
+.dm-panel__count { color: var(--theme-text-secondary); font-size: .72em; font-weight: 600; }
 .dm-campaign-row__actions { display: flex; gap: 4px; flex-shrink: 0; }
 .dm-campaign-row__action { background: none; border: none; color: var(--theme-text-secondary); cursor: pointer; padding: 4px; }
 .dm-campaign-row__action--danger:hover { color: var(--theme-feedback-danger-foreground); }

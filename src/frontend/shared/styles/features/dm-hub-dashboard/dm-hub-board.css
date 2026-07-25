@@ -48,13 +48,14 @@
 .dm-adaptive-state__detail { overflow: hidden; color: var(--theme-text-secondary); font-size: .67rem; text-overflow: ellipsis; white-space: nowrap; }
 .dm-adaptive-state__action { grid-column: 2; justify-self: start; display: inline-flex; align-items: center; gap: 4px; padding: 3px 0; border: 0; background: transparent; color: var(--theme-accents-primary-foreground); font-size: .65rem; font-weight: 750; cursor: pointer; }
 .dm-adaptive-state__action:hover { color: var(--theme-text-primary); }
+.dm-panel--empty-compact .dm-adaptive-state { min-height: 64px; padding: 4px 0; border: 0; border-left: 2px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 48%, transparent); border-radius: 0; background: transparent; }
 .dm-hub-featured-campaign { margin: 0 0 10px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 38%, transparent); border-radius: 10px; background: linear-gradient(110deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent) 58%); box-shadow: 0 12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 32%, transparent), 0 0 22px color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent); }
 .dm-hub-featured-campaign__surface { position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 14px; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
 .dm-hub-featured-campaign__cover { min-height: 132px; background-position: center; background-size: cover; box-shadow: inset -30px 0 30px -25px var(--theme-surfaces-canvas); }
 .dm-hub-featured-campaign__content { min-width: 0; padding: 14px 12px 8px 0; }
 .dm-hub-featured-campaign__eyebrow { display: flex; align-items: center; gap: 5px; color: var(--theme-accents-primary-foreground); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .dm-hub-featured-campaign__content h3 { margin: 5px 0 3px; color: var(--theme-text-primary); font-size: 1.05rem; }
-.dm-hub-featured-campaign__content p { margin: 0 0 8px; color: var(--theme-text-secondary); font-size: .72rem; line-height: 1.4; }
+.dm-hub-featured-campaign__content p { display: -webkit-box; margin: 0 0 8px; overflow: hidden; color: var(--theme-text-secondary); font-size: .72rem; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .dm-hub-featured-campaign__meta { display: flex; flex-wrap: wrap; gap: 9px; color: var(--theme-text-secondary); font-size: .66rem; }
 .dm-hub-featured-campaign__meta span { display: inline-flex; align-items: center; gap: 3px; }
 .dm-hub-featured-campaign__surface > .dm-badge { position: absolute; top: 10px; right: 12px; }
