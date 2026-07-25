@@ -144,7 +144,7 @@ test.describe("Player invitation UI flow", () => {
       name: /people|jugadores/i,
     })).toBeVisible({ timeout: 15_000 });
     await page.getByRole("link", { name: /player invitations|invitaciones de jugador/i }).click();
-    await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i, level: 3 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i, level: 2 })).toBeVisible();
 
     await page.getByRole("button", { name: /generate invitation link|generar enlace de invitación/i }).first().click();
     await expect(page.getByText(/\/invitations\//)).toBeVisible({ timeout: 15_000 });
