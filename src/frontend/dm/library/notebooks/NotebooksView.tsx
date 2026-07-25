@@ -28,6 +28,7 @@ import { ContextMenu, type ContextMenuItem } from "../../../shared/components/Co
 import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
 import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
 import { formatVisibility } from "@shared/i18n/index.js";
+import "./notebooksWorkspace.css";
 
 type CampaignState = NonNullable<ReturnType<typeof useCampaignStore.getState>["campaignState"]>;
 type Notebook = CampaignState["notebooks"][number];

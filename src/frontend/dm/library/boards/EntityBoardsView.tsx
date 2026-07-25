@@ -3,6 +3,7 @@ import type { Entity } from "../../../shared/stores/campaignStore.js";
 import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
 import "../../../shared/styles/features/kanban-board.css";
 import "../../../shared/styles/features/kanban.css";
+import "./entityBoards.css";
 import {
   AlertTriangle,
   Archive,
