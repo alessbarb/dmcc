@@ -3,6 +3,7 @@ import { Plus, X, Check, Calendar, GitBranch } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useStoryThreads } from "../../story/useStoryThreads.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
+import "../story-threads-panel.css";
 
 export function StoryThreadsPanel({
   plannedSessions,

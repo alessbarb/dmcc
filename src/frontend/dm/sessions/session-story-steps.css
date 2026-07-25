@@ -1,0 +1,153 @@
+/* ==========================================================================
+   Session story steps and planning forms styles (SessionDetailPage)
+   ========================================================================== */
+
+.story-plan-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.story-plan-step-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.story-plan-schedule-form {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.story-plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.story-plan-actions--compact {
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.story-plan-actions--end {
+  justify-content: flex-end;
+}
+
+.story-plan-step-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.story-plan-step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.story-plan-step-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.session-story-steps .story-plan-heading__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.session-story-steps .story-plan-heading__title--small {
+  font-size: 1rem;
+}
+
+.story-plan-empty {
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.story-plan-empty--steps {
+  padding: 40px 0;
+}
+
+.story-plan-step-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  border-top: 1px solid var(--theme-borders-default);
+  padding-top: 8px;
+}
+
+.story-plan-modal-overlay {
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+.story-plan-modal {
+  display: flex;
+  width: min(480px, calc(100vw - 32px));
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--theme-borders-default);
+  padding: 24px;
+  background: var(--theme-surfaces-base);
+}
+
+.story-plan-modal-actions {
+  margin-top: 12px;
+}
+
+.session-story-steps .step-card {
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 78%, var(--theme-surfaces-base));
+  padding: 15px;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
+}
+
+.session-story-steps .step-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 28%, var(--theme-borders-default));
+}
+
+.session-story-steps .step-card.status-active,
+.session-story-steps .step-card.status-ready {
+  box-shadow:
+    inset 3px 0 0 var(--theme-accents-primary-foreground),
+    0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
+}
+
+.session-story-steps .badge {
+  min-height: 22px;
+  font-size: 0.68rem;
+}
+
+.session-story-steps .form-control,
+.session-story-steps .form-control-sm {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+  font: inherit;
+}
+
+.session-story-steps textarea.form-control {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.step-card--focused {
+  outline: 2px solid var(--theme-focus-outline);
+  outline-offset: 2px;
+}

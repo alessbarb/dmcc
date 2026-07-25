@@ -3,6 +3,7 @@ import { RotateCcw, Check, Play, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useStoryThreads } from "../../story/useStoryThreads.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
+import "../session-story-steps.css";
 
 export function SessionStorySteps({
   sessionId,
