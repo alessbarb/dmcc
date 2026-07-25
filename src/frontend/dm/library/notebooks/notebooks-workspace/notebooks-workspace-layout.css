@@ -37,13 +37,20 @@
   padding: 0;
 }
 
-.notebooks-empty-actionable,
 .notebook-placeholder {
   display: grid;
   place-items: center;
   align-content: center;
   min-height: 320px;
   padding: clamp(28px, 5vw, 56px);
+  text-align: center;
+}
+
+.notebooks-empty-actionable {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  padding: 0;
   text-align: center;
 }
 
