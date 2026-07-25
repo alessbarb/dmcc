@@ -37,6 +37,7 @@ import {
 import { getCampaignHistory, type CampaignHistoryResponse } from "../../../shared/api/webProductClient.js";
 import { getActivityVisualConfig } from "../../../../core/projections/activity/activityPresentation.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
 import "./campaignHistory.css";
 
 const IconMap: Record<string, LucideIcon> = {
@@ -231,7 +232,7 @@ export function CampaignHistoryView() {
                         <div className="campaign-history-entry__meta">
                           <span className="campaign-history-entry__category">{config.label}</span>
                           <span aria-hidden="true">·</span>
-                          <time dateTime={entry.occurredAt}>{new Date(entry.occurredAt).toLocaleString(locale)}</time>
+                          <time dateTime={entry.occurredAt} title={new Date(entry.occurredAt).toLocaleString(locale)}>{formatRelativeTime(entry.occurredAt, locale)}</time>
                         </div>
                         <p className="campaign-history-entry__description">{config.description}</p>
 
@@ -268,7 +269,7 @@ export function CampaignHistoryView() {
                       <div className="campaign-history-entry__meta">
                         <span className="campaign-history-entry__category">{config.label}</span>
                         <span aria-hidden="true">·</span>
-                        <time dateTime={latestEntry.occurredAt}>{new Date(latestEntry.occurredAt).toLocaleString(locale)}</time>
+                        <time dateTime={latestEntry.occurredAt} title={new Date(latestEntry.occurredAt).toLocaleString(locale)}>{formatRelativeTime(latestEntry.occurredAt, locale)}</time>
                         <span aria-hidden="true">·</span>
                         <span className="campaign-history-entry__consecutive-count">
                           {t("campaignHistory.consecutiveEvents", { count: group.entries.length })}
@@ -296,7 +297,7 @@ export function CampaignHistoryView() {
                             return (
                               <div key={childEntry.activityId} className="campaign-history-entry__child-item">
                                 <div className="campaign-history-entry__meta campaign-history-entry__meta--child">
-                                  <time dateTime={childEntry.occurredAt}>{new Date(childEntry.occurredAt).toLocaleString(locale)}</time>
+                                  <time dateTime={childEntry.occurredAt} title={new Date(childEntry.occurredAt).toLocaleString(locale)}>{formatRelativeTime(childEntry.occurredAt, locale)}</time>
                                   {childEntry.actorUserId && <><span>·</span><span>{t("campaignHistory.actor")}: {childEntry.actorUserId}</span></>}
                                 </div>
                                 <p className="campaign-history-entry__description campaign-history-entry__description--child">{childConfig.description}</p>
