@@ -39,8 +39,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-        with:
-          lfs: true
 
       - uses: actions/setup-node@v7
         with:
@@ -99,8 +97,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-        with:
-          lfs: true
 
       - uses: actions/setup-node@v7
         with:
