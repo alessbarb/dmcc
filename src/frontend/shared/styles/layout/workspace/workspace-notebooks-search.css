@@ -85,3 +85,10 @@
   background: var(--theme-surfaces-interactive-hover);
   color: var(--theme-text-primary);
 }
+
+.notebook-tree-item:focus-visible {
+  outline: var(--theme-focus-outline);
+  outline-offset: -2px;
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
+}

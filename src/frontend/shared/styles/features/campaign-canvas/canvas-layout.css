@@ -49,7 +49,11 @@
   padding: 4px 8px;
   font-size: 0.85rem;
   cursor: pointer;
-  outline: none;
+}
+
+.canvas-select:focus-visible {
+  outline: var(--theme-focus-outline);
+  outline-offset: 2px;
 }
 
 .canvas-board-info {

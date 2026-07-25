@@ -14,8 +14,12 @@
   background: transparent;
   color: var(--theme-text-primary);
   font-size: var(--type-micro);
-  outline: none;
   cursor: pointer;
+}
+
+.canvas-toolbar__select:focus-visible {
+  outline: var(--theme-focus-outline);
+  outline-offset: 2px;
 }
 
 .canvas-toolbar__inline-divider {
