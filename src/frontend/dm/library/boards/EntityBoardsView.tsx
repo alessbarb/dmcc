@@ -225,7 +225,7 @@ function KanbanCard({
             <option value={entity.status}>{formatEntityStatus(entity.status, locale) || t("boards.unknownStatus")}</option>
           )}
           {states.map((state) => (
-            <option key={state.key} value={state.key}>{formatEntityStatus(state.key, locale)}</option>
+            <option key={state.key} value={state.key}>{t(state.labelKey)}</option>
           ))}
         </select>
       </label>
@@ -259,7 +259,7 @@ function KanbanColumn({
   onDragLeave: (event: React.DragEvent) => void;
 }) {
   const Icon = STATE_ICONS[state.key] || HelpCircle;
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
   const stateStyle: BoardStyle = { "--board-state-color": state.color };
 
   return (
@@ -278,7 +278,7 @@ function KanbanColumn({
       <header className="kanban-column__header">
         <span className="kanban-column__dot" />
         <Icon className="kanban-column__icon" size={14} />
-        <strong id={`kanban-column-${state.key}`}>{formatEntityStatus(state.key, locale)}</strong>
+        <strong id={`kanban-column-${state.key}`}>{t(state.labelKey)}</strong>
         <span className="kanban-column__count">{entities.length}</span>
       </header>
 
@@ -306,7 +306,7 @@ function KanbanColumn({
 export function EntityBoardsView() {
   const { campaignState, updateEntity, archiveEntity } = useCampaignStore();
   const { addToast } = useToast();
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [activeBoard, setActiveBoard] = useState<BoardType>("quests");
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
@@ -440,7 +440,7 @@ export function EntityBoardsView() {
             (() => {
               const stateStyle: BoardStyle = { "--board-state-color": state.color };
               return <span key={state.key} className="entity-boards-view__summary-item entity-boards-view__summary-item--state" style={stateStyle}>
-                {formatEntityStatus(state.key, locale)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
+                {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
               </span>;
             })()
           ))}
