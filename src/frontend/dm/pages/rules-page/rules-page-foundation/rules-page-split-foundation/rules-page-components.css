@@ -7,7 +7,7 @@
 }
 
 .rules-page__article {
-  width: min(100%, 78ch);
+  width: min(100%, 72ch);
   margin-inline: auto;
 }
 
@@ -46,8 +46,8 @@
 
 .rules-page__content {
   color: var(--theme-text-primary);
-  font-size: 0.98rem;
-  line-height: 1.72;
+  font-size: var(--type-body-comfortable);
+  line-height: var(--line-reading);
   white-space: pre-wrap;
 }
 
