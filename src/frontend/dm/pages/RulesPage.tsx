@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { RULE_CATEGORY_IDS } from "@shared/rules/categories.js";
+import { formatRuleCategory } from "../../shared/presentation/formatRuleCategory.js";
 import { useBodyWatermark } from "../../shared/hooks/useBodyWatermark.js";
 import "./rulesPage.css";
 import "../../shared/styles/features/rules-workspace.css";
@@ -44,7 +45,7 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 
 export function RulesPage() {
   useBodyWatermark("hidden");
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const initialParameters = useRef(new URLSearchParams(window.location.search));
   const targetRuleId = initialParameters.current.get("ruleId");
   const requestedCategory = initialParameters.current.get("category");
@@ -165,7 +166,7 @@ export function RulesPage() {
               onChange={(event) => setSelectedCategory(event.target.value)}
             >
               {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
+                <option key={category} value={category}>{formatRuleCategory(category, locale)}</option>
               ))}
             </select>
           </label>
@@ -214,7 +215,7 @@ export function RulesPage() {
               <header className="rules-page__article-header">
                 <span className="rules-page__category">
                   {CATEGORY_ICONS[selectedRule.category] || <Book size={12} />}
-                  {selectedRule.category}
+                  {formatRuleCategory(selectedRule.category, locale)}
                 </span>
                 <h2 id="selected-rule-title">{selectedRule.title}</h2>
                 {selectedRule.subtitle && (

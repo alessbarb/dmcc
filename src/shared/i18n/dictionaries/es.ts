@@ -2045,6 +2045,21 @@ export const es: TranslationDictionary = {
     entriesInCategory: "{count} entradas en esta categoría",
     selectRule:
       "Selecciona una regla en el panel izquierdo para ver sus detalles",
+    categories: {
+      gameplay: "Reglas de Juego",
+      characterCreation: "Creación de Personajes",
+      classes: "Clases",
+      origins: "Orígenes de Personajes",
+      feats: "Dotes",
+      equipment: "Equipo",
+      spellcasting: "Casteo de Conjuros",
+      spells: "Conjuros",
+      glossary: "Glosario de Reglas",
+      toolbox: "Caja de Herramientas de Juego",
+      magicItems: "Objetos Mágicos",
+      monsters: "Monstruos",
+      animalsAndBeasts: "Animales y Bestias",
+    },
   },
   timeline: {
     loading: "Cargando línea temporal…",

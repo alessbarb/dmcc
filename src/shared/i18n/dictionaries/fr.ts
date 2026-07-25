@@ -1964,6 +1964,21 @@ export const fr: TranslationDictionary = {
     noMatches: "Aucune correspondance trouvée.",
     entriesInCategory: "{count} entrées dans cette catégorie",
     selectRule: "Sélectionnez une règle dans le panneau de gauche pour afficher ses détails",
+    categories: {
+      gameplay: "Règles de jeu",
+      characterCreation: "Création de personnage",
+      classes: "Classes",
+      origins: "Origines des personnages",
+      feats: "Dons",
+      equipment: "Équipement",
+      spellcasting: "Incantation",
+      spells: "Sorts",
+      glossary: "Glossaire des règles",
+      toolbox: "Boîte à outils de jeu",
+      magicItems: "Objets magiques",
+      monsters: "Monstres",
+      animalsAndBeasts: "Animaux et bêtes",
+    },
   },
 
   timeline: {
