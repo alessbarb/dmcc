@@ -73,40 +73,16 @@ export async function registerCommandCenterWebRoutes(server: FastifyInstance): P
         nextSession,
         attention: [
           ...(pendingProposals.length
-            ? [
-                {
-                  type: "player_proposals",
-                  count: pendingProposals.length,
-                  label: "Player proposals pending review",
-                },
-              ]
+            ? [{ type: "player_proposals" as const, count: pendingProposals.length }]
             : []),
           ...(hiddenSecrets.length
-            ? [
-                {
-                  type: "hidden_secrets",
-                  count: hiddenSecrets.length,
-                  label: "DM secrets still unrevealed",
-                },
-              ]
+            ? [{ type: "hidden_secrets" as const, count: hiddenSecrets.length }]
             : []),
           ...(unresolvedClues.length
-            ? [
-                {
-                  type: "unresolved_clues",
-                  count: unresolvedClues.length,
-                  label: "Prepared clues not revealed yet",
-                },
-              ]
+            ? [{ type: "unresolved_clues" as const, count: unresolvedClues.length }]
             : []),
           ...(openObjectives.length
-            ? [
-                {
-                  type: "open_objectives",
-                  count: openObjectives.length,
-                  label: "Open objectives",
-                },
-              ]
+            ? [{ type: "open_objectives" as const, count: openObjectives.length }]
             : []),
         ],
         counts: {

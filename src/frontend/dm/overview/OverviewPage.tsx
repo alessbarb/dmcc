@@ -20,6 +20,8 @@ import {
   Users,
 } from "lucide-react";
 import { getCommandCenter, getLiveTable, type CommandCenterResponse, type LiveTableSummary } from "../../shared/api/webProductClient.js";
+import { formatActivity } from "../../shared/presentation/formatActivity.js";
+import { formatRelativeTime } from "../../shared/presentation/formatRelativeTime.js";
 import { useCampaignStore, type Entity } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -272,26 +274,29 @@ export function OverviewPage() {
   }, [commandCenter?.unresolvedClues]);
 
   const preparationChecklist = useMemo(() => {
-    const list: Array<{ task: string; priority?: string; done?: boolean }> = [];
+    const list: Array<{ id: string; label: string; priority: "normal" | "high" }> = [];
     for (const clue of preparedClues.slice(0, 3)) {
-      list.push({ task: `Prepare to reveal clue: ${clue.title}`, priority: "normal" });
+      list.push({ id: `clue:${clue.entityId}`, label: t("whatNowPage.checklistRevealClue", { title: clue.title }), priority: "normal" });
     }
     for (const quest of blockedQuests.slice(0, 3)) {
-      list.push({ task: `Unblock quest: ${quest.title}`, priority: "high" });
+      list.push({ id: `quest:${quest.entityId}`, label: t("whatNowPage.checklistUnblockQuest", { title: quest.title }), priority: "high" });
     }
     for (const consequence of pendingConsequences.slice(0, 3)) {
-      list.push({ task: `Resolve consequence: ${consequence.title}`, priority: "high" });
+      list.push({ id: `consequence:${consequence.entityId}`, label: t("whatNowPage.checklistResolveConsequence", { title: consequence.title }), priority: "high" });
     }
     for (const npc of npcWarnings.slice(0, 3)) {
-      list.push({ task: `Update NPC: ${npc.title}`, priority: "normal" });
+      list.push({ id: `npc:${npc.entityId}`, label: t("whatNowPage.checklistUpdateNpc", { title: npc.title }), priority: "normal" });
     }
     return list;
-  }, [preparedClues, blockedQuests, pendingConsequences, npcWarnings]);
+  }, [preparedClues, blockedQuests, pendingConsequences, npcWarnings, t]);
 
   // last session summary for the session prep card
   const lastClosedSession = [...sessions]
     .filter((s) => s.status === "closed" || s.status === "archived")
     .sort((a, b) => new Date(b.endedAt ?? "0").getTime() - new Date(a.endedAt ?? "0").getTime())[0] ?? null;
+
+  const pendingProposalsCount =
+    commandCenter?.attention.find((item) => item.type === "player_proposals")?.count ?? 0;
 
   const attentionCount =
     npcWarnings.length +
@@ -299,7 +304,8 @@ export function OverviewPage() {
     criticalHiddenClues.length +
     criticalHiddenSecrets.length +
     pendingConsequences.length +
-    partialKnowledgeAlerts.length;
+    partialKnowledgeAlerts.length +
+    pendingProposalsCount;
 
   const attentionTone = useMemo<"danger" | "warning" | "good">(() => {
     if (attentionCount > 8) return "danger";
@@ -307,11 +313,50 @@ export function OverviewPage() {
     return "good";
   }, [attentionCount]);
 
+  const attentionChips = useMemo(() => {
+    const chips: Array<{ key: string; label: string; count: number; tone: "danger" | "warning" }> = [
+      { key: "criticalClues", label: t("dashboard.unrevealedCriticalClues"), count: criticalHiddenClues.length, tone: "danger" },
+      { key: "criticalSecrets", label: t("dashboard.unrevealedCriticalSecrets"), count: criticalHiddenSecrets.length, tone: "danger" },
+      { key: "blockedQuests", label: t("dashboard.blockedQuests"), count: blockedQuests.length, tone: "danger" },
+      { key: "pendingProposals", label: t("players.pendingProposals"), count: pendingProposalsCount, tone: "warning" },
+      { key: "pendingConsequences", label: t("dashboard.pendingConsequences"), count: pendingConsequences.length, tone: "warning" },
+      { key: "forgottenNpcs", label: t("dashboard.forgottenNpcs"), count: npcWarnings.length, tone: "warning" },
+      { key: "partialKnowledge", label: t("whatNowPage.partialKnowledge"), count: partialKnowledgeAlerts.length, tone: "warning" },
+    ];
+    return chips.filter((chip) => chip.count > 0).slice(0, 4);
+  }, [
+    criticalHiddenClues.length,
+    criticalHiddenSecrets.length,
+    blockedQuests.length,
+    pendingProposalsCount,
+    pendingConsequences.length,
+    npcWarnings.length,
+    partialKnowledgeAlerts.length,
+    t,
+  ]);
+
   const toggleChecklistTask = (task: string) => {
     setCompletedTasks((prev) =>
       prev.includes(task) ? prev.filter((entry) => entry !== task) : [...prev, task],
     );
   };
+
+  const groupedActivity = useMemo(() => {
+    const items = commandCenter?.recentActivity ?? [];
+    const groups: Array<{ key: string; type: string; count: number; latestOccurredAt: string }> = [];
+    for (const item of items) {
+      const existing = groups.find((g) => g.type === item.type);
+      if (existing) {
+        existing.count += 1;
+        if (item.occurredAt > existing.latestOccurredAt) existing.latestOccurredAt = item.occurredAt;
+      } else {
+        groups.push({ key: item.activityId, type: item.type, count: 1, latestOccurredAt: item.occurredAt });
+      }
+    }
+    return groups
+      .sort((a, b) => (a.latestOccurredAt < b.latestOccurredAt ? 1 : -1))
+      .slice(0, 5);
+  }, [commandCenter?.recentActivity]);
 
   const handleMarkdownExport = async () => {
     setExportingMarkdown(true);
@@ -506,16 +551,24 @@ export function OverviewPage() {
             {attentionCount > 0 ? <AlertTriangle size={20} /> : <CheckCircle2 size={20} />}
             <h2 className="dashboard-attention__title">{t("dashboard.needsAttention")}</h2>
             <Pill tone={attentionTone}>{attentionCount}</Pill>
+            {attentionCount > 0 && (
+              <button
+                type="button"
+                className="btn btn-sm btn-secondary dashboard-attention__review"
+                onClick={() => navigateToCampaignPage("library/list")}
+              >
+                {t("dashboard.reviewAttention")}
+              </button>
+            )}
           </div>
-          {attentionCount > 0 && (
+          {attentionCount > 0 ? (
             <div className="dashboard-attention__items">
-              {npcWarnings.length > 0 && <Pill tone="warning">{t("dashboard.forgottenNpcs")}: {npcWarnings.length}</Pill>}
-              {blockedQuests.length > 0 && <Pill tone="danger">{t("dashboard.blockedQuests")}: {blockedQuests.length}</Pill>}
-              {criticalHiddenClues.length > 0 && <Pill tone="danger">{t("dashboard.unrevealedCriticalClues")}: {criticalHiddenClues.length}</Pill>}
-              {criticalHiddenSecrets.length > 0 && <Pill tone="danger">{t("dashboard.unrevealedCriticalSecrets")}: {criticalHiddenSecrets.length}</Pill>}
-              {pendingConsequences.length > 0 && <Pill tone="warning">{t("dashboard.pendingConsequences")}: {pendingConsequences.length}</Pill>}
-              {partialKnowledgeAlerts.length > 0 && <Pill tone="warning">{t("whatNowPage.partialKnowledge")}: {partialKnowledgeAlerts.length}</Pill>}
+              {attentionChips.map((chip) => (
+                <Pill key={chip.key} tone={chip.tone}>{chip.label}: {chip.count}</Pill>
+              ))}
             </div>
+          ) : (
+            <EmptyMessage>{t("dashboard.allClear")}</EmptyMessage>
           )}
         </Card>
 
@@ -529,14 +582,14 @@ export function OverviewPage() {
             ) : (
               <div className="dashboard-checklist">
                 {preparationChecklist.map((item) => (
-                  <label key={item.task} className="dashboard-checklist__item">
+                  <label key={item.id} className="dashboard-checklist__item">
                     <input
                       type="checkbox"
-                      checked={completedTasks.includes(item.task)}
-                      onChange={() => toggleChecklistTask(item.task)}
+                      checked={completedTasks.includes(item.id)}
+                      onChange={() => toggleChecklistTask(item.id)}
                     />
-                    <span className={`dashboard-checklist__label ${completedTasks.includes(item.task) ? "is-complete" : ""}`}>
-                      {item.task}
+                    <span className={`dashboard-checklist__label ${completedTasks.includes(item.id) ? "is-complete" : ""}`}>
+                      {item.label}
                     </span>
                   </label>
                 ))}
@@ -630,15 +683,29 @@ export function OverviewPage() {
               <Activity size={18} /> {t("dashboard.recentlyUpdated")}
             </h2>
             <div className="dashboard-activity-list">
-              {(commandCenter?.recentActivity ?? []).slice(0, 6).map((item) => (
-                <div key={item.activityId} className="dashboard-activity-item">
-                  <strong>{item.type}</strong>
+              {groupedActivity.map((group) => (
+                <div key={group.key} className="dashboard-activity-item">
+                  <strong>
+                    {formatActivity({ type: group.type, occurredAt: group.latestOccurredAt }, locale)}
+                    {group.count > 1 ? ` ×${group.count}` : ""}
+                  </strong>
                   <br />
-                  {new Date(item.occurredAt).toLocaleString(locale)}
+                  <time dateTime={group.latestOccurredAt} title={new Date(group.latestOccurredAt).toLocaleString(locale)}>
+                    {formatRelativeTime(group.latestOccurredAt, locale)}
+                  </time>
                 </div>
               ))}
-              {!(commandCenter?.recentActivity ?? []).length && (
+              {groupedActivity.length === 0 && (
                 <EmptyMessage>{t("dashboard.noRecentChanges")}</EmptyMessage>
+              )}
+              {groupedActivity.length > 0 && (
+                <button
+                  type="button"
+                  className="btn btn-link btn-sm dashboard-activity__view-history"
+                  onClick={() => navigateToCampaignPage("story/history")}
+                >
+                  {t("dashboard.viewHistory")}
+                </button>
               )}
             </div>
           </Card>

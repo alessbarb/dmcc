@@ -137,9 +137,19 @@ export interface LiveTableSummary {
 }
 
 export interface CommandCenterAttentionItem {
-  type: string;
+  type: "player_proposals" | "hidden_secrets" | "unresolved_clues" | "open_objectives";
   count: number;
-  label: string;
+}
+
+export interface CommandCenterSessionSummary {
+  sessionId: string;
+  number: number;
+  title: string;
+  status: string;
+  plannedDate: string | null;
+  playedDate: string | null;
+  recapPublic: string | null;
+  recapDm: string | null;
 }
 
 export interface CommandCenterActivityItem {
@@ -166,8 +176,8 @@ export interface CommandCenterCampaignSummary {
 export interface CommandCenterResponse {
   campaign?: CommandCenterCampaignSummary;
   recap: string | null;
-  lastSession: Record<string, unknown> | null;
-  nextSession: Record<string, unknown> | null;
+  lastSession: CommandCenterSessionSummary | null;
+  nextSession: CommandCenterSessionSummary | null;
   attention: CommandCenterAttentionItem[];
   counts: {
     entities: number;
