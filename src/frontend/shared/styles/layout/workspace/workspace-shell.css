@@ -1,4 +1,6 @@
 .campaign-workspace {
+  container-type: inline-size;
+  container-name: campaign-workspace;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;

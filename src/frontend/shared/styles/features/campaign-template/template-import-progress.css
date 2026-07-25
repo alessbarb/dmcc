@@ -32,7 +32,7 @@
 }
 
 .campaign-template-import-loading__tip {
-  font-size: 0.74rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   font-style: italic;
   max-width: 320px;
@@ -44,7 +44,7 @@
   padding: 3px 8px;
   color: var(--theme-accents-primary-foreground);
   background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 800;
 }
 

@@ -72,7 +72,7 @@
 .guided-start__eyebrow {
   display: inline-flex;
   color: var(--theme-accents-secondary-foreground);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 850;
   letter-spacing: 0.14em;
   text-transform: uppercase;

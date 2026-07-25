@@ -8,7 +8,7 @@
 .admin-audit__row:hover,
 .admin-audit__row--selected { background: color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, transparent); }
 .admin-audit__action-cell { color: var(--theme-accents-primary-foreground); font-weight: 600; }
-.admin-audit__muted-id { color: var(--theme-text-secondary); font-size: 0.7rem; }
+.admin-audit__muted-id { color: var(--theme-text-secondary); font-size: var(--type-micro); }
 .admin-audit__cell--right { text-align: right; }
 .admin-audit__details-button { border: 0; padding: 4px; color: var(--theme-text-secondary); background: transparent; }
 

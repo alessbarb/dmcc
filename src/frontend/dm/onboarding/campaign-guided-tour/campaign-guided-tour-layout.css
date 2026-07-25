@@ -13,7 +13,7 @@
   display: inline-flex;
   margin-bottom: 6px;
   color: var(--theme-accents-secondary-foreground);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;

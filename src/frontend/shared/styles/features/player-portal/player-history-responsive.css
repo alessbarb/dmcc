@@ -10,7 +10,7 @@
 .player-history-header span:first-child {
   display: block;
   color: var(--theme-text-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -122,7 +122,7 @@
 .player-mode-switcher p {
   margin: 8px 0 0;
   color: var(--theme-text-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   line-height: 1.35;
 }
 
@@ -138,7 +138,7 @@
   background: var(--theme-surfaces-subtle);
   color: var(--theme-text-secondary);
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   padding: 7px 8px;
 }

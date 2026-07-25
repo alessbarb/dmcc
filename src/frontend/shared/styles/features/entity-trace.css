@@ -15,7 +15,7 @@
 .entity-trace-content { padding: 10px 0 14px; flex: 1; }
 .entity-trace-content--last { padding-bottom: 0; }
 .entity-trace-meta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.entity-trace-kind { background: none; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.entity-trace-kind { background: none; font-size: var(--type-micro); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 .entity-trace-date { font-size: 0.76rem; color: var(--theme-text-secondary); }
 .entity-trace-label { margin: 2px 0 0; font-size: 0.87rem; color: var(--theme-text-primary); line-height: 1.4; }
 .entity-trace-detail { margin: 2px 0 0; font-size: 0.8rem; color: var(--theme-text-secondary); }

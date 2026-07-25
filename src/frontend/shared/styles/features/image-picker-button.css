@@ -6,6 +6,6 @@
 .image-picker-button--circle { width: 72px; height: 72px; border-radius: 50%; }
 .image-picker-button--rect { width: 120px; height: 72px; border-radius: var(--theme-shapes-radius-small); }
 .image-picker-button__image { width: 100%; height: 100%; object-fit: cover; display: block; }
-.image-picker-button__empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--theme-text-secondary); font-size: 11px; text-align: center; padding: 4px; }
+.image-picker-button__empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--theme-text-secondary); font-size: var(--type-micro); text-align: center; padding: 4px; }
 .image-picker-button__hover { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--theme-media-overlay-strong); color: var(--theme-text-on-media); opacity: 0; transition: opacity 0.15s; }
 .image-picker-button__hover.is-visible, .image-picker-button:hover .image-picker-button__hover { opacity: 1; }
