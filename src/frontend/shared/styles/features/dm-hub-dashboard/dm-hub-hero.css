@@ -103,7 +103,7 @@
 }
 
 .dm-stat-pill__label {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
 }
 
@@ -126,7 +126,7 @@
 }
 
 .dm-hub-hero__calendar-world {
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   margin-bottom: 2px;
 }
@@ -134,7 +134,7 @@
 .dm-hub-hero__calendar-next {
   overflow: hidden;
   color: var(--theme-text-primary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;

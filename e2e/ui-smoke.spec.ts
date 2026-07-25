@@ -53,7 +53,7 @@ test.describe("Critical UI smoke flow", () => {
     await expect(campaignsSection.locator(".dm-empty-state--error")).toHaveCount(0);
 
     const createCampaignControl = campaignsSection
-      .locator("button.btn-gold, .dm-campaign-card--create")
+      .locator("button.btn-gold, .dm-campaign-row--create")
       .first();
     await expect(createCampaignControl).toBeVisible({ timeout: 15_000 });
     await createCampaignControl.click();

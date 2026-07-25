@@ -45,7 +45,7 @@
   color: var(--theme-accents-primary-foreground);
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 700;
 }
 

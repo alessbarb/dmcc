@@ -35,7 +35,7 @@
 }
 
 .recent-item-meta {
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   text-transform: uppercase;
 }
