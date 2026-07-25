@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { Plus, ShieldCheck, User, Users } from "lucide-react";
 import type { PlayerProfile } from "../../../shared/stores/campaignStore.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
@@ -19,6 +20,8 @@ function errorMessage(err: unknown): string {
 
 export function GroupView() {
   const { t } = useTranslation();
+  const { campaignId } = useParams({ strict: false }) as { campaignId: string };
+  const navigate = useNavigate();
   const store = useCampaignStore();
   const { addToast } = useToast();
   const [isPlayerModalOpen, setIsPlayerModalOpen] = useState(false);
@@ -53,6 +56,10 @@ export function GroupView() {
     setEditingPlayer(null);
   };
 
+  const goToInvitations = () => {
+    void navigate({ to: `/campaigns/${campaignId}/people/invitations` });
+  };
+
   const handleArchivePlayer = async (player: PlayerProfile) => {
     const displayName = player.displayName ?? player.name;
     try {
@@ -79,9 +86,11 @@ export function GroupView() {
             </div>
           </div>
         </div>
-        <button type="button" className="btn btn-primary" onClick={openCreateModal}>
-          <Plus size={16} /> {t("players.addPlayer")}
-        </button>
+        {players.length > 0 && (
+          <button type="button" className="btn btn-primary" onClick={openCreateModal}>
+            <Plus size={16} /> {t("players.addPlayer")}
+          </button>
+        )}
       </header>
 
       <DmPlayerInbox items={dmInbox} />
@@ -101,11 +110,15 @@ export function GroupView() {
           {players.length === 0 ? (
             <CompactEmptyState
               title={t("players.noPlayersRegistered")}
-              description="No hay jugadores registrados en esta campaña."
+              description={t("players.noPlayersRegisteredDescription")}
               size="standard"
               primaryAction={{
                 label: t("players.addPlayer"),
-                onClick: openCreateModal
+                onClick: openCreateModal,
+              }}
+              secondaryAction={{
+                label: t("players.generateInvitation"),
+                onClick: goToInvitations,
               }}
             />
           ) : (

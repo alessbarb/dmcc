@@ -2167,7 +2167,9 @@ export const en = {
     archivePlayerAction: "Archive {name}",
     charactersLabel: "Characters",
     noLinkedCharacters: "No linked characters. Create a player character entity to associate one.",
-    noPlayersRegistered: "No players registered. Add players to track who's at the table and link their characters.",
+    noPlayersRegistered: "No players registered",
+    noPlayersRegisteredDescription: "Add players to track who's at the table and link their characters.",
+    generateInvitation: "Generate invitation",
     playerArchived: "Player \"{name}\" archived.",
     playerArchiveError: "Could not archive the player: {error}",
 

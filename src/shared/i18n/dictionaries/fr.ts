@@ -2106,7 +2106,9 @@ export const fr: TranslationDictionary = {
     archivePlayerAction: "Archiver {name}",
     charactersLabel: "Personnages",
     noLinkedCharacters: "Aucun personnage lié. Crée une entité de personnage joueur pour en associer un.",
-    noPlayersRegistered: "Aucun joueur enregistré. Ajoute des joueurs pour savoir qui est à table et lier leurs personnages.",
+    noPlayersRegistered: "Aucun joueur enregistré",
+    noPlayersRegisteredDescription: "Ajoute des joueurs pour savoir qui est à table et lier leurs personnages.",
+    generateInvitation: "Générer une invitation",
     playerArchived: "Joueur « {name} » archivé.",
     playerArchiveError: "Impossible d'archiver le joueur : {error}",
 

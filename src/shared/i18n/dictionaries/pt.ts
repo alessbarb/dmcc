@@ -2076,7 +2076,9 @@ export const pt: TranslationDictionary = {
     archivePlayerAction: "Arquivar {name}",
     charactersLabel: "Personagens",
     noLinkedCharacters: "Nenhum personagem vinculado. Crie uma entidade de personagem jogador para associar um.",
-    noPlayersRegistered: "Nenhum jogador registrado. Adicione jogadores para saber quem está na mesa e vincular seus personagens.",
+    noPlayersRegistered: "Nenhum jogador registrado",
+    noPlayersRegisteredDescription: "Adicione jogadores para saber quem está na mesa e vincular seus personagens.",
+    generateInvitation: "Gerar convite",
     playerArchived: "Jogador \"{name}\" arquivado.",
     playerArchiveError: "Não foi possível arquivar o jogador: {error}",
 
