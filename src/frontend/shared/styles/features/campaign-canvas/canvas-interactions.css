@@ -27,7 +27,7 @@
   border: 1px solid var(--theme-borders-default);
   border-radius: 9999px;
   padding: 4px 10px;
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   cursor: pointer;
   box-shadow: var(--theme-shadows-small);
@@ -72,7 +72,7 @@
 }
 
 .canvas-layout-popover__title {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.12em;
   color: var(--theme-text-subtle);
@@ -133,7 +133,7 @@
 }
 
 .canvas-layout-popover__apply-title {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   color: var(--theme-text-subtle);
   margin-bottom: 6px;

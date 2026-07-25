@@ -6,6 +6,9 @@ import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, Stick
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import { formatEntityStatus } from "../../../shared/presentation/formatEntityStatus.js";
+import { formatImportance } from "../../../shared/presentation/formatImportance.js";
+import { formatVisibility } from "@shared/i18n/index.js";
 
 
 /** CSSProperties plus arbitrary CSS custom properties (`--foo`) used for theming hooks. */
@@ -39,7 +42,7 @@ function resolveEntityImageUrl(entity: Entity): string | undefined {
 }
 
 export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodeProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [isPrivacyRevealed, setIsPrivacyRevealed] = useState(false);
   useEffect(() => {
     if (!data.tablePrivacy) setIsPrivacyRevealed(false);
@@ -168,19 +171,19 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
           if (isDmOnlyVisibility(entity.visibility)) {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--secret" title={t("canvas.node.visibilityDmOnly")}>
-                <span className="rg-card__visibility-label">🔒 Secreto DM</span>
+                <span className="rg-card__visibility-label">🔒 {formatVisibility("dm_only", locale)}</span>
               </div>
             );
           } else if (kind === "public" || kind === "party") {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--revealed" title={t("canvas.node.visibilityRevealed")}>
-                <span className="rg-card__visibility-label">👁 Revelado</span>
+                <span className="rg-card__visibility-label">👁 {formatVisibility(kind, locale)}</span>
               </div>
             );
           } else {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--partial" title={t("canvas.node.visibilityPartial")}>
-                <span className="rg-card__visibility-label">🕯 Parcial</span>
+                <span className="rg-card__visibility-label">🕯 {formatVisibility(kind || "players", locale)}</span>
               </div>
             );
           }
@@ -189,16 +192,24 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
 
       {/* Body */}
       <div className="rg-card__body">
-        <div className="rg-card__name" title={entity.title}>{entity.title}</div>
-        {subtitle && <div className="rg-card__sub">{subtitle}</div>}
+        <div
+          className="rg-card__name u-truncate"
+          title={entity.title}
+        >
+          {entity.title}
+        </div>
+        <div className="rg-card__sub">
+          {t(`domain.entityTypes.${entity.entityType}`)}
+          {density !== "compact" && subtitle && <span className="rg-card__subtitle"> · {subtitle}</span>}
+        </div>
       </div>
 
       {/* Status footer strip */}
       {(isBlocked || isResolved || isCritical) && (
         <div className={`rg-card__status-strip ${isCritical ? "rg-card__status-strip--critical" : isBlocked ? "rg-card__status-strip--blocked" : "rg-card__status-strip--resolved"}`}>
-          {isBlocked  && <><AlertTriangle size={9} /> Bloqueado</>}
-          {isResolved && <><CheckCircle2 size={9} /> Resuelto</>}
-          {isCritical && !isBlocked && !isResolved && <><Zap size={9} /> Crítico</>}
+          {isBlocked  && <><AlertTriangle size={9} /> {formatEntityStatus("blocked", locale)}</>}
+          {isResolved && <><CheckCircle2 size={9} /> {formatEntityStatus("resolved", locale)}</>}
+          {isCritical && !isBlocked && !isResolved && <><Zap size={9} /> {formatImportance("critical", locale)}</>}
         </div>
       )}
 

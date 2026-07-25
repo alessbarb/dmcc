@@ -4,6 +4,7 @@
 @import "./foundation/reset.css";
 @import "./foundation/accessibility.css";
 @import "./foundation/motion.css";
+@import "./foundation/utilities.css";
 
 @import "./primitives/button.css";
 @import "./primitives/form-control.css";
@@ -28,6 +29,8 @@
 @import "./layout/footer.css";
 @import "./layout/admin-shell.css";
 @import "./layout/responsive.css";
+@import "./layout/adaptive-grid.css";
+@import "./layout/master-detail.css";
 
 @import "./vendor/react-flow.css";
 

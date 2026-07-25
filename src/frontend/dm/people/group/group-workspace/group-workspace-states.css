@@ -21,7 +21,7 @@
 .group-player-card__section-label {
   margin-bottom: 8px;
   color: var(--theme-text-subtle, var(--theme-text-secondary));
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;

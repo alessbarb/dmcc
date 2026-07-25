@@ -35,7 +35,7 @@
 
 .player-resource-row small {
   color: var(--theme-text-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
 }
 
 .player-resource-meter {

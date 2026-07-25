@@ -1,6 +1,6 @@
 .palette-search-results-header {
   padding: 6px 10px;
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   color: var(--theme-text-secondary);
   border-bottom: 1px solid var(--theme-borders-default);
@@ -52,7 +52,7 @@
 }
 
 .palette-result-type {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   text-transform: uppercase;
 }

@@ -54,7 +54,7 @@
 .network-entity-node .rg-card__sub {
   display: -webkit-box;
   overflow: hidden;
-  font-size: 0.66rem !important;
+  font-size: var(--type-micro) !important;
   line-height: 1.35;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -62,5 +62,5 @@
 
 .network-entity-node .rg-card__status-strip {
   padding: 3px 9px !important;
-  font-size: 0.62rem !important;
+  font-size: var(--type-micro) !important;
 }

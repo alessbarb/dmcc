@@ -11,6 +11,7 @@
   border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
   background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
   box-shadow: var(--theme-shadows-large);
+  overflow-y: auto;
 }
 
 .notebooks-sidebar__header {

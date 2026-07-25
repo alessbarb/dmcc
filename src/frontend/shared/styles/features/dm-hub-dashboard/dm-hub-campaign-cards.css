@@ -18,7 +18,7 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.06em;
   padding: 2px 6px;
@@ -106,13 +106,13 @@
 
 .dm-campaign-card__system {
   margin: 0 0 6px;
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   color: var(--theme-accents-primary-foreground);
 }
 
 .dm-campaign-card__desc {
   margin: 0 0 8px;
-  font-size: 0.73rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   line-height: 1.4;
   overflow: hidden;
@@ -125,7 +125,7 @@
 .dm-campaign-card__meta {
   display: flex;
   gap: 10px;
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   margin-bottom: 6px;
 }
@@ -139,7 +139,7 @@
 .dm-campaign-card__footer {
   display: flex;
   justify-content: space-between;
-  font-size: 0.67rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   margin-bottom: 4px;
 }
@@ -211,7 +211,7 @@
 
 .dm-campaign-card--create p {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
 }
 

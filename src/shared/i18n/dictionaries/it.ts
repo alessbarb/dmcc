@@ -222,7 +222,10 @@ export const it: TranslationDictionary = {
     cardDescription: "Contatta il progetto o consulta il repository pubblico.",
   },
   common: {
-    moreActions: "More actions",
+
+    select: "Seleziona",
+    copy: "Copia",
+    sectionNavigation: "Navigazione della sezione",    moreActions: "More actions",
     routeNotFoundTitle: "Pagina non trovata",
     routeNotFoundDescription: "Il link seguito non esiste più o non è più disponibile.",
     backToHome: "Torna alla home",
@@ -415,7 +418,8 @@ export const it: TranslationDictionary = {
     },
 
     node: {
-      visibilityDmOnly: "Segreto del DM (visibile solo al DM)",
+
+      cycleStatusLabel: "Ruota stato",      visibilityDmOnly: "Segreto del DM (visibile solo al DM)",
       visibilityRevealed: "Rivelato (visibile a tutti i giocatori)",
       visibilityPartial: "Parzialmente scoperto",
       addSessionNotePrompt: "Aggiungi nota di sessione per: {title}",
@@ -598,7 +602,8 @@ export const it: TranslationDictionary = {
     },
 
     relationTypes: {
-      hides: "nasconde",
+
+      relacionado_con: "correlato con",      hides: "nasconde",
       unlocks: "sblocca",
       points_to: "punta a",
       causes: "causa",
@@ -712,11 +717,17 @@ export const it: TranslationDictionary = {
       save: "Salva nota",
     },
     messaging: {
-      heading: "Messaggi della campagna",
+
+      loadOlder: "Carica messaggi precedenti",
+      sending: "invio...",
+      failed: "fallito",
+      retry: "riprova",      heading: "Messaggi della campagna",
       playerSubtitle: "Parla con la Direzione di gioco e con il resto del gruppo.",
       dmSubtitle: "Canale condiviso tra Direzione di gioco e giocatori.",
       loading: "Caricamento messaggi…",
       empty: "Non ci sono ancora messaggi. Avvia la conversazione con il gruppo.",
+      emptyDescription: "Invia un messaggio per iniziare la conversazione in questa campagna.",
+      copyMessage: "Copia messaggio",
       channelParty: "Canale della campagna",
       channelDm: "Privato con la Direzione di gioco",
       channelPlayer: "Privato con un giocatore",
@@ -731,7 +742,9 @@ export const it: TranslationDictionary = {
       directionName: "Direzione di gioco",
       privateWith: "Privato con",
       privateMessage: "Messaggio privato",
-    },
+
+      jumpToLatest: "Vai all'ultimo",
+      newMessages: "nuovi messaggi",    },
     characterSheet: "Scheda personaggio",
     objectives: "Obiettivi",
     leavePortal: "Lascia la campagna",
@@ -909,7 +922,16 @@ export const it: TranslationDictionary = {
   },
 
   dashboard: {
-    untitled: "Senza titolo",
+
+    metricEntities: "Entità",
+    metricEntitiesDetail: "entità collegate",
+    unrevealedCriticalSecrets: "Segreti critici",
+    criticalSecretsHelp: "segreti critici nascosti",
+    readyClues: "Indizi pronti",
+    readyCluesHelp: "indizi pronti da rivelare",
+    quests: "Missioni",
+    questsHelp: "catene di missioni attive",
+    criticalCluesHelp: "indizi critici non rivelati",    untitled: "Senza titolo",
     currentState: "Stato attuale della campagna",
     createdFromTemplate: "Creada desde {title} v{version}",
     noActiveCampaign: "Nessuna campagna attiva",
@@ -937,6 +959,7 @@ export const it: TranslationDictionary = {
     nextSessionPrep: "Preparazione prossima sessione",
     cluesReady: "Indizi pronti da rivelare",
     noPreparedClues: "Nessun indizio preparato",
+    unresolvedClueAlertFallback: "Avviso indizio non risolto",
     readyConsequences: "Conseguenze pronte",
     noneReadyYet: "Nessuna ancora pronta",
     recentlyUpdated: "Aggiornato di recente",
@@ -1124,6 +1147,7 @@ export const it: TranslationDictionary = {
     noDescription: "Nessuna descrizione.",
     items: "Elementi collegati",
     emptyItems: "Non ci sono ancora elementi in questo taccuino.",
+    emptyItemsDescription: "Questo taccuino è vuoto. Aggiungi personaggi, sessioni o bacheche per raccogliere qui la preparazione correlata.",
     selectPlaceholderTitle: "Gestisci i quaderni della campagna",
     selectPlaceholderDesc: "Crea quaderni gerarchici per organizzare entità, sessioni e canvas della campagna.",
     actions: {
@@ -1131,6 +1155,9 @@ export const it: TranslationDictionary = {
       addChild: "Crea sottoquaderno",
       archive: "Archivia quaderno",
       addItem: "Aggiungi elemento",
+      addEntity: "Aggiungi personaggio",
+      addSession: "Aggiungi sessione",
+      addCanvas: "Aggiungi bacheca",
       link: "Collega",
       cancel: "Annulla",
       save: "Salva",
@@ -1174,7 +1201,8 @@ export const it: TranslationDictionary = {
     },
   },
   story: {
-    threads: "Trame Narrative",
+
+    ready: "Pronto",    threads: "Trame Narrative",
     addThread: "Nuova trama",
     newThreadTitle: "Nuova Trama Narrativa",
     emptyThreads: "Ancora nessuna trama narrativa.",
@@ -2639,7 +2667,8 @@ export const it: TranslationDictionary = {
       saveFailed: "Salvataggio fallito",
     },
     profile: {
-      displayName: "Nome visualizzato",
+
+      archived: "Archiviato",      displayName: "Nome visualizzato",
       avatarUrl: "URL dell'avatar",
       pronouns: "Pronomi",
       timeZone: "Fuso orario",
@@ -2786,4 +2815,69 @@ export const it: TranslationDictionary = {
     onlyVisibleDM: "Visible to DM only",
   },
 
+
+  systems: {
+    dnd_5e: "D&D 5e",
+    pathfinder_2e: "Pathfinder 2e",
+    shadowdark: "Shadowdark",
+    custom: "Sistema Personalizzato"
+  },
+  importance: {
+    low: "Bassa",
+    normal: "Normale",
+    high: "Alta",
+    critical: "Critica"
+  },
+  status: {
+    planned: "Pianificata",
+    active: "Attiva",
+    cancelled: "Annullata",
+    ready: "Pronta"
+  },
+  visibility: {
+    dm_only: "Solo DM",
+    party: "Gruppo",
+    public: "Pubblico",
+    players: "Giocatori Specifici",
+    characters: "Personaggi Specifici"
+  },
+  time: {
+    secondsAgo: "pochi secondi fa",
+    minutesAgo: "{count} min fa",
+    hoursAgo: "{count} ore fa",
+    daysAgo: "{count} giorni fa",
+    weeksAgo: "{count} settimane fa"
+  },
+  activity: {
+    story_step_created: "Passo narrativo creato",
+    story_thread_archived: "Filo narrativo archiviato",
+    campaign_entity_updated: "Aggiornato {target}",
+    session_prepared: "Preparato {target}",
+    npc_modified: "PNG modificato",
+    clue_linked: "Indizio collegato",
+    fallback: {
+      storyStepCreated: "Passo narrativo creato",
+      storyThreadArchived: "Filo narrativo archiviato",
+      entityUpdated: "Entità aggiornata",
+      entityUpdatedWithTarget: "Aggiornato {target}",
+      sessionPrepared: "Sessione preparata",
+      sessionPreparedWithTarget: "Preparato {target}",
+      npcModified: "PNG modificato",
+      clueLinked: "Indizio collegato",
+      default: "Attività registrata"
+    }
+  },
+
+  relationModal: {
+    createRelation: "Crea Relazione",
+    sourceEntity: "Entità Origine",
+    selectSource: "-- Seleziona Nodo Origine --",
+    relationType: "Tipo di Relazione",
+    targetEntity: "Entità Destinazione",
+    selectTarget: "-- Seleziona Nodo Destinazione --",
+    duplicateWarning: "Esiste già una relazione identica. Creare comunque?",
+    createAnyway: "Crea comunque",
+    cancel: "Annulla",
+    registerRelation: "Registra Relazione"
+  },
 };

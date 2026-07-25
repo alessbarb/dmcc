@@ -40,7 +40,7 @@
 
 .session-prep-form__help {
   color: var(--theme-text-secondary);
-  font-size: 11px;
+  font-size: var(--type-micro);
 }
 
 .session-prep-form__mode-content {

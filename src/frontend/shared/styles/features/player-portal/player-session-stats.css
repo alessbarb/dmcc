@@ -31,7 +31,7 @@
 .player-session-stat span {
   color: var(--theme-text-secondary);
   display: block;
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -70,7 +70,7 @@
 
 .player-hp-readout span {
   color: var(--theme-text-secondary);
-  font-size: 0.66rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;

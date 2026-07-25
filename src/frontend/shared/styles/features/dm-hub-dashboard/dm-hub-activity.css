@@ -2,7 +2,7 @@
 
 /* ── Status badges ── */
 .dm-badge {
-  font-size: 0.56rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.04em;
   padding: 2px 5px;
@@ -53,7 +53,7 @@
 }
 
 .dm-alert-row__badge {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 10px;

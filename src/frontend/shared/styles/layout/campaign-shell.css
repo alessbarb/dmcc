@@ -24,7 +24,7 @@
   display: block;
   margin-bottom: 6px;
   color: var(--theme-accents-secondary-foreground);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -54,7 +54,7 @@
   border: 1px solid color-mix(in srgb, var(--theme-activity-system-foreground) 34%, transparent);
   background: var(--theme-accents-primary-background);
   color: var(--theme-activity-system-foreground);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;

@@ -9,6 +9,9 @@ import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatVisibility } from "@shared/i18n/index.js";
 import { GuidedEmptyState } from "../../onboarding/CampaignStarterHub.js";
 import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
+import { formatEntityStatus } from "../../../shared/presentation/formatEntityStatus.js";
+import { formatImportance } from "../../../shared/presentation/formatImportance.js";
+import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
 import "../../entities/entity-list-toolbar.css";
 import "../../entities/entity-grid.css";
 import "../../entities/entity-card.css";
@@ -374,15 +377,27 @@ export function EntityListView() {
             <span className="entity-type-badge">
               {formatEntityType(entity.entityType, locale)}
             </span>
-            {entity.status && <span className="badge badge-default">{entity.status}</span>}
+            {entity.status && (
+              <span className="badge badge-default">
+                {formatEntityStatus(entity.status, locale)}
+              </span>
+            )}
           </div>
-          <strong className="entity-card__title">{entity.title}</strong>
+          <strong
+            className="entity-card__title u-truncate u-truncate--block"
+            title={entity.title}
+          >
+            {entity.title}
+          </strong>
           {entity.subtitle && <span className="entity-card__subtitle">{entity.subtitle}</span>}
           <span className="entity-card__summary">
             {entity.summary || t("entitiesPage.noSummary")}
           </span>
           <div className="entity-card__footer">
-            <span>{t("entitiesPage.importanceLabel")}: {entity.importance}</span>
+            <span>{t("entitiesPage.importanceLabel")}: {formatImportance(entity.importance, locale)}</span>
+            <span className="entity-card__footer-time">
+              {formatRelativeTime(entity.updatedAt, locale)}
+            </span>
             <span className={`entity-card__footer-visibility ${isDmOnly ? "entity-card__footer-visibility--dm-only" : ""}`}>
               {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
               {formatVisibility(visibility, locale)}
@@ -639,7 +654,7 @@ export function EntityListView() {
                 <h2 className="entities-section-title">
                   {t("entitiesPage.relevantNow") || "Relevantes ahora"}
                 </h2>
-                <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
+                <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid library-grid"}>
                   {relevantNowEntities.map(entity => renderEntityItem(entity))}
                 </div>
                 <div className="entities-section-divider" />
@@ -653,7 +668,7 @@ export function EntityListView() {
             )}
 
             {groupBy === "none" ? (
-              <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
+              <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid library-grid"}>
                 {sortedEntities.map((entity) => renderEntityItem(entity))}
               </div>
             ) : (
@@ -665,17 +680,11 @@ export function EntityListView() {
                   if (groupBy === "type") {
                     label = formatEntityType(sectionKey, locale);
                   } else if (groupBy === "importance") {
-                    const importanceLabels: Record<string, string> = {
-                      critical: "Crítica",
-                      high: "Alta",
-                      normal: "Normal",
-                      low: "Baja"
-                    };
-                    label = importanceLabels[sectionKey] || sectionKey;
+                    label = formatImportance(sectionKey, locale);
                   } else if (groupBy === "visibility") {
                     label = formatVisibility(sectionKey, locale);
                   } else if (groupBy === "status") {
-                    label = sectionKey === "no_status" ? "Sin estado" : sectionKey;
+                    label = formatEntityStatus(sectionKey, locale);
                   }
 
                   return (
@@ -695,7 +704,7 @@ export function EntityListView() {
                       </button>
 
                       {!isCollapsed && (
-                        <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
+                        <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid library-grid"}>
                           {entities.map((entity) => renderEntityItem(entity))}
                         </div>
                       )}

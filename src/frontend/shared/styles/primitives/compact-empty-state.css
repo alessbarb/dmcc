@@ -1,0 +1,74 @@
+.compact-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px 20px;
+  border: 1px dashed var(--theme-borders-default);
+  border-radius: 8px;
+  background-color: var(--theme-surfaces-sunken);
+  color: var(--theme-text-secondary);
+  height: fit-content;
+}
+
+.compact-empty-state--standard {
+  max-height: 220px;
+}
+
+.compact-empty-state--compact {
+  padding: 16px 20px;
+}
+
+.compact-empty-state--actionable {
+  border-style: solid;
+}
+
+.compact-empty-state--positive {
+  border-color: var(--theme-status-success-border, var(--theme-borders-default));
+  color: var(--theme-status-success-text, var(--theme-text-secondary));
+}
+
+.compact-empty-state--warning {
+  border-color: var(--theme-status-warning-border, var(--theme-borders-default));
+  color: var(--theme-status-warning-text, var(--theme-text-secondary));
+}
+
+.compact-empty-state__icon {
+  color: var(--theme-text-subtle);
+}
+
+.compact-empty-state__title {
+  font-size: var(--type-heading-sm);
+  margin: 4px 0;
+  color: var(--theme-text-primary);
+}
+
+.compact-empty-state__description {
+  font-size: var(--type-caption);
+  margin: 4px 0;
+}
+
+.compact-empty-state__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.compact-empty-state__actions .btn {
+  font-size: var(--type-control);
+  min-height: var(--touch-target-min, 44px);
+}
+
+.metric-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
+
+.activity-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

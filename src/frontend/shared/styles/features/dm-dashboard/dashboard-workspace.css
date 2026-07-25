@@ -65,7 +65,7 @@
 }
 
 .scroll-density-title {
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   color: var(--theme-text-secondary);
   text-transform: uppercase;

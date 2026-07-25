@@ -12,7 +12,7 @@
 }
 
 .consequence-chain-inspector__section-title {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--theme-text-secondary);
@@ -40,7 +40,7 @@
   list-style: none;
   padding: 0;
   margin: 8px 0 0;
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
 }
 
@@ -70,7 +70,7 @@
 }
 
 .consequence-chain-list__kind {
-  font-size: 0.62rem;
+  font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--consequence-node-accent);

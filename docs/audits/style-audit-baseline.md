@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 358,
+  "cssFiles": 362,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -37,7 +37,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation/canvas-mobile-toolbar-layout.css` | feature | canvas | 160 | 16 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar/canvas-mobile-toolbar-split-foundation/canvas-mobile-toolbar-foundation.css` | feature | canvas | 4 | 0 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 2 | 0 | 1 |
-| `src/frontend/dm/entities/entity-card/entity-card-components.css` | feature | entities | 103 | 12 | 1 |
+| `src/frontend/dm/entities/entity-card/entity-card-components.css` | feature | entities | 107 | 13 | 1 |
 | `src/frontend/dm/entities/entity-card/entity-card-details.css` | feature | entities | 99 | 12 | 1 |
 | `src/frontend/dm/entities/entity-card/entity-card-foundation.css` | feature | entities | 104 | 13 | 1 |
 | `src/frontend/dm/entities/entity-card/entity-card-layout.css` | feature | entities | 78 | 12 | 1 |
@@ -59,7 +59,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 167 | 23 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 14 | 1 |
-| `src/frontend/dm/library/boards/entity-board/entity-board-components.css` | feature | library | 88 | 14 | 1 |
+| `src/frontend/dm/library/boards/entity-board/entity-board-components.css` | feature | library | 110 | 18 | 1 |
 | `src/frontend/dm/library/boards/entity-board/entity-board-foundation.css` | feature | library | 75 | 10 | 1 |
 | `src/frontend/dm/library/boards/entity-board/entity-board-layout.css` | feature | library | 82 | 10 | 1 |
 | `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 4 | 0 | 1 |
@@ -68,8 +68,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 14 | 1 |
 | `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-components.css` | layout | workspace | 79 | 10 | 1 |
 | `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-details.css` | layout | workspace | 98 | 18 | 1 |
-| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-foundation.css` | layout | workspace | 56 | 10 | 1 |
-| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-layout.css` | layout | workspace | 63 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-foundation.css` | layout | workspace | 57 | 10 | 1 |
+| `src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-layout.css` | layout | workspace | 70 | 11 | 1 |
 | `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 5 | 0 | 1 |
 | `src/frontend/dm/map/mapWorkspace.css` | feature | map | 94 | 13 | 1 |
 | `src/frontend/dm/map/network/network-flow/network-flow-advanced.css` | feature | map | 60 | 10 | 1 |
@@ -201,7 +201,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/campaign-canvas/canvas-resource-card-details.css` | feature | shared | 172 | 25 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas/canvas-resource-cards.css` | feature | shared | 141 | 25 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | feature | shared | 12 | 0 | 1 |
-| `src/frontend/shared/styles/features/campaign-messaging/messaging-bubbles.css` | feature | shared | 11 | 10 | 1 |
+| `src/frontend/shared/styles/features/campaign-messaging/messaging-bubbles.css` | feature | shared | 15 | 14 | 1 |
 | `src/frontend/shared/styles/features/campaign-messaging/messaging-composer.css` | feature | shared | 11 | 10 | 1 |
 | `src/frontend/shared/styles/features/campaign-messaging/messaging-layout.css` | feature | shared | 10 | 10 | 1 |
 | `src/frontend/shared/styles/features/campaign-messaging/messaging-tones.css` | feature | shared | 10 | 8 | 1 |
@@ -313,7 +313,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/fonts.css` | foundation | shared | 16 | 0 | 1 |
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 6 | 1 |
-| `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
+| `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 34 | 1 | 1 |
+| `src/frontend/shared/styles/foundation/utilities.css` | foundation | shared | 27 | 6 | 1 |
 | `src/frontend/shared/styles/landing/account-home-actions-and-responsive.css` | feature | shared | 131 | 21 | 1 |
 | `src/frontend/shared/styles/landing/account-home-campaign-list.css` | feature | shared | 191 | 27 | 1 |
 | `src/frontend/shared/styles/landing/account-home-featured-campaign.css` | feature | shared | 152 | 19 | 1 |
@@ -334,8 +335,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/landing/smart-landing-role-cards.css` | feature | shared | 151 | 21 | 1 |
 | `src/frontend/shared/styles/landing/smart-landing-shell.css` | feature | shared | 184 | 18 | 1 |
 | `src/frontend/shared/styles/landing.css` | feature | shared | 20 | 0 | 4 |
+| `src/frontend/shared/styles/layout/adaptive-grid.css` | layout | shared | 22 | 4 | 1 |
 | `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 22 | 1 |
-| `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 118 | 17 | 1 |
+| `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 120 | 17 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-controls.css` | layout | shared | 55 | 6 | 2 |
 | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-layout.css` | layout | shared | 24 | 3 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation/campaign-navigation-items-responsive.css` | layout | shared | 156 | 16 | 1 |
@@ -351,26 +353,28 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 202 | 30 | 1 |
 | `src/frontend/shared/styles/layout/footer.css` | layout | shared | 128 | 16 | 1 |
 | `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 5 | 1 |
+| `src/frontend/shared/styles/layout/master-detail.css` | layout | shared | 34 | 5 | 1 |
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 125 | 14 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 11 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-link-modal-filters.css` | layout | shared | 76 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-link-modal.css` | layout | shared | 63 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-notebook-details.css` | layout | shared | 61 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-notebook-forms.css` | layout | shared | 73 | 10 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-notebook-items.css` | layout | shared | 62 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-notebook-items.css` | layout | shared | 70 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-notebooks-empty.css` | layout | shared | 78 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-notebooks-layout.css` | layout | shared | 81 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-notebooks-search.css` | layout | shared | 87 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-notebooks-tree.css` | layout | shared | 69 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-responsive.css` | layout | shared | 162 | 26 | 1 |
-| `src/frontend/shared/styles/layout/workspace/workspace-shell.css` | layout | shared | 80 | 10 | 1 |
+| `src/frontend/shared/styles/layout/workspace/workspace-shell.css` | layout | shared | 82 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-tabs.css` | layout | shared | 62 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace/workspace-variants.css` | layout | shared | 81 | 10 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 14 | 0 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 35 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 38 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 12 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 12 | 1 |
+| `src/frontend/shared/styles/primitives/compact-empty-state.css` | primitive | shared | 75 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/dialog.css` | primitive | shared | 89 | 12 | 1 |
 | `src/frontend/shared/styles/primitives/empty-state.css` | primitive | shared | 21 | 3 | 1 |
 | `src/frontend/shared/styles/primitives/form-control.css` | primitive | shared | 56 | 8 | 1 |

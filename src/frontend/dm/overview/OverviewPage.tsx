@@ -154,7 +154,6 @@ export function OverviewPage() {
   const { t, locale } = useTranslation();
   const {
     campaignState,
-    updateCampaignSettings,
     updateEntity,
     archiveEntity,
     exportMarkdown,
@@ -168,6 +167,7 @@ export function OverviewPage() {
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
   const [exportingMarkdown, setExportingMarkdown] = useState(false);
+  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
 
   const navigateToCampaignPage = (page: string) => {
     runCommandCenterAction(
@@ -216,27 +216,77 @@ export function OverviewPage() {
     ? entities.find((entity) => entity.entityId === campaign.currentQuestId) ?? null
     : (entities.find((e) => e.entityType === "quest" && e.status === "active" && !e.archived) ?? null);
 
-  const npcWarnings: Entity[] = [];
-  const blockedQuests: Entity[] = entities.filter(
-    (e) => e.entityType === "quest" && e.status === "active" && !e.archived,
-  );
-  const criticalHiddenClues: Entity[] = entities.filter(
-    (e) => e.entityType === "secret" && e.importance === "critical" && !e.archived,
-  );
-  const preparedClues: Entity[] = entities.filter(
-    (e) => e.entityType === "clue" && (e.status === "prepared" || e.status === "hidden") && !e.archived,
-  );
-  const pendingConsequences: Entity[] = entities.filter(
-    (e) => e.entityType === "consequence" && e.status === "pending" && !e.archived,
-  );
-  const partialKnowledgeAlerts: Array<{ clueId?: string; message: string }> = [];
-  const preparationChecklist: Array<{ task: string; priority?: string; done?: boolean }> = [];
-  const campaignSettings = campaign && typeof campaign === "object" && "settings" in campaign ? campaign.settings : undefined;
-  const rawCompletedTasks =
-    campaignSettings && typeof campaignSettings === "object" && "completedChecklistTasks" in campaignSettings
-      ? campaignSettings.completedChecklistTasks
-      : undefined;
-  const completedTasks: string[] = Array.isArray(rawCompletedTasks) ? rawCompletedTasks.filter((task): task is string => typeof task === "string") : [];
+  const npcWarnings: Entity[] = useMemo(() => {
+    return entities.filter((e) => {
+      if (e.entityType !== "npc" || e.archived) return false;
+      const isHighOrCritical = e.importance === "high" || e.importance === "critical";
+      if (!isHighOrCritical) return false;
+      if (e.status === "warning" || e.status === "stale") return true;
+      const hasRelations = (campaignState?.relations ?? []).some(
+        (r) => r.sourceEntityId === e.entityId || r.targetEntityId === e.entityId
+      );
+      return !hasRelations;
+    });
+  }, [entities, campaignState?.relations]);
+
+  const blockedQuests: Entity[] = useMemo(() => {
+    return entities.filter(
+      (e) => e.entityType === "quest" && e.status === "blocked" && !e.archived
+    );
+  }, [entities]);
+
+  const criticalHiddenClues: Entity[] = useMemo(() => {
+    return entities.filter(
+      (e) => e.entityType === "clue" && e.importance === "critical" && e.status === "hidden" && !e.archived
+    );
+  }, [entities]);
+
+  const criticalHiddenSecrets: Entity[] = useMemo(() => {
+    return entities.filter(
+      (e) => e.entityType === "secret" && e.importance === "critical" && e.status === "hidden" && !e.archived
+    );
+  }, [entities]);
+
+  const preparedClues: Entity[] = useMemo(() => {
+    return entities.filter(
+      (e) => e.entityType === "clue" && (e.status === "prepared" || e.status === "hidden") && !e.archived
+    );
+  }, [entities]);
+
+  const pendingConsequences: Entity[] = useMemo(() => {
+    return entities.filter(
+      (e) => e.entityType === "consequence" && e.status === "pending" && !e.archived
+    );
+  }, [entities]);
+
+  const partialKnowledgeAlerts = useMemo(() => {
+    return (commandCenter?.unresolvedClues ?? []).map((clue: Record<string, unknown>) => {
+      const entityId = typeof clue.entityId === "string" ? clue.entityId : undefined;
+      const id = typeof clue.id === "string" ? clue.id : undefined;
+      const title = typeof clue.title === "string" ? clue.title : undefined;
+      return {
+        clueId: entityId || id,
+        message: title || t("dashboard.unresolvedClueAlertFallback"),
+      };
+    });
+  }, [commandCenter?.unresolvedClues]);
+
+  const preparationChecklist = useMemo(() => {
+    const list: Array<{ task: string; priority?: string; done?: boolean }> = [];
+    for (const clue of preparedClues.slice(0, 3)) {
+      list.push({ task: `Prepare to reveal clue: ${clue.title}`, priority: "normal" });
+    }
+    for (const quest of blockedQuests.slice(0, 3)) {
+      list.push({ task: `Unblock quest: ${quest.title}`, priority: "high" });
+    }
+    for (const consequence of pendingConsequences.slice(0, 3)) {
+      list.push({ task: `Resolve consequence: ${consequence.title}`, priority: "high" });
+    }
+    for (const npc of npcWarnings.slice(0, 3)) {
+      list.push({ task: `Update NPC: ${npc.title}`, priority: "normal" });
+    }
+    return list;
+  }, [preparedClues, blockedQuests, pendingConsequences, npcWarnings]);
 
   // last session summary for the session prep card
   const lastClosedSession = [...sessions]
@@ -247,6 +297,7 @@ export function OverviewPage() {
     npcWarnings.length +
     blockedQuests.length +
     criticalHiddenClues.length +
+    criticalHiddenSecrets.length +
     pendingConsequences.length +
     partialKnowledgeAlerts.length;
 
@@ -256,11 +307,10 @@ export function OverviewPage() {
     return "good";
   }, [attentionCount]);
 
-  const toggleChecklistTask = async (task: string) => {
-    const nextTasks = completedTasks.includes(task)
-      ? completedTasks.filter((item) => item !== task)
-      : [...completedTasks, task];
-    await updateCampaignSettings({ completedChecklistTasks: nextTasks });
+  const toggleChecklistTask = (task: string) => {
+    setCompletedTasks((prev) =>
+      prev.includes(task) ? prev.filter((entry) => entry !== task) : [...prev, task],
+    );
   };
 
   const handleMarkdownExport = async () => {
@@ -370,8 +420,10 @@ export function OverviewPage() {
           <div className="dashboard-metrics-grid">
             <MetricCard
               icon={<BookOpen size={18} />}
-              label={t("dashboard.metricPlayersDetail")}
-              value={commandCenter?.counts?.entities ?? entities.length}
+              label={t("dashboard.metricEntities")}
+              value={entities.length}
+              helpText={t("dashboard.metricEntitiesDetail")}
+              onClick={() => navigateToCampaignPage("library/list")}
             />
             <MetricCard
               icon={<EyeOff size={18} />}
@@ -381,16 +433,16 @@ export function OverviewPage() {
               onClick={() => navigateToCampaignPage("library/list")}
             />
             <MetricCard
-              icon={<BookOpen size={20} />}
-              label={t("dashboard.readyClues")}
-              value={preparedClues.length}
-              helpText={t("dashboard.readyCluesHelp")}
+              icon={<Flame size={18} />}
+              label={t("dashboard.unrevealedCriticalSecrets")}
+              value={criticalHiddenSecrets.length}
+              helpText={t("dashboard.criticalSecretsHelp")}
               onClick={() => navigateToCampaignPage("library/list")}
             />
             <MetricCard
               icon={<Flag size={20} />}
               label={t("dashboard.quests")}
-              value={entities.filter((e) => e.entityType === "quest").length}
+              value={entities.filter((e) => e.entityType === "quest" && !e.archived).length}
               helpText={t("dashboard.questsHelp")}
               onClick={() => navigateToCampaignPage("library/list")}
             />
@@ -460,6 +512,7 @@ export function OverviewPage() {
               {npcWarnings.length > 0 && <Pill tone="warning">{t("dashboard.forgottenNpcs")}: {npcWarnings.length}</Pill>}
               {blockedQuests.length > 0 && <Pill tone="danger">{t("dashboard.blockedQuests")}: {blockedQuests.length}</Pill>}
               {criticalHiddenClues.length > 0 && <Pill tone="danger">{t("dashboard.unrevealedCriticalClues")}: {criticalHiddenClues.length}</Pill>}
+              {criticalHiddenSecrets.length > 0 && <Pill tone="danger">{t("dashboard.unrevealedCriticalSecrets")}: {criticalHiddenSecrets.length}</Pill>}
               {pendingConsequences.length > 0 && <Pill tone="warning">{t("dashboard.pendingConsequences")}: {pendingConsequences.length}</Pill>}
               {partialKnowledgeAlerts.length > 0 && <Pill tone="warning">{t("whatNowPage.partialKnowledge")}: {partialKnowledgeAlerts.length}</Pill>}
             </div>
@@ -480,9 +533,7 @@ export function OverviewPage() {
                     <input
                       type="checkbox"
                       checked={completedTasks.includes(item.task)}
-                      onChange={() => {
-                        void toggleChecklistTask(item.task);
-                      }}
+                      onChange={() => toggleChecklistTask(item.task)}
                     />
                     <span className={`dashboard-checklist__label ${completedTasks.includes(item.task) ? "is-complete" : ""}`}>
                       {item.task}

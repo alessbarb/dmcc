@@ -40,7 +40,7 @@
 
 .narrative-map-heading span {
   color: var(--theme-text-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   white-space: nowrap;
 }
 

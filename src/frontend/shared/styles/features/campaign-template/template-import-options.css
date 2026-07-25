@@ -5,7 +5,7 @@
   align-items: center;
   gap: 6px;
   color: var(--theme-accents-primary-foreground);
-  font-size: 0.74rem;
+  font-size: var(--type-micro);
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;

@@ -16,7 +16,7 @@
 }
 
 .notebook-item-badge {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -47,6 +47,14 @@
 
 .notebook-item-actions {
   flex-shrink: 0;
+}
+
+.notebook-item-visibility {
+  margin-top: 4px;
+}
+
+.notebook-item-visibility__badge {
+  font-size: var(--type-micro);
 }
 
 .notebook-item-actions .btn-link {

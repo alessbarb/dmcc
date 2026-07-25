@@ -1,0 +1,26 @@
+.u-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.u-truncate--block {
+  display: block;
+}
+
+.u-truncate--full-width {
+  width: 100%;
+}
+
+.u-min-w-0 {
+  min-width: 0;
+}
+
+.u-min-h-0 {
+  min-height: 0;
+}
+
+.u-fill-bounds {
+  min-width: 0;
+  min-height: 0;
+}

@@ -57,7 +57,7 @@
   background-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 85%, var(--theme-surfaces-canvas));
   border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
   color: var(--theme-text-on-media);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   border-radius: 4px;
   z-index: 2;

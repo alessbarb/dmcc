@@ -80,6 +80,6 @@
 
   .dm-hub-root .language-pill__btn {
     padding: 5px 8px;
-    font-size: 0.66rem;
+    font-size: var(--type-micro);
   }
 }

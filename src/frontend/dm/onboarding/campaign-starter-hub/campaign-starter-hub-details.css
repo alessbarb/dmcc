@@ -20,7 +20,7 @@
 .guided-start__level small {
   display: block;
   color: var(--theme-text-secondary);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   line-height: 1.35;
 }
 

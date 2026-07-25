@@ -34,7 +34,7 @@
 }
 
 .template-entity-preview-modal__type {
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;

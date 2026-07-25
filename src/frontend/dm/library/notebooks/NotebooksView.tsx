@@ -25,6 +25,9 @@ import { useCampaignShortcuts } from "../../shortcuts/useCampaignShortcuts.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { useBodyWatermark } from "../../../shared/hooks/useBodyWatermark.js";
 import { ContextMenu, type ContextMenuItem } from "../../../shared/components/ContextMenu.js";
+import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
+import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
+import { formatVisibility } from "@shared/i18n/index.js";
 
 type CampaignState = NonNullable<ReturnType<typeof useCampaignStore.getState>["campaignState"]>;
 type Notebook = CampaignState["notebooks"][number];
@@ -40,7 +43,7 @@ function errorMessage(error: unknown, fallback: string): string {
 
 export function NotebooksView() {
   useBodyWatermark("notebooks");
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { addToast } = useToast();
   const campaignState = useCampaignStore((state) => state.campaignState);
   const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
@@ -432,9 +435,12 @@ export function NotebooksView() {
           className={`notebook-tree-item ${selectedNotebookId === notebook.notebookId ? "selected" : ""}`}
           style={depthStyle}
           onClick={() => selectNotebook(notebook)}
+          title={notebook.title}
         >
           <BookOpen size={14} className="notebook-tree-item-icon" />
-          <span className="notebook-tree-item-title">{notebook.title}</span>
+          <span className="notebook-tree-item-title u-truncate">
+            {notebook.title}
+          </span>
           {itemCount > 0 && <span className="notebook-tree-item-count">{itemCount}</span>}
         </button>
         {children.length > 0 && (
@@ -465,8 +471,8 @@ export function NotebooksView() {
   ], [isShortcutAdded, t, selectedNotebookId]);
 
   return (
-    <div className={`notebooks-workspace mobile-view-${mobileView}`}>
-      <aside className="notebooks-sidebar glass-panel">
+    <div className={`notebooks-workspace master-detail-layout mobile-view-${mobileView}`}>
+      <aside className="notebooks-sidebar master-detail-layout__sidebar glass-panel">
         <div className="notebooks-sidebar__header">
           <h3>{t("notebooks.title")}</h3>
           <button
@@ -507,11 +513,17 @@ export function NotebooksView() {
         )}
 
         <div className="notebooks-tree-container">
-          {rootNotebooks.length ? rootNotebooks.map((notebook) => renderNotebook(notebook)) : <p className="notebooks-empty">{t("notebooks.emptyTree")}</p>}
+          {rootNotebooks.length ? rootNotebooks.map((notebook) => renderNotebook(notebook)) : (
+            <CompactEmptyState
+              title={t("notebooks.emptyTree")}
+              description="Crea un nuevo cuaderno para comenzar a organizar tu campaña."
+              size="compact"
+            />
+          )}
         </div>
       </aside>
 
-      <section className="notebook-content-area">
+      <section className="notebook-content-area master-detail-layout__content">
         {selectedNotebook ? (
           <div className="glass-panel notebook-detail-panel">
             {/* Mobile Header navigation back to list */}
@@ -585,59 +597,72 @@ export function NotebooksView() {
               </div>
 
               {selectedNotebookItems.length ? (
-                <div className="notebook-items-list">
-                  {selectedNotebookItems.map((item, index) => {
-                    const details = itemDetails(item);
-                    const ItemIcon = details.icon;
-                    const itemStyle: NotebookStyle = { "--notebook-item-accent": details.color };
-                    return (
-                      <div
-                        key={item.notebookItemId}
-                        className="notebook-item-card glass-panel"
-                        style={itemStyle}
-                      >
-                        <div className="notebook-item-icon-wrapper">
-                          <ItemIcon size={16} />
+              <div className="notebook-items-list">
+                {selectedNotebookItems.map((item, index) => {
+                  const details = itemDetails(item);
+                  const ItemIcon = details.icon;
+                  const itemStyle: NotebookStyle = { "--notebook-item-accent": details.color };
+                  const entity = item.targetType === "entity" 
+                    ? campaignState?.entities.find((c) => c.entityId === item.targetId)
+                    : null;
+                  return (
+                    <div
+                      key={item.notebookItemId}
+                      className="notebook-item-card glass-panel"
+                      style={itemStyle}
+                    >
+                      <div className="notebook-item-icon-wrapper">
+                        <ItemIcon size={16} />
+                      </div>
+                      <div className="notebook-item-copy">
+                        <div className="notebook-item-header-row">
+                          <strong title={details.title}>
+                            {details.title}
+                          </strong>
+                          <span className="notebook-item-badge">
+                            {details.subtitle} • {formatRelativeTime(item.createdAt, locale)}
+                          </span>
                         </div>
-                        <div className="notebook-item-copy">
-                          <div className="notebook-item-header-row">
-                            <strong>{details.title}</strong>
-                            <span className="notebook-item-badge">
-                              {details.subtitle}
+                        {details.description && <p className="notebook-item-desc">{details.description}</p>}
+                        {entity?.visibility && (
+                          <div className="notebook-item-visibility">
+                            <span className="badge badge-default notebook-item-visibility__badge">
+                              {formatVisibility(entity.visibility.kind, locale)}
                             </span>
                           </div>
-                          {details.description && <p className="notebook-item-desc">{details.description}</p>}
-                        </div>
-                        <div className="notebook-item-actions">
-                          <button type="button" className="btn btn-sm btn-link" title={t("notebooks.actions.moveUp")} disabled={index === 0} onClick={() => void reorderItems(index, "up")}><ArrowUp size={14} /></button>
-                          <button type="button" className="btn btn-sm btn-link" title={t("notebooks.actions.moveDown")} disabled={index === selectedNotebookItems.length - 1} onClick={() => void reorderItems(index, "down")}><ArrowDown size={14} /></button>
-                          <button type="button" className="btn btn-sm btn-link text-danger" title={t("notebooks.actions.removeItem")} onClick={() => void removeItem(item.notebookItemId)}><X size={14} /></button>
-                        </div>
+                        )}
                       </div>
-                    );
-                  })}
-                </div>
+                      <div className="notebook-item-actions">
+                        <button type="button" className="btn btn-sm btn-link" title={t("notebooks.actions.moveUp")} disabled={index === 0} onClick={() => void reorderItems(index, "up")}><ArrowUp size={14} /></button>
+                        <button type="button" className="btn btn-sm btn-link" title={t("notebooks.actions.moveDown")} disabled={index === selectedNotebookItems.length - 1} onClick={() => void reorderItems(index, "down")}><ArrowDown size={14} /></button>
+                        <button type="button" className="btn btn-sm btn-link text-danger" title={t("notebooks.actions.removeItem")} onClick={() => void removeItem(item.notebookItemId)}><X size={14} /></button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
               ) : (
-                <div className="notebooks-empty-actionable glass-panel">
-                  <p>{t("notebooks.emptyItems")}</p>
-                  <p className="subtext">
-                    Este cuaderno está vacío. Añade personajes, sesiones o tableros para reunir aquí la preparación relacionada.
-                  </p>
-                  <div className="action-buttons">
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("entity")}>
-                      <User className="notebooks-action-icon" size={14} />
-                      Añadir personaje
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("session")}>
-                      <FileText className="notebooks-action-icon" size={14} />
-                      Añadir sesión
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("canvas")}>
-                      <Layers className="notebooks-action-icon" size={14} />
-                      Añadir tablero
-                    </button>
-                  </div>
+              <div className="notebooks-empty-actionable glass-panel">
+                <CompactEmptyState
+                  title={t("notebooks.emptyItems")}
+                  description={t("notebooks.emptyItemsDescription")}
+                  size="standard"
+                />
+                <div className="action-buttons">
+                  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("entity")}>
+                    <User className="notebooks-action-icon" size={14} />
+                    {t("notebooks.actions.addEntity")}
+                  </button>
+                  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("session")}>
+                    <FileText className="notebooks-action-icon" size={14} />
+                    {t("notebooks.actions.addSession")}
+                  </button>
+                  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("canvas")}>
+                    <Layers className="notebooks-action-icon" size={14} />
+                    {t("notebooks.actions.addCanvas")}
+                  </button>
                 </div>
+              </div>
               )}
             </div>
           </div>

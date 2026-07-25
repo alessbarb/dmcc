@@ -50,7 +50,7 @@
 .session-history-item time {
   flex: 0 0 auto;
   color: var(--theme-text-secondary);
-  font-size: 0.74rem;
+  font-size: var(--type-micro);
 }
 
 .session-history-panel__empty {

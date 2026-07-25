@@ -363,7 +363,7 @@ export function CanvasToolbar({
         <button className="canvas-toolbar__btn" onClick={handleAddGroup} title={t("canvas.toolbar.visualGroup")}><Frame size={15} /></button>
       </div>
       <div className="canvas-toolbar__divider" />
-      <div className="canvas-toolbar__group">
+      <div className="canvas-toolbar__group canvas-zoom-control">
         <button className="canvas-toolbar__btn" onClick={handleFitView} title={t("canvas.toolbar.fitView")}><Maximize2 size={15} /></button>
         <button className="canvas-toolbar__btn" onClick={handleFocusSelection} title={t("canvas.toolbar.focusSelection")}><Target size={15} /></button>
         <button className="canvas-toolbar__btn" onClick={handleZoomIn} title={t("canvas.toolbar.zoomIn")}><ZoomIn size={15} /></button>

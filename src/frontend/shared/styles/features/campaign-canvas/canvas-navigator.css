@@ -42,7 +42,7 @@
   border: 0;
   color: var(--theme-accents-primary-foreground);
   cursor: pointer;
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   padding: 0 8px 4px;
 }
@@ -55,11 +55,11 @@ small.canvas-navigator-result-action {
 .canvas-navigator-result small,
 .canvas-navigator-empty {
   color: var(--theme-text-secondary);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
 }
 
 .palette-section h3 {
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;

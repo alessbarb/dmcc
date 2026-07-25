@@ -16,7 +16,7 @@
 
 .graph-search__result-meta {
   color: var(--theme-text-secondary);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
 }
 
 .network-filter-menu {
@@ -32,7 +32,7 @@
   padding: 0 5px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--theme-surfaces-canvas) 78%, transparent);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
 }
 
 .network-filter-popover {

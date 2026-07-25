@@ -10,6 +10,7 @@ import { GroupPlayerCard } from "./components/GroupPlayerCard.js";
 import { PlayerProfileModal } from "./components/PlayerProfileModal.js";
 import { DmPlayerInbox } from "./components/DmPlayerInbox.js";
 import { DmPortalPlayerCard } from "./components/DmPortalPlayerCard.js";
+import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
 import "./groupWorkspace.css";
 
 function errorMessage(err: unknown): string {
@@ -85,8 +86,8 @@ export function GroupView() {
 
       <DmPlayerInbox items={dmInbox} />
 
-      <div className={`group-view-overview ${portalPlayers.length > 0 ? "has-portal" : ""}`}>
-        <section className="group-view-section" aria-labelledby="group-directory-heading">
+      <div className={`group-view-overview master-detail-layout ${portalPlayers.length > 0 ? "has-portal" : ""}`}>
+        <section className="group-view-section master-detail-layout__sidebar" aria-labelledby="group-directory-heading">
           <header className="group-view-section__header">
             <div>
               <p className="group-view-section__eyebrow">{players.length}</p>
@@ -98,13 +99,15 @@ export function GroupView() {
           </header>
 
           {players.length === 0 ? (
-            <div className="card group-view-empty">
-              <User size={42} aria-hidden="true" />
-              <p>{t("players.noPlayersRegistered")}</p>
-              <button type="button" className="btn btn-primary btn-sm" onClick={openCreateModal}>
-                <Plus size={14} /> {t("players.addPlayer")}
-              </button>
-            </div>
+            <CompactEmptyState
+              title={t("players.noPlayersRegistered")}
+              description="No hay jugadores registrados en esta campaña."
+              size="standard"
+              primaryAction={{
+                label: t("players.addPlayer"),
+                onClick: openCreateModal
+              }}
+            />
           ) : (
             <div className="group-player-grid">
               {players.map((player) => (
@@ -121,7 +124,7 @@ export function GroupView() {
         </section>
 
         {portalPlayers.length > 0 && (
-          <section className="group-view-section group-view-section--portal" aria-labelledby="group-portal-heading">
+          <section className="group-view-section group-view-section--portal master-detail-layout__content" aria-labelledby="group-portal-heading">
             <header className="group-view-section__header">
               <div>
                 <p className="group-view-section__eyebrow">{portalPlayers.length}</p>

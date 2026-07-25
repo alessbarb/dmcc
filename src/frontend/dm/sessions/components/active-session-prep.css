@@ -39,7 +39,7 @@
 }
 
 .active-session-prep__state {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
 }
 
 .active-session-prep__body {
@@ -60,7 +60,7 @@
 .active-session-prep__section-title {
   margin: 0 0 var(--space-2);
   color: var(--theme-text-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;

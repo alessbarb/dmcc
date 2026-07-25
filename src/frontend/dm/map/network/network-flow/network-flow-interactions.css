@@ -41,7 +41,7 @@
 .network-inspector__eyebrow {
   overflow: hidden;
   color: var(--network-inspector-accent);
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-overflow: ellipsis;
@@ -79,7 +79,7 @@
   gap: 5px;
   margin-top: 6px;
   color: var(--theme-text-secondary);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
 }
 
 .network-inspector__actions {

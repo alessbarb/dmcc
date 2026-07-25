@@ -21,7 +21,7 @@
 }
 
 .notebooks-link-modal .linked-badge {
-  font-size: 0.65rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   text-transform: uppercase;
   background: var(--theme-surfaces-base);

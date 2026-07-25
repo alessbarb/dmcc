@@ -21,7 +21,7 @@
   border: 1px solid var(--theme-borders-default);
   border-radius: 999px;
   color: var(--theme-text-secondary);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 800;
 }
 

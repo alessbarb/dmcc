@@ -31,7 +31,7 @@
 }
 
 .kanban-card__badge {
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   margin-top: 6px;
   display: inline-block;
   padding: 1px 5px;

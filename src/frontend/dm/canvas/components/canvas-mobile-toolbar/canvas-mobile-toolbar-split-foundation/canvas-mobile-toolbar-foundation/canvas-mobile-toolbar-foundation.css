@@ -13,7 +13,7 @@
   border: 0;
   background: transparent;
   color: var(--theme-text-primary);
-  font-size: 10px;
+  font-size: var(--type-micro);
   outline: none;
   cursor: pointer;
 }

@@ -5,9 +5,9 @@
 .canvas-dialog__body--create { gap: 16px; }
 .canvas-dialog__description { margin: 0; color: var(--theme-text-secondary); font-size: 0.85rem; line-height: 1.4; }
 .canvas-dialog__import-textarea { padding: 10px; border: 1px solid var(--theme-borders-default); border-radius: var(--theme-shapes-radius-small); background: var(--theme-surfaces-interactive); color: var(--theme-text-primary); font-family: monospace; font-size: 0.82rem; }
-.canvas-dialog__hint { color: var(--theme-text-secondary); font-size: 11px; }
+.canvas-dialog__hint { color: var(--theme-text-secondary); font-size: var(--type-micro); }
 .canvas-dialog__close { border: 0; background: none; color: var(--theme-text-secondary); cursor: pointer; }
-.canvas-dialog__legend-body { gap: 12px; font-size: 11px; }
+.canvas-dialog__legend-body { gap: 12px; font-size: var(--type-micro); }
 .canvas-dialog__legend-heading { padding-bottom: 4px; border-bottom: 1px solid var(--theme-borders-default); color: var(--theme-accents-primary-foreground); font-weight: 700; }
 .canvas-dialog__legend-heading--spaced { margin-top: 8px; }
 .canvas-dialog__legend-row { display: flex; align-items: center; gap: 8px; }

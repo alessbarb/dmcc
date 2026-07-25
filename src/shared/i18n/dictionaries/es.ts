@@ -241,7 +241,10 @@ export const es: TranslationDictionary = {
       "Contacta con el proyecto o revisa el repositorio público.",
   },
   common: {
-    routeNotFoundTitle: "Página no encontrada",
+
+    select: "Seleccionar",
+    copy: "Copiar",
+    sectionNavigation: "Navegación de sección",    routeNotFoundTitle: "Página no encontrada",
     routeNotFoundDescription: "El enlace al que has accedido no existe o ya no está disponible.",
     backToHome: "Volver al inicio",
     save: "Guardar",
@@ -447,7 +450,8 @@ export const es: TranslationDictionary = {
       untitledNote: "Nota sin título",
     },
     node: {
-      visibilityDmOnly: "Secreto DM (Solo visible para el DM)",
+
+      cycleStatusLabel: "Rotar estado",      visibilityDmOnly: "Secreto DM (Solo visible para el DM)",
       visibilityRevealed: "Revelado (Visible para todos los jugadores)",
       visibilityPartial: "Parcialmente descubierto",
       addSessionNotePrompt: "Añadir nota de sesión para: {title}",
@@ -648,7 +652,8 @@ export const es: TranslationDictionary = {
       characters: "Personajes específicos",
     },
     relationTypes: {
-      hides: "oculta",
+
+      relacionado_con: "relacionado con",      hides: "oculta",
       unlocks: "desbloquea",
       points_to: "apunta a",
       causes: "causa",
@@ -760,11 +765,17 @@ export const es: TranslationDictionary = {
       save: "Guardar nota",
     },
     messaging: {
-      heading: "Mensajes de campaña",
+
+      loadOlder: "Cargar mensajes anteriores",
+      sending: "enviando...",
+      failed: "fallido",
+      retry: "reintentar",      heading: "Mensajes de campaña",
       playerSubtitle: "Habla con Dirección de juego y el resto del grupo.",
       dmSubtitle: "Canal compartido de Dirección de juego y jugadores.",
       loading: "Cargando mensajes…",
       empty: "Todavía no hay mensajes. Abre la conversación con el grupo.",
+      emptyDescription: "Envía un mensaje para comenzar la conversación en esta campaña.",
+      copyMessage: "Copiar mensaje",
       channelParty: "Canal de campaña",
       channelDm: "Privado con Dirección de juego",
       channelPlayer: "Privado con un jugador",
@@ -779,7 +790,9 @@ export const es: TranslationDictionary = {
       directionName: "Dirección de juego",
       privateWith: "Privado con",
       privateMessage: "Mensaje privado",
-    },
+
+      jumpToLatest: "Ir al último",
+      newMessages: "mensajes nuevos",    },
     characterSheet: "Ficha de Personaje",
     objectives: "Objetivos",
     leavePortal: "Salir de la campaña",
@@ -951,7 +964,16 @@ export const es: TranslationDictionary = {
     importanceLow: "Baja",
   },
   dashboard: {
-    untitled: "Sin título",
+
+    metricEntities: "Entidades",
+    metricEntitiesDetail: "entidades vinculadas",
+    unrevealedCriticalSecrets: "Secretos críticos",
+    criticalSecretsHelp: "secretos críticos ocultos",
+    readyClues: "Pistas preparadas",
+    readyCluesHelp: "pistas preparadas para revelar",
+    quests: "Misiones",
+    questsHelp: "cadenas de misión activas",
+    criticalCluesHelp: "pistas críticas no reveladas",    untitled: "Sin título",
     currentState: "Estado actual de la campaña",
     createdFromTemplate: "Creada desde {title} v{version}",
     noActiveCampaign: "Sin campaña activa",
@@ -979,6 +1001,7 @@ export const es: TranslationDictionary = {
     nextSessionPrep: "Preparación para próxima sesión",
     cluesReady: "Pistas listas para revelar",
     noPreparedClues: "Sin pistas preparadas",
+    unresolvedClueAlertFallback: "Alerta de pista sin resolver",
     readyConsequences: "Consecuencias listas",
     noneReadyYet: "Ninguna lista aún",
     recentlyUpdated: "Actualizado recientemente",
@@ -1181,6 +1204,7 @@ export const es: TranslationDictionary = {
     noDescription: "Sin descripción.",
     items: "Elementos vinculados",
     emptyItems: "Todavía no hay elementos en este cuaderno.",
+    emptyItemsDescription: "Este cuaderno está vacío. Añade personajes, sesiones o tableros para reunir aquí la preparación relacionada.",
     selectPlaceholderTitle: "Gestiona los cuadernos de campaña",
     selectPlaceholderDesc: "Crea cuadernos jerárquicos para organizar entidades, sesiones y canvas de la campaña.",
     actions: {
@@ -1188,6 +1212,9 @@ export const es: TranslationDictionary = {
       addChild: "Crear subcuaderno",
       archive: "Archivar cuaderno",
       addItem: "Añadir elemento",
+      addEntity: "Añadir personaje",
+      addSession: "Añadir sesión",
+      addCanvas: "Añadir tablero",
       link: "Vincular",
       cancel: "Cancelar",
       save: "Guardar",
@@ -1231,7 +1258,8 @@ export const es: TranslationDictionary = {
     },
   },
   story: {
-    threads: "Hilos Narrativos",
+
+    ready: "Preparado",    threads: "Hilos Narrativos",
     addThread: "Nuevo hilo",
     newThreadTitle: "Nuevo Hilo Narrativo",
     emptyThreads: "No hay hilos narrativos.",
@@ -2898,7 +2926,8 @@ export const es: TranslationDictionary = {
       saveFailed: "Error al guardar",
     },
     profile: {
-      displayName: "Nombre para mostrar",
+
+      archived: "Archivado",      displayName: "Nombre para mostrar",
       avatarUrl: "URL del avatar",
       pronouns: "Pronombres",
       timeZone: "Zona horaria",
@@ -3051,4 +3080,69 @@ export const es: TranslationDictionary = {
     onlyVisibleDM: "Visible to DM only",
   },
 
+
+  systems: {
+    dnd_5e: "D&D 5e",
+    pathfinder_2e: "Pathfinder 2e",
+    shadowdark: "Shadowdark",
+    custom: "Sistema Personalizado"
+  },
+  importance: {
+    low: "Baja",
+    normal: "Normal",
+    high: "Alta",
+    critical: "Crítica"
+  },
+  status: {
+    planned: "Planificada",
+    active: "Activa",
+    cancelled: "Cancelada",
+    ready: "Preparada"
+  },
+  visibility: {
+    dm_only: "Solo DM",
+    party: "Grupo",
+    public: "Público",
+    players: "Jugadores específicos",
+    characters: "Personajes específicos"
+  },
+  time: {
+    secondsAgo: "hace unos segundos",
+    minutesAgo: "hace {count} min",
+    hoursAgo: "hace {count} horas",
+    daysAgo: "hace {count} días",
+    weeksAgo: "hace {count} semanas"
+  },
+  activity: {
+    story_step_created: "Se creó un paso narrativo",
+    story_thread_archived: "Se archivó un hilo narrativo",
+    campaign_entity_updated: "Se actualizó {target}",
+    session_prepared: "Se preparó {target}",
+    npc_modified: "Se modificó un PNJ",
+    clue_linked: "Se vinculó una pista",
+    fallback: {
+      storyStepCreated: "Se creó un paso narrativo",
+      storyThreadArchived: "Se archivó un hilo narrativo",
+      entityUpdated: "Se actualizó una entidad",
+      entityUpdatedWithTarget: "Se actualizó {target}",
+      sessionPrepared: "Se preparó la sesión",
+      sessionPreparedWithTarget: "Se preparó {target}",
+      npcModified: "Se modificó un PNJ",
+      clueLinked: "Se vinculó una pista",
+      default: "Actividad registrada"
+    }
+  },
+
+  relationModal: {
+    createRelation: "Crear Relación",
+    sourceEntity: "Entidad Origen",
+    selectSource: "-- Seleccionar Nodo Origen --",
+    relationType: "Tipo de Relación",
+    targetEntity: "Entidad Destino",
+    selectTarget: "-- Seleccionar Nodo Destino --",
+    duplicateWarning: "Ya existe una relación idéntica. ¿Crear de todos modos?",
+    createAnyway: "Crear de todos modos",
+    cancel: "Cancelar",
+    registerRelation: "Registrar Relación"
+  },
 };
