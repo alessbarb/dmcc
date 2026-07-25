@@ -9,6 +9,49 @@
   font-size: 0.76rem;
 }
 
+.campaign-history-entry__meta--child {
+  font-size: var(--type-micro);
+}
+
+.campaign-history-entry__card--grouped {
+  display: grid;
+  gap: 8px;
+}
+
+.campaign-history-entry__consecutive-count {
+  font-weight: 650;
+}
+
+.campaign-history-entry__toggle {
+  justify-self: start;
+  margin-top: 4px;
+}
+
+.campaign-history-entry__group-children {
+  display: grid;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--theme-borders-default);
+}
+
+.campaign-history-entry__child-item {
+  display: grid;
+  gap: 8px;
+}
+
+.campaign-history-entry__technical-summary--child {
+  font-size: var(--type-micro);
+}
+
+.campaign-history-entry__technical-list--child {
+  font-size: var(--type-micro);
+}
+
+.campaign-history-entry__json--child {
+  font-size: var(--type-micro);
+}
+
 .campaign-history-entry__category {
   color: var(--history-color, var(--theme-accents-primary-foreground));
   font-weight: 750;
@@ -22,6 +65,10 @@
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
+}
+
+.campaign-history-entry__description--child {
+  font-size: 0.9rem;
 }
 
 .campaign-history-entry__technical {
