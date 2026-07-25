@@ -1208,6 +1208,8 @@ export const it: TranslationDictionary = {
     addThread: "Nuova trama",
     newThreadTitle: "Nuova Trama Narrativa",
     emptyThreads: "Ancora nessuna trama narrativa.",
+    viewAllThreads: "Visualizza tutte le trame",
+    showFewerThreads: "Mostra meno trame",
     activate: "Attiva",
     resolve: "Risolvi",
     discard: "Scarta",

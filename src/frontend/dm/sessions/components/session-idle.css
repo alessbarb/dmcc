@@ -33,7 +33,7 @@
 .session-create-panel__copy h2 {
   margin: 0;
   color: var(--theme-text-primary);
-  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-size: clamp(1.4rem, 2vw, 1.75rem);
   line-height: 1.15;
 }
 
@@ -87,7 +87,15 @@
 }
 
 .session-empty-prepared {
-  min-height: 360px;
+  max-height: 220px;
+}
+
+.session-idle-grid.no-history {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.session-idle-grid.no-history .session-history-panel {
+  order: 3;
 }
 
 @media (max-width: 1120px) {

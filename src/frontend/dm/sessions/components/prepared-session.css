@@ -1,9 +1,21 @@
-.session-list-section,
-.session-prepared-list {
+.session-list-section {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+.session-prepared-list {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-3);
+}
+
+@media (max-width: 860px) {
+  .session-prepared-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .session-list-section__header {
@@ -68,7 +80,7 @@
   flex-wrap: wrap;
   margin-top: 7px;
   color: var(--theme-text-secondary);
-  font-size: 0.78rem;
+  font-size: var(--type-caption);
 }
 
 .prepared-session-card__summary > p {
@@ -76,7 +88,7 @@
   margin: 8px 0 0;
   overflow: hidden;
   color: var(--theme-text-secondary);
-  font-size: 0.84rem;
+  font-size: var(--type-control);
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;

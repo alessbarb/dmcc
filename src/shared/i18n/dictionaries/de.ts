@@ -1209,6 +1209,8 @@ export const de: TranslationDictionary = {
     addThread: "Neuer Strang",
     newThreadTitle: "Neuer Erzählstrang",
     emptyThreads: "Noch keine Erzählstränge.",
+    viewAllThreads: "Alle Stränge anzeigen",
+    showFewerThreads: "Weniger Stränge anzeigen",
     activate: "Aktivieren",
     resolve: "Auflösen",
     discard: "Verwerfen",

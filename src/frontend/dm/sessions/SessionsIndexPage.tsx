@@ -13,6 +13,16 @@ import "./components/session-idle.css";
 import "./components/prepared-session.css";
 import "./components/session-history.css";
 
+function formatSessionCardTitle(
+  session: { number?: number; title: string },
+  t: (key: string, params?: Record<string, string | number>) => string,
+): string {
+  if (!session.number) return session.title;
+  const autoTitle = t("session.sessionNumber", { number: session.number });
+  if (session.title === autoTitle) return session.title;
+  return `#${session.number} ${session.title}`;
+}
+
 export function SessionsIndexPage() {
   const { locale, t } = useTranslation();
   const { campaignId } = useParams({ strict: false }) as { campaignId?: string };
@@ -29,7 +39,14 @@ export function SessionsIndexPage() {
   const activeSession = sessions.find((session) => session.status === "active");
   const preparedSessions = [...sessions]
     .filter((session) => session.status === "planned")
-    .sort((a, b) => new Date(a.scheduledAt ?? 0).getTime() - new Date(b.scheduledAt ?? 0).getTime());
+    .sort((a, b) => {
+      if (a.scheduledAt && b.scheduledAt) {
+        return new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime();
+      }
+      if (a.scheduledAt) return -1;
+      if (b.scheduledAt) return 1;
+      return (a.number ?? 0) - (b.number ?? 0);
+    });
   const recentSessions = [...sessions]
     .filter((session) => session.status === "closed" || session.status === "archived")
     .sort((a, b) => new Date(b.endedAt ?? 0).getTime() - new Date(a.endedAt ?? 0).getTime())
@@ -159,7 +176,7 @@ export function SessionsIndexPage() {
           </div>
         </section>
 
-        <div className="session-idle-grid">
+        <div className={`session-idle-grid ${recentSessions.length > 0 ? "has-history" : "no-history"}`}>
           <main className="session-idle-main">
             {preparedSessions.length > 0 ? (
               <section className="session-list-section" aria-labelledby="prepared-sessions-heading">
@@ -182,7 +199,7 @@ export function SessionsIndexPage() {
                       >
                         <div className="prepared-session-card__summary">
                           <div className="prepared-session-card__title-row">
-                            <h4>{session.number ? `#${session.number} ` : ""}{session.title}</h4>
+                            <h4>{formatSessionCardTitle(session, t)}</h4>
                             <span className={`session-state-badge ${plan?.state === "ready" ? "is-ready" : ""}`}>
                               {plan?.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}
                             </span>
@@ -246,7 +263,7 @@ export function SessionsIndexPage() {
                     className="session-history-item"
                   >
                     <div>
-                      <h4>{session.number ? `#${session.number} ` : ""}{session.title}</h4>
+                      <h4>{formatSessionCardTitle(session, t)}</h4>
                       {session.summary && <p>{session.summary}</p>}
                     </div>
                     <time dateTime={session.endedAt ?? undefined}>

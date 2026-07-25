@@ -23,6 +23,7 @@ export function StoryThreadsPanel({
   const [stepTitle, setStepTitle] = useState("");
   const [schedulingStepId, setSchedulingStepId] = useState<string | null>(null);
   const [scheduleSessionId, setScheduleSessionId] = useState("");
+  const [showAllThreads, setShowAllThreads] = useState(false);
   const focusedCardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -38,6 +39,8 @@ export function StoryThreadsPanel({
   }, [focusThreadId, expandedThreadId]);
 
   const activeThreads = threads.filter((thread) => !thread.archivedAt).sort((a, b) => a.sortOrder - b.sortOrder);
+  const visibleThreads = showAllThreads ? activeThreads : activeThreads.slice(0, 3);
+  const hasMoreThreads = activeThreads.length > 3;
   const backlogStepsByThread = (threadId: string) =>
     steps
       .filter((step) => step.threadId === threadId && !step.plannedSessionId && step.status !== "resolved" && step.status !== "discarded")
@@ -119,7 +122,7 @@ export function StoryThreadsPanel({
         <p className="story-plan-empty story-plan-empty--threads">{t("story.emptyThreads") || "No hay hilos narrativos."}</p>
       ) : (
         <div className="threads-list">
-          {activeThreads.map((thread) => {
+          {visibleThreads.map((thread) => {
             const isExpanded = expandedThreadId === thread.threadId;
             const backlog = backlogStepsByThread(thread.threadId);
             return (
@@ -204,6 +207,15 @@ export function StoryThreadsPanel({
               </div>
             );
           })}
+          {hasMoreThreads && (
+            <button
+              type="button"
+              className="btn btn-sm btn-link story-threads-panel__view-all"
+              onClick={() => setShowAllThreads((prev) => !prev)}
+            >
+              {showAllThreads ? t("story.showFewerThreads") : t("story.viewAllThreads")}
+            </button>
+          )}
         </div>
       )}
     </section>

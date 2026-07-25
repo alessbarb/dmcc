@@ -1254,6 +1254,8 @@ export const en = {
     addThread: "New thread",
     newThreadTitle: "New Story Thread",
     emptyThreads: "No story threads yet.",
+    viewAllThreads: "View all threads",
+    showFewerThreads: "Show fewer threads",
     activate: "Activate",
     resolve: "Resolve",
     discard: "Discard",

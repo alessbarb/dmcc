@@ -1219,6 +1219,8 @@ export const fr: TranslationDictionary = {
     addThread: "Nouveau fil",
     newThreadTitle: "Nouveau Fil Narratif",
     emptyThreads: "Aucun fil narratif pour le moment.",
+    viewAllThreads: "Voir tous les fils",
+    showFewerThreads: "Afficher moins de fils",
     activate: "Activer",
     resolve: "Résoudre",
     discard: "Abandonner",

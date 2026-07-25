@@ -1265,6 +1265,8 @@ export const es: TranslationDictionary = {
     addThread: "Nuevo hilo",
     newThreadTitle: "Nuevo Hilo Narrativo",
     emptyThreads: "No hay hilos narrativos.",
+    viewAllThreads: "Ver todos los hilos",
+    showFewerThreads: "Mostrar menos hilos",
     activate: "Activar",
     resolve: "Resolver",
     discard: "Descartar",
