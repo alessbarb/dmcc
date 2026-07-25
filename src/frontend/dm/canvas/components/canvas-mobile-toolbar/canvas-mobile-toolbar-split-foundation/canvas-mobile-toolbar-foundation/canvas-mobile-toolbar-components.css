@@ -13,7 +13,7 @@
 
   .canvas-mobile-tools-popover .canvas-toolbar__btn {
     width: 100%;
-    height: 38px;
+    height: 44px;
     border: 1px solid var(--theme-borders-default);
     border-radius: 13px;
     background: var(--theme-surfaces-interactive);
