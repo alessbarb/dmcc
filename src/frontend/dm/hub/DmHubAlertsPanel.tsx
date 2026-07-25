@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell } from "lucide-react";
+import { ArrowRight, Bell, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { paginate } from "./dmHubPagination.js";
 import type { DmHubDashboard } from "./dmHubTypes.js";
@@ -8,9 +8,11 @@ const ALERTS_PAGE_SIZE = 3;
 
 export interface DmHubAlertsPanelProps {
   alerts: DmHubDashboard["alerts"];
+  preparation: DmHubDashboard["preparation"];
+  onOpenPreparation?: () => void;
 }
 
-export function DmHubAlertsPanel({ alerts }: DmHubAlertsPanelProps) {
+export function DmHubAlertsPanel({ alerts, preparation, onOpenPreparation }: DmHubAlertsPanelProps) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { pageItems, pageCount, clampedPage } = paginate(alerts, page, ALERTS_PAGE_SIZE);
@@ -25,10 +27,10 @@ export function DmHubAlertsPanel({ alerts }: DmHubAlertsPanelProps) {
         </div>
       </div>
       {alerts.length === 0 ? (
-        <div className="dm-empty-state dm-empty-state--compact">
-          <Bell size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
-          <p>{t("landing.alertsAllClearTitle")}</p>
-          <span>{t("landing.alertsAllClearDesc")}</span>
+        <div className="dm-adaptive-state dm-preparation-state">
+          <div className="dm-adaptive-state__icon"><CheckCircle2 size={18} /></div>
+          <div className="dm-adaptive-state__body"><span className="dm-adaptive-state__eyebrow">{t("landing.preparationTitle")}</span><strong>{t("landing.hiddenClues", { count: String(preparation.hiddenClues) })}</strong><span className="dm-adaptive-state__detail">{t("landing.openObjectives", { count: String(preparation.openObjectives) })} · {t("landing.changedEntities", { count: String(preparation.changedEntities) })}</span></div>
+          {onOpenPreparation && <button type="button" className="dm-adaptive-state__action" onClick={onOpenPreparation}>{t("landing.openCampaign")} <ArrowRight size={12} /></button>}
         </div>
       ) : (
         <div className="dm-alerts-list" data-dm-hub-scroll="alerts">

@@ -448,10 +448,11 @@ export function DmHubPage() {
           />}
           tablesSlot={<DmHubActiveTablesPanel
             activeTables={dashboard.activeTables}
+            nextSession={dashboard.nextSession}
             triggerMysticalTransition={triggerMysticalTransition}
             navigateToActiveSession={navigateToActiveSession}
           />}
-          alertsSlot={<DmHubAlertsPanel alerts={dashboard.alerts} />}
+          alertsSlot={<DmHubAlertsPanel alerts={dashboard.alerts} preparation={dashboard.preparation} onOpenPreparation={() => { const campaign = campaigns[0]; if (campaign) navigateToCampaignSection(campaign.campaignId, "canvas"); }} />}
           summarySlot={<DmHubSummaryPanel campaigns={campaigns} sessionsCount={dashboard.totals.sessions} completedCampaigns={dashboard.totals.completedCampaigns} />}
           activitySlot={<DmHubActivityPanel recentActivity={dashboard.recentActivity} />}
         />
@@ -476,8 +477,8 @@ export function DmHubPage() {
           {mobileMoreOpen && <DmHubQuickActions onCreateCampaign={() => setIsCreateModalOpen(true)} onCanvas={handleQuickCanvas} onNpcs={handleQuickNpcs} onFocusTemplates={handleQuickTemplates} onRules={handleQuickRules} onMap={handleQuickMap} onTimeline={handleQuickTimeline} onSettings={handleQuickSettings} onRestoreBackup={() => setIsRestoreModalOpen(true)} onlySecondary />}
           <DmHubDetailSheet open={activeDetail !== null} title={activeDetail ? mobileDetailTitle(activeDetail) : ""} onClose={() => setActiveDetail(null)} returnFocusRef={detailTriggerRef}>
             {activeDetail === "campaigns" && <DmHubCampaignsColumn campaigns={campaigns} filteredCampaigns={filteredCampaigns} campaignTemplates={campaignTemplates} loading={loading} error={error} refreshCampaigns={refreshCampaigns} landingSearchQuery={landingSearchQuery} setLandingSearchQuery={setLandingSearchQuery} campaignFilter={campaignFilter} setCampaignFilter={setCampaignFilter} triggerMysticalTransition={triggerMysticalTransition} openEditModal={openEditModal} openDeleteModal={openDeleteModal} onCreateCampaign={() => setIsCreateModalOpen(true)} onExploreTemplates={handleQuickTemplates} onRestoreBackup={() => setIsRestoreModalOpen(true)} navigateToActiveSession={navigateToActiveSession} navigateToCampaignTemplate={navigateToCampaignTemplate} importingTemplateId={importingTemplateId} onImportTemplate={openCampaignTemplateImportDialog} />}
-            {activeDetail === "tables" && <DmHubActiveTablesPanel activeTables={dashboard.activeTables} triggerMysticalTransition={triggerMysticalTransition} navigateToActiveSession={navigateToActiveSession} />}
-            {activeDetail === "alerts" && <DmHubAlertsPanel alerts={dashboard.alerts} />}
+            {activeDetail === "tables" && <DmHubActiveTablesPanel activeTables={dashboard.activeTables} nextSession={dashboard.nextSession} triggerMysticalTransition={triggerMysticalTransition} navigateToActiveSession={navigateToActiveSession} />}
+            {activeDetail === "alerts" && <DmHubAlertsPanel alerts={dashboard.alerts} preparation={dashboard.preparation} />}
             {activeDetail === "summary" && <DmHubSummaryPanel campaigns={campaigns} sessionsCount={dashboard.totals.sessions} completedCampaigns={dashboard.totals.completedCampaigns} />}
             {activeDetail === "activity" && <DmHubActivityPanel recentActivity={dashboard.recentActivity} />}
             {activeDetail === "templates" && <CampaignTemplateLibrarySection templates={campaignTemplates} campaigns={campaigns} loading={loading} importingTemplateId={importingTemplateId} t={t} onExplore={navigateToCampaignTemplate} onImport={openCampaignTemplateImportDialog} />}

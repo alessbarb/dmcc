@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Activity, Clock, Users } from "lucide-react";
+import { Activity, ArrowRight, CalendarDays, Clock, Users } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { paginate } from "./dmHubPagination.js";
 import type { DmHubDashboard } from "./dmHubTypes.js";
@@ -10,9 +10,10 @@ export interface DmHubActiveTablesPanelProps {
   activeTables: DmHubDashboard["activeTables"];
   triggerMysticalTransition: (campaignId: string) => void;
   navigateToActiveSession: (campaignId: string) => void;
+  nextSession: DmHubDashboard["nextSession"];
 }
 
-export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition, navigateToActiveSession }: DmHubActiveTablesPanelProps) {
+export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition, navigateToActiveSession, nextSession }: DmHubActiveTablesPanelProps) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { pageItems, pageCount, clampedPage } = paginate(activeTables, page, TABLES_PAGE_SIZE);
@@ -26,7 +27,11 @@ export function DmHubActiveTablesPanel({ activeTables, triggerMysticalTransition
         </div>
       </div>
       {activeTables.length === 0 ? (
-        <div className="dm-empty-state dm-empty-state--compact">
+        nextSession ? <div className="dm-adaptive-state dm-next-session">
+          <div className="dm-adaptive-state__icon"><CalendarDays size={18} /></div>
+          <div className="dm-adaptive-state__body"><span className="dm-adaptive-state__eyebrow">{t("landing.nextSessionTitle")}</span><strong>{nextSession.campaignTitle}</strong><span className="dm-adaptive-state__detail">{nextSession.title}{nextSession.plannedDate ? ` · ${new Date(nextSession.plannedDate).toLocaleString(undefined, { weekday: "short", hour: "2-digit", minute: "2-digit" })}` : ""}</span></div>
+          <button type="button" className="dm-adaptive-state__action" onClick={() => navigateToActiveSession(nextSession.campaignId)}>{t("landing.prepareNextSession")} <ArrowRight size={12} /></button>
+        </div> : <div className="dm-empty-state dm-empty-state--compact">
           <Activity size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
           <p>{t("landing.noActiveTablesTitle")}</p>
           <span>{t("landing.noActiveTablesDesc")}</span>
