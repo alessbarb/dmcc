@@ -85,16 +85,24 @@ function NetworkFlowInner() {
   const [viewportSize, setViewportSize] = useState({ w: 900, h: 600 });
 
   useEffect(() => {
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
     const measure = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const next = { w: Math.max(320, Math.round(rect.width)), h: Math.max(360, Math.round(rect.height)) };
       setViewportSize((current) => current.w === next.w && current.h === next.h ? current : next);
     };
+    const debouncedMeasure = () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(measure, 150);
+    };
     measure();
-    const observer = new ResizeObserver(measure);
+    const observer = new ResizeObserver(debouncedMeasure);
     if (containerRef.current) observer.observe(containerRef.current);
-    return () => observer.disconnect();
+    return () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
