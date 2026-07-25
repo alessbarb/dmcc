@@ -45,6 +45,7 @@ export function PlayerKnowledgeView() {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [visibilityFilter, setVisibilityFilter] = useState<"all" | "visible" | "hidden">("all");
+  const [visibleCount, setVisibleCount] = useState(50);
 
   const load = async () => {
     if (!activeCampaignId) return;
@@ -85,6 +86,13 @@ export function PlayerKnowledgeView() {
       return visibilityFilter === "visible" ? visibleToAnyPlayer : !visibleToAnyPlayer;
     });
   }, [knowledgeByPlayer, projection, query, visibilityFilter]);
+
+  useEffect(() => {
+    setVisibleCount(50);
+  }, [query, visibilityFilter]);
+
+  const visibleTargets = filteredTargets.slice(0, visibleCount);
+  const hasMoreTargets = filteredTargets.length > visibleCount;
 
   if (loading) {
     return <div className="people-loading-state" role="status">{t("common.loading")}</div>;
@@ -167,7 +175,7 @@ export function PlayerKnowledgeView() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredTargets.map((target) => (
+                  {visibleTargets.map((target) => (
                     <tr key={`${target.targetType}:${target.targetId}`}>
                       <td className="people-knowledge-table__target">
                         <strong>{target.title}</strong>
@@ -189,6 +197,15 @@ export function PlayerKnowledgeView() {
                   ))}
                 </tbody>
               </table>
+              {hasMoreTargets && (
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm people-knowledge-table__load-more"
+                  onClick={() => setVisibleCount((count) => count + 50)}
+                >
+                  {t("entitiesPage.loadMore", { count: filteredTargets.length - visibleCount })}
+                </button>
+              )}
             </div>
           )}
         </>

@@ -24,6 +24,11 @@
   overflow: auto;
 }
 
+.people-knowledge-table__load-more {
+  margin: 12px auto 4px;
+  display: flex;
+}
+
 .people-knowledge-table {
   width: 100%;
   min-width: 720px;
