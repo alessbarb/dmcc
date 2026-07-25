@@ -130,7 +130,7 @@ export function SessionsIndexPage() {
           </section>
         )}
 
-        <section className="session-create-panel surface-panel">
+        <section className="session-create-panel surface-panel dm-panel--ornamented-accent">
           <div className="session-create-panel__icon" aria-hidden="true">
             <CalendarClock size={28} />
           </div>
