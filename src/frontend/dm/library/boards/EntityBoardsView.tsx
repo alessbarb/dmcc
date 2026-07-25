@@ -409,58 +409,60 @@ export function EntityBoardsView() {
   return (
     <>
       <div className="entity-boards-view">
-        <div role="tablist" aria-label={t("boards.ariaLabel")}>
-          {BOARDS.map((candidate) => (
-            (() => {
-              const tabStyle: BoardStyle | undefined = activeBoard === candidate.id
-                ? { "--board-tab-color": candidate.color }
-                : undefined;
-              return <button
-              key={candidate.id}
-              type="button"
-              role="tab"
-              aria-selected={activeBoard === candidate.id}
-              className={`btn btn-sm ${activeBoard === candidate.id ? "btn-primary" : "btn-secondary"} ${activeBoard === candidate.id ? "entity-boards-view__tab--active" : ""}`}
-              style={tabStyle}
-              onClick={() => {
-                setActiveBoard(candidate.id);
-                setShowEmptyColumns(false);
-              }}
-            >
-              {t(candidate.labelKey)}
-              </button>;
-            })()
-          ))}
-        </div>
+        <div className="entity-boards-view__toolbar">
+          <div role="tablist" aria-label={t("boards.ariaLabel")}>
+            {BOARDS.map((candidate) => (
+              (() => {
+                const tabStyle: BoardStyle | undefined = activeBoard === candidate.id
+                  ? { "--board-tab-color": candidate.color }
+                  : undefined;
+                return <button
+                key={candidate.id}
+                type="button"
+                role="tab"
+                aria-selected={activeBoard === candidate.id}
+                className={`btn btn-sm ${activeBoard === candidate.id ? "btn-primary" : "btn-secondary"} ${activeBoard === candidate.id ? "entity-boards-view__tab--active" : ""}`}
+                style={tabStyle}
+                onClick={() => {
+                  setActiveBoard(candidate.id);
+                  setShowEmptyColumns(false);
+                }}
+              >
+                {t(candidate.labelKey)}
+                </button>;
+              })()
+            ))}
+          </div>
 
-        <div className="card entity-boards-view__summary" aria-live="polite">
-          <span className="entity-boards-view__summary-item">
-            {t("boards.total")}: <strong>{boardEntities.length}</strong>
-          </span>
-          {board.states.map((state) => (
-            (() => {
-              const stateStyle: BoardStyle = { "--board-state-color": state.color };
-              return <span key={state.key} className="entity-boards-view__summary-item entity-boards-view__summary-item--state" style={stateStyle}>
-                {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
-              </span>;
-            })()
-          ))}
-          {entitiesByStatus._unknown.length > 0 && (
+          <div className="card entity-boards-view__summary" aria-live="polite">
             <span className="entity-boards-view__summary-item">
-              {t("boards.unknownStatus")}: <strong>{entitiesByStatus._unknown.length}</strong>
+              {t("boards.total")}: <strong>{boardEntities.length}</strong>
             </span>
-          )}
-          {hasManyStates && hiddenEmptyCount > 0 && (
-            <button
-              type="button"
-              className="btn btn-sm btn-link entity-boards-view__toggle-empty"
-              onClick={() => setShowEmptyColumns((prev) => !prev)}
-            >
-              {showEmptyColumns
-                ? t("boards.hideEmptyColumns")
-                : t("boards.showEmptyColumns", { count: hiddenEmptyCount })}
-            </button>
-          )}
+            {board.states.map((state) => (
+              (() => {
+                const stateStyle: BoardStyle = { "--board-state-color": state.color };
+                return <span key={state.key} className="entity-boards-view__summary-item entity-boards-view__summary-item--state" style={stateStyle}>
+                  {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
+                </span>;
+              })()
+            ))}
+            {entitiesByStatus._unknown.length > 0 && (
+              <span className="entity-boards-view__summary-item">
+                {t("boards.unknownStatus")}: <strong>{entitiesByStatus._unknown.length}</strong>
+              </span>
+            )}
+            {hasManyStates && hiddenEmptyCount > 0 && (
+              <button
+                type="button"
+                className="btn btn-sm btn-link entity-boards-view__toggle-empty"
+                onClick={() => setShowEmptyColumns((prev) => !prev)}
+              >
+                {showEmptyColumns
+                  ? t("boards.hideEmptyColumns")
+                  : t("boards.showEmptyColumns", { count: hiddenEmptyCount })}
+              </button>
+            )}
+          </div>
         </div>
 
         {boardEntities.length === 0 ? (
