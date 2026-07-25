@@ -16,6 +16,6 @@
   <!-- Little botanical berry accents -->
   <circle cx="132" cy="30" r="3.5" fill="white"/>
   <circle cx="152" cy="50" r="2.5" fill="white"/>
-  <!-- Subtle short organic root line along top edge (only 50px long, curved, not rigid bar) -->
+  <!-- Subtle short organic root line along top edge -->
   <path d="M 0 0 Q 25 2 50 1 Q 25 3 0 1 Z" fill="white" opacity="0.6"/>
 </svg>

@@ -1,1 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" fill="none"><path d="M 130 100 C 100 92 65 82 35 60 C 15 45 5 22 0 0 C 3 1 5 3 7 6 C 14 26 24 45 42 58 C 70 76 102 85 130 96 Z" fill="white"/><path d="M 98 88 C 88 96 74 94 68 84 C 76 80 88 80 98 88 Z" fill="white"/><path d="M 72 74 C 58 84 44 80 40 68 C 50 66 62 68 72 74 Z" fill="white"/><path d="M 48 55 C 32 64 22 56 20 44 C 30 44 40 48 48 55 Z" fill="white"/><path d="M 130 100 L 10 100 L 10 96 L 126 96 L 126 10 L 130 10 Z" fill="white" opacity="0.5"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" fill="none">
+  <!-- Organic main vine growing from bottom-right (200,150) -->
+  <path d="M 200 150 C 165 144 125 136 90 112 C 60 92 42 62 32 22 C 35 21 38 23 40 27 C 49 63 64 90 92 108 C 125 132 165 142 200 148 Z" fill="white"/>
+  <!-- Leaf cluster along the vine -->
+  <path d="M 168 140 C 160 148 146 149 138 142 C 146 137 156 136 168 140 Z" fill="white"/>
+  <!-- Leaf 2 -->
+  <path d="M 142 132 C 130 142 116 140 110 130 C 120 126 132 128 142 132 Z" fill="white"/>
+  <!-- Leaf 3 -->
+  <path d="M 110 118 C 95 129 82 124 78 112 C 88 110 102 113 110 118 Z" fill="white"/>
+  <!-- Leaf 4 -->
+  <path d="M 82 96 C 66 105 54 98 52 86 C 62 86 74 91 82 96 Z" fill="white"/>
+  <!-- Leaf 5 -->
+  <path d="M 60 68 C 45 73 36 63 38 52 C 46 55 55 62 60 68 Z" fill="white"/>
+  <!-- Delicate filigree spiral tip near origin (bottom-right) -->
+  <path d="M 200 150 Q 182 132 164 138 C 176 144 188 138 200 150 Z" fill="white"/>
+  <!-- Little botanical berry accents -->
+  <circle cx="68" cy="120" r="3.5" fill="white"/>
+  <circle cx="48" cy="100" r="2.5" fill="white"/>
+  <!-- Subtle short organic root line along bottom edge -->
+  <path d="M 200 150 Q 175 148 150 149 Q 175 147 200 149 Z" fill="white" opacity="0.6"/>
+</svg>
