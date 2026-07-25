@@ -3,6 +3,20 @@
   --font-sans: "Outfit", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
+  --type-micro: 0.75rem;          /* 12px */
+  --type-caption: 0.8125rem;      /* 13px */
+  --type-control: 0.875rem;       /* 14px */
+  --type-body: 0.9375rem;         /* 15px */
+  --type-body-comfortable: 1rem;  /* 16px */
+
+  --type-heading-sm: 1rem;
+  --type-heading-md: 1.25rem;
+  --type-heading-lg: clamp(1.75rem, 2.6vw, 2.75rem);
+
+  --line-compact: 1.25;
+  --line-ui: 1.4;
+  --line-reading: 1.65;
+
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
