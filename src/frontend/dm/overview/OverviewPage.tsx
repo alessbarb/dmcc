@@ -100,19 +100,24 @@ function MetricCard({
   helpText?: string;
   onClick?: () => void;
 }) {
+  const content = (
+    <>
+      {icon}
+      <p className="dashboard-metric-label">{label}</p>
+      <strong className="dashboard-metric-value">{value}</strong>
+      {helpText && <span className="dashboard-metric-help">{helpText}</span>}
+    </>
+  );
+
   return (
     <Card>
-      <div
-        className={`dashboard-metric-content${onClick ? " dashboard-metric-content--clickable" : ""}`}
-        onClick={onClick}
-        role={onClick ? "button" : undefined}
-        tabIndex={onClick ? 0 : undefined}
-      >
-        {icon}
-        <p className="dashboard-metric-label">{label}</p>
-        <strong className="dashboard-metric-value">{value}</strong>
-        {helpText && <span className="dashboard-metric-help">{helpText}</span>}
-      </div>
+      {onClick ? (
+        <button type="button" className="dashboard-metric-content dashboard-metric-content--clickable" onClick={onClick}>
+          {content}
+        </button>
+      ) : (
+        <div className="dashboard-metric-content">{content}</div>
+      )}
     </Card>
   );
 }

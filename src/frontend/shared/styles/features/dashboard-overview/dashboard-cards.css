@@ -6,5 +6,8 @@
 .dashboard-pill--danger { border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 35%, transparent); background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 12%, transparent); }
 .dashboard-pill--warning { border: 1px solid color-mix(in srgb, var(--theme-feedback-warning-foreground) 35%, transparent); background: color-mix(in srgb, var(--theme-feedback-warning-foreground) 14%, transparent); }
 .dashboard-pill--good { border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-success-foreground) 12%, transparent); }
-.dashboard-metric-label { margin: 8px 0 0; color: var(--theme-text-secondary); font-size: 12px; }
-.dashboard-metric-value { font-size: 28px; }
+.dashboard-metric-content { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; }
+.dashboard-metric-content--clickable { cursor: pointer; background: none; border: none; padding: 0; width: 100%; font: inherit; color: inherit; }
+.dashboard-metric-label { margin: 8px 0 0; color: var(--theme-text-secondary); font-size: var(--type-caption); }
+.dashboard-metric-value { display: block; font-size: 30px; line-height: 1.15; }
+.dashboard-metric-help { display: block; color: var(--theme-text-secondary); font-size: var(--type-caption); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
