@@ -51,7 +51,7 @@
 .campaign-history__filters-title {
   margin: 0 0 8px;
   color: var(--theme-text-secondary);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 750;
   letter-spacing: 0.1em;
   text-transform: uppercase;
