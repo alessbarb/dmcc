@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users, Copy } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
@@ -338,6 +339,12 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           {audience === "player" && <select className="form-select" value={recipientPlayerId} onChange={(event) => setRecipientPlayerId(event.target.value)} aria-label={t("playerPortal.messaging.selectPlayer")}><option value="">{t("playerPortal.messaging.selectPlayer")}</option>{payload.participants.map((participant) => <option key={participant.playerId} value={participant.playerId}>{participant.displayName}</option>)}</select>}
         </div>
         <small className="campaign-messaging__description">{selectedAudienceDescription}</small>
+        {dmMode && payload.participants.length === 0 && (
+          <p className="campaign-messaging__no-recipients">
+            {t("playerPortal.messaging.noRecipients")}{" "}
+            <Link to="/campaigns/$campaignId/people/group" params={{ campaignId }}>{t("playerPortal.messaging.noRecipientsLink")}</Link>
+          </p>
+        )}
         <div className="campaign-messaging__composer">
           <textarea className="form-textarea campaign-messaging__textarea" rows={3} value={content} maxLength={MAX_MESSAGE_LENGTH} aria-label={t("playerPortal.messaging.placeholder")} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void sendMessage(); } }} />
           <button className="btn btn-primary campaign-messaging__send" type="button" disabled={!content.trim() || content.trim().length > MAX_MESSAGE_LENGTH || pendingMessage?.status === "sending" || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}><Send size={16} /> {t("playerPortal.messaging.send")}</button>

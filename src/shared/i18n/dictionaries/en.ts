@@ -769,6 +769,8 @@ export const en = {
       channelDm: "Private with Game Direction",
       channelPlayer: "Private with a player",
       selectPlayer: "Select player…",
+      noRecipients: "There are no players in this campaign yet, so private messages have no one to reach.",
+      noRecipientsLink: "Add players",
       partyDescription: "Visible to Game Direction and all players.",
       dmDescription: "Visible only to you and Game Direction.",
       playerDescription: "Visible only to Game Direction, you, and the selected player.",

@@ -744,6 +744,8 @@ export const fr: TranslationDictionary = {
       channelDm: "Privé avec la Direction de jeu",
       channelPlayer: "Privé avec un joueur",
       selectPlayer: "Sélectionner un joueur…",
+      noRecipients: "Il n'y a pas encore de joueurs dans cette campagne, donc les messages privés n'ont personne à atteindre.",
+      noRecipientsLink: "Ajouter des joueurs",
       partyDescription: "Visible par la Direction de jeu et tous les joueurs.",
       dmDescription: "Visible uniquement par vous et la Direction de jeu.",
       playerDescription: "Visible uniquement par la Direction de jeu, vous et le joueur sélectionné.",
