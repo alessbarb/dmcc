@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { SessionEvent, SessionEventType } from "@core/domain/session/types.js";
-import { formatRelative } from "../sessionTimeFormat.js";
+import { formatActivity } from "../../../shared/presentation/formatActivity.js";
+import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
 import "./session-event-feed.css";
 
 const EVENT_TYPE_ICONS: Partial<Record<SessionEventType, React.ReactNode>> = {
@@ -40,7 +41,7 @@ export function SessionEventFeed({
   sessionEvents: SessionEvent[];
   sessionId: string;
 }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
 
   const events = sessionEvents
@@ -75,6 +76,12 @@ export function SessionEventFeed({
               {events.map((event, index) => {
                 const iconClass = EVENT_TYPE_CLASSES[event.type] ?? EVENT_TYPE_CLASSES.custom;
                 const icon = EVENT_TYPE_ICONS[event.type] ?? EVENT_TYPE_ICONS.custom;
+                const displayTitle = formatActivity({
+                  type: event.type,
+                  occurredAt: event.occurredAt,
+                  target: event.title,
+                }, locale);
+
                 return (
                   <li className="session-event-feed__item" key={event.id ?? index}>
                     <span
@@ -83,11 +90,11 @@ export function SessionEventFeed({
                     >
                       {icon}
                     </span>
-                    <span className="session-event-feed__title" title={event.title}>
-                      {event.title}
+                    <span className="session-event-feed__title" title={displayTitle}>
+                      {displayTitle}
                     </span>
                     <time className="session-event-feed__time" dateTime={event.occurredAt}>
-                      {event.occurredAt ? formatRelative(event.occurredAt, t) : ""}
+                      {event.occurredAt ? formatRelativeTime(event.occurredAt, locale) : ""}
                     </time>
                   </li>
                 );

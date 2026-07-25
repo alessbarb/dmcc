@@ -47,7 +47,7 @@
 .session-section-eyebrow {
   margin: 0 0 6px;
   color: var(--theme-accents-primary-foreground);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;

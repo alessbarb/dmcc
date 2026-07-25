@@ -51,7 +51,7 @@
 }
 
 .narrative-map-node__kind {
-  font-size: 0.62rem;
+  font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }

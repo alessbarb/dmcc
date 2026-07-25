@@ -40,6 +40,6 @@
   margin: var(--space-1) 0 0;
   padding-left: var(--space-1);
   color: var(--theme-text-secondary);
-  font-size: 0.73rem;
+  font-size: var(--type-micro);
   opacity: 0.7;
 }

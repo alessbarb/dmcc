@@ -17,7 +17,7 @@
 }
 
 .narrative-map-inspector__eyebrow {
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--narrative-inspector-accent);
@@ -42,7 +42,7 @@
 }
 
 .narrative-map-inspector__section-title {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--theme-text-secondary);
