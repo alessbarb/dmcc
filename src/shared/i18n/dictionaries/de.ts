@@ -878,6 +878,8 @@ export const de: TranslationDictionary = {
     ariaLabel: "Kampagnenboards",
     total: "Gesamt",
     dropHint: "Karte hier ablegen oder Verschieben nach verwenden.",
+    showEmptyColumns: "Leere Spalten anzeigen ({count})",
+    hideEmptyColumns: "Leere Spalten ausblenden",
     noItems: "Noch keine Einträge in {board}.",
     moveTo: "Verschieben nach",
     moveLabel: "{title} in einen anderen Status verschieben",

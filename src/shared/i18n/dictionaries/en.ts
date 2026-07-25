@@ -908,6 +908,8 @@ export const en = {
     ariaLabel: "Campaign boards",
     total: "Total",
     dropHint: "Drop a card here or use Move to.",
+    showEmptyColumns: "Show empty columns ({count})",
+    hideEmptyColumns: "Hide empty columns",
     noItems: "No {board} yet.",
     moveTo: "Move to",
     moveLabel: "Move {title} to another status",

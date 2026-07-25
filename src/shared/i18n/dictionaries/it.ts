@@ -877,6 +877,8 @@ export const it: TranslationDictionary = {
     ariaLabel: "Bacheche della campagna",
     total: "Totale",
     dropHint: "Rilascia una carta qui o usa Sposta in.",
+    showEmptyColumns: "Mostra colonne vuote ({count})",
+    hideEmptyColumns: "Nascondi colonne vuote",
     noItems: "Ancora nessun elemento in {board}.",
     moveTo: "Sposta in",
     moveLabel: "Sposta {title} in un altro stato",

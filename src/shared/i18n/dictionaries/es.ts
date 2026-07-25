@@ -920,6 +920,8 @@ export const es: TranslationDictionary = {
     ariaLabel: "Tableros de campaña",
     total: "Total",
     dropHint: "Suelta una tarjeta aquí o usa Mover a.",
+    showEmptyColumns: "Mostrar columnas vacías ({count})",
+    hideEmptyColumns: "Ocultar columnas vacías",
     noItems: "Todavía no hay {board}.",
     moveTo: "Mover a",
     moveLabel: "Mover {title} a otro estado",

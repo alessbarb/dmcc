@@ -888,6 +888,8 @@ export const fr: TranslationDictionary = {
     ariaLabel: "Tableaux de campagne",
     total: "Total",
     dropHint: "Déposez une carte ici ou utilisez Déplacer vers.",
+    showEmptyColumns: "Afficher les colonnes vides ({count})",
+    hideEmptyColumns: "Masquer les colonnes vides",
     noItems: "Aucun élément dans {board} pour le moment.",
     moveTo: "Déplacer vers",
     moveLabel: "Déplacer {title} vers un autre statut",

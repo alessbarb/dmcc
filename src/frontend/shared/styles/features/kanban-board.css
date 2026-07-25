@@ -36,7 +36,7 @@
   gap: var(--space-2);
   margin-bottom: var(--space-3);
   color: var(--theme-text-secondary);
-  font-size: 0.76rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -142,7 +142,12 @@
 .entity-boards-view__summary {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-3);
+}
+
+.entity-boards-view__toggle-empty {
+  margin-left: auto;
 }
 
 .entity-boards-view__summary-item {

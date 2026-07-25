@@ -311,6 +311,7 @@ export function EntityBoardsView() {
   const [activeBoard, setActiveBoard] = useState<BoardType>("quests");
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
   const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
+  const [showEmptyColumns, setShowEmptyColumns] = useState(false);
 
   const allEntities = useMemo<Entity[]>(
     () => (campaignState?.entities ?? []).filter((entity: Entity) => !entity.archived),
@@ -393,9 +394,15 @@ export function EntityBoardsView() {
     labelKey: "boards.unknownStatus",
     color: "var(--theme-text-subtle)",
   };
-  const visibleStates = entitiesByStatus._unknown.length > 0
+  const allVisibleStates = entitiesByStatus._unknown.length > 0
     ? [...board.states, unknownState]
     : board.states;
+  const hasManyStates = board.states.length > 5;
+  const nonEmptyStates = allVisibleStates.filter((state) => (entitiesByStatus[state.key]?.length ?? 0) > 0);
+  const hiddenEmptyCount = allVisibleStates.length - nonEmptyStates.length;
+  const visibleStates = hasManyStates && !showEmptyColumns && nonEmptyStates.length > 0
+    ? nonEmptyStates
+    : allVisibleStates;
   const boardLabel = t(board.labelKey);
 
   return (
@@ -414,7 +421,10 @@ export function EntityBoardsView() {
               aria-selected={activeBoard === candidate.id}
               className={`btn btn-sm ${activeBoard === candidate.id ? "btn-primary" : "btn-secondary"} ${activeBoard === candidate.id ? "entity-boards-view__tab--active" : ""}`}
               style={tabStyle}
-              onClick={() => setActiveBoard(candidate.id)}
+              onClick={() => {
+                setActiveBoard(candidate.id);
+                setShowEmptyColumns(false);
+              }}
             >
               {t(candidate.labelKey)}
               </button>;
@@ -438,6 +448,17 @@ export function EntityBoardsView() {
             <span className="entity-boards-view__summary-item">
               {t("boards.unknownStatus")}: <strong>{entitiesByStatus._unknown.length}</strong>
             </span>
+          )}
+          {hasManyStates && hiddenEmptyCount > 0 && (
+            <button
+              type="button"
+              className="btn btn-sm btn-link entity-boards-view__toggle-empty"
+              onClick={() => setShowEmptyColumns((prev) => !prev)}
+            >
+              {showEmptyColumns
+                ? t("boards.hideEmptyColumns")
+                : t("boards.showEmptyColumns", { count: hiddenEmptyCount })}
+            </button>
           )}
         </div>
 

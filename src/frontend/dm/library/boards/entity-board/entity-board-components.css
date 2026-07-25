@@ -15,7 +15,7 @@
   display: -webkit-box;
   overflow: hidden;
   color: var(--theme-text-secondary);
-  font-size: 0.78rem;
+  font-size: var(--type-caption);
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
