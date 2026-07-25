@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown, LogOut, Settings, UserPlus, UserRound } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
+import { institutionalPageLinks } from "../../institutional/institutionalLinks.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 interface DmHubTopBarProps {
@@ -70,8 +72,14 @@ export function DmHubTopBar({
                 onClick={() => { closeDropdown(); onOpenAccount(); }}
               >
                 <Settings size={13} />
-                Gestionar cuenta
+                {t("accountHome.manageAccountBtn")}
               </button>
+              <div className="dm-user-dropdown__divider" />
+              {institutionalPageLinks.map((link) => (
+                <Link key={link.to} to={link.to} className="dm-user-dropdown__item" onClick={closeDropdown}>
+                  {t(link.labelKey)}
+                </Link>
+              ))}
               <div className="dm-user-dropdown__divider" />
               <button
                 type="button"

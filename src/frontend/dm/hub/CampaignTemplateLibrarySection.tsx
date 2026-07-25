@@ -1,4 +1,4 @@
-import { Eye, Sparkles } from "lucide-react";
+import { ArrowUpRight, Eye, Sparkles } from "lucide-react";
 import type { I18nContextType } from "../../shared/i18n/I18nContext.js";
 import type { CampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
 import { markdownToPlainText } from "../../shared/utils/markdownText.js";
@@ -12,6 +12,8 @@ interface CampaignTemplateLibrarySectionProps {
   t: I18nContextType["t"];
   onExplore: (templateId: string) => void;
   onImport: (templateId: string) => void;
+  compact?: boolean;
+  pageSize?: number;
 }
 
 export function CampaignTemplateLibrarySection({
@@ -22,13 +24,29 @@ export function CampaignTemplateLibrarySection({
   t,
   onExplore,
   onImport,
+  compact = false,
+  pageSize,
 }: CampaignTemplateLibrarySectionProps) {
+  if (compact) {
+    const visible = templates.slice(0, pageSize ?? 6);
+    return (
+      <div id="dm-hub-template-strip" tabIndex={-1} className="dm-hub-template-strip" data-dm-hub-panel="templates">
+        <div className="dm-hub-template-strip__header"><Sparkles size={15} /><h3>{t("landing.templateStripTitle")}</h3></div>
+        {templates.length === 0 ? <p className="dm-muted-text">{t("landing.campaignTemplateEmpty")}</p> : (
+          <div className="dm-hub-template-strip__row" data-dm-hub-scroll="templates">
+            {visible.map((template) => <button key={template.templateId} type="button" className="dm-hub-template-chip" onClick={() => onExplore(template.templateId)}><div className="dm-hub-template-chip__cover" style={{ backgroundImage: `url(${template.title.toLowerCase().includes("phandalin") ? "/assets/campaigns/premade-phandalin.jpg" : "/assets/campaigns/campaign-template-oracle.jpg"})` }} /><h4 className="dm-hub-template-chip__title">{template.title}</h4><span className="dm-hub-template-chip__difficulty">{template.difficulty}</span><span className="dm-hub-template-chip__action">{t("landing.campaignTemplateExploreButton")} <ArrowUpRight size={11} /></span></button>)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <section id="campaign-template-library-section" className="dm-panel">
       <div className="dm-panel__header">
         <div className="dm-panel__title-group">
           <Sparkles size={17} className="dm-campaign-template-library__icon" />
-          <h2 className="dm-panel__title">Aventuras preparadas</h2>
+          <h2 className="dm-panel__title">{t("landing.templateStripTitle")}</h2>
         </div>
       </div>
       <p className="dm-muted-text dm-campaign-template-library__description">

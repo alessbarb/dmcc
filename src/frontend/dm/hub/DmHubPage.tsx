@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useDmHubDashboard } from "./useDmHubDashboard.js";
 import { DmHubCampaignModals } from "./DmHubCampaignModals.js";
 import { DmHubCampaignsColumn } from "./DmHubCampaignsColumn.js";
-import { DmHubSidebar } from "./DmHubSidebar.js";
+import { DmHubActiveTablesPanel } from "./DmHubActiveTablesPanel.js";
+import { DmHubAlertsPanel } from "./DmHubAlertsPanel.js";
+import { DmHubSummaryPanel } from "./DmHubSummaryPanel.js";
+import { DmHubActivityPanel } from "./DmHubActivityPanel.js";
+import { DmHubMobileDashboard, type DmHubMobileTile } from "./DmHubMobileDashboard.js";
+import { DmHubDetailSheet } from "./DmHubDetailSheet.js";
+import { CampaignTemplateLibrarySection } from "./CampaignTemplateLibrarySection.js";
+import { useDmHubViewport } from "./useDmHubViewport.js";
 import { DmHubHero } from "./DmHubHero.js";
+import { DmHubQuickActions } from "./DmHubQuickActions.js";
+import { DmHubDashboardBoard } from "./DmHubDashboardBoard.js";
 import { DmHubTopBar } from "./DmHubTopBar.js";
 import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
-import { AppFooter } from "../../shared/components/AppFooter.js";
 import "../../shared/styles/features/dm-hub-dashboard.css";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -37,6 +45,7 @@ export function DmHubPage() {
   } = useCampaignStore();
 
   const navigate = useNavigate();
+  const viewport = useDmHubViewport();
 
   // ── Global DM dashboard data ───────────────────────────────────────────────
   const dashboard = useDmHubDashboard(rawCampaigns, rawCampaignTemplates);
@@ -64,6 +73,9 @@ export function DmHubPage() {
   const [pendingQuickAction, setPendingQuickAction] = useState<((cid: string) => void) | null>(null);
   const [dmProfile, setDmProfile] = useState<{ displayName?: string; email?: string; avatarUrl?: string } | null>(null);
   const [mysticalTransitionId, setMysticalTransitionId] = useState<string | null>(null);
+  const [activeDetail, setActiveDetail] = useState<DmHubMobileTile | null>(null);
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
+  const detailTriggerRef = useRef<HTMLElement>(null);
 
   // Create campaign form
   const [newCampaignTitle, setNewCampaignTitle] = useState("");
@@ -335,11 +347,12 @@ export function DmHubPage() {
 
   const handleQuickCanvas = () => requireCampaign((cid) => navigateToCampaignSection(cid, "canvas"));
   const handleQuickNpcs = () => requireCampaign((cid) => navigateToCampaignSection(cid, "entities"));
-  const handleQuickLibrary = () => document.getElementById("campaign-template-library-section")?.scrollIntoView({ behavior: "smooth" });
+  const handleQuickTemplates = () => {
+    document.getElementById("dm-hub-template-strip")?.focus();
+  };
   const handleQuickRules = () => requireCampaign((cid) => navigateToCampaignSection(cid, "rules"));
   const handleQuickMap = () => requireCampaign((cid) => navigateToCampaignSection(cid, "graph"));
   const handleQuickTimeline = () => requireCampaign((cid) => navigateToCampaignSection(cid, "timeline"));
-  const handleQuickTemplates = () => document.getElementById("campaign-template-library-section")?.scrollIntoView({ behavior: "smooth" });
   const handleQuickSettings = () => campaigns.length > 0
     ? requireCampaign((cid) => navigateToCampaignSection(cid, "settings"))
     : setIsAccountModalOpen(true);
@@ -358,6 +371,14 @@ export function DmHubPage() {
   const selectedCampaignTemplate = campaignTemplates.find((t) => t.templateId === campaignTemplateDialogId) ?? null;
 
   const dmDisplayName = dmProfile?.displayName || dmProfile?.email || "Director de Juego";
+  const featuredCampaignTitle = campaigns[0]?.title ?? null;
+  const firstActiveTable = dashboard.activeTables[0] ?? null;
+  const activeTableStatus = firstActiveTable?.sessionTitle ?? null;
+  const recentActivitySummary = dashboard.recentActivity[0]?.text ?? null;
+  const mobileDetailTitle = (tile: DmHubMobileTile) => ({
+    campaigns: t("landing.campaignsSectionTitle"), tables: t("landing.activeTablesNowTitle"), alerts: t("landing.alertsTitle"),
+    summary: t("landing.summaryGeneralTitle"), activity: t("landing.recentActivityTitle"), templates: t("landing.templateStripTitle"),
+  })[tile];
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -376,6 +397,7 @@ export function DmHubPage() {
       {/* ── MAIN CONTENT ── */}
       <main className="dm-hub-main">
 
+        {viewport === "desktop" ? <>
         <DmHubHero
           dmProfile={dmProfile}
           dmDisplayName={dmDisplayName}
@@ -388,14 +410,21 @@ export function DmHubPage() {
           totalEntitiesCount={totalEntitiesCount}
           activeTablesLength={dashboard.activeTables.length}
           onViewTimeline={handleQuickTimeline}
+        />
+        <DmHubQuickActions
           onCreateCampaign={() => setIsCreateModalOpen(true)}
-          onOpenCampaigns={() => document.getElementById("dm-campaigns-section")?.scrollIntoView({ behavior: "smooth" })}
-          onOpenTemplates={handleQuickTemplates}
+          onCanvas={handleQuickCanvas}
+          onNpcs={handleQuickNpcs}
+          onFocusTemplates={handleQuickTemplates}
+          onRules={handleQuickRules}
+          onMap={handleQuickMap}
+          onTimeline={handleQuickTimeline}
+          onSettings={handleQuickSettings}
           onRestoreBackup={() => setIsRestoreModalOpen(true)}
         />
         {/* ── MAIN GRID: 70 / 30 ── */}
-        <div className="dm-hub-grid">
-          <DmHubCampaignsColumn
+        <DmHubDashboardBoard
+          campaignsSlot={<DmHubCampaignsColumn
             campaigns={campaigns}
             filteredCampaigns={filteredCampaigns}
             campaignTemplates={campaignTemplates}
@@ -406,40 +435,55 @@ export function DmHubPage() {
             setLandingSearchQuery={setLandingSearchQuery}
             campaignFilter={campaignFilter}
             setCampaignFilter={setCampaignFilter}
-            totalPlayersCount={totalPlayersCount}
-            totalNpcsCount={totalNpcsCount}
-            totalEntitiesCount={totalEntitiesCount}
-            totalSessionsCount={totalSessionsCount}
-            playtimeLast30DaysLabel={dashboard.totals.playtimeLast30DaysLabel}
-            completedCampaigns={dashboard.totals.completedCampaigns}
-            recentActivity={dashboard.recentActivity}
             triggerMysticalTransition={triggerMysticalTransition}
             openEditModal={openEditModal}
             openDeleteModal={openDeleteModal}
             onCreateCampaign={() => setIsCreateModalOpen(true)}
             onExploreTemplates={handleQuickTemplates}
             onRestoreBackup={() => setIsRestoreModalOpen(true)}
+            navigateToActiveSession={navigateToActiveSession}
             navigateToCampaignTemplate={navigateToCampaignTemplate}
             importingTemplateId={importingTemplateId}
             onImportTemplate={openCampaignTemplateImportDialog}
-          />
-          <DmHubSidebar
+          />}
+          tablesSlot={<DmHubActiveTablesPanel
             activeTables={dashboard.activeTables}
-            alerts={dashboard.alerts}
             triggerMysticalTransition={triggerMysticalTransition}
             navigateToActiveSession={navigateToActiveSession}
-            onQuickCanvas={handleQuickCanvas}
-            onQuickNpcs={handleQuickNpcs}
-            onQuickLibrary={handleQuickLibrary}
-            onQuickRules={handleQuickRules}
-            onQuickMap={handleQuickMap}
-            onQuickTimeline={handleQuickTimeline}
-            onQuickTemplates={handleQuickTemplates}
-            onQuickSettings={handleQuickSettings}
+          />}
+          alertsSlot={<DmHubAlertsPanel alerts={dashboard.alerts} />}
+          summarySlot={<DmHubSummaryPanel campaigns={campaigns} sessionsCount={dashboard.totals.sessions} completedCampaigns={dashboard.totals.completedCampaigns} />}
+          activitySlot={<DmHubActivityPanel recentActivity={dashboard.recentActivity} />}
+        />
+        </> : <>
+          <DmHubMobileDashboard
+            dmDisplayName={dmDisplayName}
+            campaignsCount={totalCampaignsCount}
+            activeTablesCount={activeTablesCount}
+            alertsCount={dashboard.alerts.length}
+            featuredCampaignTitle={featuredCampaignTitle}
+            activeTableStatus={activeTableStatus}
+            recentActivitySummary={recentActivitySummary}
+            playtimeLast30DaysLabel={dashboard.totals.playtimeLast30DaysLabel}
+            templatesCount={campaignTemplates.length}
+            onSelectTile={(tile) => { const activeElement = document.activeElement; detailTriggerRef.current = activeElement instanceof HTMLElement ? activeElement : null; setActiveDetail(tile); }}
+            onCreateCampaign={() => setIsCreateModalOpen(true)}
+            onOpenActiveSession={() => firstActiveTable ? navigateToActiveSession(firstActiveTable.campaignId) : requireCampaign((cid) => navigateToActiveSession(cid))}
+            onCanvas={handleQuickCanvas}
+            onEntities={handleQuickNpcs}
+            onMore={() => setMobileMoreOpen((open) => !open)}
           />
-          </div>
+          {mobileMoreOpen && <DmHubQuickActions onCreateCampaign={() => setIsCreateModalOpen(true)} onCanvas={handleQuickCanvas} onNpcs={handleQuickNpcs} onFocusTemplates={handleQuickTemplates} onRules={handleQuickRules} onMap={handleQuickMap} onTimeline={handleQuickTimeline} onSettings={handleQuickSettings} onRestoreBackup={() => setIsRestoreModalOpen(true)} onlySecondary />}
+          <DmHubDetailSheet open={activeDetail !== null} title={activeDetail ? mobileDetailTitle(activeDetail) : ""} onClose={() => setActiveDetail(null)} returnFocusRef={detailTriggerRef}>
+            {activeDetail === "campaigns" && <DmHubCampaignsColumn campaigns={campaigns} filteredCampaigns={filteredCampaigns} campaignTemplates={campaignTemplates} loading={loading} error={error} refreshCampaigns={refreshCampaigns} landingSearchQuery={landingSearchQuery} setLandingSearchQuery={setLandingSearchQuery} campaignFilter={campaignFilter} setCampaignFilter={setCampaignFilter} triggerMysticalTransition={triggerMysticalTransition} openEditModal={openEditModal} openDeleteModal={openDeleteModal} onCreateCampaign={() => setIsCreateModalOpen(true)} onExploreTemplates={handleQuickTemplates} onRestoreBackup={() => setIsRestoreModalOpen(true)} navigateToActiveSession={navigateToActiveSession} navigateToCampaignTemplate={navigateToCampaignTemplate} importingTemplateId={importingTemplateId} onImportTemplate={openCampaignTemplateImportDialog} />}
+            {activeDetail === "tables" && <DmHubActiveTablesPanel activeTables={dashboard.activeTables} triggerMysticalTransition={triggerMysticalTransition} navigateToActiveSession={navigateToActiveSession} />}
+            {activeDetail === "alerts" && <DmHubAlertsPanel alerts={dashboard.alerts} />}
+            {activeDetail === "summary" && <DmHubSummaryPanel campaigns={campaigns} sessionsCount={dashboard.totals.sessions} completedCampaigns={dashboard.totals.completedCampaigns} />}
+            {activeDetail === "activity" && <DmHubActivityPanel recentActivity={dashboard.recentActivity} />}
+            {activeDetail === "templates" && <CampaignTemplateLibrarySection templates={campaignTemplates} campaigns={campaigns} loading={loading} importingTemplateId={importingTemplateId} t={t} onExplore={navigateToCampaignTemplate} onImport={openCampaignTemplateImportDialog} />}
+          </DmHubDetailSheet>
+        </>}
 
-        <AppFooter variant="landing" />
       </main>
 
       <DmHubCampaignModals

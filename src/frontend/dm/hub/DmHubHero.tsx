@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, Calendar, FolderOpen, Layers, Plus, RotateCcw, Sparkles, UserRound, Users } from "lucide-react";
+import { Activity, Calendar, FolderOpen, Layers, UserRound, Users } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 type DmProfile = { displayName?: string; email?: string; avatarUrl?: string } | null;
@@ -16,23 +16,17 @@ interface DmHubHeroProps {
   totalEntitiesCount: number;
   activeTablesLength: number;
   onViewTimeline: () => void;
-  onCreateCampaign: () => void;
-  onOpenCampaigns: () => void;
-  onOpenTemplates: () => void;
-  onRestoreBackup: () => void;
 }
 
 export function DmHubHero({
   dmProfile, dmDisplayName, formattedTodayDate, totalCampaignsCount, activeTablesCount,
   totalPlayersCount, totalSessionsCount, totalNpcsCount, totalEntitiesCount, activeTablesLength,
-  onViewTimeline, onCreateCampaign, onOpenCampaigns, onOpenTemplates, onRestoreBackup,
+  onViewTimeline,
 }: DmHubHeroProps) {
   const { t } = useTranslation();
 
   return (
-    <>
-        {/* ── DM HEADER HERO ── */}
-        <header className="dm-hub-hero">
+    <header className="dm-hub-hero dm-panel--ornamented-accent" data-dm-hub-panel="hero">
           <div className="dm-hub-hero__profile">
             <div className="dm-hub-hero__avatar-ring">
               <img
@@ -43,16 +37,16 @@ export function DmHubHero({
             </div>
             <div className="dm-hub-hero__info">
               <h1 className="dm-hub-hero__greeting">
-                {t("landing.dmWelcome", { name: dmProfile?.displayName || dmProfile?.email || "Maestro" })}
+                {t("landing.dmWelcome", { name: dmDisplayName })}
               </h1>
-              <p className="dm-hub-hero__subtitle">Centro de Mando del Director de Juego</p>
+              <p className="dm-hub-hero__subtitle">{t("landing.heroSubtitle")}</p>
               <div className="dm-hub-hero__stats">
                 {[
                   { icon: <FolderOpen size={14} />, value: totalCampaignsCount, label: t("landing.campaignsLabel") },
-                  { icon: <Activity size={14} />, value: activeTablesCount, label: "Mesas activas" },
+                  { icon: <Activity size={14} />, value: activeTablesCount, label: t("landing.activeTablesNowTitle") },
                   { icon: <Users size={14} />, value: totalPlayersCount, label: t("landing.playersLabel") },
-                  { icon: <Calendar size={14} />, value: totalSessionsCount, label: "Sesiones" },
-                  { icon: <UserRound size={14} />, value: totalNpcsCount, label: "PNJs" },
+                  { icon: <Calendar size={14} />, value: totalSessionsCount, label: t("landing.sessionsLabel") },
+                  { icon: <UserRound size={14} />, value: totalNpcsCount, label: t("landing.npcsLabel") },
                   { icon: <Layers size={14} />, value: totalEntitiesCount, label: t("landing.entitiesLabel") },
                 ].map((s, i) => (
                   <div key={i} className="dm-stat-pill">
@@ -69,7 +63,7 @@ export function DmHubHero({
               <Calendar className="dm-hub-hero__calendar-icon" size={13} />
               {formattedTodayDate}
             </div>
-            <div className="dm-hub-hero__calendar-world">{activeTablesLength > 0 ? `${activeTablesLength} mesa(s) activas ahora` : "Sin mesas activas ahora"}</div>
+            <div className="dm-hub-hero__calendar-world">{activeTablesLength > 0 ? t("landing.activeTablesNowLabel", { count: String(activeTablesLength) }) : t("landing.noActiveTablesNowLabel")}</div>
             <button
               type="button"
               className="btn btn-secondary btn-sm dm-hub-hero__timeline-button"
@@ -80,26 +74,5 @@ export function DmHubHero({
             </button>
           </div>
         </header>
-
-        <nav className="dm-hub-mobile-actions" aria-label={t("campaignExtra.quickActionsNav")}>
-          <button type="button" className="dm-hub-mobile-action dm-hub-mobile-action--theme-accents-primary-foreground" onClick={onCreateCampaign}>
-            <Plus size={16} />
-            <span>{t("common.create")}</span>
-          </button>
-          <button type="button" className="dm-hub-mobile-action" onClick={onOpenCampaigns}>
-            <FolderOpen size={16} />
-            <span>{t("nav.activeCampaign")}</span>
-          </button>
-          <button type="button" className="dm-hub-mobile-action" onClick={onOpenTemplates}>
-            <Sparkles size={16} />
-            <span>{t("landing.campaignTemplateTitle")}</span>
-          </button>
-          <button type="button" className="dm-hub-mobile-action" onClick={onRestoreBackup}>
-            <RotateCcw size={16} />
-            <span>Restaurar</span>
-          </button>
-        </nav>
-
-    </>
   );
 }
