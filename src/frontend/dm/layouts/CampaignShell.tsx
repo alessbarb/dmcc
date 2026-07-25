@@ -24,6 +24,7 @@ import { MobileDock } from "../../shared/components/MobileDock.js";
 import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.js";
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
+import { useWorkspaceDensity } from "../../shared/hooks/useWorkspaceDensity.js";
 import { formatSystemName } from "../../shared/presentation/formatSystemName.js";
 import "./campaign-route-transitions.css";
 import "../../shared/styles/layout/campaign-navigation.css";
@@ -64,6 +65,7 @@ export function CampaignShell() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     () => localStorage.getItem("dmcc-sidebar-collapsed") === "1",
   );
+  const workspaceDensity = useWorkspaceDensity();
 
   const currentSegment = pathname.split("/")[3] ?? "";
   const isDM = activeCampaignRole === "dm";
@@ -188,6 +190,7 @@ export function CampaignShell() {
       className={`app-container app-container--campaign-shell ${
         sidebarCollapsed ? "app-container--sidebar-collapsed" : ""
       } ${isImmersive ? "app-container--canvas" : ""}`}
+      data-workspace-density={workspaceDensity}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
