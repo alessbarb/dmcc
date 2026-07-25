@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { useParams } from "@tanstack/react-router";
 import {
   AlertCircle,
@@ -91,6 +91,37 @@ export function CampaignHistoryView() {
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
+  const [expandedGroupIds, setExpandedGroupIds] = useState<Record<string, boolean>>({});
+
+  const toggleGroup = (groupId: string) => {
+    setExpandedGroupIds((prev) => ({
+      ...prev,
+      [groupId]: !prev[groupId],
+    }));
+  };
+
+  const groupedEntries = useMemo(() => {
+    const groups: Array<{
+      key: string;
+      type: string;
+      entries: typeof entries;
+    }> = [];
+
+    for (const entry of entries) {
+      const lastGroup = groups[groups.length - 1];
+      if (lastGroup && lastGroup.type === entry.type) {
+        lastGroup.entries.push(entry);
+      } else {
+        groups.push({
+          key: entry.activityId,
+          type: entry.type,
+          entries: [entry],
+        });
+      }
+    }
+    return groups;
+  }, [entries]);
+
   const fetchHistory = async (selectedCategory: string, cursor?: string) => {
     try {
       const response = await getCampaignHistory(campaignId, {
@@ -114,6 +145,7 @@ export function CampaignHistoryView() {
     setLoading(true);
     setEntries([]);
     setNextCursor(undefined);
+    setExpandedGroupIds({});
     void fetchHistory(category);
   }, [campaignId, category]);
 
@@ -178,46 +210,124 @@ export function CampaignHistoryView() {
             </div>
           ) : (
             <div className="campaign-history__timeline">
-              {entries.map((entry) => {
-                const config = getActivityVisualConfig(entry.type, entry.data, isEs ? "es" : "en");
+              {groupedEntries.map((group) => {
+                const latestEntry = group.entries[0];
+                const config = getActivityVisualConfig(latestEntry.type, latestEntry.data, isEs ? "es" : "en");
                 const EntryIcon = IconMap[config.icon] || HelpCircle;
-                const sourceLabel = entry.sourceKind === "domain_event" ? "domain_event" : "operation";
                 const entryStyle: React.CSSProperties & Record<`--${string}`, string | undefined> = {
                   "--history-color": config.color,
                   "--history-bg": config.bgColor,
                 };
 
+                if (group.entries.length === 1) {
+                  const entry = latestEntry;
+                  const sourceLabel = entry.sourceKind === "domain_event" ? "domain_event" : "operation";
+                  return (
+                    <article
+                      key={entry.activityId}
+                      className="campaign-history-entry"
+                      style={entryStyle}
+                    >
+                      <span className="campaign-history-entry__marker" aria-hidden="true">
+                        <EntryIcon size={15} />
+                      </span>
+                      <div className="campaign-history-entry__card">
+                        <div className="campaign-history-entry__meta">
+                          <span className="campaign-history-entry__category">{config.label}</span>
+                          <span aria-hidden="true">·</span>
+                          <time dateTime={entry.occurredAt}>{new Date(entry.occurredAt).toLocaleString(locale)}</time>
+                        </div>
+                        <p className="campaign-history-entry__description">{config.description}</p>
+
+                        <details className="campaign-history-entry__technical">
+                          <summary>
+                            {entry.sourceKind === "domain_event" ? <Shield size={13} /> : <Wrench size={13} />}
+                            {isEs ? "Detalles técnicos" : "Technical details"}
+                          </summary>
+                          <dl>
+                            <dt>{isEs ? "Origen" : "Source"}</dt><dd>{sourceLabel}</dd>
+                            <dt>{isEs ? "Tipo" : "Type"}</dt><dd>{entry.type}</dd>
+                            {entry.actorUserId && <><dt>{isEs ? "Actor" : "Actor"}</dt><dd>{entry.actorUserId}</dd></>}
+                            {entry.sessionId && <><dt>{isEs ? "Sesión" : "Session"}</dt><dd>{entry.sessionId}</dd></>}
+                            {entry.targetType && <><dt>{isEs ? "Destino" : "Target"}</dt><dd>{entry.targetType}: {entry.targetId}</dd></>}
+                          </dl>
+                          <pre className="campaign-history-entry__json">{JSON.stringify(entry.data, null, 2)}</pre>
+                        </details>
+                      </div>
+                    </article>
+                  );
+                }
+
+                const isExpanded = !!expandedGroupIds[group.key];
                 return (
                   <article
-                    key={entry.activityId}
+                    key={group.key}
                     className="campaign-history-entry"
                     style={entryStyle}
                   >
                     <span className="campaign-history-entry__marker" aria-hidden="true">
                       <EntryIcon size={15} />
                     </span>
-                    <div className="campaign-history-entry__card">
+                    <div className="campaign-history-entry__card" style={{ display: 'grid', gap: '8px' }}>
                       <div className="campaign-history-entry__meta">
                         <span className="campaign-history-entry__category">{config.label}</span>
                         <span aria-hidden="true">·</span>
-                        <time dateTime={entry.occurredAt}>{new Date(entry.occurredAt).toLocaleString(locale)}</time>
+                        <time dateTime={latestEntry.occurredAt}>{new Date(latestEntry.occurredAt).toLocaleString(locale)}</time>
+                        <span aria-hidden="true">·</span>
+                        <span style={{ fontWeight: 650 }}>
+                          {isEs 
+                            ? `${group.entries.length} eventos consecutivos` 
+                            : `${group.entries.length} consecutive events`}
+                        </span>
                       </div>
-                      <p className="campaign-history-entry__description">{config.description}</p>
+                      <p className="campaign-history-entry__description">
+                        {isEs 
+                          ? `${group.entries.length} actividades similares de tipo "${config.label}"` 
+                          : `${group.entries.length} similar "${config.label}" activities`}
+                      </p>
 
-                      <details className="campaign-history-entry__technical">
-                        <summary>
-                          {entry.sourceKind === "domain_event" ? <Shield size={13} /> : <Wrench size={13} />}
-                          {isEs ? "Detalles técnicos" : "Technical details"}
-                        </summary>
-                        <dl>
-                          <dt>{isEs ? "Origen" : "Source"}</dt><dd>{sourceLabel}</dd>
-                          <dt>{isEs ? "Tipo" : "Type"}</dt><dd>{entry.type}</dd>
-                          {entry.actorUserId && <><dt>{isEs ? "Actor" : "Actor"}</dt><dd>{entry.actorUserId}</dd></>}
-                          {entry.sessionId && <><dt>{isEs ? "Sesión" : "Session"}</dt><dd>{entry.sessionId}</dd></>}
-                          {entry.targetType && <><dt>{isEs ? "Destino" : "Target"}</dt><dd>{entry.targetType}: {entry.targetId}</dd></>}
-                        </dl>
-                        <pre className="campaign-history-entry__json">{JSON.stringify(entry.data, null, 2)}</pre>
-                      </details>
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        style={{ justifySelf: 'start', marginTop: '4px' }}
+                        onClick={() => toggleGroup(group.key)}
+                      >
+                        {isExpanded 
+                          ? (isEs ? "Ocultar detalles" : "Hide details") 
+                          : (isEs ? `Mostrar detalles (${group.entries.length})` : `Show details (${group.entries.length})`)}
+                      </button>
+
+                      {isExpanded && (
+                        <div className="campaign-history-entry__group-children" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--theme-borders-default)', display: 'grid', gap: '16px' }}>
+                          {group.entries.map((childEntry) => {
+                            const childConfig = getActivityVisualConfig(childEntry.type, childEntry.data, isEs ? "es" : "en");
+                            const childSourceLabel = childEntry.sourceKind === "domain_event" ? "domain_event" : "operation";
+                            return (
+                              <div key={childEntry.activityId} className="campaign-history-entry__child-item" style={{ display: 'grid', gap: '8px' }}>
+                                <div className="campaign-history-entry__meta" style={{ fontSize: '0.72rem' }}>
+                                  <time dateTime={childEntry.occurredAt}>{new Date(childEntry.occurredAt).toLocaleString(locale)}</time>
+                                  {childEntry.actorUserId && <><span>·</span><span>{isEs ? "Actor" : "Actor"}: {childEntry.actorUserId}</span></>}
+                                </div>
+                                <p className="campaign-history-entry__description" style={{ fontSize: '0.9rem' }}>{childConfig.description}</p>
+                                <details className="campaign-history-entry__technical">
+                                  <summary style={{ fontSize: '0.72rem' }}>
+                                    {childEntry.sourceKind === "domain_event" ? <Shield size={11} /> : <Wrench size={11} />}
+                                    {isEs ? "Detalles técnicos" : "Technical details"}
+                                  </summary>
+                                  <dl style={{ fontSize: '0.7rem' }}>
+                                    <dt>{isEs ? "Origen" : "Source"}</dt><dd>{childSourceLabel}</dd>
+                                    <dt>{isEs ? "Tipo" : "Type"}</dt><dd>{childEntry.type}</dd>
+                                    {childEntry.actorUserId && <><dt>{isEs ? "Actor" : "Actor"}</dt><dd>{childEntry.actorUserId}</dd></>}
+                                    {childEntry.sessionId && <><dt>{isEs ? "Sesión" : "Session"}</dt><dd>{childEntry.sessionId}</dd></>}
+                                    {childEntry.targetType && <><dt>{isEs ? "Destino" : "Target"}</dt><dd>{childEntry.targetType}: {childEntry.targetId}</dd></>}
+                                  </dl>
+                                  <pre className="campaign-history-entry__json" style={{ fontSize: '0.65rem' }}>{JSON.stringify(childEntry.data, null, 2)}</pre>
+                                </details>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </article>
                 );
