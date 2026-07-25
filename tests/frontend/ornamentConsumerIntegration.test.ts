@@ -22,6 +22,35 @@ describe("ornament consumer integration & stacking", () => {
     expect(ornamentStyles).toContain("z-index: 1");
   });
 
+  it("defines panel ornamentation primitives in ornament.css", () => {
+    const ornamentStyles = read("src/frontend/shared/styles/primitives/ornament.css");
+
+    expect(ornamentStyles).toContain(".dm-panel--ornamented");
+    expect(ornamentStyles).toContain(".dm-panel--ornamented-compact");
+    expect(ornamentStyles).toContain("var(--theme-ornaments-panel-corner-primary-mask)");
+    expect(ornamentStyles).toContain("var(--theme-ornaments-panel-corner-secondary-mask)");
+  });
+
+  it("integrates panel ornamentation into dashboard overview section cards", () => {
+    const overviewSource = read("src/frontend/dm/overview/OverviewPage.tsx");
+    const starterHubSource = read("src/frontend/dm/onboarding/CampaignStarterHub.tsx");
+
+    expect(overviewSource).toContain("dm-panel--ornamented");
+    expect(overviewSource).toContain("dm-panel--ornamented-standard");
+    expect(overviewSource).toContain("dm-panel--ornamented-primary");
+    expect(overviewSource).toContain("dm-panel--ornamented-accent");
+    expect(starterHubSource).toContain("dm-panel--ornamented");
+    expect(starterHubSource).toContain("dm-panel--ornamented-compact");
+  });
+
+  it("defines every ornament density used by the dashboard overview cards", () => {
+    const ornamentStyles = read("src/frontend/shared/styles/primitives/ornament.css");
+
+    expect(ornamentStyles).toContain(".dm-panel--ornamented-standard");
+    expect(ornamentStyles).toContain(".dm-panel--ornamented-primary");
+    expect(ornamentStyles).toContain(".dm-panel--ornamented-accent");
+  });
+
   it("integrates NarrativeDivider into real session narrative views", () => {
     const sessionDetailSource = read("src/frontend/dm/sessions/SessionDetailPage.tsx");
     const overviewSource = read("src/frontend/dm/overview/OverviewPage.tsx");

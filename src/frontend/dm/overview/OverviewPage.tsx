@@ -11,7 +11,6 @@ import {
   Flag,
   Flame,
   GitFork,
-  Lightbulb,
   MapPin,
   Play,
   Plus,
@@ -33,9 +32,28 @@ import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 import "../../shared/styles/features/dashboard-overview.css";
 import "../../shared/styles/features/dm-dashboard.css";
 
-function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+type CardOrnament = "full" | "standard" | "primary" | "accent";
+
+const CARD_ORNAMENT_CLASS: Record<CardOrnament, string> = {
+  full: "dm-panel--ornamented",
+  standard: "dm-panel--ornamented-standard",
+  primary: "dm-panel--ornamented-primary",
+  accent: "dm-panel--ornamented-accent",
+};
+
+function Card({
+  children,
+  className = "",
+  ornament,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  ornament?: CardOrnament;
+}) {
+  const ornamentClass = ornament ? CARD_ORNAMENT_CLASS[ornament] : "";
+
   return (
-    <section className={`card dashboard-card ${className}`}>
+    <section className={`card dashboard-card dm-panel ${ornamentClass} ${className}`.trim()}>
       {children}
     </section>
   );
@@ -71,16 +89,28 @@ function MetricCard({
   icon,
   label,
   value,
+  helpText,
+  onClick,
 }: {
   icon: React.ReactNode;
   label: string;
   value: number;
+  helpText?: string;
+  onClick?: () => void;
 }) {
   return (
     <Card>
-      {icon}
-      <p className="dashboard-metric-label">{label}</p>
-      <strong className="dashboard-metric-value">{value}</strong>
+      <div
+        className={`dashboard-metric-content${onClick ? " dashboard-metric-content--clickable" : ""}`}
+        onClick={onClick}
+        role={onClick ? "button" : undefined}
+        tabIndex={onClick ? 0 : undefined}
+      >
+        {icon}
+        <p className="dashboard-metric-label">{label}</p>
+        <strong className="dashboard-metric-value">{value}</strong>
+        {helpText && <span className="dashboard-metric-help">{helpText}</span>}
+      </div>
     </Card>
   );
 }
@@ -347,16 +377,22 @@ export function OverviewPage() {
               icon={<EyeOff size={18} />}
               label={t("dashboard.unrevealedCriticalClues")}
               value={criticalHiddenClues.length}
+              helpText={t("dashboard.criticalCluesHelp")}
+              onClick={() => navigateToCampaignPage("library/list")}
             />
             <MetricCard
-              icon={<Lightbulb size={18} />}
-              label={t("dashboard.cluesReady")}
+              icon={<BookOpen size={20} />}
+              label={t("dashboard.readyClues")}
               value={preparedClues.length}
+              helpText={t("dashboard.readyCluesHelp")}
+              onClick={() => navigateToCampaignPage("library/list")}
             />
             <MetricCard
-              icon={<Flag size={18} />}
-              label={t("dashboard.metricQuests")}
-              value={commandCenter?.openObjectives?.length ?? entities.filter((e) => e.entityType === "quest" && e.status === "active" && !e.archived).length}
+              icon={<Flag size={20} />}
+              label={t("dashboard.quests")}
+              value={entities.filter((e) => e.entityType === "quest").length}
+              helpText={t("dashboard.questsHelp")}
+              onClick={() => navigateToCampaignPage("library/list")}
             />
           </div>
 
@@ -402,18 +438,8 @@ export function OverviewPage() {
               {lastClosedSession ? (
                 <div className="dashboard-session-summary">
                   <strong>{lastClosedSession.title}</strong>
-                  {lastClosedSession.endedAt && (
-                    <span className="dashboard-muted-text">
-                      {new Date(lastClosedSession.endedAt).toLocaleString(locale, {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                    </span>
-                  )}
                   {lastClosedSession.summary && (
-                    <span className="dashboard-muted-text">
-                      {lastClosedSession.summary}
-                    </span>
+                    <span className="dashboard-muted-text">{lastClosedSession.summary}</span>
                   )}
                 </div>
               ) : (
@@ -423,37 +449,25 @@ export function OverviewPage() {
           </div>
         </section>
 
-        <Card className={`dashboard-attention dashboard-attention--${attentionTone}`}>
+        <Card ornament="full" className={`dashboard-attention dashboard-attention--${attentionTone}`}>
           <div className="dashboard-attention__header">
             {attentionCount > 0 ? <AlertTriangle size={20} /> : <CheckCircle2 size={20} />}
             <h2 className="dashboard-attention__title">{t("dashboard.needsAttention")}</h2>
             <Pill tone={attentionTone}>{attentionCount}</Pill>
           </div>
-          {attentionCount === 0 ? (
-            <EmptyMessage>{t("dashboard.allClear")}</EmptyMessage>
-          ) : (
+          {attentionCount > 0 && (
             <div className="dashboard-attention__items">
-              {npcWarnings.length > 0 && (
-                <Pill tone="warning">{t("dashboard.forgottenNpcs")}: {npcWarnings.length}</Pill>
-              )}
-              {blockedQuests.length > 0 && (
-                <Pill tone="danger">{t("dashboard.blockedQuests")}: {blockedQuests.length}</Pill>
-              )}
-              {criticalHiddenClues.length > 0 && (
-                <Pill tone="danger">{t("dashboard.unrevealedCriticalClues")}: {criticalHiddenClues.length}</Pill>
-              )}
-              {pendingConsequences.length > 0 && (
-                <Pill tone="warning">{t("dashboard.pendingConsequences")}: {pendingConsequences.length}</Pill>
-              )}
-              {partialKnowledgeAlerts.length > 0 && (
-                <Pill tone="warning">{t("whatNowPage.partialKnowledge")}: {partialKnowledgeAlerts.length}</Pill>
-              )}
+              {npcWarnings.length > 0 && <Pill tone="warning">{t("dashboard.forgottenNpcs")}: {npcWarnings.length}</Pill>}
+              {blockedQuests.length > 0 && <Pill tone="danger">{t("dashboard.blockedQuests")}: {blockedQuests.length}</Pill>}
+              {criticalHiddenClues.length > 0 && <Pill tone="danger">{t("dashboard.unrevealedCriticalClues")}: {criticalHiddenClues.length}</Pill>}
+              {pendingConsequences.length > 0 && <Pill tone="warning">{t("dashboard.pendingConsequences")}: {pendingConsequences.length}</Pill>}
+              {partialKnowledgeAlerts.length > 0 && <Pill tone="warning">{t("whatNowPage.partialKnowledge")}: {partialKnowledgeAlerts.length}</Pill>}
             </div>
           )}
         </Card>
 
         <div className="dashboard-prep-grid">
-          <Card>
+          <Card ornament="accent">
             <h2 className="dashboard-card__heading">
               <CheckCircle2 size={18} /> {t("whatNowPage.prepTitle")}
             </h2>
@@ -461,34 +475,25 @@ export function OverviewPage() {
               <EmptyMessage>{t("dashboard.noPreparedClues")}</EmptyMessage>
             ) : (
               <div className="dashboard-checklist">
-                {preparationChecklist.map((item) => {
-                  const checked = item.done === true || completedTasks.includes(item.task);
-                  return (
-                    <label
-                      key={item.task}
-                      className="dashboard-checklist__item"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => {
-                          runCommandCenterAction(toggleChecklistTask(item.task), "No se pudo actualizar la tarea de preparación.");
-                        }}
-                      />
-                      <span
-                        className={`dashboard-checklist__label ${checked ? "is-complete" : ""}`}
-                      >
-                        {item.task}
-                      </span>
-                      {item.priority && <span className="badge badge-default">{item.priority}</span>}
-                    </label>
-                  );
-                })}
+                {preparationChecklist.map((item) => (
+                  <label key={item.task} className="dashboard-checklist__item">
+                    <input
+                      type="checkbox"
+                      checked={completedTasks.includes(item.task)}
+                      onChange={() => {
+                        void toggleChecklistTask(item.task);
+                      }}
+                    />
+                    <span className={`dashboard-checklist__label ${completedTasks.includes(item.task) ? "is-complete" : ""}`}>
+                      {item.task}
+                    </span>
+                  </label>
+                ))}
               </div>
             )}
           </Card>
 
-          <Card>
+          <Card ornament="accent">
             <h2 className="dashboard-card__heading">
               <Share2 size={18} /> {t("whatNowPage.confusionRisks")}
             </h2>
@@ -497,12 +502,7 @@ export function OverviewPage() {
             ) : (
               <div className="dashboard-risk-list">
                 {partialKnowledgeAlerts.map((alert, index) => (
-                  <div
-                    key={alert.clueId ?? alert.message ?? index}
-                    className="dashboard-risk-item"
-                  >
-                    {alert.message}
-                  </div>
+                  <div key={index} className="dashboard-risk-item">{alert.message}</div>
                 ))}
               </div>
             )}
@@ -510,7 +510,7 @@ export function OverviewPage() {
         </div>
 
         <div className="dashboard-entity-grids">
-          <Card>
+          <Card ornament="accent">
             <h2 className="dashboard-card__heading">
               <Users size={18} /> {t("dashboard.forgottenNpcs")}
             </h2>
@@ -521,7 +521,7 @@ export function OverviewPage() {
             />
           </Card>
 
-          <Card>
+          <Card ornament="accent">
             <h2 className="dashboard-card__heading">
               <Flag size={18} /> {t("dashboard.blockedQuests")}
             </h2>
@@ -532,7 +532,7 @@ export function OverviewPage() {
             />
           </Card>
 
-          <Card>
+          <Card ornament="accent">
             <h2 className="dashboard-card__heading">
               <EyeOff size={18} /> {t("whatNowPage.criticalClues")}
             </h2>
@@ -543,7 +543,7 @@ export function OverviewPage() {
             />
           </Card>
 
-          <Card>
+          <Card ornament="accent">
             <h2 className="dashboard-card__heading">
               <Flame size={18} /> {t("whatNowPage.readyConsequences")}
             </h2>
@@ -556,7 +556,7 @@ export function OverviewPage() {
         </div>
 
         <div className="dashboard-session-grid">
-          <Card>
+          <Card ornament="primary">
             <h2 className="dashboard-card__heading">
               <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
             </h2>
@@ -574,16 +574,13 @@ export function OverviewPage() {
             {liveTable && <div className="dashboard-live-table"><Pill tone="good">{liveTable.shortCode}</Pill></div>}
           </Card>
 
-          <Card>
+          <Card ornament="full">
             <h2 className="dashboard-card__heading">
               <Activity size={18} /> {t("dashboard.recentlyUpdated")}
             </h2>
             <div className="dashboard-activity-list">
               {(commandCenter?.recentActivity ?? []).slice(0, 6).map((item) => (
-                <div
-                  key={item.activityId}
-                  className="dashboard-activity-item"
-                >
+                <div key={item.activityId} className="dashboard-activity-item">
                   <strong>{item.type}</strong>
                   <br />
                   {new Date(item.occurredAt).toLocaleString(locale)}

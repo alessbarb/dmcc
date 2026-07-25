@@ -167,9 +167,200 @@
   z-index: 1;
 }
 
+/* ==========================================================================
+   DM Panel & Section Ornamentation
+   ========================================================================== */
+
+/* Density system: one rule set, three multipliers.
+   --ornament-primary-scale / --ornament-secondary-scale carry the weight;
+   individual density classes only set the multipliers. */
+.dm-panel--ornamented,
+.dm-panel--ornamented-standard,
+.dm-panel--ornamented-primary,
+.dm-panel--ornamented-accent {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  --ornament-primary-scale: 1;
+  --ornament-secondary-scale: 1;
+}
+
+/* Hero density (Arranque guiado): full-weight branch, both corners. */
+.dm-panel--ornamented {
+  --ornament-primary-scale: 1;
+  --ornament-secondary-scale: 1;
+}
+
+/* Standard density: mid-weight branch, both corners. */
+.dm-panel--ornamented-standard {
+  --ornament-primary-scale: 0.78;
+  --ornament-secondary-scale: 0.72;
+}
+
+/* Primary-only density: standard-weight branch, no secondary corner —
+   for panels that already carry an interior divider. */
+.dm-panel--ornamented-primary {
+  --ornament-primary-scale: 0.78;
+}
+
+.dm-panel--ornamented::before,
+.dm-panel--ornamented-standard::before,
+.dm-panel--ornamented-primary::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+
+  top: calc(-0.7rem * var(--ornament-primary-scale));
+  left: calc(-0.65rem * var(--ornament-primary-scale));
+  width: calc(
+    var(--theme-ornaments-panel-corner-primary-size) * 0.72 *
+    var(--ornament-primary-scale)
+  );
+  aspect-ratio: 4 / 3;
+
+  background: linear-gradient(
+    135deg,
+    var(--theme-ornaments-highlight),
+    var(--theme-ornaments-primary) 42%,
+    var(--theme-ornaments-secondary)
+  );
+
+  mask-image: var(--theme-ornaments-panel-corner-primary-mask);
+  mask-repeat: no-repeat;
+  mask-position: top left;
+  mask-size: contain;
+  -webkit-mask-image: var(--theme-ornaments-panel-corner-primary-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: top left;
+  -webkit-mask-size: contain;
+
+  opacity: var(--theme-ornaments-panel-corner-primary-opacity);
+}
+
+.dm-panel--ornamented::after,
+.dm-panel--ornamented-standard::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+
+  right: -0.9rem;
+  bottom: -0.9rem;
+  width: calc(
+    var(--theme-ornaments-panel-corner-secondary-size) * 0.75 *
+    var(--ornament-secondary-scale)
+  );
+  aspect-ratio: 6 / 5;
+
+  background: linear-gradient(
+    135deg,
+    var(--theme-ornaments-highlight),
+    var(--theme-ornaments-primary) 42%,
+    var(--theme-ornaments-secondary)
+  );
+
+  mask-image: var(--theme-ornaments-panel-corner-secondary-mask);
+  mask-position: bottom right;
+  -webkit-mask-image: var(--theme-ornaments-panel-corner-secondary-mask);
+  -webkit-mask-position: bottom right;
+
+  opacity: calc(var(--theme-ornaments-panel-corner-secondary-opacity) * 0.85);
+}
+
+/* Compact hero corner (used by the collapsed CampaignStarterHub bar). */
+.dm-panel--ornamented-compact {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+
+.dm-panel--ornamented-compact::before {
+  content: "";
+  position: absolute;
+  top: -0.45rem;
+  left: -0.4rem;
+  z-index: 2;
+  pointer-events: none;
+
+  width: calc(var(--theme-ornaments-panel-corner-primary-size) * 0.52);
+  aspect-ratio: 4 / 3;
+
+  background: linear-gradient(
+    135deg,
+    var(--theme-ornaments-highlight),
+    var(--theme-ornaments-primary) 42%,
+    var(--theme-ornaments-secondary)
+  );
+
+  mask-image: var(--theme-ornaments-panel-corner-primary-mask);
+  mask-repeat: no-repeat;
+  mask-position: top left;
+  mask-size: contain;
+  -webkit-mask-image: var(--theme-ornaments-panel-corner-primary-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: top left;
+  -webkit-mask-size: contain;
+
+  opacity: var(--theme-ornaments-panel-corner-primary-opacity);
+}
+
+.dm-panel--ornamented-compact::after {
+  display: none;
+}
+
+/* Accent density: a thin edge flourish for small functional cards —
+   not a corner branch, so it never competes with dense content. */
+.dm-panel--ornamented-accent::before {
+  content: "";
+  position: absolute;
+  top: -0.2rem;
+  left: 0.75rem;
+  z-index: 2;
+  pointer-events: none;
+
+  width: calc(var(--theme-ornaments-panel-edge-accent-size) * 0.42);
+  height: 1.6rem;
+
+  background: linear-gradient(
+    90deg,
+    var(--theme-ornaments-secondary),
+    var(--theme-ornaments-primary),
+    var(--theme-ornaments-highlight)
+  );
+
+  mask-image: var(--theme-ornaments-panel-edge-accent-mask);
+  mask-repeat: no-repeat;
+  mask-position: left center;
+  mask-size: contain;
+  -webkit-mask-image: var(--theme-ornaments-panel-edge-accent-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: left center;
+  -webkit-mask-size: contain;
+
+  opacity: var(--theme-ornaments-panel-edge-accent-opacity);
+}
+
+/* Title safe area: keep the branch from crossing headings/icons.
+   Scoped to the dashboard heading structure only, not applied blindly. */
+.dm-panel--ornamented .dashboard-card__heading {
+  padding-left: 2rem;
+}
+
+.dm-panel--ornamented-standard .dashboard-card__heading,
+.dm-panel--ornamented-primary .dashboard-card__heading {
+  padding-left: 1.6rem;
+}
+
+.dm-panel--ornamented-accent .dashboard-card__heading {
+  padding-left: 1.1rem;
+}
+
 /* Responsive Adaptations */
 @media (max-width: 48rem) {
-  .ornamented-frame::after {
+  .ornamented-frame::after,
+  .dm-panel--ornamented::after,
+  .dm-panel--ornamented-standard::after {
     display: none;
   }
 
@@ -177,5 +368,11 @@
     top: -0.5rem;
     left: -0.5rem;
     width: calc(var(--theme-ornaments-panel-corner-primary-size) * 0.65);
+  }
+
+  .dm-panel--ornamented,
+  .dm-panel--ornamented-standard,
+  .dm-panel--ornamented-primary {
+    --ornament-primary-scale: 0.6;
   }
 }

@@ -432,7 +432,7 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
 
   if (compact) {
     return (
-      <section className="guided-start guided-start--compact" aria-labelledby="guided-start-title">
+      <section className="guided-start guided-start--compact dm-panel dm-panel--ornamented-compact" aria-labelledby="guided-start-title">
         <div className="guided-start__summary">
           <span className="guided-start__icon" aria-hidden="true"><Sparkles size={18} /></span>
           <div>
@@ -472,7 +472,7 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
   }
 
   return (
-    <section className="guided-start" aria-labelledby="guided-start-title">
+    <section className="guided-start dm-panel dm-panel--ornamented" aria-labelledby="guided-start-title">
       <div className="guided-start__top">
         <div className="guided-start__summary">
           <span className="guided-start__icon" aria-hidden="true"><Sparkles size={20} /></span>

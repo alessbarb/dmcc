@@ -120,7 +120,7 @@ describe("theme runtime", () => {
     expect(serialized.get("--theme-ornaments-panel-corner-primary-mask")).toBe(
       "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
     );
-    expect(serialized.get("--theme-ornaments-primary")).toBe("hsl(165 42% 61%)");
+    expect(serialized.get("--theme-ornaments-primary")).toBe("hsl(158 34% 40%)");
   });
 
   it("updates artwork and ornaments custom properties when switching from fantasy to default theme", () => {
