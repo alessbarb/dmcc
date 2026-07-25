@@ -7,7 +7,10 @@ import type {
   DmHubAlert,
   DmHubCampaign,
   DmHubCampaignStats,
+  DmHubCampaignPreparation,
+  DmHubContinuation,
   DmHubDashboard,
+  DmHubStoryThreadSummary,
 } from "./dmHubTypes.js";
 import { detectBrowserLocale } from "@shared/i18n/index.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -201,6 +204,9 @@ function buildFallbackDashboard(
     recentActivity: [],
     nextSession,
     preparation: { plannedSessions: 0, hiddenClues: 0, openObjectives: 0, changedEntities: 0 },
+    featuredPreparation: null,
+    storyThreads: [],
+    continuation: campaigns[0] ? { campaignId: campaigns[0].campaignId, campaignTitle: campaigns[0].title, destinationLabel: "Sessions", href: `/campaigns/${campaigns[0].campaignId}/sessions`, lastVisitedAt: campaigns[0].updatedAt } : null,
     totals,
   };
 }
@@ -259,6 +265,51 @@ function normalizeActivityItem(raw: unknown): DmHubActivityItem | null {
   };
 }
 
+function normalizeCampaignPreparation(raw: unknown): DmHubCampaignPreparation | null {
+  if (!isRecord(raw)) return null;
+  const campaignId = getString(raw.campaignId);
+  if (!campaignId) return null;
+  const next = isRecord(raw.nextSession) ? raw.nextSession : null;
+  const nextSessionId = next ? getString(next.sessionId) : undefined;
+  const nextTitle = next ? getString(next.title) : undefined;
+  return {
+    campaignId,
+    nextSession: nextSessionId && nextTitle ? {
+      sessionId: nextSessionId,
+      title: nextTitle,
+      scheduledAt: next ? getString(next.scheduledAt) : undefined,
+      status: next?.status === "active" || next?.status === "ready" ? next.status : "planned",
+    } : null,
+    preparedScenes: getOptionalNumber(raw.preparedScenes),
+    availableClues: getOptionalNumber(raw.availableClues),
+    priorityClues: getOptionalNumber(raw.priorityClues),
+    openObjectives: getOptionalNumber(raw.openObjectives),
+    secretsAtRisk: getOptionalNumber(raw.secretsAtRisk),
+    pendingConsequences: getOptionalNumber(raw.pendingConsequences),
+    involvedEntities: getOptionalNumber(raw.involvedEntities),
+  };
+}
+
+function normalizeStoryThread(raw: unknown): DmHubStoryThreadSummary | null {
+  if (!isRecord(raw)) return null;
+  const threadId = getString(raw.threadId);
+  const campaignId = getString(raw.campaignId);
+  const title = getString(raw.title);
+  const href = getString(raw.href);
+  if (!threadId || !campaignId || !title || !href) return null;
+  return { threadId, campaignId, title, href, status: raw.status === "active" || raw.status === "blocked" ? raw.status : "planned", pendingSteps: getNumber(raw.pendingSteps), plannedSessionId: getString(raw.plannedSessionId) };
+}
+
+function normalizeContinuation(raw: unknown): DmHubContinuation | null {
+  if (!isRecord(raw)) return null;
+  const campaignId = getString(raw.campaignId);
+  const campaignTitle = getString(raw.campaignTitle);
+  const destinationLabel = getString(raw.destinationLabel);
+  const href = getString(raw.href);
+  if (!campaignId || !campaignTitle || !destinationLabel || !href) return null;
+  return { campaignId, campaignTitle, destinationLabel, href, lastVisitedAt: getString(raw.lastVisitedAt) };
+}
+
 function normalizeRemoteDashboard(
   data: unknown,
   fallbackCampaignTemplates: CampaignTemplateSummary[],
@@ -298,6 +349,9 @@ function normalizeRemoteDashboard(
       openObjectives: getNumber(data.preparation.openObjectives),
       changedEntities: getNumber(data.preparation.changedEntities),
     } : { plannedSessions: 0, hiddenClues: 0, openObjectives: 0, changedEntities: 0 },
+    featuredPreparation: normalizeCampaignPreparation(data.featuredPreparation),
+    storyThreads: Array.isArray(data.storyThreads) ? data.storyThreads.map(normalizeStoryThread).filter((x): x is DmHubStoryThreadSummary => x !== null) : [],
+    continuation: normalizeContinuation(data.continuation),
     totals: normalizeTotals(data.totals, campaigns, activeTables),
   };
 }

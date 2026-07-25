@@ -62,6 +62,41 @@ export type DmHubPreparationSummary = {
   changedEntities: number;
 };
 
+export type DmHubCampaignPreparation = {
+  campaignId: string;
+  nextSession: {
+    sessionId: string;
+    title: string;
+    scheduledAt?: string;
+    status: "planned" | "ready" | "active";
+  } | null;
+  preparedScenes?: number;
+  availableClues?: number;
+  priorityClues?: number;
+  openObjectives?: number;
+  secretsAtRisk?: number;
+  pendingConsequences?: number;
+  involvedEntities?: number;
+};
+
+export type DmHubStoryThreadSummary = {
+  threadId: string;
+  campaignId: string;
+  title: string;
+  status: "active" | "planned" | "blocked";
+  pendingSteps: number;
+  plannedSessionId?: string;
+  href: string;
+};
+
+export type DmHubContinuation = {
+  campaignId: string;
+  campaignTitle: string;
+  destinationLabel: string;
+  href: string;
+  lastVisitedAt?: string;
+};
+
 export type DmHubDashboard = {
   campaigns: DmHubCampaign[];
   campaignTemplates: CampaignTemplateSummary[];
@@ -70,6 +105,9 @@ export type DmHubDashboard = {
   recentActivity: DmHubActivityItem[];
   nextSession: DmHubNextSession | null;
   preparation: DmHubPreparationSummary;
+  featuredPreparation: DmHubCampaignPreparation | null;
+  storyThreads: DmHubStoryThreadSummary[];
+  continuation: DmHubContinuation | null;
   totals: {
     campaigns: number;
     activeTables: number;

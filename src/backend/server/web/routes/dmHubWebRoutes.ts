@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { and, eq, gt } from "drizzle-orm";
+import { and, desc, eq, gt, isNull } from "drizzle-orm";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { getRequiredWebUser } from "../webSession.js";
@@ -21,7 +21,7 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
     const now = new Date();
 
     const campaigns = await Promise.all(accessibleCampaigns.map(async (campaign) => {
-      const [players, entities, sessions, liveTables, clues, objectives] = await Promise.all([
+      const [players, entities, sessions, liveTables, clues, objectives, storyThreads, storySteps, activities] = await Promise.all([
         db.select().from(schema.playerProfiles)
           .where(eq(schema.playerProfiles.campaignId, campaign.campaignId)),
         db.select().from(schema.campaignEntities)
@@ -37,6 +37,14 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
           .where(eq(schema.campaignClues.campaignId, campaign.campaignId)),
         db.select().from(schema.campaignObjectives)
           .where(eq(schema.campaignObjectives.campaignId, campaign.campaignId)),
+        db.select().from(schema.campaignStoryThreads)
+          .where(and(eq(schema.campaignStoryThreads.campaignId, campaign.campaignId), isNull(schema.campaignStoryThreads.archivedAt))),
+        db.select().from(schema.campaignStorySteps)
+          .where(eq(schema.campaignStorySteps.campaignId, campaign.campaignId)),
+        db.select().from(schema.campaignActivity)
+          .where(eq(schema.campaignActivity.campaignId, campaign.campaignId))
+          .orderBy(desc(schema.campaignActivity.occurredAt))
+          .limit(5),
       ]);
       const metadata = campaignMetadata(campaign.metadata);
       const activeSession = sessions.find((session) => session.status === "active");
@@ -44,6 +52,23 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
       const nextSession = sessions
         .filter((session) => session.status === "planned" && session.plannedDate)
         .sort((left, right) => String(left.plannedDate).localeCompare(String(right.plannedDate)))[0] ?? null;
+      const campaignStoryThreads = storyThreads.map((thread) => {
+        const steps = storySteps.filter((step) => step.threadId === thread.threadId);
+        const pendingSteps = steps.filter((step) => ["planned", "ready", "active"].includes(step.status)).length;
+        return {
+          threadId: thread.threadId,
+          campaignId: campaign.campaignId,
+          title: thread.title,
+          status: thread.status === "active" ? "active" as const : thread.status === "planned" ? "planned" as const : "blocked" as const,
+          pendingSteps,
+          plannedSessionId: steps.find((step) => step.plannedSessionId)?.plannedSessionId ?? undefined,
+          href: `/campaigns/${campaign.campaignId}/sessions?threadId=${encodeURIComponent(thread.threadId)}`,
+          updatedAt: thread.updatedAt,
+        };
+      }).filter((thread) => thread.status !== "blocked" || thread.pendingSteps > 0)
+        .sort((left, right) => Number(right.status === "active") - Number(left.status === "active") || right.updatedAt.getTime() - left.updatedAt.getTime())
+        .slice(0, 3);
+      const involvedEntities = new Set(storySteps.flatMap((step) => step.status !== "resolved" && step.status !== "discarded" && step.sceneEntityId ? [step.sceneEntityId] : []));
 
       return {
         campaignId: campaign.campaignId,
@@ -80,6 +105,29 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
           openObjectives: objectives.filter((objective) => objective.status === "open").length,
           changedEntities: entities.filter((entity) => entity.updatedAt && entity.updatedAt > new Date(Date.now() - 7 * 86400000)).length,
         },
+        featuredPreparation: {
+          campaignId: campaign.campaignId,
+          nextSession: nextSession ? {
+            sessionId: nextSession.sessionId,
+            title: nextSession.title,
+            scheduledAt: nextSession.plannedDate ?? undefined,
+            status: "planned" as const,
+          } : null,
+          preparedScenes: storySteps.filter((step) => ["ready", "active", "resolved"].includes(step.status) && step.sceneEntityId).length || undefined,
+          availableClues: clues.filter((clue) => clue.status === "hidden").length || undefined,
+          openObjectives: objectives.filter((objective) => objective.status === "open").length || undefined,
+          involvedEntities: involvedEntities.size || undefined,
+        },
+        storyThreads: campaignStoryThreads,
+        recentActivities: activities.map((activity) => ({
+          id: activity.activityId,
+          type: activity.type,
+          category: activity.category,
+          targetType: activity.targetType,
+          targetId: activity.targetId,
+          time: activity.occurredAt.toISOString(),
+          href: `/campaigns/${campaign.campaignId}/sessions`,
+        })),
         activeTable,
       };
     }));
@@ -108,6 +156,9 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
       openObjectives: summary.openObjectives + campaign.preparation.openObjectives,
       changedEntities: summary.changedEntities + campaign.preparation.changedEntities,
     }), { plannedSessions: 0, hiddenClues: 0, openObjectives: 0, changedEntities: 0 });
+    const featuredCampaign = campaigns
+      .slice()
+      .sort((left, right) => Number(Boolean(right.stats.activeSession) || right.status === "active") - Number(Boolean(left.stats.activeSession) || left.status === "active") || String(right.updatedAt).localeCompare(String(left.updatedAt)))[0] ?? null;
     const recentActivity = campaigns
       .filter((campaign) => campaign.updatedAt)
       .sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt)))
@@ -119,6 +170,15 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
         time: campaign.updatedAt ?? "",
         href: `/campaigns/${campaign.campaignId}/overview`,
       }));
+    const featuredPreparation = featuredCampaign?.featuredPreparation ?? null;
+    const storyThreads = featuredCampaign?.storyThreads ?? [];
+    const continuation = featuredCampaign ? {
+      campaignId: featuredCampaign.campaignId,
+      campaignTitle: featuredCampaign.title,
+      destinationLabel: "Sesiones",
+      href: `/campaigns/${featuredCampaign.campaignId}/sessions`,
+      lastVisitedAt: featuredCampaign.updatedAt,
+    } : null;
 
     return {
       campaigns,
@@ -127,6 +187,9 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
       recentActivity,
       nextSession,
       preparation,
+      featuredPreparation,
+      storyThreads,
+      continuation,
       totals: {
         campaigns: campaigns.length,
         activeTables: activeTables.length,
