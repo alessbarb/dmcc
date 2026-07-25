@@ -4,29 +4,43 @@
 
 /* ── DM Hero Header ── */
 .dm-hub-hero {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 28px;
-  padding: 24px 28px;
-  background: radial-gradient(circle at top left, color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, transparent), transparent 40%),
-              linear-gradient(180deg, color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 95%, transparent));
-  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
-  border-radius: 16px;
+  gap: 12px;
+  padding: 9px 14px;
+  background: radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent), transparent 32%),
+              radial-gradient(circle at 82% 0%, color-mix(in srgb, var(--theme-ornaments-highlight) 8%, transparent), transparent 28%),
+              linear-gradient(115deg, color-mix(in srgb, var(--theme-surfaces-canvas) 84%, transparent), color-mix(in srgb, var(--theme-surfaces-base) 90%, transparent));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 24%, transparent);
+  border-radius: 12px;
   box-shadow: 0 20px 60px color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent);
+}
+
+.dm-hub-hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 72px;
+  right: 170px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--theme-accents-primary-foreground) 55%, transparent), transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, transparent);
 }
 
 .dm-hub-hero__profile {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   flex: 1;
 }
 
 .dm-hub-hero__avatar-ring {
-  width: 64px;
-  height: 64px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 2px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent);
   padding: 2px;
@@ -47,13 +61,13 @@
 
 .dm-hub-hero__greeting {
   margin: 0 0 2px;
-  font-size: 1.35rem;
+  font-size: 1.12rem;
   font-weight: 700;
   color: var(--theme-text-primary);
 }
 
 .dm-hub-hero__subtitle {
-  margin: 0 0 14px;
+  margin: 0 0 4px;
   font-size: 0.82rem;
   color: var(--theme-text-secondary);
 }
@@ -61,7 +75,7 @@
 .dm-hub-hero__stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 /* stat pill within hero */
@@ -69,7 +83,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 4px 9px;
   background: color-mix(in srgb, var(--theme-accents-primary-foreground) 6%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
   border-radius: 20px;
@@ -95,12 +109,13 @@
 
 /* calendar box in hero */
 .dm-hub-hero__calendar {
+  align-self: stretch;
   flex-shrink: 0;
-  min-width: 160px;
-  background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent);
-  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
+  min-width: 150px;
+  background: color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 16%, transparent);
   border-radius: 10px;
-  padding: 14px 16px;
+  padding: 7px 10px;
   text-align: center;
 }
 

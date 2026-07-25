@@ -11,10 +11,6 @@
     justify-content: center;
   }
 
-  .dm-quick-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .dm-modal {
     width: calc(100vw - 24px);
     max-height: calc(100dvh - 24px);

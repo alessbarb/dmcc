@@ -205,6 +205,19 @@ const dark: ThemeVariant = {
     panelEdgeAccentSize: "9rem",
     narrativeDividerSize: "17rem",
     ambientMarkSize: "9rem",
+
+    panelCornerPrimaryAspectRatio: "190 / 120",
+    panelCornerSecondaryAspectRatio: "120 / 80",
+
+    panelCornerPrimaryImage:
+      "linear-gradient(135deg, var(--theme-ornaments-highlight), var(--theme-ornaments-primary) 42%, var(--theme-ornaments-secondary))",
+    panelCornerSecondaryImage:
+      "linear-gradient(135deg, var(--theme-ornaments-highlight), var(--theme-ornaments-primary) 42%, var(--theme-ornaments-secondary))",
+
+    panelCornerPrimaryGlow:
+      "drop-shadow(0 0 3px var(--theme-ornaments-primary)) drop-shadow(0 0 9px var(--theme-ornaments-primary))",
+    panelCornerSecondaryGlow:
+      "drop-shadow(0 0 3px var(--theme-ornaments-secondary)) drop-shadow(0 0 9px var(--theme-ornaments-secondary))",
   },
   identityPalette: [
     "hsl(190 92% 62%)",
@@ -360,6 +373,19 @@ const light: ThemeVariant = {
     panelEdgeAccentSize: "9rem",
     narrativeDividerSize: "17rem",
     ambientMarkSize: "9rem",
+
+    panelCornerPrimaryAspectRatio: "190 / 120",
+    panelCornerSecondaryAspectRatio: "120 / 80",
+
+    panelCornerPrimaryImage:
+      "linear-gradient(135deg, var(--theme-ornaments-highlight), var(--theme-ornaments-primary) 42%, var(--theme-ornaments-secondary))",
+    panelCornerSecondaryImage:
+      "linear-gradient(135deg, var(--theme-ornaments-highlight), var(--theme-ornaments-primary) 42%, var(--theme-ornaments-secondary))",
+
+    panelCornerPrimaryGlow:
+      "drop-shadow(0 0 3px var(--theme-ornaments-primary)) drop-shadow(0 0 9px var(--theme-ornaments-primary))",
+    panelCornerSecondaryGlow:
+      "drop-shadow(0 0 3px var(--theme-ornaments-secondary)) drop-shadow(0 0 9px var(--theme-ornaments-secondary))",
   },
   identityPalette: [
     "hsl(190 70% 35%)",

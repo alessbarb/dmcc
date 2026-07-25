@@ -87,3 +87,18 @@
 }.dm-campaign-template-library__icon,
 .dm-hub-campaigns__icon { color: var(--theme-accents-primary-foreground); }
 .dm-campaign-template-library__description { margin-top: 0; margin-bottom: 20px; }
+.dm-hub-template-strip {
+  margin-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
+  padding-top: 10px;
+}
+
+.dm-hub-template-strip:focus { outline: 2px solid var(--theme-accents-primary-foreground); outline-offset: 2px; }
+.dm-hub-template-strip__header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: var(--theme-text-secondary); }
+.dm-hub-template-strip__row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+.dm-hub-template-chip { flex: 0 0 150px; display: flex; flex-direction: column; gap: 5px; padding: 8px; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 9%, transparent); background: linear-gradient(155deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent)); color: var(--theme-text-primary); font: inherit; text-align: left; cursor: pointer; transition: border-color .2s, transform .2s, box-shadow .2s; }
+.dm-hub-template-chip:hover { border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, transparent); transform: translateY(-1px); }
+.dm-hub-template-chip__cover { width: 100%; height: 60px; border-radius: 6px; background-size: cover; background-position: center; background-image: url('/assets/campaigns/campaign-template-oracle.jpg'); box-shadow: inset 0 -22px 18px -18px var(--theme-surfaces-canvas); }
+.dm-hub-template-chip__title { margin: 0; font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dm-hub-template-chip__difficulty { align-self: flex-start; padding: 2px 6px; border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 25%, transparent); border-radius: 999px; font-size: 0.62rem; color: var(--theme-accents-primary-foreground); }
+.dm-hub-template-chip__action { display: inline-flex; align-items: center; gap: 3px; align-self: flex-start; color: var(--theme-accents-primary-foreground); font-size: .65rem; }

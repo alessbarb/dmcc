@@ -161,6 +161,15 @@ describe("theme contract", () => {
           panelEdgeAccentSize: expect.any(String),
           narrativeDividerSize: expect.any(String),
           ambientMarkSize: expect.any(String),
+
+          panelCornerPrimaryAspectRatio: expect.any(String),
+          panelCornerSecondaryAspectRatio: expect.any(String),
+
+          panelCornerPrimaryImage: expect.any(String),
+          panelCornerSecondaryImage: expect.any(String),
+
+          panelCornerPrimaryGlow: expect.any(String),
+          panelCornerSecondaryGlow: expect.any(String),
         });
       }
     }

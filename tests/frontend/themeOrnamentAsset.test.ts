@@ -31,7 +31,17 @@ describe("theme ornament assets", () => {
         expect(content).toContain("viewBox");
         expect(content).not.toContain("<script");
         expect(content).not.toContain("<style");
-        expect(content).not.toMatch(/#([0-9a-fA-F]{3}){1,2}/); // No hex color literals
+
+        // Most ornament assets are white silhouettes recolored via CSS mask + theme
+        // gradient, so hex literals would silently override the theme. Fantasy's panel
+        // corners are the one deliberate exception: true-color baked art consumed via
+        // background-image (see ThemeOrnaments.panelCorner*Image), not mask-recolored.
+        const isFantasyTrueColorCorner =
+          themeId === "fantasy" &&
+          (filename === "panel-corner-primary.svg" || filename === "panel-corner-secondary.svg");
+        if (!isFantasyTrueColorCorner) {
+          expect(content).not.toMatch(/#([0-9a-fA-F]{3}){1,2}/); // No hex color literals
+        }
       }
     }
   });

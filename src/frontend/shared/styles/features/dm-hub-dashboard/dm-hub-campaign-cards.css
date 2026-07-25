@@ -238,3 +238,20 @@
   border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
   border-radius: 8px;
 }
+.dm-campaigns-list { display: flex; flex-direction: column; gap: 8px; overflow: hidden; min-height: 0; }
+.dm-campaign-row { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); background: linear-gradient(90deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 4%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent) 38%); transition: border-color .2s, box-shadow .2s, background .2s; }
+.dm-campaign-row:hover { border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent); background: linear-gradient(90deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 9%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 88%, transparent) 48%); box-shadow: 0 8px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 30%, transparent); }
+.dm-campaign-row__cover { width: 52px; height: 52px; flex-shrink: 0; border-radius: 8px; background-size: cover; background-position: center; box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent), 0 5px 16px color-mix(in srgb, var(--theme-surfaces-canvas) 35%, transparent); }
+.dm-campaign-row__main { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; flex: 1; min-width: 0; background: none; border: none; padding: 0; cursor: pointer; text-align: left; }
+.dm-campaign-row__title { font-weight: 700; color: var(--theme-text-primary); font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.dm-campaign-row__meta, .dm-campaign-row__stats { font-size: .72rem; color: var(--theme-text-secondary); display: flex; align-items: center; gap: 4px; }
+.dm-campaign-row__narrative { max-width: 100%; overflow: hidden; color: color-mix(in srgb, var(--theme-accents-primary-foreground) 78%, var(--theme-text-secondary)); font-size: .7rem; font-style: italic; text-overflow: ellipsis; white-space: nowrap; }
+.dm-campaign-row__actions { display: flex; gap: 4px; flex-shrink: 0; }
+.dm-campaign-row__action { background: none; border: none; color: var(--theme-text-secondary); cursor: pointer; padding: 4px; }
+.dm-campaign-row__action--danger:hover { color: var(--theme-feedback-danger-foreground); }
+.dm-campaign-row--create { justify-content: center; gap: 8px; color: var(--theme-accents-primary-foreground); border-style: dashed; cursor: pointer; background: none; }
+.dm-badge--active { position: relative; color: var(--theme-text-primary); background: color-mix(in srgb, var(--theme-feedback-success-foreground) 24%, transparent); border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 48%, transparent); box-shadow: 0 0 10px color-mix(in srgb, var(--theme-feedback-success-foreground) 18%, transparent); }
+.dm-badge--active::before { content: ""; display: inline-block; width: 4px; height: 4px; margin: 0 4px 1px 0; border-radius: 50%; background: currentColor; box-shadow: 0 0 7px currentColor; }
+.dm-hub-pagination { display: flex; align-items: center; justify-content: center; gap: 12px; padding-top: 8px; font-size: .78rem; color: var(--theme-text-secondary); }
+.dm-hub-pagination button { background: none; border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 12%, transparent); border-radius: 6px; width: 26px; height: 26px; cursor: pointer; color: var(--theme-text-primary); }
+.dm-hub-pagination button:disabled { opacity: .35; cursor: default; }

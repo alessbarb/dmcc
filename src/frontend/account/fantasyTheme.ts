@@ -179,10 +179,8 @@ const dark: ThemeVariant = {
       "linear-gradient(180deg, hsl(184 24% 7% / 0.46), hsl(184 24% 7% / 0.84))",
   },
   ornaments: {
-    panelCornerPrimaryMask:
-      "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
-    panelCornerSecondaryMask:
-      "url('/assets/themes/fantasy/ornaments/panel-corner-secondary.svg')",
+    panelCornerPrimaryMask: "none",
+    panelCornerSecondaryMask: "none",
     panelEdgeAccentMask:
       "url('/assets/themes/fantasy/ornaments/panel-edge-accent.svg')",
     narrativeDividerMask:
@@ -194,17 +192,28 @@ const dark: ThemeVariant = {
     secondary: "hsl(43 42% 38%)",
     highlight: "hsl(43 68% 56%)",
 
-    panelCornerPrimaryOpacity: "0.45",
-    panelCornerSecondaryOpacity: "0.22",
+    panelCornerPrimaryOpacity: "0.85",
+    panelCornerSecondaryOpacity: "0.7",
     panelEdgeAccentOpacity: "0.32",
     narrativeDividerOpacity: "0.30",
     ambientMarkOpacity: "0.14",
 
     panelCornerPrimarySize: "9rem",
-    panelCornerSecondarySize: "5.5rem",
+    panelCornerSecondarySize: "7.3rem",
     panelEdgeAccentSize: "7.5rem",
     narrativeDividerSize: "18rem",
     ambientMarkSize: "9rem",
+
+    panelCornerPrimaryAspectRatio: "747 / 900",
+    panelCornerSecondaryAspectRatio: "1 / 1",
+
+    panelCornerPrimaryImage:
+      "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
+    panelCornerSecondaryImage:
+      "url('/assets/themes/fantasy/ornaments/panel-corner-secondary.svg')",
+
+    panelCornerPrimaryGlow: "none",
+    panelCornerSecondaryGlow: "none",
   },
   identityPalette: [
     "hsl(209 68% 72%)",
@@ -334,10 +343,8 @@ const light: ThemeVariant = {
       "linear-gradient(180deg, hsl(45 38% 99% / 0.78), hsl(45 38% 99% / 0.95))",
   },
   ornaments: {
-    panelCornerPrimaryMask:
-      "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
-    panelCornerSecondaryMask:
-      "url('/assets/themes/fantasy/ornaments/panel-corner-secondary.svg')",
+    panelCornerPrimaryMask: "none",
+    panelCornerSecondaryMask: "none",
     panelEdgeAccentMask:
       "url('/assets/themes/fantasy/ornaments/panel-edge-accent.svg')",
     narrativeDividerMask:
@@ -349,17 +356,28 @@ const light: ThemeVariant = {
     secondary: "hsl(43 42% 38%)",
     highlight: "hsl(43 68% 56%)",
 
-    panelCornerPrimaryOpacity: "0.28",
-    panelCornerSecondaryOpacity: "0.16",
+    panelCornerPrimaryOpacity: "0.7",
+    panelCornerSecondaryOpacity: "0.55",
     panelEdgeAccentOpacity: "0.22",
     narrativeDividerOpacity: "0.20",
     ambientMarkOpacity: "0.10",
 
     panelCornerPrimarySize: "9rem",
-    panelCornerSecondarySize: "5.5rem",
+    panelCornerSecondarySize: "7.3rem",
     panelEdgeAccentSize: "7.5rem",
     narrativeDividerSize: "18rem",
     ambientMarkSize: "9rem",
+
+    panelCornerPrimaryAspectRatio: "747 / 900",
+    panelCornerSecondaryAspectRatio: "1 / 1",
+
+    panelCornerPrimaryImage:
+      "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
+    panelCornerSecondaryImage:
+      "url('/assets/themes/fantasy/ornaments/panel-corner-secondary.svg')",
+
+    panelCornerPrimaryGlow: "none",
+    panelCornerSecondaryGlow: "none",
   },
   identityPalette: [
     "hsl(209 58% 42%)",

@@ -5,9 +5,12 @@
 /* Root layout */
 .dm-hub-root {
   background: var(--theme-surfaces-canvas);
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
   position: relative;
   overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 /* Ambient decoration (aria-hidden) — must not participate in document flow.
@@ -23,10 +26,16 @@
 
 .dm-hub-main {
   max-width: 1760px;
+  width: 100%;
   margin: 0 auto;
-  padding: 24px 28px calc(24px + var(--app-footer-height));
+  padding: 12px 20px;
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 10px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* ── Topbar button variants ── */

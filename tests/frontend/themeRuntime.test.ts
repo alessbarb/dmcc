@@ -117,7 +117,8 @@ describe("theme runtime", () => {
     expect(serialized.get("--theme-artwork-app-background-opacity")).toBe("0.22");
     expect(serialized.get("--theme-artwork-app-background-position")).toBe("center top");
     expect(serialized.get("--theme-artwork-app-background-position-compact")).toBe("58% top");
-    expect(serialized.get("--theme-ornaments-panel-corner-primary-mask")).toBe(
+    expect(serialized.get("--theme-ornaments-panel-corner-primary-mask")).toBe("none");
+    expect(serialized.get("--theme-ornaments-panel-corner-primary-image")).toBe(
       "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
     );
     expect(serialized.get("--theme-ornaments-primary")).toBe("hsl(158 34% 40%)");
@@ -132,7 +133,8 @@ describe("theme runtime", () => {
     expect(properties.get("--theme-artwork-app-background-image")).toBe(
       "url('/assets/themes/fantasy/app-background.webp')",
     );
-    expect(properties.get("--theme-ornaments-panel-corner-primary-mask")).toBe(
+    expect(properties.get("--theme-ornaments-panel-corner-primary-mask")).toBe("none");
+    expect(properties.get("--theme-ornaments-panel-corner-primary-image")).toBe(
       "url('/assets/themes/fantasy/ornaments/panel-corner-primary.svg')",
     );
 

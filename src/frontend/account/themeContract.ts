@@ -209,6 +209,23 @@ export type ThemeOrnaments = {
   panelEdgeAccentSize: string;
   narrativeDividerSize: string;
   ambientMarkSize: string;
+
+  panelCornerPrimaryAspectRatio: string;
+  panelCornerSecondaryAspectRatio: string;
+
+  // The full CSS background-image value painted at each corner: a theme-recolored
+  // gradient (paired with panelCorner*Mask to clip it to a silhouette) or a true-color
+  // baked illustration (paired with panelCorner*Mask: "none", since the art already
+  // carries its own shape via alpha). Kept as one token, not layered with the mask
+  // gradient, so a true-color image's transparent gaps never show a gradient bleeding
+  // through underneath.
+  panelCornerPrimaryImage: string;
+  panelCornerSecondaryImage: string;
+
+  // Full CSS `filter` value applied to each corner ornament (e.g. neon drop-shadow
+  // layers for HUD-style themes). "none" disables it.
+  panelCornerPrimaryGlow: string;
+  panelCornerSecondaryGlow: string;
 };
 
 export type ThemeIdentityPalette = readonly [

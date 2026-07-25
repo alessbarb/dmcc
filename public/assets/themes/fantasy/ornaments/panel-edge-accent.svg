@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 24" fill="none"><path d="M 0 12 Q 50 2 100 12 Q 150 22 200 12 L 200 14 Q 150 24 100 14 Q 50 4 0 14 Z" fill="white"/><path d="M 60 10 C 66 2 76 4 80 10 C 74 12 66 12 60 10 Z" fill="white"/><path d="M 140 14 C 134 22 124 20 120 14 C 126 12 134 12 140 14 Z" fill="white"/><circle cx="100" cy="13" r="5" fill="white"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 24" fill="none">
+  <path d="M 4 15.6 Q 60 5.6 130 12.6 Q 165 16.1 196 10.6 L 196 9.4 Q 165 14.9 130 11.4 Q 60 4.4 4 14.4 Z" fill="white"/>
+  <path d="M 0 0 C 2.88 -4.75 7.2 -5 20 0 C 7.2 5 2.88 4.75 0 0 Z" fill="white" transform="translate(30 10.5) rotate(-25) scale(1)"/>
+  <path d="M 0 0 C 2.45 -4.27 6.12 -4.5 17 0 C 6.12 4.5 2.45 4.27 0 0 Z" fill="white" transform="translate(58 8) rotate(18) scale(0.85)"/>
+  <path d="M 0 0 C 2.16 -3.8 5.4 -4 15 0 C 5.4 4 2.16 3.8 0 0 Z" fill="white" transform="translate(92 12.3) rotate(-35) scale(0.72)"/>
+  <path d="M 0 0 C 1.73 -3.09 4.32 -3.25 12 0 C 4.32 3.25 1.73 3.09 0 0 Z" fill="white" transform="translate(122 13.2) rotate(24) scale(0.58)"/>
+  <path d="M 0 0 C 1.3 -2.37 3.24 -2.5 9 0 C 3.24 2.5 1.3 2.38 0 0 Z" fill="white" transform="translate(152 11.8) rotate(-20) scale(0.45)"/>
+  <circle cx="108" cy="9.5" r="1.8" fill="white"/>
+  <path d="M 0 0 C 2.6 -1.7 5.2 -0.9 5.2 1.7 C 5.2 4.3 2.6 5.2 0.9 3.9 C -0.3 3 0.3 1.6 1.7 1.4" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" transform="translate(190 8.5) rotate(-8)"/>
+</svg>

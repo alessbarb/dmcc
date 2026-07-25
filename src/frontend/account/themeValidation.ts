@@ -204,6 +204,15 @@ export const THEME_VARIANT_SHAPE = {
     panelEdgeAccentSize: "string",
     narrativeDividerSize: "string",
     ambientMarkSize: "string",
+
+    panelCornerPrimaryAspectRatio: "string",
+    panelCornerSecondaryAspectRatio: "string",
+
+    panelCornerPrimaryImage: "string",
+    panelCornerSecondaryImage: "string",
+
+    panelCornerPrimaryGlow: "string",
+    panelCornerSecondaryGlow: "string",
   },
   identityPalette: "identityPalette",
 } as const satisfies Shape;

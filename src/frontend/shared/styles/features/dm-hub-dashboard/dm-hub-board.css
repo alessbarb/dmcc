@@ -1,0 +1,60 @@
+.dm-hub-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(250px, .75fr) minmax(250px, .75fr);
+  grid-template-rows: minmax(112px, .58fr) minmax(230px, 1.42fr);
+  grid-template-areas: "campaigns tables alerts" "campaigns summary activity";
+  gap: 12px;
+  min-height: 0;
+  overflow: hidden;
+}
+.dm-hub-board__campaigns { grid-area: campaigns; min-height: 0; overflow: hidden; }
+.dm-hub-board__tables { grid-area: tables; min-height: 0; overflow: hidden; }
+.dm-hub-board__alerts { grid-area: alerts; min-height: 0; overflow: hidden; }
+.dm-hub-board__summary { grid-area: summary; min-height: 0; overflow: hidden; }
+.dm-hub-board__activity { grid-area: activity; min-height: 0; overflow: hidden; }
+.dm-hub-board [class*="__campaigns"] > .dm-panel,
+.dm-hub-board__tables > .dm-panel,
+.dm-hub-board__alerts > .dm-panel,
+.dm-hub-board__summary > .dm-panel,
+.dm-hub-board__activity > .dm-panel { height: 100%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+
+/* The campaign column owns the only potentially long content area. Let it
+   scroll inside its allocated board cell instead of clipping templates or rows. */
+.dm-hub-board__campaigns > .dm-panel { overflow-y: auto; }
+.dm-hub-board__campaigns > .dm-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+}
+
+.dm-hub-board__campaigns .dm-campaigns-list { overflow-y: auto; }
+
+.dm-hub-board > .dm-hub-board__tables > .dm-panel,
+.dm-hub-board > .dm-hub-board__alerts > .dm-panel,
+.dm-hub-board > .dm-hub-board__summary > .dm-panel,
+.dm-hub-board > .dm-hub-board__activity > .dm-panel { padding: 14px 16px; }
+
+.dm-hub-board .dm-panel__header { margin-bottom: 10px; }
+.dm-hub-board .dm-panel--empty-compact { align-self: start; height: auto; min-height: 0; padding-bottom: 10px; }
+.dm-hub-board .dm-panel--empty-compact .dm-empty-state--compact { min-height: 0; padding: 4px 0 2px; display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: center; text-align: left; }
+.dm-hub-board .dm-panel--empty-compact .dm-empty-state--compact .dm-empty-state__icon { grid-row: span 2; }
+.dm-hub-board .dm-panel--empty-compact .dm-empty-state--compact p,
+.dm-hub-board .dm-panel--empty-compact .dm-empty-state--compact span { margin: 0; }
+.dm-hub-board .dm-panel--empty-compact .dm-hub-activity__empty-compact { margin: 0; padding: 8px 10px; border: 1px dashed color-mix(in srgb, var(--theme-text-on-media) 10%, transparent); border-radius: 7px; font-size: .7rem; }
+.dm-hub-featured-campaign { margin: 0 0 10px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 38%, transparent); border-radius: 10px; background: linear-gradient(110deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent) 58%); box-shadow: 0 12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 32%, transparent), 0 0 22px color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent); }
+.dm-hub-featured-campaign__surface { position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 14px; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+.dm-hub-featured-campaign__cover { min-height: 132px; background-position: center; background-size: cover; box-shadow: inset -30px 0 30px -25px var(--theme-surfaces-canvas); }
+.dm-hub-featured-campaign__content { min-width: 0; padding: 14px 12px 8px 0; }
+.dm-hub-featured-campaign__eyebrow { display: flex; align-items: center; gap: 5px; color: var(--theme-accents-primary-foreground); font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.dm-hub-featured-campaign__content h3 { margin: 5px 0 3px; color: var(--theme-text-primary); font-size: 1.05rem; }
+.dm-hub-featured-campaign__content p { margin: 0 0 8px; color: var(--theme-text-secondary); font-size: .72rem; line-height: 1.4; }
+.dm-hub-featured-campaign__meta { display: flex; flex-wrap: wrap; gap: 9px; color: var(--theme-text-secondary); font-size: .66rem; }
+.dm-hub-featured-campaign__meta span { display: inline-flex; align-items: center; gap: 3px; }
+.dm-hub-featured-campaign__surface > .dm-badge { position: absolute; top: 10px; right: 12px; }
+.dm-hub-featured-campaign__arrow { position: absolute; right: 12px; bottom: 10px; color: var(--theme-accents-primary-foreground); }
+.dm-hub-featured-campaign__actions { display: flex; gap: 7px; padding: 0 12px 10px 164px; }
+.dm-hub-featured-campaign__actions .btn { min-height: 28px; padding: 4px 9px; font-size: .68rem; }
+.dm-hub-featured-campaign__surface:hover .dm-hub-featured-campaign__cover { filter: saturate(1.15); transform: scale(1.02); }
+.dm-hub-featured-campaign__cover { transition: transform .25s ease, filter .25s ease; }
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .dm-hub-board { grid-template-columns: minmax(0, 1fr) minmax(250px, .9fr); grid-template-rows: repeat(3, minmax(0, 1fr)); grid-template-areas: "campaigns tables" "campaigns alerts" "summary activity"; }
+}

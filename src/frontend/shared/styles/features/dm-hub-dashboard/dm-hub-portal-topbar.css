@@ -1,0 +1,85 @@
+@import "../../layout/campaign-navigation/campaign-navigation-controls.css";
+
+/* The DM hub does not load landing.css, but it reuses PortalTopBar. */
+.dm-hub-root .portal-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 28px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-text-on-media) 5%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 92%, transparent) 0%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 72%, transparent) 100%
+    );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dm-hub-root .portal-topbar__brand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--theme-text-primary);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.dm-hub-root .portal-topbar__brand-icon {
+  flex: 0 0 auto;
+  color: var(--theme-accents-primary-foreground);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--theme-activity-system-foreground) 55%, transparent));
+}
+
+.dm-hub-root .portal-topbar__brand-full {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dm-hub-root .portal-topbar__brand-short {
+  display: none;
+}
+
+.dm-hub-root .portal-topbar__actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .dm-hub-root .portal-topbar {
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .dm-hub-root .portal-topbar__brand-full {
+    display: none;
+  }
+
+  .dm-hub-root .portal-topbar__brand-short {
+    display: inline;
+  }
+
+  .dm-hub-root .portal-topbar__actions {
+    gap: 8px;
+  }
+
+  .dm-hub-root .language-pill {
+    padding: 3px;
+    gap: 1px;
+  }
+
+  .dm-hub-root .language-pill__btn {
+    padding: 5px 8px;
+    font-size: 0.66rem;
+  }
+}
