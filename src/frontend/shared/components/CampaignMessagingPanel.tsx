@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users } from "lucide-react";
+import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users, Copy } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
+import { formatRelativeTime } from "../presentation/formatRelativeTime.js";
+import { CompactEmptyState } from "./CompactEmptyState.js";
 import "../styles/features/campaign-messaging.css";
 
 const MAX_MESSAGE_LENGTH = 4_000;
@@ -68,7 +70,7 @@ function errorMessage(err: unknown): string {
 }
 
 export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [payload, setPayload] = useState<MessagingPayload>({ participants: [], messages: [], pageInfo: { hasMore: false, nextCursor: null } });
   const [content, setContent] = useState("");
   const [audience, setAudience] = useState<Audience>("party");
@@ -282,20 +284,41 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         <div ref={listRef} className="campaign-messaging__list" role="log" aria-live="polite" aria-relevant="additions text" onScroll={handleScroll}>
           {loading && <p className="campaign-messaging__muted">{t("playerPortal.messaging.loading")}</p>}
           {!loading && payload.pageInfo.hasMore && <button className="btn btn-secondary btn-sm campaign-messaging__load-older" type="button" disabled={loadingOlder} onClick={() => void loadOlder()}>{loadingOlder ? t("playerPortal.messaging.loading") : t("playerPortal.messaging.loadOlder")}</button>}
-          {!loading && payload.messages.length === 0 && !pendingMessage && <div className="campaign-messaging__empty"><MessageCircle size={34} /><p>{t("playerPortal.messaging.empty")}</p></div>}
+          {!loading && payload.messages.length === 0 && !pendingMessage && (
+            <CompactEmptyState
+              title={t("playerPortal.messaging.empty")}
+              description={t("playerPortal.messaging.emptyDescription")}
+              size="standard"
+            />
+          )}
           {payload.messages.map((message) => {
             const tone = senderTone(message.senderColorIndex);
             return (
               <article key={message.messageId} className={`campaign-messaging__message ${message.sentByMe ? "campaign-messaging__message--mine" : "campaign-messaging__message--incoming"} campaign-messaging__message--tone-${tone}`}>
-                <div className="campaign-messaging__message-meta"><strong>{message.senderName}</strong><span>{new Date(message.createdAt).toLocaleString()}</span></div>
-                <div className="campaign-messaging__bubble">{message.content}</div>
+                <div className="campaign-messaging__message-meta">
+                  <strong>{message.senderName}</strong>
+                  <span>{formatRelativeTime(message.createdAt, locale)}</span>
+                </div>
+                <div className={`campaign-messaging__bubble-row ${message.sentByMe ? "campaign-messaging__bubble-row--mine" : ""}`}>
+                  <div className="campaign-messaging__bubble">{message.content}</div>
+                  <button
+                    type="button"
+                    className="btn btn-link btn-sm btn-icon campaign-messaging__copy-btn"
+                    onClick={() => void navigator.clipboard.writeText(message.content)}
+                    title={t("playerPortal.messaging.copyMessage")}
+                  >
+                    <Copy size={12} />
+                  </button>
+                </div>
                 <div className="campaign-messaging__message-footer">{message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}<span>{audienceLabel(message)}</span>{message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}</div>
               </article>
             );
           })}
           {pendingMessage && (
             <article key={pendingMessage.localId} className={`campaign-messaging__message campaign-messaging__message--mine campaign-messaging__pending campaign-messaging__pending--${pendingMessage.status}`} aria-busy={pendingMessage.status === "sending"}>
-              <div className="campaign-messaging__message-meta campaign-messaging__message-meta--pending">{new Date(pendingMessage.createdAt).toLocaleString()}</div>
+              <div className="campaign-messaging__message-meta campaign-messaging__message-meta--pending">
+                <span>{formatRelativeTime(pendingMessage.createdAt, locale)}</span>
+              </div>
               <div className="campaign-messaging__bubble">{pendingMessage.content}</div>
               <div className="campaign-messaging__message-footer campaign-messaging__message-footer--pending">
                 <span>{audienceLabel(pendingMessage)} · {pendingMessage.status === "sending" ? t("playerPortal.messaging.sending") : t("playerPortal.messaging.failed")}</span>
