@@ -7,6 +7,18 @@
   background: var(--theme-surfaces-canvas);
   min-height: 100vh;
   position: relative;
+  overflow: hidden;
+}
+
+/* Ambient decoration (aria-hidden) — must not participate in document flow.
+   Without this the SVG's intrinsic viewBox aspect ratio renders as a real
+   ~430px block at the top of the page, pushing the topbar/hero down. */
+.dm-hub-root > .rpg-portal-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .dm-hub-main {
