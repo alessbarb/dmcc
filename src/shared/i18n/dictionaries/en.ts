@@ -238,7 +238,10 @@ export const en = {
     cardDescription: "Contact the project or review the public repository.",
   },
   common: {
-    routeNotFoundTitle: "Page not found",
+
+    select: "Select",
+    copy: "Copy",
+    sectionNavigation: "Section navigation",    routeNotFoundTitle: "Page not found",
     routeNotFoundDescription: "The link you followed doesn't exist or is no longer available.",
     backToHome: "Back to home",
     save: "Save",
@@ -437,7 +440,8 @@ export const en = {
       untitledNote: "Untitled note",
     },
     node: {
-      visibilityDmOnly: "DM Secret (Only visible to the DM)",
+
+      cycleStatusLabel: "Cycle status",      visibilityDmOnly: "DM Secret (Only visible to the DM)",
       visibilityRevealed: "Revealed (Visible to all players)",
       visibilityPartial: "Partially discovered",
       addSessionNotePrompt: "Add session note for: {title}",
@@ -636,7 +640,8 @@ export const en = {
       characters: "Specific Characters",
     },
     relationTypes: {
-      hides: "hides",
+
+      relacionado_con: "related to",      hides: "hides",
       unlocks: "unlocks",
       points_to: "points to",
       causes: "causes",
@@ -748,11 +753,17 @@ export const en = {
       save: "Save note",
     },
     messaging: {
-      heading: "Campaign messages",
+
+      loadOlder: "Load older messages",
+      sending: "sending...",
+      failed: "failed",
+      retry: "retry",      heading: "Campaign messages",
       playerSubtitle: "Talk with Game Direction and the rest of the group.",
       dmSubtitle: "Shared channel for Game Direction and players.",
       loading: "Loading messages…",
       empty: "There are no messages yet. Start the conversation with the group.",
+      emptyDescription: "Send a message to start the conversation in this campaign.",
+      copyMessage: "Copy message",
       channelParty: "Campaign channel",
       channelDm: "Private with Game Direction",
       channelPlayer: "Private with a player",
@@ -767,7 +778,9 @@ export const en = {
       directionName: "Game Direction",
       privateWith: "Private with",
       privateMessage: "Private message",
-    },
+
+      jumpToLatest: "Jump to latest",
+      newMessages: "new messages",    },
     characterSheet: "Character Sheet",
     objectives: "Objectives",
     diary: "Campaign Diary",
@@ -939,7 +952,16 @@ export const en = {
     importanceLow: "Low",
   },
   dashboard: {
-    untitled: "Untitled",
+
+    metricEntities: "Entities",
+    metricEntitiesDetail: "entities in campaign",
+    unrevealedCriticalSecrets: "Critical Secrets",
+    criticalSecretsHelp: "hidden critical secrets",
+    readyClues: "Ready Clues",
+    readyCluesHelp: "clues prepared to reveal",
+    quests: "Quests",
+    questsHelp: "active quest chains",
+    criticalCluesHelp: "unrevealed critical clues",    untitled: "Untitled",
     currentState: "Current campaign state",
     createdFromTemplate: "Created from {title} v{version}",
     noActiveCampaign: "No active campaign",
@@ -967,6 +989,7 @@ export const en = {
     nextSessionPrep: "Next session prep",
     cluesReady: "Clues ready to reveal",
     noPreparedClues: "No prepared clues",
+    unresolvedClueAlertFallback: "Unresolved clue alert",
     readyConsequences: "Ready consequences",
     noneReadyYet: "None ready yet",
     recentlyUpdated: "Recently updated",
@@ -1170,6 +1193,7 @@ export const en = {
     noDescription: "No description.",
     items: "Linked items",
     emptyItems: "No items in this notebook yet.",
+    emptyItemsDescription: "This notebook is empty. Add characters, sessions, or boards to gather related preparation here.",
     selectPlaceholderTitle: "Manage campaign notebooks",
     selectPlaceholderDesc: "Create hierarchical notebooks to organize campaign entities, sessions, and canvases.",
     actions: {
@@ -1177,6 +1201,9 @@ export const en = {
       addChild: "Create sub-notebook",
       archive: "Archive notebook",
       addItem: "Add item",
+      addEntity: "Add character",
+      addSession: "Add session",
+      addCanvas: "Add board",
       link: "Link",
       cancel: "Cancel",
       save: "Save",
@@ -1220,7 +1247,8 @@ export const en = {
     },
   },
   story: {
-    threads: "Story Threads",
+
+    ready: "Ready",    threads: "Story Threads",
     addThread: "New thread",
     newThreadTitle: "New Story Thread",
     emptyThreads: "No story threads yet.",
@@ -2869,7 +2897,8 @@ export const en = {
       saveFailed: "Save failed",
     },
     profile: {
-      displayName: "Display name",
+
+      archived: "Archived",      displayName: "Display name",
       avatarUrl: "Avatar URL",
       pronouns: "Pronouns",
       timeZone: "Time zone",
@@ -3020,4 +3049,69 @@ export const en = {
     onlyVisibleDM: "Visible to DM only",
   },
 
+
+  systems: {
+    dnd_5e: "D&D 5e",
+    pathfinder_2e: "Pathfinder 2e",
+    shadowdark: "Shadowdark",
+    custom: "Custom System"
+  },
+  importance: {
+    low: "Low",
+    normal: "Normal",
+    high: "High",
+    critical: "Critical"
+  },
+  status: {
+    planned: "Planned",
+    active: "Active",
+    cancelled: "Cancelled",
+    ready: "Ready"
+  },
+  visibility: {
+    dm_only: "DM Only",
+    party: "Party",
+    public: "Public",
+    players: "Specific Players",
+    characters: "Specific Characters"
+  },
+  time: {
+    secondsAgo: "just now",
+    minutesAgo: "{count} min ago",
+    hoursAgo: "{count} hours ago",
+    daysAgo: "{count} days ago",
+    weeksAgo: "{count} weeks ago"
+  },
+  activity: {
+    story_step_created: "Story step created",
+    story_thread_archived: "Story thread archived",
+    campaign_entity_updated: "Updated {target}",
+    session_prepared: "Prepared {target}",
+    npc_modified: "NPC modified",
+    clue_linked: "Clue linked",
+    fallback: {
+      storyStepCreated: "Story step created",
+      storyThreadArchived: "Story thread archived",
+      entityUpdated: "Entity updated",
+      entityUpdatedWithTarget: "Updated {target}",
+      sessionPrepared: "Session prepared",
+      sessionPreparedWithTarget: "Prepared {target}",
+      npcModified: "NPC modified",
+      clueLinked: "Clue linked",
+      default: "Activity recorded"
+    }
+  },
+
+  relationModal: {
+    createRelation: "Create Relation",
+    sourceEntity: "Source Entity",
+    selectSource: "-- Select Source Node --",
+    relationType: "Relation Type",
+    targetEntity: "Target Entity",
+    selectTarget: "-- Select Target Node --",
+    duplicateWarning: "Duplicate relation already exists. Create anyway?",
+    createAnyway: "Create anyway",
+    cancel: "Cancel",
+    registerRelation: "Register Relation"
+  },
 } as const;
