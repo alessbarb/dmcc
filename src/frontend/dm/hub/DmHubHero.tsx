@@ -1,6 +1,7 @@
 import React from "react";
 import { Activity, Calendar, FolderOpen, Layers, UserRound, Users } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import type { DmHubDashboard } from "./dmHubTypes.js";
 
 type DmProfile = { displayName?: string; email?: string; avatarUrl?: string } | null;
 
@@ -15,13 +16,17 @@ interface DmHubHeroProps {
   totalNpcsCount: number;
   totalEntitiesCount: number;
   activeTablesLength: number;
+  activeTable: DmHubDashboard["activeTables"][number] | null;
+  nextSession: DmHubDashboard["nextSession"];
   onViewTimeline: () => void;
+  onPrepareSession: () => void;
+  onContinueSession: () => void;
 }
 
 export function DmHubHero({
   dmProfile, dmDisplayName, formattedTodayDate, totalCampaignsCount, activeTablesCount,
   totalPlayersCount, totalSessionsCount, totalNpcsCount, totalEntitiesCount, activeTablesLength,
-  onViewTimeline,
+  activeTable, nextSession, onViewTimeline, onPrepareSession, onContinueSession,
 }: DmHubHeroProps) {
   const { t } = useTranslation();
 
@@ -64,14 +69,22 @@ export function DmHubHero({
               {formattedTodayDate}
             </div>
             <div className="dm-hub-hero__calendar-world">{activeTablesLength > 0 ? t("landing.activeTablesNowLabel", { count: String(activeTablesLength) }) : t("landing.noActiveTablesNowLabel")}</div>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm dm-hub-hero__timeline-button"
-              onClick={activeTablesLength > 0 ? onViewTimeline : undefined}
-              disabled={activeTablesLength === 0}
-            >
-              {t("landing.viewTimeline")}
-            </button>
+            <div className="dm-hub-hero__calendar-next">
+              {activeTable ? activeTable.sessionTitle : nextSession ? `${t("landing.nextSessionTitle")}: ${nextSession.campaignTitle}` : t("landing.noNextSession")}
+            </div>
+            <div className="dm-hub-hero__calendar-actions">
+              <button
+                type="button"
+                className="btn btn-gold btn-sm"
+                onClick={activeTable ? onContinueSession : onPrepareSession}
+                disabled={!activeTable && !nextSession}
+              >
+                {activeTable ? t("landing.continueSession") : t("landing.prepareNextSession")}
+              </button>
+              <button type="button" className="btn btn-secondary btn-sm dm-hub-hero__timeline-button" onClick={onViewTimeline}>
+                {t("landing.viewTimeline")}
+              </button>
+            </div>
           </div>
         </header>
   );

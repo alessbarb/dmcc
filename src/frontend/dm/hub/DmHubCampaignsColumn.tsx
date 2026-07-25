@@ -66,7 +66,7 @@ export function DmHubCampaignsColumn({
   return (
     <section id="dm-campaigns-section" className="dm-panel dm-panel--campaigns dm-panel--ornamented-standard" data-dm-hub-panel="campaigns">
       <div className="dm-panel__header dm-panel__header--campaigns">
-        <div className="dm-panel__title-group"><FolderOpen size={17} className="dm-hub-campaigns__icon" /><h2 className="dm-panel__title">{t("landing.campaignsSectionTitle")}</h2><button type="button" className="dm-campaigns-create-btn" onClick={onCreateCampaign} aria-label={t("landing.createCampaignLabel")}><Plus size={14} /></button></div>
+        <div className="dm-panel__title-group"><FolderOpen size={17} className="dm-hub-campaigns__icon" /><h2 className="dm-panel__title">{t("landing.campaignsSectionTitle")} <span className="dm-panel__count">({campaigns.length})</span></h2><button type="button" className="dm-campaigns-create-btn" onClick={onCreateCampaign} aria-label={t("landing.createCampaignLabel")} title={t("landing.createCampaignLabel")}><Plus size={14} /></button></div>
         <div className="dm-panel__controls">
           <div className="dm-search-wrapper"><Search size={13} className="dm-search-icon" /><input type="text" className="dm-search-input" placeholder={t("landing.searchCampaignPlaceholder")} value={landingSearchQuery} onChange={(e) => setLandingSearchQuery(e.target.value)} />{landingSearchQuery && <button type="button" className="dm-search-clear" onClick={() => setLandingSearchQuery("")} aria-label={t("landing.clearSearch")}><X size={11} /></button>}</div>
           <select className="dm-filter-select" value={campaignFilter} onChange={(e) => setCampaignFilter(e.target.value)} aria-label={t("landing.campaignFilterLabel")}>

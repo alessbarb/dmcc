@@ -361,7 +361,8 @@ export function DmHubPage() {
   const filteredCampaigns = campaigns.filter((c) => {
     const matchesQuery =
       c.title.toLowerCase().includes(landingSearchQuery.toLowerCase()) ||
-      c.campaignId.toLowerCase().includes(landingSearchQuery.toLowerCase());
+      c.campaignId.toLowerCase().includes(landingSearchQuery.toLowerCase()) ||
+      c.system.toLowerCase().includes(landingSearchQuery.toLowerCase());
     if (campaignFilter === "all") return matchesQuery;
     if (campaignFilter === "active") return matchesQuery && (c.status === "active" || c.stats?.activeSession);
     if (campaignFilter === "paused") return matchesQuery && c.status !== "active" && !c.stats?.activeSession;
@@ -409,7 +410,11 @@ export function DmHubPage() {
           totalNpcsCount={totalNpcsCount}
           totalEntitiesCount={totalEntitiesCount}
           activeTablesLength={dashboard.activeTables.length}
+          activeTable={firstActiveTable}
+          nextSession={dashboard.nextSession}
           onViewTimeline={handleQuickTimeline}
+          onPrepareSession={() => dashboard.nextSession && navigateToActiveSession(dashboard.nextSession.campaignId)}
+          onContinueSession={() => firstActiveTable && navigateToActiveSession(firstActiveTable.campaignId)}
         />
         <DmHubQuickActions
           onCreateCampaign={() => setIsCreateModalOpen(true)}

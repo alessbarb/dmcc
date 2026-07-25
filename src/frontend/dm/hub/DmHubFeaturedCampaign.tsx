@@ -11,6 +11,8 @@ interface DmHubFeaturedCampaignProps {
 export function DmHubFeaturedCampaign({ campaign, onOpen, onPrepare }: DmHubFeaturedCampaignProps) {
   const { t } = useTranslation();
   const isActive = Boolean(campaign.stats?.activeSession) || campaign.status === "active";
+  const system = campaign.system === "dnd_5e" ? "D&D 5e" : campaign.system === "pathfinder_2e" ? "Pathfinder 2e" : campaign.system === "shadowdark" ? "Shadowdark" : t("landing.systemCustom");
+  const lastUpdated = campaign.updatedAt ? t("landing.daysAgo", { count: String(Math.max(1, Math.floor((Date.now() - new Date(campaign.updatedAt).getTime()) / 86400000))) }) : t("landing.noActivityRecorded");
 
   return (
     <article className="dm-hub-featured-campaign dm-panel--ornamented-primary">
@@ -21,9 +23,10 @@ export function DmHubFeaturedCampaign({ campaign, onOpen, onPrepare }: DmHubFeat
           <h3>{campaign.title}</h3>
           {campaign.summary && <p>{campaign.summary}</p>}
           <div className="dm-hub-featured-campaign__meta">
-            <span>{campaign.system}</span>
+            <span>{system}</span>
             <span><CalendarDays size={12} /> {campaign.stats?.sessionsCount ?? 0} {t("landing.sessionsLabel")}</span>
             <span><Users size={12} /> {campaign.stats?.playersCount ?? 0} {t("landing.playersLabel")}</span>
+            <span>{lastUpdated}</span>
           </div>
         </div>
         <span className={`dm-badge dm-badge--${isActive ? "active" : "paused"}`}>{isActive ? t("landing.statusActive") : t("landing.statusPaused")}</span>
@@ -31,7 +34,7 @@ export function DmHubFeaturedCampaign({ campaign, onOpen, onPrepare }: DmHubFeat
       </button>
       <div className="dm-hub-featured-campaign__actions">
         <button type="button" className="btn btn-gold btn-sm" onClick={onOpen}><Play size={13} /> {t("landing.enterCampaign", { title: campaign.title })}</button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={onPrepare}>{t("landing.prepareSession")}</button>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={onPrepare}>{t("landing.prepareNextSession")}</button>
       </div>
     </article>
   );

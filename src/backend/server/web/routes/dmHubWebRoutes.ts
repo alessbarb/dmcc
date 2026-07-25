@@ -115,7 +115,7 @@ export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<v
       .map((campaign) => ({
         id: `campaign-${campaign.campaignId}`,
         icon: "campaign" as const,
-        text: `${campaign.title} updated`,
+        text: campaign.title,
         time: campaign.updatedAt ?? "",
         href: `/campaigns/${campaign.campaignId}/overview`,
       }));
