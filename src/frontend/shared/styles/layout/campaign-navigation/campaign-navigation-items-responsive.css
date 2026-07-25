@@ -148,7 +148,7 @@
     border-radius: 13px;
     background: transparent;
     color: var(--theme-text-secondary);
-    font-size: 0.68rem;
+    font-size: var(--type-micro);
     font-weight: 700;
     cursor: pointer;
   }

@@ -24,6 +24,7 @@ import { MobileDock } from "../../shared/components/MobileDock.js";
 import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.js";
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
+import { formatSystemName } from "../../shared/presentation/formatSystemName.js";
 import "./campaign-route-transitions.css";
 import "../../shared/styles/layout/campaign-navigation.css";
 import "../../shared/styles/features/sidebar-nav.css";
@@ -36,8 +37,13 @@ export function CampaignShell() {
   };
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { toasts, removeToast } = useToast();
+
+  const isImmersiveRoute = (path: string): boolean => {
+    return path.includes("/map/canvas") || path.includes("/map/network");
+  };
+  const isImmersive = isImmersiveRoute(pathname);
   const {
     selectCampaign,
     clearCampaign,
@@ -145,7 +151,7 @@ export function CampaignShell() {
       </button>
     ));
 
-  const isCanvasRoute = pathname.includes("/map/canvas");
+  // Immersive route logic replaces isCanvasRoute check
 
   if (loading && !campaignState) {
     return (
@@ -181,7 +187,7 @@ export function CampaignShell() {
     <div
       className={`app-container app-container--campaign-shell ${
         sidebarCollapsed ? "app-container--sidebar-collapsed" : ""
-      } ${isCanvasRoute ? "app-container--canvas" : ""}`}
+      } ${isImmersive ? "app-container--canvas" : ""}`}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
@@ -200,10 +206,13 @@ export function CampaignShell() {
 
           {!sidebarCollapsed && (
             <>
-              <div className="sidebar-logo">
+              <div
+                className="sidebar-logo u-truncate u-truncate--full-width"
+                title={campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}
+              >
                 {campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}
               </div>
-              <div className="sidebar-logo-subtitle">{campaignState?.campaign?.system ?? ""}</div>
+              <div className="sidebar-logo-subtitle">{formatSystemName(campaignState?.campaign?.system, locale)}</div>
             </>
           )}
 
@@ -269,7 +278,7 @@ export function CampaignShell() {
       <header className="campaign-mobile-header">
         <div className="campaign-mobile-header__title" data-tour-id="campaign-mobile-title">
           <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
-          <span>{campaignState?.campaign?.system ?? ""}</span>
+          <span>{formatSystemName(campaignState?.campaign?.system, locale)}</span>
         </div>
       </header>
 
@@ -284,13 +293,13 @@ export function CampaignShell() {
 
 
       <main
-        className={`main-content ${isCanvasRoute ? "main-content--canvas" : ""}`}
+        className={`main-content ${isImmersive ? "main-content--canvas" : ""}`}
         data-tour-id="campaign-main-workspace"
       >
-        {isCanvasRoute ? <Outlet /> : <div className="content-body"><Outlet /></div>}
+        {isImmersive ? <Outlet /> : <div className="content-body"><Outlet /></div>}
       </main>
 
-      {!isCanvasRoute && <AppFooter />}
+      {!isImmersive && <AppFooter />}
 
       <EntityCreateModal isOpen={isEntityModalOpen} onClose={() => setIsEntityModalOpen(false)} />
       <RelationCreateModal
@@ -306,7 +315,7 @@ export function CampaignShell() {
       <AccountModal open={accountModalOpen} onClose={() => setAccountModalOpen(false)} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 
-      {campaignId && !isCanvasRoute && <QuickCaptureFAB campaignId={campaignId} />}
+      {campaignId && !isImmersive && <QuickCaptureFAB campaignId={campaignId} />}
       {campaignId && (
         <CampaignGuidedTour
           campaignId={campaignId}

@@ -15,7 +15,7 @@
   border-top: 1px solid var(--theme-borders-default);
   background: color-mix(in srgb, var(--theme-surfaces-canvas) 92%, transparent);
   color: var(--theme-text-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-micro);
 }
 
 .app-footer--landing {
@@ -82,7 +82,7 @@
 .app-footer__institutional-link {
   border-radius: var(--theme-shapes-radius-small);
   color: var(--theme-text-secondary);
-  font-size: 0.74rem;
+  font-size: var(--type-micro);
   line-height: 1.2;
   padding: 3px 4px;
   text-decoration: none;

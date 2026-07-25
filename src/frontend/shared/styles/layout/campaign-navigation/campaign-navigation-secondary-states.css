@@ -57,7 +57,7 @@
   .mobile-dock-sheet__header span {
     overflow: hidden;
     color: var(--theme-text-secondary);
-    font-size: 0.72rem;
+    font-size: var(--type-micro);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -77,7 +77,7 @@
   .mobile-dock-sheet__eyebrow {
     margin: 0 0 10px;
     color: var(--theme-accents-secondary-foreground);
-    font-size: 0.68rem;
+    font-size: var(--type-micro);
     font-weight: 800;
     letter-spacing: 0.14em;
     text-transform: uppercase;

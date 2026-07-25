@@ -61,7 +61,7 @@
     max-width: 70vw;
     overflow: hidden;
     color: var(--theme-text-secondary);
-    font-size: 0.68rem;
+    font-size: var(--type-micro);
     line-height: 1.2;
     text-overflow: ellipsis;
     white-space: nowrap;

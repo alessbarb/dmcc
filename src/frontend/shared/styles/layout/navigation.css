@@ -33,7 +33,7 @@
 }
 
 .sidebar-logo-subtitle {
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--theme-text-secondary);

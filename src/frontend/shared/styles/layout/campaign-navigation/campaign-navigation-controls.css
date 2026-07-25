@@ -14,7 +14,7 @@
 .language-pill__btn {
   padding: 5px 12px;
   border-radius: var(--theme-shapes-radius-small);
-  font-size: 0.7rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   cursor: pointer;
   transition: var(--transition-fast);
