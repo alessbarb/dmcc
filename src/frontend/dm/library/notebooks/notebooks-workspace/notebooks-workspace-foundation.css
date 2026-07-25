@@ -5,6 +5,10 @@
 }
 
 .notebooks-sidebar {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+  max-height: calc(100vh - 120px);
   flex-basis: 310px;
   width: 310px;
   padding: 18px;

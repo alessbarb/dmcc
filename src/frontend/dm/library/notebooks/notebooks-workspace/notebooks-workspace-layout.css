@@ -41,7 +41,6 @@
   display: grid;
   place-items: center;
   align-content: center;
-  min-height: 320px;
   padding: clamp(28px, 5vw, 56px);
   text-align: center;
 }
