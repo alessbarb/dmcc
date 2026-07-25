@@ -454,6 +454,7 @@ export const en = {
       addConsequence: "Add Connected Consequence",
       typeLocation: "Location",
       typeSession: "Session",
+      typeWorld: "World",
       secretAnchorRevealPrompt:
         'The element "{anchor}" discovered/completed serves as anchor for the secret: "{secret}"!\nDo you want to reveal this secret to players now?',
       archiveEntityConfirm:

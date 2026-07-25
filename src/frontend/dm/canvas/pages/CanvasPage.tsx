@@ -14,7 +14,7 @@ import { CanvasNarrativeLintDrawer } from "../components/CanvasNarrativeLintDraw
 import { CanvasMobileMorePanel } from "../components/CanvasMobileMorePanel.js";
 import { CanvasBulkActionsBar } from "../components/CanvasBulkActionsBar.js";
 import { CanvasSessionPrepDialog } from "../components/CanvasSessionPrepDialog.js";
-import { Plus, Layout, MoreHorizontal, Search, ListPlus, MousePointer2, Hand } from "lucide-react";
+import { Plus, Layout, MoreHorizontal, Search, ListPlus, MousePointer2, Hand, X } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -99,7 +99,7 @@ const seedCanvasTemplate = async (canvasId: string, templateId: string, t: (key:
 const getCanvasKindLabel = (kind: string, t: (key: string) => string) => {
   switch (kind) {
     case "world":
-      return "Mundo";
+      return t("canvas.node.typeWorld");
     case "session":
       return t("canvas.node.typeSession");
     case "mystery":
@@ -696,7 +696,7 @@ export function CanvasPage() {
           }}
           className="btn btn-primary canvas-presentation-exit"
         >
-          ❌ Salir de Presentación
+          <X size={16} aria-hidden="true" /> {t("canvas.toolbar.exitPresentation")}
         </button>
       )}
 

@@ -432,6 +432,7 @@ export const de: TranslationDictionary = {
       addConsequence: "Verknüpfte Konsequenz hinzufügen",
       typeLocation: "Ort",
       typeSession: "Sitzung",
+      typeWorld: "Welt",
       secretAnchorRevealPrompt: "Das entdeckte/abgeschlossene Element \"{anchor}\" dient als Anker für das Geheimnis: \"{secret}\"!\nMöchtest du dieses Geheimnis jetzt den Spielern offenlegen?",
       archiveEntityConfirm: "Möchtest du die Entität \"{title}\" wirklich aus der gesamten Kampagne archivieren?",
       removeFromCanvasConfirm: "Diese Karte vom Canvas entfernen? (Die Entität bleibt in der Kampagnenüberlieferung bestehen)",

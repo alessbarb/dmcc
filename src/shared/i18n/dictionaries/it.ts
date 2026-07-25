@@ -431,6 +431,7 @@ export const it: TranslationDictionary = {
       addConsequence: "Aggiungi conseguenza collegata",
       typeLocation: "Luogo",
       typeSession: "Sessione",
+      typeWorld: "Mondo",
       secretAnchorRevealPrompt: "L'elemento \"{anchor}\" scoperto/completato funge da ancora per il segreto: \"{secret}\"!\nVuoi rivelare questo segreto ai giocatori adesso?",
       archiveEntityConfirm: "Vuoi davvero archiviare l'entità \"{title}\" dall'intera campagna?",
       removeFromCanvasConfirm: "Rimuovere questa carta dal canvas? (L'entità continuerà a esistere nella lore della campagna)",

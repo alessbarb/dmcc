@@ -464,6 +464,7 @@ export const es: TranslationDictionary = {
       addConsequence: "Añadir Consecuencia Conectada",
       typeLocation: "Ubicación",
       typeSession: "Sesión",
+      typeWorld: "Mundo",
       secretAnchorRevealPrompt:
         '¡El elemento "{anchor}" descubierto/completado sirve de ancla para el secreto: "{secret}"!\n¿Deseas revelar este secreto ahora a los jugadores?',
       archiveEntityConfirm:
