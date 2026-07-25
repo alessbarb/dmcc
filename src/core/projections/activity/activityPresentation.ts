@@ -293,6 +293,155 @@ export function getActivityVisualConfig(
         ? `Solicitud de vinculación de personaje enviada por el jugador.` 
         : `Character link request submitted by player.`;
       break;
+    case "notebook.created":
+      label = isEs ? "Cuaderno" : "Notebook";
+      color = "hsl(175, 85%, 45%)";
+      bgColor = "hsla(175, 85%, 45%, 0.15)";
+      icon = "BookOpen";
+      {
+        const title = typeof data.title === "string" ? data.title : "";
+        description = isEs 
+          ? `Cuaderno "${title}" creado.` 
+          : `Notebook "${title}" created.`;
+      }
+      break;
+    case "notebook.updated":
+      label = isEs ? "Cuaderno" : "Notebook";
+      color = "hsl(175, 85%, 45%)";
+      bgColor = "hsla(175, 85%, 45%, 0.15)";
+      icon = "Pencil";
+      {
+        const title = typeof data.title === "string" ? data.title : "";
+        description = isEs 
+          ? `Cuaderno "${title}" actualizado.` 
+          : `Notebook "${title}" updated.`;
+      }
+      break;
+    case "notebook.archived":
+      label = isEs ? "Cuaderno" : "Notebook";
+      color = "hsl(0, 85%, 60%)";
+      bgColor = "hsla(0, 85%, 60%, 0.15)";
+      icon = "Archive";
+      description = isEs ? "Cuaderno archivado." : "Notebook archived.";
+      break;
+    case "story_thread.created":
+      label = isEs ? "Hilo narrativo" : "Story thread";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "BookOpen";
+      {
+        const title = typeof data.title === "string" ? data.title : "";
+        description = isEs 
+          ? `Hilo narrativo "${title}" iniciado.` 
+          : `Story thread "${title}" started.`;
+      }
+      break;
+    case "story_thread.updated":
+      label = isEs ? "Hilo narrativo" : "Story thread";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "Pencil";
+      {
+        const title = typeof data.title === "string" ? data.title : "";
+        description = isEs 
+          ? `Hilo narrativo "${title}" actualizado.` 
+          : `Story thread "${title}" updated.`;
+      }
+      break;
+    case "story_thread.archived":
+      label = isEs ? "Hilo narrativo" : "Story thread";
+      color = "hsl(0, 85%, 60%)";
+      bgColor = "hsla(0, 85%, 60%, 0.15)";
+      icon = "Archive";
+      description = isEs ? "Hilo narrativo archivado." : "Story thread archived.";
+      break;
+    case "story_step.created":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "Plus";
+      {
+        const title = typeof data.title === "string" ? data.title : "";
+        description = isEs 
+          ? `Paso narrativo "${title}" creado.` 
+          : `Story step "${title}" created.`;
+      }
+      break;
+    case "story_step.updated":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "Pencil";
+      {
+        const title = typeof data.title === "string" ? data.title : "";
+        description = isEs 
+          ? `Paso narrativo "${title}" actualizado.` 
+          : `Story step "${title}" updated.`;
+      }
+      break;
+    case "story_step.scheduled":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "Calendar";
+      description = isEs 
+        ? "Paso narrativo planificado para sesión." 
+        : "Story step scheduled for session.";
+      break;
+    case "story_step.deferred":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "Calendar";
+      description = isEs 
+        ? "Paso narrativo pospuesto." 
+        : "Story step deferred.";
+      break;
+    case "story_step.unscheduled":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "Calendar";
+      description = isEs 
+        ? "Paso narrativo desprogramado." 
+        : "Story step unscheduled.";
+      break;
+    case "story_step.ready":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(280, 85%, 60%)";
+      bgColor = "hsla(280, 85%, 60%, 0.15)";
+      icon = "CheckCircle";
+      description = isEs 
+        ? "Paso narrativo marcado como preparado." 
+        : "Story step marked as ready.";
+      break;
+    case "story_step.activated":
+      label = isEs ? "Paso narrativo" : "Story step";
+      color = "hsl(142, 70%, 50%)";
+      bgColor = "hsla(142, 70%, 50%, 0.15)";
+      icon = "Play";
+      description = isEs 
+        ? "Paso narrativo activado." 
+        : "Story step activated.";
+      break;
+    case "story_step.reconciled":
+      label = isEs ? "Paso narrativo" : "Story step";
+      {
+        const isDiscarded = data.status === "discarded";
+        color = isDiscarded ? "hsl(0, 85%, 60%)" : "hsl(142, 70%, 50%)";
+        bgColor = isDiscarded ? "hsla(0, 85%, 60%, 0.15)" : "hsla(142, 70%, 50%, 0.15)";
+        icon = "CheckCircle2";
+
+        const outcome = isEs ? "resuelto" : "resolved";
+        const how = data.resolutionKind === "as_planned" 
+          ? (isEs ? "según lo planificado" : "as planned")
+          : (isEs ? "con cambios" : "with changes");
+        
+        description = isDiscarded
+          ? (isEs ? "Paso narrativo descartado." : "Story step discarded.")
+          : (isEs ? `Paso narrativo ${outcome} (${how}).` : `Story step ${outcome} (${how}).`);
+      }
+      break;
   }
 
   return { label, color, bgColor, icon, description };
