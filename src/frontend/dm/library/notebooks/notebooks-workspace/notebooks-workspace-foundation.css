@@ -45,12 +45,14 @@
 
 .notebook-content-area {
   display: flex;
+  min-width: 0;
   min-height: 0;
 }
 
 .notebook-detail-panel,
 .notebook-placeholder {
   width: 100%;
+  min-width: 0;
   min-height: 100%;
   border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
   background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
