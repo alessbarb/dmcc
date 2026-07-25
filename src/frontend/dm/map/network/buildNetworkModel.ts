@@ -1,6 +1,6 @@
 import type { Entity, Fact, Relation } from "../../../shared/stores/campaignStore.js";
 
-export const FULL_NETWORK_NODE_LIMIT = 250;
+export const FULL_NETWORK_NODE_LIMIT = 80;
 
 const NETWORK_ENTITY_NODE_WIDTH = 176;
 const NETWORK_ENTITY_NODE_HEIGHT = 104;

@@ -182,7 +182,7 @@ function NetworkFlowInner() {
   useEffect(() => {
     if (positions.size === 0 || !nodesInitialized) return;
     const timer = window.setTimeout(() => {
-      void fitView({ duration: 500, padding: explorerMode === "focus" ? 0.38 : 0.3, minZoom: 0.015, maxZoom: explorerMode === "focus" ? 0.9 : 0.55 });
+      void fitView({ duration: 500, padding: explorerMode === "focus" ? 0.38 : 0.3, minZoom: 0.35, maxZoom: explorerMode === "focus" ? 0.9 : 0.55 });
     }, 80);
     return () => window.clearTimeout(timer);
   }, [explorerMode, fitView, nodesInitialized, positions]);
@@ -426,7 +426,7 @@ function NetworkFlowInner() {
               minZoom={0.015}
               maxZoom={1.6}
               fitView
-              fitViewOptions={{ padding: 0.3, minZoom: 0.015, maxZoom: 0.55 }}
+              fitViewOptions={{ padding: 0.3, minZoom: 0.35, maxZoom: 0.55 }}
               nodesDraggable={false}
               elevateEdgesOnSelect
             >
