@@ -834,6 +834,7 @@ export const pt: TranslationDictionary = {
     allVisibility: "Todas as visibilidades",
     clearFilters: "Limpar filtros",
     resultCount: "{count} entidades",
+    loadMore: "Carregar mais {count}",
     searchPlaceholder: "Buscar entidades por título ou resumo...",
     allTypes: "Todos os tipos",
     createEntity: "Criar entidade",

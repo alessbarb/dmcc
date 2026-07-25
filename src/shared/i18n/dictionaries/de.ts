@@ -842,6 +842,7 @@ export const de: TranslationDictionary = {
     allVisibility: "Alle Sichtbarkeiten",
     clearFilters: "Filter löschen",
     resultCount: "{count} Entitäten",
+    loadMore: "{count} weitere laden",
     searchPlaceholder: "Entitäten nach Titel oder Zusammenfassung suchen...",
     allTypes: "Alle Typen",
     createEntity: "Entität erstellen",

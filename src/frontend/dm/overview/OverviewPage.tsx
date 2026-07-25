@@ -343,10 +343,10 @@ export function OverviewPage() {
 
   const groupedActivity = useMemo(() => {
     const items = commandCenter?.recentActivity ?? [];
+    const isRecord = (value: unknown): value is Record<string, unknown> =>
+      value !== null && typeof value === "object" && !Array.isArray(value);
     const asRecord = (content: unknown): Record<string, unknown> | undefined =>
-      content && typeof content === "object" && !Array.isArray(content)
-        ? (content as Record<string, unknown>)
-        : undefined;
+      isRecord(content) ? content : undefined;
     const groups: Array<{ key: string; type: string; count: number; latestOccurredAt: string; data?: Record<string, unknown> }> = [];
     for (const item of items) {
       const existing = groups.find((g) => g.type === item.type);

@@ -5,6 +5,7 @@
   --card-accent-soft: var(--theme-accents-primary-background);
 
   display: flex;
+  min-height: 68px;
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;

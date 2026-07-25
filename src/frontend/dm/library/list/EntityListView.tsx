@@ -66,6 +66,7 @@ export function EntityListView() {
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
 
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(36);
   const [sortBy, setSortBy] = useState<"relevant" | "recent" | "alphabetical">(() => {
     try {
       const stored = localStorage.getItem("dmcc_entities_sort_by");
@@ -225,6 +226,15 @@ export function EntityListView() {
     return groups;
   }, [sortedEntities, groupBy]);
 
+  const pageSize = viewMode === "compact" ? 80 : 36;
+
+  useEffect(() => {
+    setVisibleCount(pageSize);
+  }, [pageSize, entitySearchQuery, entityTypeFilter, statusFilter, importanceFilter, visibilityFilter, sortBy, groupBy]);
+
+  const visibleEntities = groupBy === "none" ? sortedEntities.slice(0, visibleCount) : sortedEntities;
+  const hasMoreEntities = groupBy === "none" && sortedEntities.length > visibleCount;
+
   const hasFilters =
     entitySearchQuery.trim().length > 0 ||
     entityTypeFilter !== "all" ||
@@ -305,10 +315,10 @@ export function EntityListView() {
             <span className="entity-type-badge">
               {formatEntityType(entity.entityType, locale)}
             </span>
-            {entity.status && <span className="badge badge-default">{entity.status}</span>}
+            {entity.status && <span className="badge badge-default">{formatEntityStatus(entity.status, locale)}</span>}
             {entity.importance && entity.importance !== "normal" && (
               <span className={`badge ${isCritical ? "badge-critical" : "badge-warning"}`}>
-                {entity.importance}
+                {formatImportance(entity.importance, locale)}
               </span>
             )}
             <span className="entity-compact-row__date">
@@ -391,7 +401,7 @@ export function EntityListView() {
           </strong>
           {entity.subtitle && <span className="entity-card__subtitle">{entity.subtitle}</span>}
           <span className="entity-card__summary">
-            {entity.summary || t("entitiesPage.noSummary")}
+            {entity.summary ? markdownToPlainText(entity.summary) : t("entitiesPage.noSummary")}
           </span>
           <div className="entity-card__footer">
             <span>{t("entitiesPage.importanceLabel")}: {formatImportance(entity.importance, locale)}</span>
@@ -539,7 +549,7 @@ export function EntityListView() {
                   onChange={(event) => setStatusFilter(event.target.value)}
                 >
                   <option value="all">{t("entitiesPage.allStatuses")}</option>
-                  {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
+                  {statuses.map((status) => <option key={status} value={status}>{formatEntityStatus(status, locale)}</option>)}
                 </select>
               </label>
 
@@ -552,7 +562,7 @@ export function EntityListView() {
                 >
                   <option value="all">{t("entitiesPage.allImportance")}</option>
                   {importances.map((importance) => (
-                    <option key={importance} value={importance}>{importance}</option>
+                    <option key={importance} value={importance}>{formatImportance(importance, locale)}</option>
                   ))}
                 </select>
               </label>
@@ -668,9 +678,20 @@ export function EntityListView() {
             )}
 
             {groupBy === "none" ? (
-              <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid library-grid"}>
-                {sortedEntities.map((entity) => renderEntityItem(entity))}
-              </div>
+              <>
+                <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid library-grid"}>
+                  {visibleEntities.map((entity) => renderEntityItem(entity))}
+                </div>
+                {hasMoreEntities && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary entities-load-more"
+                    onClick={() => setVisibleCount((prev) => prev + pageSize)}
+                  >
+                    {t("entitiesPage.loadMore", { count: sortedEntities.length - visibleCount })}
+                  </button>
+                )}
+              </>
             ) : (
               <div className="entities-grouped-sections">
                 {Object.entries(groupedEntities || {}).map(([sectionKey, entities]) => {

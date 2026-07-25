@@ -886,6 +886,7 @@ export const es: TranslationDictionary = {
     allVisibility: "Todas las visibilidades",
     clearFilters: "Limpiar filtros",
     resultCount: "{count} entidades",
+    loadMore: "Cargar {count} más",
     searchPlaceholder: "Buscar entidades por título o resumen...",
     allTypes: "Todos los tipos",
     createEntity: "Crear entidad",

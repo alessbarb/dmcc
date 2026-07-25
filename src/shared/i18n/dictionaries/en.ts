@@ -874,6 +874,7 @@ export const en = {
     allVisibility: "All visibility levels",
     clearFilters: "Clear filters",
     resultCount: "{count} entities",
+    loadMore: "Load {count} more",
     searchPlaceholder: "Search entities by title or summary...",
     allTypes: "All types",
     createEntity: "Create entity",

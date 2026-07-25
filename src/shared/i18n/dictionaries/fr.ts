@@ -852,6 +852,7 @@ export const fr: TranslationDictionary = {
     allVisibility: "Toutes les visibilités",
     clearFilters: "Effacer les filtres",
     resultCount: "{count} entités",
+    loadMore: "Charger {count} de plus",
     searchPlaceholder: "Rechercher des entités par titre ou résumé...",
     allTypes: "Tous les types",
     createEntity: "Créer une entité",
