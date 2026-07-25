@@ -343,14 +343,27 @@ export function OverviewPage() {
 
   const groupedActivity = useMemo(() => {
     const items = commandCenter?.recentActivity ?? [];
-    const groups: Array<{ key: string; type: string; count: number; latestOccurredAt: string }> = [];
+    const asRecord = (content: unknown): Record<string, unknown> | undefined =>
+      content && typeof content === "object" && !Array.isArray(content)
+        ? (content as Record<string, unknown>)
+        : undefined;
+    const groups: Array<{ key: string; type: string; count: number; latestOccurredAt: string; data?: Record<string, unknown> }> = [];
     for (const item of items) {
       const existing = groups.find((g) => g.type === item.type);
       if (existing) {
         existing.count += 1;
-        if (item.occurredAt > existing.latestOccurredAt) existing.latestOccurredAt = item.occurredAt;
+        if (item.occurredAt > existing.latestOccurredAt) {
+          existing.latestOccurredAt = item.occurredAt;
+          existing.data = asRecord(item.content);
+        }
       } else {
-        groups.push({ key: item.activityId, type: item.type, count: 1, latestOccurredAt: item.occurredAt });
+        groups.push({
+          key: item.activityId,
+          type: item.type,
+          count: 1,
+          latestOccurredAt: item.occurredAt,
+          data: asRecord(item.content),
+        });
       }
     }
     return groups
@@ -686,7 +699,7 @@ export function OverviewPage() {
               {groupedActivity.map((group) => (
                 <div key={group.key} className="dashboard-activity-item">
                   <strong>
-                    {formatActivity({ type: group.type, occurredAt: group.latestOccurredAt }, locale)}
+                    {formatActivity({ type: group.type, occurredAt: group.latestOccurredAt, data: group.data }, locale)}
                     {group.count > 1 ? ` ×${group.count}` : ""}
                   </strong>
                   <br />

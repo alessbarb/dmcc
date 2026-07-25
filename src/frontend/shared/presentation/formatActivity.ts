@@ -1,5 +1,6 @@
 import { t } from "../../../shared/i18n/translate.js";
 import type { SupportedLocale } from "../../../shared/i18n/localeTypes.js";
+import { getActivityVisualConfig } from "../../../core/projections/activity/activityPresentation.js";
 
 export interface ActivityRecord {
   type: string;
@@ -17,6 +18,14 @@ export function formatActivity(activity: ActivityRecord, locale?: SupportedLocal
   const translated = t(translationKey, { target, ...data }, locale);
   if (translated !== translationKey) {
     return translated;
+  }
+
+  // Use the visual config projection descriptions if available for core events
+  const visualLocale = locale === "es" ? "es" : "en";
+  const visualConfig = getActivityVisualConfig(type, data, visualLocale);
+  const fallbackDefaultText = visualLocale === "es" ? "Actividad registrada" : "Activity recorded";
+  if (visualConfig.description !== fallbackDefaultText) {
+    return visualConfig.description;
   }
 
   switch (type) {
