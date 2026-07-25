@@ -267,7 +267,7 @@ export function OverviewPage() {
   }, [entities]);
 
   const partialKnowledgeAlerts = useMemo(() => {
-    return (commandCenter?.unresolvedClues ?? []).map((clue: Record<string, unknown>) => {
+    return (commandCenter?.unresolvedClues ?? []).slice(0, 6).map((clue: Record<string, unknown>) => {
       const entityId = typeof clue.entityId === "string" ? clue.entityId : undefined;
       const id = typeof clue.id === "string" ? clue.id : undefined;
       const title = typeof clue.title === "string" ? clue.title : undefined;
@@ -292,7 +292,7 @@ export function OverviewPage() {
     for (const npc of npcWarnings.slice(0, 3)) {
       list.push({ id: `npc:${npc.entityId}`, label: t("whatNowPage.checklistUpdateNpc", { title: npc.title }), priority: "normal" });
     }
-    return list;
+    return list.slice(0, 6);
   }, [preparedClues, blockedQuests, pendingConsequences, npcWarnings, t]);
 
   // last session summary for the session prep card
