@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-25T15:32:06.502Z",
+  "generatedAt": "2026-07-25T16:54:56.411Z",
   "summary": {
-    "cssFiles": 358,
+    "cssFiles": 362,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -818,7 +818,7 @@
       "path": "src/frontend/dm/canvas/components/CanvasEntityNode.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 294,
+      "lineCount": 305,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -1053,6 +1053,7 @@
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-surfaces-base",
         "--theme-surfaces-interactive",
         "--theme-surfaces-canvas"
@@ -1071,6 +1072,7 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-primary",
+        "--type-micro",
         "--theme-borders-default"
       ]
     },
@@ -1090,6 +1092,7 @@
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
@@ -1112,10 +1115,12 @@
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -1488,8 +1493,8 @@
       "path": "src/frontend/dm/entities/entity-card/entity-card-components.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 103,
-      "selectorCount": 12,
+      "lineCount": 107,
+      "selectorCount": 13,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/entity-card.css"
@@ -1507,7 +1512,9 @@
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-text-secondary"
+        "--type-caption",
+        "--theme-text-secondary",
+        "--theme-text-subtle"
       ]
     },
     {
@@ -1576,6 +1583,7 @@
         "--theme-surfaces-canvas",
         "--theme-accents-secondary-foreground",
         "--theme-text-on-media",
+        "--type-micro",
         "--theme-shadows-small",
         "--card-accent-soft",
         "--theme-surfaces-raised",
@@ -1807,7 +1815,9 @@
         "--theme-accents-secondary-foreground",
         "--theme-borders-default",
         "--theme-borders-default",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-feedback-danger-foreground",
@@ -1817,15 +1827,22 @@
         "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-accents-primary-background",
         "--theme-accents-secondary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-primary"
       ]
@@ -2177,6 +2194,7 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-on-accent",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-interactive",
         "--theme-accents-primary-foreground",
@@ -2500,7 +2518,7 @@
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 325,
+      "lineCount": 334,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/layouts/campaign-route-transitions.css",
@@ -2547,7 +2565,7 @@
       "path": "src/frontend/dm/library/boards/EntityBoardsView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 488,
+      "lineCount": 499,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/features/kanban-board.css",
@@ -2601,8 +2619,8 @@
       "path": "src/frontend/dm/library/boards/entity-board/entity-board-components.css",
       "layer": "feature",
       "domain": "library",
-      "lineCount": 88,
-      "selectorCount": 14,
+      "lineCount": 110,
+      "selectorCount": 18,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/boards/entityBoards.css"
@@ -2611,8 +2629,14 @@
       "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--theme-text-subtle",
+        "--type-micro",
+        "--type-micro",
+        "--touch-target-min",
+        "--type-control",
         "--theme-borders-default",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -2696,7 +2720,7 @@
       "path": "src/frontend/dm/library/list/EntityListView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 741,
+      "lineCount": 750,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/entity-list-toolbar.css",
@@ -2788,7 +2812,7 @@
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 766,
+      "lineCount": 791,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -2851,7 +2875,7 @@
       "path": "src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-foundation.css",
       "layer": "layout",
       "domain": "workspace",
-      "lineCount": 56,
+      "lineCount": 57,
       "selectorCount": 10,
       "imports": [],
       "importedBy": [
@@ -2876,8 +2900,8 @@
       "path": "src/frontend/dm/library/notebooks/notebooks-workspace/notebooks-workspace-layout.css",
       "layer": "layout",
       "domain": "workspace",
-      "lineCount": 63,
-      "selectorCount": 10,
+      "lineCount": 70,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/notebooks/notebooksWorkspace.css"
@@ -3148,7 +3172,9 @@
       "variableReferences": [
         "--theme-surfaces-interactive-hover",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-surfaces-canvas",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
@@ -3200,11 +3226,13 @@
         "--theme-borders-default",
         "--network-inspector-accent",
         "--network-inspector-accent",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-surfaces-interactive-hover",
         "--theme-text-primary",
         "--theme-text-primary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -3221,6 +3249,7 @@
       "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
@@ -3260,14 +3289,17 @@
         "--theme-borders-default",
         "--theme-text-secondary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-surfaces-raised",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
         "--network-inspector-accent",
         "--theme-borders-default",
         "--theme-surfaces-interactive-hover",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -3290,7 +3322,9 @@
         "--network-node-accent",
         "--theme-surfaces-base",
         "--theme-surfaces-base",
-        "--theme-surfaces-canvas"
+        "--theme-surfaces-canvas",
+        "--type-micro",
+        "--type-micro"
       ]
     },
     {
@@ -3590,6 +3624,7 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-borders-default",
         "--theme-surfaces-raised",
@@ -3663,6 +3698,7 @@
       "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary"
       ]
     },
@@ -3687,7 +3723,8 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-accents-secondary-foreground"
+        "--theme-accents-secondary-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -3816,7 +3853,7 @@
       "path": "src/frontend/dm/overview/OverviewPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 692,
+      "lineCount": 743,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/features/dashboard-overview.css",
@@ -3979,6 +4016,7 @@
         "--theme-shapes-radius-pill",
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-primary",
@@ -4094,6 +4132,7 @@
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
         "--theme-text-primary",
@@ -4118,6 +4157,7 @@
         "--theme-shapes-radius-medium",
         "--template-icon-bg",
         "--template-icon-color",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
@@ -4146,7 +4186,7 @@
       "path": "src/frontend/dm/people/group/GroupView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 163,
+      "lineCount": 166,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/people/group/groupWorkspace.css"
@@ -4316,6 +4356,7 @@
         "--theme-accents-primary-foreground",
         "--theme-text-subtle",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
@@ -4421,6 +4462,7 @@
         "--theme-borders-default",
         "--theme-text-subtle",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-pill",
         "--theme-surfaces-interactive"
@@ -4441,6 +4483,7 @@
         "--theme-borders-default",
         "--theme-text-subtle",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
@@ -4488,7 +4531,7 @@
       "path": "src/frontend/dm/people/invitations/InvitationsView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 261,
+      "lineCount": 266,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -4521,6 +4564,7 @@
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -4574,6 +4618,7 @@
       "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
@@ -4639,6 +4684,7 @@
         "--theme-surfaces-base",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-text-secondary",
@@ -4835,7 +4881,7 @@
       "path": "src/frontend/dm/sessions/components/SessionEventFeed.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 102,
+      "lineCount": 109,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/sessions/components/session-event-feed.css"
@@ -4930,6 +4976,7 @@
         "--theme-focus-outline",
         "--space-2",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--space-4",
         "--space-4",
         "--space-5",
@@ -4940,6 +4987,7 @@
         "--theme-surfaces-interactive",
         "--space-2",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--space-5",
         "--theme-text-primary",
@@ -4986,6 +5034,7 @@
         "--theme-borders-default",
         "--theme-shapes-radius-pill",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
@@ -5023,7 +5072,8 @@
         "--space-3",
         "--space-1",
         "--space-1",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -5128,6 +5178,7 @@
         "--theme-shapes-radius-pill",
         "--theme-accents-primary-background",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-borders-default",
         "--space-5",
         "--space-4",
@@ -5144,6 +5195,7 @@
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--space-3"
       ]
     },
@@ -5210,6 +5262,7 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--space-2"
       ]
@@ -5235,6 +5288,7 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--touch-target-min"
       ]
     },
@@ -5252,6 +5306,7 @@
       "variableReferences": [
         "--space-2",
         "--theme-text-secondary",
+        "--type-micro",
         "--space-2",
         "--theme-borders-default",
         "--theme-surfaces-interactive",
@@ -5379,9 +5434,11 @@
         "--consequence-node-accent",
         "--consequence-node-accent",
         "--consequence-node-accent",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--type-micro",
         "--consequence-inspector-accent",
         "--theme-text-secondary"
       ]
@@ -5400,14 +5457,17 @@
       "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--consequence-node-accent",
         "--theme-borders-default",
         "--consequence-node-accent",
         "--theme-surfaces-base",
+        "--type-micro",
         "--consequence-node-accent"
       ]
     },
@@ -5424,7 +5484,8 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-primary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -5579,10 +5640,12 @@
       "variableReferences": [
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--type-micro",
         "--narrative-inspector-accent",
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-text-primary"
@@ -5600,11 +5663,13 @@
       ],
       "variableDefinitions": [],
       "variableReferences": [
+        "--type-micro",
         "--theme-text-secondary",
         "--narrative-node-accent",
         "--theme-borders-default",
         "--narrative-node-accent",
         "--theme-surfaces-base",
+        "--type-micro",
         "--narrative-node-accent",
         "--theme-text-primary",
         "--theme-text-secondary",
@@ -5625,6 +5690,7 @@
       "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-canvas"
       ]
@@ -5651,6 +5717,7 @@
         "--narrative-node-accent",
         "--narrative-node-accent",
         "--narrative-node-accent",
+        "--type-micro",
         "--theme-text-primary"
       ]
     },
@@ -5706,6 +5773,7 @@
       ],
       "variableDefinitions": [],
       "variableReferences": [
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-surfaces-canvas",
@@ -5720,6 +5788,7 @@
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-text-primary",
@@ -5890,7 +5959,8 @@
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-accents-secondary-foreground",
-        "--theme-surfaces-interactive"
+        "--theme-surfaces-interactive",
+        "--type-micro"
       ]
     },
     {
@@ -5925,6 +5995,7 @@
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-shapes-radius-medium",
         "--theme-text-secondary",
         "--theme-text-primary",
@@ -6313,6 +6384,7 @@
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
+        "--type-micro",
         "--space-2",
         "--space-3",
         "--theme-borders-default",
@@ -6541,7 +6613,7 @@
       "path": "src/frontend/shared/components/CampaignMessagingPanel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 326,
+      "lineCount": 349,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/features/campaign-messaging.css"
@@ -6557,6 +6629,19 @@
       "lineCount": 219,
       "selectorCount": 0,
       "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/components/CompactEmptyState.tsx",
+      "layer": null,
+      "domain": null,
+      "lineCount": 63,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/shared/styles/primitives/compact-empty-state.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6813,6 +6898,7 @@
         "--theme-shadows-large",
         "--theme-surfaces-base",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-shapes-radius-medium",
         "--theme-shadows-overlay",
         "--theme-surfaces-canvas",
@@ -6916,6 +7002,17 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/shared/hooks/useWorkspaceDensity.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 38,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/shared/i18n/I18nContext.ts",
       "layer": null,
       "domain": null,
@@ -6986,6 +7083,61 @@
       "layer": null,
       "domain": null,
       "lineCount": 68,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/presentation/formatActivity.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 49,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/presentation/formatEntityStatus.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 14,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/presentation/formatImportance.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 14,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/presentation/formatRelativeTime.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 33,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/presentation/formatSystemName.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 19,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -7103,9 +7255,11 @@
       "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-feedback-warning-foreground",
         "--theme-feedback-danger-foreground",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -7263,6 +7417,7 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary"
       ]
     },
@@ -8017,6 +8172,7 @@
         "--theme-surfaces-base",
         "--theme-text-primary",
         "--theme-borders-default",
+        "--type-micro",
         "--theme-shadows-small",
         "--transition-fast",
         "--theme-accents-primary-foreground",
@@ -8027,6 +8183,7 @@
         "--theme-shapes-radius-medium",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
+        "--type-micro",
         "--theme-text-subtle",
         "--theme-surfaces-interactive-hover",
         "--theme-shapes-radius-small",
@@ -8038,6 +8195,7 @@
         "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
+        "--type-micro",
         "--theme-text-subtle",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground"
@@ -8070,6 +8228,7 @@
         "--theme-text-secondary",
         "--theme-activity-campaign-foreground",
         "--theme-activity-campaign-foreground",
+        "--type-micro",
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-surfaces-base",
@@ -8084,7 +8243,8 @@
         "--theme-borders-default",
         "--theme-shapes-radius-small",
         "--theme-text-primary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -8107,8 +8267,11 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-secondary",
+        "--type-micro",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-shapes-radius-small",
         "--theme-text-primary",
@@ -8179,13 +8342,17 @@
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
+        "--type-micro",
         "--fact-color",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-text-on-media",
+        "--type-micro",
         "--theme-text-secondary",
         "--fact-color",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
         "--fact-color",
         "--theme-accents-secondary-foreground"
@@ -8213,6 +8380,7 @@
         "--theme-shadows-large",
         "--theme-accents-secondary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-shapes-radius-small",
         "--theme-surfaces-interactive",
         "--theme-accents-primary-foreground",
@@ -8232,6 +8400,7 @@
       ],
       "variableDefinitions": [],
       "variableReferences": [
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-secondary",
@@ -8239,6 +8408,7 @@
         "--theme-borders-strong",
         "--theme-surfaces-interactive-hover",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-canvas-toolbar-background",
         "--theme-canvas-toolbar-border",
@@ -8291,11 +8461,14 @@
         "--rg-accent",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
+        "--type-micro",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-subtle",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-on-media",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-foreground",
@@ -8400,8 +8573,8 @@
       "path": "src/frontend/shared/styles/features/campaign-messaging/messaging-bubbles.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 11,
-      "selectorCount": 10,
+      "lineCount": 15,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-messaging.css"
@@ -8411,6 +8584,7 @@
         "--campaign-message-accent"
       ],
       "variableReferences": [
+        "--type-micro",
         "--theme-text-secondary",
         "--campaign-message-accent",
         "--campaign-message-accent",
@@ -8418,6 +8592,7 @@
         "--campaign-message-accent",
         "--theme-borders-default",
         "--campaign-message-accent",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-feedback-danger-foreground"
@@ -8527,6 +8702,7 @@
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-borders-default",
@@ -8572,6 +8748,7 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-text-secondary",
@@ -8600,10 +8777,12 @@
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-accents-secondary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-accents-secondary-foreground"
+        "--theme-accents-secondary-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -8625,9 +8804,11 @@
         "--theme-text-secondary",
         "--theme-text-on-media",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-on-media",
         "--theme-text-on-media",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -8724,7 +8905,8 @@
         "--theme-accents-primary-foreground",
         "--font-display",
         "--theme-borders-default",
-        "--theme-text-subtle"
+        "--theme-text-subtle",
+        "--type-micro"
       ]
     },
     {
@@ -8969,7 +9151,9 @@
         "--theme-surfaces-interactive",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
         "--theme-entities-npc-foreground",
@@ -9009,7 +9193,8 @@
       ],
       "variableDefinitions": [],
       "variableReferences": [
-        "--theme-accents-primary-foreground"
+        "--theme-accents-primary-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -9026,12 +9211,15 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-media-overlay-strong",
+        "--type-micro",
         "--theme-text-on-media",
+        "--type-micro",
         "--theme-feedback-danger-strong",
         "--theme-feedback-danger-on-strong",
         "--theme-feedback-success-strong",
@@ -9058,6 +9246,7 @@
         "--theme-shapes-radius-small",
         "--theme-surfaces-interactive",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-canvas-toolbar-border",
         "--theme-canvas-minimap-background"
       ]
@@ -9088,14 +9277,17 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
         "--theme-surfaces-interactive",
         "--theme-text-primary",
         "--theme-borders-default",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
-        "--theme-surfaces-interactive"
+        "--theme-surfaces-interactive",
+        "--type-micro"
       ]
     },
     {
@@ -9120,7 +9312,8 @@
         "--theme-accents-primary-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-warning-foreground",
-        "--theme-accents-primary-foreground"
+        "--theme-accents-primary-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -9146,7 +9339,8 @@
         "--theme-text-primary",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-warning-foreground",
-        "--theme-accents-primary-foreground"
+        "--theme-accents-primary-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -9166,8 +9360,10 @@
         "--theme-surfaces-base",
         "--theme-shadows-large",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
         "--theme-surfaces-interactive",
@@ -9177,6 +9373,7 @@
         "--theme-surfaces-base",
         "--theme-shadows-large",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default"
       ]
     },
@@ -9203,12 +9400,19 @@
         "--theme-shapes-radius-medium",
         "--theme-text-on-media",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-feedback-danger-foreground",
         "--theme-text-secondary",
+        "--type-micro",
         "--item-color",
+        "--type-micro",
         "--theme-text-secondary",
-        "--theme-text-secondary"
+        "--type-micro",
+        "--type-micro",
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -9381,6 +9585,7 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
@@ -9467,6 +9672,7 @@
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-text-secondary"
       ]
     },
@@ -9512,6 +9718,7 @@
         "--theme-text-on-media",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-text-on-media",
         "--theme-feedback-danger-foreground",
@@ -9566,6 +9773,7 @@
       ],
       "variableDefinitions": [],
       "variableReferences": [
+        "--type-micro",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
         "--theme-feedback-success-foreground",
@@ -9576,6 +9784,7 @@
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-on-media",
         "--theme-text-primary",
         "--theme-text-on-media",
@@ -9657,6 +9866,7 @@
       "variableReferences": [
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
+        "--type-micro",
         "--theme-feedback-success-foreground",
         "--theme-text-on-media",
         "--theme-text-on-media",
@@ -9671,9 +9881,13 @@
         "--theme-accents-primary-foreground",
         "--theme-feedback-danger-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-text-on-media",
@@ -9686,6 +9900,7 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-text-on-media",
@@ -9737,6 +9952,7 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
@@ -9744,6 +9960,7 @@
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-text-primary",
@@ -9753,6 +9970,7 @@
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
@@ -9838,12 +10056,15 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
-        "--theme-text-primary"
+        "--theme-text-primary",
+        "--type-micro"
       ]
     },
     {
@@ -9887,7 +10108,8 @@
         "--theme-surfaces-canvas",
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
-        "--theme-activity-system-foreground"
+        "--theme-activity-system-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -9966,6 +10188,7 @@
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
@@ -9994,6 +10217,7 @@
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-on-media",
@@ -10023,23 +10247,29 @@
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-on-media",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary"
       ]
     },
@@ -10055,12 +10285,16 @@
       ],
       "variableDefinitions": [],
       "variableReferences": [
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-on-media",
         "--theme-text-on-media",
         "--theme-text-secondary",
@@ -10080,6 +10314,7 @@
         "--theme-accents-primary-foreground",
         "--theme-surfaces-canvas",
         "--theme-accents-primary-foreground",
+        "--type-micro",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground"
       ]
@@ -10299,6 +10534,7 @@
         "--theme-activity-fact-foreground",
         "--theme-activity-fact-foreground",
         "--theme-borders-default",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-text-secondary"
@@ -10327,6 +10563,7 @@
         "--theme-surfaces-raised",
         "--theme-shapes-radius-small",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-media-overlay-strong",
         "--theme-text-on-media"
       ]
@@ -10354,6 +10591,7 @@
         "--theme-borders-default",
         "--theme-feedback-danger-foreground",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-surfaces-raised",
         "--theme-borders-default",
@@ -10407,6 +10645,7 @@
         "--space-1",
         "--space-3",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-feedback-danger-foreground",
         "--theme-feedback-danger-background",
         "--theme-feedback-warning-foreground",
@@ -10452,6 +10691,7 @@
         "--theme-shadows-medium",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-activity-system-foreground",
         "--theme-accents-primary-foreground",
         "--theme-activity-system-foreground",
@@ -10644,11 +10884,14 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-subtle",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -10671,6 +10914,7 @@
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-shapes-radius-pill",
         "--theme-text-on-media",
         "--theme-accents-secondary-foreground",
@@ -10742,7 +10986,8 @@
         "--theme-text-secondary",
         "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
-        "--theme-accents-secondary-foreground"
+        "--theme-accents-secondary-foreground",
+        "--type-micro"
       ]
     },
     {
@@ -10762,10 +11007,12 @@
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -10877,6 +11124,7 @@
         "--theme-shapes-radius-pill",
         "--theme-text-on-media",
         "--theme-text-on-media",
+        "--type-micro",
         "--theme-accents-secondary-foreground"
       ]
     },
@@ -11096,7 +11344,8 @@
         "--theme-shapes-radius-small",
         "--theme-surfaces-interactive",
         "--theme-text-secondary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -11136,7 +11385,8 @@
         "--theme-borders-subtle",
         "--space-3",
         "--space-1",
-        "--theme-text-subtle"
+        "--theme-text-subtle",
+        "--type-micro"
       ]
     },
     {
@@ -11250,7 +11500,7 @@
       "path": "src/frontend/shared/styles/foundation/structural-tokens.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 20,
+      "lineCount": 34,
       "selectorCount": 1,
       "imports": [],
       "importedBy": [
@@ -11260,6 +11510,17 @@
         "--font-display",
         "--font-sans",
         "--font-mono",
+        "--type-micro",
+        "--type-caption",
+        "--type-control",
+        "--type-body",
+        "--type-body-comfortable",
+        "--type-heading-sm",
+        "--type-heading-md",
+        "--type-heading-lg",
+        "--line-compact",
+        "--line-ui",
+        "--line-reading",
         "--space-1",
         "--space-2",
         "--space-3",
@@ -11273,6 +11534,19 @@
         "--touch-target-min",
         "--app-footer-height"
       ],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/foundation/utilities.css",
+      "layer": "foundation",
+      "domain": "shared",
+      "lineCount": 27,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
       "variableReferences": []
     },
     {
@@ -11990,6 +12264,24 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/shared/styles/layout/adaptive-grid.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 22,
+      "selectorCount": 4,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [
+        "--adaptive-min",
+        "--adaptive-min"
+      ],
+      "variableReferences": [
+        "--adaptive-min"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/layout/admin-shell.css",
       "layer": "layout",
       "domain": "shared",
@@ -12025,7 +12317,7 @@
       "path": "src/frontend/shared/styles/layout/app-shell.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 118,
+      "lineCount": 120,
       "selectorCount": 17,
       "imports": [],
       "importedBy": [
@@ -12077,6 +12369,7 @@
         "--theme-shapes-radius-medium",
         "--theme-borders-default",
         "--theme-shapes-radius-small",
+        "--type-micro",
         "--transition-fast",
         "--theme-text-secondary",
         "--font-sans",
@@ -12130,7 +12423,8 @@
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--type-micro"
       ]
     },
     {
@@ -12157,6 +12451,7 @@
         "--theme-surfaces-canvas",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-text-primary",
@@ -12264,6 +12559,7 @@
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-activity-system-foreground",
         "--theme-accents-primary-background",
         "--theme-text-primary"
@@ -12289,8 +12585,10 @@
         "--theme-surfaces-base",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-surfaces-interactive-hover",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-borders-default",
         "--theme-surfaces-subtle",
         "--theme-text-primary",
@@ -12365,11 +12663,13 @@
         "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-shapes-radius-pill",
         "--theme-activity-system-foreground",
         "--theme-accents-primary-background",
         "--theme-activity-system-foreground",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-shapes-radius-pill",
         "--theme-borders-default",
@@ -12402,6 +12702,7 @@
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-surfaces-canvas",
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-base",
@@ -12412,6 +12713,7 @@
         "--theme-text-secondary",
         "--theme-shapes-radius-small",
         "--theme-text-secondary",
+        "--type-micro",
         "--theme-text-primary",
         "--theme-text-primary",
         "--theme-text-primary",
@@ -12424,6 +12726,19 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 26,
+      "selectorCount": 5,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/styles/layout/master-detail.css",
+      "layer": "layout",
+      "domain": "shared",
+      "lineCount": 34,
       "selectorCount": 5,
       "imports": [],
       "importedBy": [
@@ -12454,6 +12769,7 @@
         "--font-display",
         "--theme-accents-primary-foreground",
         "--theme-accents-secondary-foreground",
+        "--type-micro",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-shapes-radius-medium",
@@ -12595,8 +12911,8 @@
       "path": "src/frontend/shared/styles/layout/workspace/workspace-notebook-items.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 62,
-      "selectorCount": 10,
+      "lineCount": 70,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/workspace.css"
@@ -12604,12 +12920,14 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-primary",
+        "--type-micro",
         "--theme-text-on-media",
         "--notebook-item-accent",
         "--theme-text-secondary",
         "--notebook-item-accent",
         "--theme-text-secondary",
         "--theme-text-subtle",
+        "--type-micro",
         "--theme-text-subtle",
         "--theme-text-primary"
       ]
@@ -12698,6 +13016,7 @@
       "variableDefinitions": [],
       "variableReferences": [
         "--theme-text-subtle",
+        "--type-micro",
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-text-subtle",
@@ -12735,6 +13054,7 @@
       "variableReferences": [
         "--theme-text-primary",
         "--theme-text-subtle",
+        "--type-micro",
         "--theme-surfaces-base",
         "--theme-borders-default",
         "--theme-text-subtle",
@@ -12757,7 +13077,7 @@
       "path": "src/frontend/shared/styles/layout/workspace/workspace-shell.css",
       "layer": "layout",
       "domain": "shared",
-      "lineCount": 80,
+      "lineCount": 82,
       "selectorCount": 10,
       "imports": [],
       "importedBy": [
@@ -12843,7 +13163,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 35,
+      "lineCount": 38,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -12852,6 +13172,7 @@
         "src/frontend/shared/styles/foundation/reset.css",
         "src/frontend/shared/styles/foundation/accessibility.css",
         "src/frontend/shared/styles/foundation/motion.css",
+        "src/frontend/shared/styles/foundation/utilities.css",
         "src/frontend/shared/styles/primitives/button.css",
         "src/frontend/shared/styles/primitives/form-control.css",
         "src/frontend/shared/styles/primitives/badge.css",
@@ -12874,6 +13195,8 @@
         "src/frontend/shared/styles/layout/footer.css",
         "src/frontend/shared/styles/layout/admin-shell.css",
         "src/frontend/shared/styles/layout/responsive.css",
+        "src/frontend/shared/styles/layout/adaptive-grid.css",
+        "src/frontend/shared/styles/layout/master-detail.css",
         "src/frontend/shared/styles/vendor/react-flow.css",
         "src/frontend/account/account.css"
       ],
@@ -12995,6 +13318,37 @@
         "--theme-borders-overlay",
         "--theme-shadows-overlay",
         "--theme-surfaces-overlay"
+      ]
+    },
+    {
+      "path": "src/frontend/shared/styles/primitives/compact-empty-state.css",
+      "layer": "primitive",
+      "domain": "shared",
+      "lineCount": 75,
+      "selectorCount": 13,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/components/CompactEmptyState.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-surfaces-sunken",
+        "--theme-text-secondary",
+        "--theme-status-success-border",
+        "--theme-borders-default",
+        "--theme-status-success-text",
+        "--theme-text-secondary",
+        "--theme-status-warning-border",
+        "--theme-borders-default",
+        "--theme-status-warning-text",
+        "--theme-text-secondary",
+        "--theme-text-subtle",
+        "--type-heading-sm",
+        "--theme-text-primary",
+        "--type-caption",
+        "--type-control",
+        "--touch-target-min"
       ]
     },
     {
@@ -15954,7 +16308,7 @@
       "id": "important:src/frontend/dm/map/network/network-flow/network-flow-responsive.css:!important",
       "path": "src/frontend/dm/map/network/network-flow/network-flow-responsive.css",
       "line": 57,
-      "column": 22,
+      "column": 32,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -15978,7 +16332,7 @@
       "id": "important:src/frontend/dm/map/network/network-flow/network-flow-responsive.css:!important",
       "path": "src/frontend/dm/map/network/network-flow/network-flow-responsive.css",
       "line": 65,
-      "column": 22,
+      "column": 32,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -16752,6 +17106,9 @@
     "src/frontend/shared/components/CampaignMessagingPanel.tsx": [
       "src/frontend/shared/styles/features/campaign-messaging.css"
     ],
+    "src/frontend/shared/components/CompactEmptyState.tsx": [
+      "src/frontend/shared/styles/primitives/compact-empty-state.css"
+    ],
     "src/frontend/shared/components/EntityImageReframeDialog.tsx": [
       "src/frontend/shared/components/entityImageReframeDialog.css"
     ],
@@ -16974,6 +17331,7 @@
       "src/frontend/shared/styles/foundation/reset.css",
       "src/frontend/shared/styles/foundation/accessibility.css",
       "src/frontend/shared/styles/foundation/motion.css",
+      "src/frontend/shared/styles/foundation/utilities.css",
       "src/frontend/shared/styles/primitives/button.css",
       "src/frontend/shared/styles/primitives/form-control.css",
       "src/frontend/shared/styles/primitives/badge.css",
@@ -16996,6 +17354,8 @@
       "src/frontend/shared/styles/layout/footer.css",
       "src/frontend/shared/styles/layout/admin-shell.css",
       "src/frontend/shared/styles/layout/responsive.css",
+      "src/frontend/shared/styles/layout/adaptive-grid.css",
+      "src/frontend/shared/styles/layout/master-detail.css",
       "src/frontend/shared/styles/vendor/react-flow.css",
       "src/frontend/account/account.css"
     ],
