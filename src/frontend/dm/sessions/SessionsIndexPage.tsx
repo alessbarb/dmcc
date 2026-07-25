@@ -18,8 +18,8 @@ function formatSessionCardTitle(
   t: (key: string, params?: Record<string, string | number>) => string,
 ): string {
   if (!session.number) return session.title;
-  const autoTitle = t("session.sessionNumber", { number: session.number });
-  if (session.title === autoTitle) return session.title;
+  const autoTitlePrefix = t("session.sessionNumber", { number: session.number });
+  if (session.title.startsWith(autoTitlePrefix)) return session.title;
   return `#${session.number} ${session.title}`;
 }
 
