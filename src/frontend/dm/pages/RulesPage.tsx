@@ -59,6 +59,8 @@ export function RulesPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
+  const detailRef = useRef<HTMLElement | null>(null);
+  const itemRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   useEffect(() => {
     const controller = new AbortController();
@@ -136,7 +138,22 @@ export function RulesPage() {
   useEffect(() => {
     if (!targetRuleId || selectedRule?.id !== targetRuleId) return;
     window.history.replaceState(null, "", window.location.pathname);
+    detailRef.current?.focus();
   }, [selectedRule, targetRuleId]);
+
+  function handleListKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    if (rules.length === 0) return;
+    event.preventDefault();
+    const currentIndex = selectedRule
+      ? rules.findIndex((rule) => rule.id === selectedRule.id)
+      : -1;
+    const delta = event.key === "ArrowDown" ? 1 : -1;
+    const nextIndex = (currentIndex + delta + rules.length) % rules.length;
+    const nextRule = rules[nextIndex];
+    setSelectedRule(nextRule);
+    itemRefs.current.get(nextRule.id)?.focus();
+  }
 
   return (
     <div className="rules-page">
@@ -171,7 +188,12 @@ export function RulesPage() {
             </select>
           </label>
 
-          <div className="rules-list" role="listbox" aria-label={t("rules.selectRule")}>
+          <div
+            className="rules-list"
+            role="listbox"
+            aria-label={t("rules.selectRule")}
+            onKeyDown={handleListKeyDown}
+          >
             {loading ? (
               <div className="rules-page__list-state" aria-live="polite">
                 {t("rules.loadingRules")}
@@ -184,9 +206,14 @@ export function RulesPage() {
                 return (
                   <button
                     key={rule.id}
+                    ref={(node) => {
+                      if (node) itemRefs.current.set(rule.id, node);
+                      else itemRefs.current.delete(rule.id);
+                    }}
                     type="button"
                     role="option"
                     aria-selected={active}
+                    tabIndex={active ? 0 : -1}
                     onClick={() => setSelectedRule(rule)}
                     className="rules-list__item"
                   >
@@ -208,7 +235,7 @@ export function RulesPage() {
           </div>
         </aside>
 
-        <main className="rules-detail card" tabIndex={-1}>
+        <main className="rules-detail card" tabIndex={-1} ref={detailRef}>
           {error && <p role="alert" className="rules-page__error">{error}</p>}
           {selectedRule ? (
             <article className="rules-page__article" aria-labelledby="selected-rule-title">

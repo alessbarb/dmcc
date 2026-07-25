@@ -1,7 +1,7 @@
 .rules-layout {
   min-height: min(720px, calc(100dvh - 220px));
   display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
   gap: var(--space-5);
 }
 
