@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { Eye, EyeOff, RefreshCw, Search, User, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../../../shared/api/apiClient.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
 
 interface KnowledgeItem {
   targetType: "entity" | "fact" | "relation" | "clue" | "objective";
@@ -24,8 +26,19 @@ interface KnowledgeProjection {
   targets: Array<Omit<KnowledgeItem, "visible" | "reason">>;
 }
 
+const REASON_LABEL_KEYS: Record<KnowledgeItem["reason"], string> = {
+  public: "playerKnowledge.reasonPublic",
+  all_players: "playerKnowledge.reasonAllPlayers",
+  specific_player: "playerKnowledge.reasonSpecificPlayer",
+  specific_user: "playerKnowledge.reasonSpecificPlayer",
+  linked_character: "playerKnowledge.reasonLinkedCharacter",
+  hidden: "playerKnowledge.reasonHidden",
+};
+
 export function PlayerKnowledgeView() {
   const { t } = useTranslation();
+  const { campaignId } = useParams({ strict: false }) as { campaignId: string };
+  const navigate = useNavigate();
   const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
   const [projection, setProjection] = useState<KnowledgeProjection | null>(null);
   const [loading, setLoading] = useState(true);
@@ -81,7 +94,9 @@ export function PlayerKnowledgeView() {
     <div className="people-knowledge-view">
       <header className="people-knowledge-toolbar surface-panel">
         <div className="people-knowledge-toolbar__copy">
-          <p className="people-section-eyebrow">{projection?.targets.length ?? 0}</p>
+          {(projection?.players.length ?? 0) > 0 && (
+            <p className="people-section-eyebrow">{projection?.targets.length ?? 0}</p>
+          )}
           <h2>{t("playerKnowledge.title")}</h2>
           <p>{t("playerKnowledge.subtitle")}</p>
         </div>
@@ -93,10 +108,20 @@ export function PlayerKnowledgeView() {
       {error && <div className="people-inline-error surface-panel" role="alert">{error}</div>}
 
       {!error && (projection?.players.length ?? 0) === 0 ? (
-        <section className="people-empty-state empty-state--ornamented surface-panel">
-          <Users size={34} aria-hidden="true" />
-          <h3>{t("playerKnowledge.noPlayers")}</h3>
-        </section>
+        <CompactEmptyState
+          icon={<Users size={34} aria-hidden="true" />}
+          title={t("playerKnowledge.noPlayers")}
+          description={t("playerKnowledge.noPlayersDescription")}
+          size="standard"
+          primaryAction={{
+            label: t("players.addPlayer"),
+            onClick: () => void navigate({ to: `/campaigns/${campaignId}/people/group` }),
+          }}
+          secondaryAction={{
+            label: t("players.generateInvitation"),
+            onClick: () => void navigate({ to: `/campaigns/${campaignId}/people/invitations` }),
+          }}
+        />
       ) : !error && (
         <>
           <div className="people-knowledge-filters">
@@ -151,11 +176,11 @@ export function PlayerKnowledgeView() {
                       {projection?.players.map((player) => {
                         const item = knowledgeByPlayer.get(player.playerId)?.get(`${target.targetType}:${target.targetId}`);
                         const visible = Boolean(item?.visible);
-                        const label = visible ? t("playerKnowledge.visible") : t("playerKnowledge.hidden");
+                        const reasonLabel = t(item ? REASON_LABEL_KEYS[item.reason] : "playerKnowledge.reasonHidden");
                         return (
-                          <td key={player.playerId} title={label}>
+                          <td key={player.playerId} title={reasonLabel}>
                             <span className={`people-knowledge-cell ${visible ? "is-visible" : "is-hidden"}`}>
-                              {visible ? <Eye size={17} aria-label={label} /> : <EyeOff size={17} aria-label={label} />}
+                              {visible ? <Eye size={17} aria-label={reasonLabel} /> : <EyeOff size={17} aria-label={reasonLabel} />}
                             </span>
                           </td>
                         );
