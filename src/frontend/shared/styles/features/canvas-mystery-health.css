@@ -71,5 +71,5 @@
   background: transparent;
   color: var(--theme-accents-primary-foreground);
   cursor: pointer;
-  font-size: 10px;
+  font-size: var(--type-micro);
 }

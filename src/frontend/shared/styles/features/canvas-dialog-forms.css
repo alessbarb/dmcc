@@ -51,7 +51,7 @@
 }
 
 .canvas-dialog-help {
-  font-size: 11px;
+  font-size: var(--type-micro);
 }
 
 .canvas-dialog-field-stack {

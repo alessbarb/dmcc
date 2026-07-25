@@ -14,7 +14,7 @@
   background: var(--theme-surfaces-interactive);
   color: var(--theme-text-primary);
   cursor: pointer;
-  font-size: 11px;
+  font-size: var(--type-micro);
   font-weight: 600;
 }
 

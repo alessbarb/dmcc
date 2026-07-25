@@ -52,7 +52,7 @@
   border-radius: 99px;
   background: color-mix(in srgb, var(--rg-accent) 85%, var(--theme-surfaces-canvas));
   color: var(--theme-text-on-media);
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -103,7 +103,7 @@
 }
 
 .rg-card__sub {
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   color: var(--theme-text-secondary);
   line-height: 1.3;
   display: -webkit-box;
@@ -120,7 +120,7 @@
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;

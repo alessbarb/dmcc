@@ -37,7 +37,7 @@
     border-radius: 11px;
     background: var(--theme-surfaces-interactive);
     color: var(--theme-text-primary);
-    font-size: 0.74rem;
+    font-size: var(--type-micro);
   }
 
   .canvas-page-container .canvas-header-bar {

@@ -85,7 +85,7 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
   };
 
   return (
-    <aside className={["canvas-navigator-panel", className].filter(Boolean).join(" ")} aria-label={t("canvas.navigator.title")}>
+    <aside className={["canvas-navigator-panel canvas-navigator", className].filter(Boolean).join(" ")} aria-label={t("canvas.navigator.title")}>
       <div className="canvas-navigator-panel__header">
         <h2>{t("canvas.navigator.title")}</h2>
         {onMobileClose && (

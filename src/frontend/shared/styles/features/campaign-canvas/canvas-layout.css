@@ -111,7 +111,7 @@
 }
 
 .palette-drag-hint {
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 400;
   opacity: 0.5;
   font-style: italic;
@@ -190,7 +190,7 @@
 
 .canvas-navigator-section h3 {
   color: var(--theme-text-secondary);
-  font-size: 0.68rem;
+  font-size: var(--type-micro);
   font-weight: 800;
   letter-spacing: 0.1em;
   margin: 4px 0 0;
