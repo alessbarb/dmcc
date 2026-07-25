@@ -41,13 +41,13 @@ export function DmHubTopBar({
   return (
     <PortalTopBar actions={
       <div className="dm-hub-topbar-actions">
-        <button type="button" className="dm-topbar-ghost-btn" onClick={onAddDm}>
+        <button type="button" className="dm-topbar-ghost-btn dm-topbar-ghost-btn--collapsible" onClick={onAddDm}>
           <UserPlus size={13} />
-          {t("nav.addDm")}
+          <span>{t("nav.addDm")}</span>
         </button>
-        <button type="button" className="dm-topbar-ghost-btn" onClick={onSwitchDm}>
+        <button type="button" className="dm-topbar-ghost-btn dm-topbar-ghost-btn--collapsible" onClick={onSwitchDm}>
           <UserRound size={13} />
-          {t("nav.switchDm")}
+          <span>{t("nav.switchDm")}</span>
         </button>
 
         <div ref={dropdownRef} className="dm-hub-topbar-user-menu">
@@ -66,6 +66,22 @@ export function DmHubTopBar({
                 <p className="dm-user-dropdown__name">{dmDisplayName}</p>
                 <p className="dm-user-dropdown__email">{dmProfile?.email}</p>
               </div>
+              <button
+                type="button"
+                className="dm-user-dropdown__item dm-user-dropdown__item--collapsible-only"
+                onClick={() => { closeDropdown(); onAddDm(); }}
+              >
+                <UserPlus size={13} />
+                {t("nav.addDm")}
+              </button>
+              <button
+                type="button"
+                className="dm-user-dropdown__item dm-user-dropdown__item--collapsible-only"
+                onClick={() => { closeDropdown(); onSwitchDm(); }}
+              >
+                <UserRound size={13} />
+                {t("nav.switchDm")}
+              </button>
               <button
                 type="button"
                 className="dm-user-dropdown__item"

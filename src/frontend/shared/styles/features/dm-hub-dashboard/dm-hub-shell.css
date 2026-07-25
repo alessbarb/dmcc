@@ -48,7 +48,7 @@
   border-radius: 6px;
   padding: 5px 12px;
   color: var(--theme-text-secondary);
-  font-size: 0.78rem;
+  font-size: var(--type-control);
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
 }
@@ -128,6 +128,30 @@
 
 .dm-user-dropdown__item--danger {
   color: var(--theme-feedback-danger-foreground);
+}
+
+.dm-user-dropdown__item--collapsible-only {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .dm-topbar-ghost-btn--collapsible span {
+    display: none;
+  }
+
+  .dm-topbar-ghost-btn--collapsible {
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dm-topbar-ghost-btn--collapsible {
+    display: none;
+  }
+
+  .dm-user-dropdown__item--collapsible-only {
+    display: flex;
+  }
 }
 
 .dm-user-dropdown__divider {
