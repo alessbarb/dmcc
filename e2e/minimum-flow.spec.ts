@@ -171,7 +171,7 @@ test.describe("Minimum release web API flow", () => {
     const liveTableResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/live-tables`, commandRequestOptions({ durationHours: 1 })), 201);
     expect(liveTableResult.liveTable.shortCode).toMatch(/^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/);
 
-    const playerRequest = await playwrightRequest.newContext({ baseURL: "http://127.0.0.1:4877" });
+    const playerRequest = await playwrightRequest.newContext({ baseURL: "http://127.0.0.1:4887" });
     try {
       await registerAndLogin(playerRequest, playerAccount);
 
