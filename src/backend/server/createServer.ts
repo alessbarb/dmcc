@@ -142,10 +142,10 @@ export function buildHelmetConfig(nodeEnv = process.env.NODE_ENV): Parameters<ty
     enableCSPNonces: true,
     hsts: isProduction
       ? {
-          maxAge: 31536000,
-          includeSubDomains: true,
-          preload: true,
-        }
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
+      }
       : false,
     contentSecurityPolicy: {
       directives: {
@@ -262,20 +262,49 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const explicitPublicPath = process.env.DMCC_PUBLIC_DIR;
+
+  const explicitPublicPath = process.env.DMCC_PUBLIC_DIR
+    ? resolve(process.env.DMCC_PUBLIC_DIR)
+    : undefined;
+
+  const sourcePublicPath = resolve(process.cwd(), "public");
+  const builtPublicPath = resolve(process.cwd(), "dist/public");
+
   const publicPathCandidates = [
-    explicitPublicPath ? resolve(explicitPublicPath) : null,
-    resolve(process.cwd(), "dist/public"),
+    explicitPublicPath,
+    builtPublicPath,
     resolve(__dirname, "../../../public"),
     resolve(__dirname, "../../public"),
     resolve(__dirname, "../public"),
   ].filter((candidate): candidate is string => Boolean(candidate));
-  const publicPath = process.env.NODE_ENV === "test" && !explicitPublicPath
-    ? undefined
-    : publicPathCandidates.find((candidate) => existsSync(join(candidate, "index.html")));
-  const publicAssetsPath = process.env.NODE_ENV === "test" && !explicitPublicPath
-    ? undefined
-    : publicPathCandidates.find((candidate) => existsSync(join(candidate, "assets")));
+
+  const publicPath =
+    process.env.NODE_ENV === "test" && !explicitPublicPath
+      ? undefined
+      : publicPathCandidates.find((candidate) =>
+        existsSync(join(candidate, "index.html")),
+      );
+
+  const publicAssetsCandidates =
+    process.env.NODE_ENV === "production"
+      ? [
+        explicitPublicPath,
+        builtPublicPath,
+        sourcePublicPath,
+      ]
+      : [
+        explicitPublicPath,
+        sourcePublicPath,
+        builtPublicPath,
+      ];
+
+  const publicAssetsPath =
+    process.env.NODE_ENV === "test" && !explicitPublicPath
+      ? undefined
+      : publicAssetsCandidates
+        .filter((candidate): candidate is string => Boolean(candidate))
+        .find((candidate) => existsSync(join(candidate, "assets")));
+
   const hasBuiltSpa = Boolean(publicPath);
 
   async function sendSpaIndex(reply: FastifyReply): Promise<string> {
