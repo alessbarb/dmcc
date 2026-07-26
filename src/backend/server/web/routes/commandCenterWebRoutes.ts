@@ -61,6 +61,27 @@ export async function registerCommandCenterWebRoutes(server: FastifyInstance): P
       const pendingProposals = proposals.filter(
         (proposal) => proposal.status === "submitted" || proposal.status === "draft",
       );
+      const narrativeState = {
+        secrets: {
+          hidden: hiddenSecrets.filter((fact) => fact.status !== "revealed").length,
+          revealed: facts.filter(
+            (fact) => fact.kind === "dm_secret" && fact.status === "revealed",
+          ).length,
+          archived: facts.filter(
+            (fact) => fact.kind === "dm_secret" && fact.status === "archived",
+          ).length,
+        },
+        clues: {
+          unresolved: unresolvedClues.length,
+          revealed: clues.filter((clue) => clue.status === "revealed").length,
+          archived: clues.filter((clue) => clue.status === "archived").length,
+        },
+        objectives: {
+          open: openObjectives.filter((objective) => objective.status !== "blocked").length,
+          blocked: openObjectives.filter((objective) => objective.status === "blocked").length,
+          completed: objectives.filter((objective) => objective.status === "completed").length,
+        },
+      };
 
       return {
         campaign,
@@ -95,6 +116,7 @@ export async function registerCommandCenterWebRoutes(server: FastifyInstance): P
           proposals: proposals.length,
           hiddenSecrets: hiddenSecrets.length,
         },
+        narrativeState,
         openObjectives: openObjectives.slice(0, 12),
         unresolvedClues: unresolvedClues.slice(0, 12),
         pendingProposals: pendingProposals.slice(0, 12),

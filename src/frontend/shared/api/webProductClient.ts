@@ -173,6 +173,12 @@ export interface CommandCenterCampaignSummary {
   updatedAt?: string;
 }
 
+export interface CommandCenterNarrativeState {
+  secrets: { hidden: number; revealed: number; archived: number };
+  clues: { unresolved: number; revealed: number; archived: number };
+  objectives: { open: number; blocked: number; completed: number };
+}
+
 export interface CommandCenterResponse {
   campaign?: CommandCenterCampaignSummary;
   recap: string | null;
@@ -189,6 +195,7 @@ export interface CommandCenterResponse {
     proposals: number;
     hiddenSecrets: number;
   };
+  narrativeState?: CommandCenterNarrativeState;
   openObjectives: Record<string, unknown>[];
   unresolvedClues: Record<string, unknown>[];
   pendingProposals: Record<string, unknown>[];
@@ -239,11 +246,55 @@ async function readJson<T>(response: Response, fallback: string): Promise<T> {
   return data as T;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return isRecord(value) ? value : {};
+}
+
+function asCount(value: unknown): number {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0 ? value : 0;
+}
+
+function normalizeNarrativeState(value: unknown): CommandCenterNarrativeState {
+  const state = asRecord(value);
+  const secrets = asRecord(state.secrets);
+  const clues = asRecord(state.clues);
+  const objectives = asRecord(state.objectives);
+  return {
+    secrets: {
+      hidden: asCount(secrets.hidden),
+      revealed: asCount(secrets.revealed),
+      archived: asCount(secrets.archived),
+    },
+    clues: {
+      unresolved: asCount(clues.unresolved),
+      revealed: asCount(clues.revealed),
+      archived: asCount(clues.archived),
+    },
+    objectives: {
+      open: asCount(objectives.open),
+      blocked: asCount(objectives.blocked),
+      completed: asCount(objectives.completed),
+    },
+  };
+}
+
+export function normalizeCommandCenterResponse(response: CommandCenterResponse): CommandCenterResponse {
+  return {
+    ...response,
+    narrativeState: normalizeNarrativeState(response.narrativeState),
+  };
+}
+
 export async function getCommandCenter(campaignId: string): Promise<CommandCenterResponse> {
-  return readJson(
+  const response = await readJson<CommandCenterResponse>(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/command-center`),
     "No se pudo cargar el Command Center",
   );
+  return normalizeCommandCenterResponse(response);
 }
 
 export async function searchRules(

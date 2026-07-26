@@ -44,6 +44,31 @@ describe("webProductClient contracts", () => {
 
     expect(result.campaign?.campaignId).toBe("cmp_1");
     expect(result.counts.entities).toBe(1);
+    expect(result.narrativeState).toEqual({
+      secrets: { hidden: 0, revealed: 0, archived: 0 },
+      clues: { unresolved: 0, revealed: 0, archived: 0 },
+      objectives: { open: 0, blocked: 0, completed: 0 },
+    });
+  });
+
+  it("normalizes malformed narrative aggregates to non-negative counts", async () => {
+    const payload = {
+      counts: {},
+      narrativeState: {
+        secrets: { hidden: -4, revealed: "2", archived: 1 },
+        clues: null,
+      objectives: { open: 3.5, blocked: Number.NaN, completed: 2 },
+      },
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse(payload)));
+
+    const result = await getCommandCenter("cmp_1");
+
+    expect(result.narrativeState).toEqual({
+      secrets: { hidden: 0, revealed: 0, archived: 1 },
+      clues: { unresolved: 0, revealed: 0, archived: 0 },
+      objectives: { open: 0, blocked: 0, completed: 2 },
+    });
   });
 
   it("getCommandCenter throws a descriptive error when the request fails", async () => {
