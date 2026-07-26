@@ -107,6 +107,10 @@ export function InvitationsView() {
   const [newInviteExpiresAt, setNewInviteExpiresAt] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  const totalUses = invitations.reduce((sum, inv) => sum + inv.usesCount, 0);
+  const activeCount = invitations.filter((inv) => inv.status === "active").length;
+  const inactiveCount = invitations.length - activeCount;
+
   const fetchInvitations = useCallback(async () => {
     if (!activeCampaignId) return;
     try {
@@ -199,6 +203,24 @@ export function InvitationsView() {
           {inviteLoading ? t("players.creatingInvitation") : t("players.createInvitationLink")}
         </button>
       </section>
+
+      {invitations.length > 0 && (
+        <div className="card people-invitations-summary" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px", padding: "12px 16px" }} aria-live="polite">
+          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
+            {t("boards.total")}: <strong>{invitations.length}</strong>
+          </span>
+          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
+            {t("players.invitationStatusActive")}: <strong style={{ color: "var(--theme-accents-primary-foreground)" }}>{activeCount}</strong>
+          </span>
+          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
+            {t("players.invitationStatusRevoked")} / {t("players.invitationStatusExpired")}: <strong>{inactiveCount}</strong>
+          </span>
+          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "6px" }}>
+            <Users size={14} aria-hidden="true" />
+            {t("campaignShell.nav.players")}: <strong>{totalUses}</strong>
+          </span>
+        </div>
+      )}
 
       {invitationError && <div className="people-inline-error surface-panel" role="alert">{invitationError}</div>}
 
