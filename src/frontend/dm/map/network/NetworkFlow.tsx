@@ -24,6 +24,7 @@ import { buildNetworkModel, resolveNetworkFocus } from "./buildNetworkModel.js";
 import type { NetworkLayoutPreset } from "./computeNetworkLayout.js";
 import { computeNetworkLayout } from "./computeNetworkLayout.js";
 import { findNetworkPath } from "./findNetworkPath.js";
+import { computeNetworkFitZoomCap } from "./computeNetworkFitZoomCap.js";
 import { NetworkRelationEdge } from "./NetworkRelationEdge.js";
 
 const nodeTypes = {
@@ -190,10 +191,15 @@ function NetworkFlowInner() {
   useEffect(() => {
     if (positions.size === 0 || !nodesInitialized) return;
     const timer = window.setTimeout(() => {
-      void fitView({ duration: 500, padding: explorerMode === "focus" ? 0.38 : 0.3, minZoom: 0.35, maxZoom: explorerMode === "focus" ? 0.9 : 0.55 });
+      void fitView({
+        duration: 500,
+        padding: explorerMode === "focus" ? 0.38 : 0.3,
+        minZoom: 0.35,
+        maxZoom: computeNetworkFitZoomCap(model.nodes.length, explorerMode === "focus" ? "focus" : "standard"),
+      });
     }, 80);
     return () => window.clearTimeout(timer);
-  }, [explorerMode, fitView, nodesInitialized, positions]);
+  }, [explorerMode, fitView, nodesInitialized, positions, model.nodes.length]);
 
   const narrativePath = useMemo(() => {
     if (!selectedEntityId || !pathTargetId || selectedEntityId === pathTargetId) return null;

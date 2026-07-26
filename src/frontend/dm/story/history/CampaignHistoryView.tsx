@@ -304,23 +304,26 @@ export function CampaignHistoryView() {
                           {t("campaignHistory.consecutiveEvents", { count: group.entries.length })}
                         </span>
                       </div>
-                      <p className="campaign-history-entry__description">
+                      <p className="campaign-history-entry__description">{config.description}</p>
+                      <p className="campaign-history-entry__grouped-note">
                         {t("campaignHistory.similarActivities", { count: group.entries.length, label: config.label })}
                       </p>
 
-                      <button
-                        type="button"
-                        className="btn btn-secondary btn-sm campaign-history-entry__toggle"
-                        onClick={() => toggleGroup(group.key)}
-                      >
-                        {isExpanded
-                          ? t("campaignHistory.hideDetails")
-                          : t("campaignHistory.showDetails", { count: group.entries.length })}
-                      </button>
+                      {group.entries.length > 1 && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm campaign-history-entry__toggle"
+                          onClick={() => toggleGroup(group.key)}
+                        >
+                          {isExpanded
+                            ? t("campaignHistory.hideDetails")
+                            : t("campaignHistory.showDetails", { count: group.entries.length - 1 })}
+                        </button>
+                      )}
 
                       {isExpanded && (
                         <div className="campaign-history-entry__group-children">
-                          {group.entries.map((childEntry) => {
+                          {group.entries.slice(1).map((childEntry) => {
                             const childConfig = getActivityVisualConfig(childEntry.type, childEntry.data, activityLocale);
                             const childSourceLabel = childEntry.sourceKind === "domain_event" ? "domain_event" : "operation";
                             return (

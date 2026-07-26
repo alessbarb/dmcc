@@ -309,6 +309,10 @@ export const es: TranslationDictionary = {
     exportMarkdown: "Exportar Markdown",
     pageTitle: "Ajustes y exportación",
     pageSubtitle: "Manage campaign backups and export your narrative data.",
+    campaignInfoTitle: "Campaña",
+    campaignInfoDescription: "Edita el nombre y el sistema de juego de la campaña.",
+    campaignInfoSaveSuccess: "Campaña actualizada.",
+    campaignInfoSaveError: "No se pudo actualizar la campaña.",
     backupsTitle: "Copias de seguridad de la campaña",
     backupsDescription:
       "Guarda capturas JSON locales. Estas copias contienen los registros históricos de eventos y metadatos de restauración.",
@@ -982,6 +986,20 @@ export const es: TranslationDictionary = {
     questsHelp: "cadenas de misión activas",
     criticalCluesHelp: "pistas críticas no reveladas",    untitled: "Sin título",
     currentState: "Estado actual de la campaña",
+    narrativeState: {
+      secrets: "Secretos",
+      clues: "Pistas",
+      objectives: "Objetivos",
+      status: {
+        hidden: "ocultos",
+        revealed: "revelados",
+        archived: "archivados",
+        unresolved: "sin resolver",
+        open: "abiertos",
+        blocked: "bloqueados",
+        completed: "completados",
+      },
+    },
     createdFromTemplate: "Creada desde {title} v{version}",
     noActiveCampaign: "Sin campaña activa",
     activeSession: "Sesión activa",
@@ -1106,6 +1124,8 @@ export const es: TranslationDictionary = {
     campaignMenuLabel: "Menú de campaña",
     closeCampaignMenuLabel: "Cerrar menú de campaña",
     mobileTools: "Herramientas",
+    screenSafeModeOn: "Modo seguro para compartir",
+    screenSafeModeOff: "Salir del modo seguro",
     mobileMore: "Más",
     mainNavigationLabel: "Navegación principal de campaña",
     currentContext: "Contexto actual de campaña",
@@ -1212,6 +1232,7 @@ export const es: TranslationDictionary = {
   notebooks: {
     title: "Cuadernos",
     emptyTree: "Todavía no hay cuadernos.",
+    emptyTreeDescription: "Crea un nuevo cuaderno para comenzar a organizar tu campaña.",
     noDescription: "Sin descripción.",
     items: "Elementos vinculados",
     emptyItems: "Todavía no hay elementos en este cuaderno.",
@@ -3173,8 +3194,11 @@ export const es: TranslationDictionary = {
   time: {
     secondsAgo: "hace unos segundos",
     minutesAgo: "hace {count} min",
+    hourAgo: "hace 1 hora",
     hoursAgo: "hace {count} horas",
+    dayAgo: "hace 1 día",
     daysAgo: "hace {count} días",
+    weekAgo: "hace 1 semana",
     weeksAgo: "hace {count} semanas"
   },
   activity: {

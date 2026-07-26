@@ -520,8 +520,12 @@ export function NotebooksView() {
           {rootNotebooks.length ? rootNotebooks.map((notebook) => renderNotebook(notebook)) : (
             <CompactEmptyState
               title={t("notebooks.emptyTree")}
-              description="Crea un nuevo cuaderno para comenzar a organizar tu campaña."
+              description={t("notebooks.emptyTreeDescription")}
               size="compact"
+              primaryAction={{
+                label: t("notebooks.actions.addRoot"),
+                onClick: () => { setIsCreatingRoot(true); setIsCreatingChild(false); setNewTitle(""); },
+              }}
             />
           )}
         </div>

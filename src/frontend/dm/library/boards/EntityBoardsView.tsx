@@ -4,6 +4,7 @@ import { markdownToPlainText } from "../../../shared/utils/markdownText.js";
 import "../../../shared/styles/features/kanban-board.css";
 import "../../../shared/styles/features/kanban.css";
 import "./entityBoards.css";
+import { sortBoardStatesByVolume } from "./sortBoardStatesByVolume.js";
 import {
   AlertTriangle,
   Archive,
@@ -395,9 +396,13 @@ export function EntityBoardsView() {
     labelKey: "boards.unknownStatus",
     color: "var(--theme-text-subtle)",
   };
-  const allVisibleStates = entitiesByStatus._unknown.length > 0
+  const statesWithUnknown = entitiesByStatus._unknown.length > 0
     ? [...board.states, unknownState]
     : board.states;
+  const stateCounts = Object.fromEntries(
+    statesWithUnknown.map((state) => [state.key, entitiesByStatus[state.key]?.length ?? 0]),
+  );
+  const allVisibleStates = sortBoardStatesByVolume(statesWithUnknown, stateCounts);
   const hasManyStates = board.states.length > 5;
   const nonEmptyStates = allVisibleStates.filter((state) => (entitiesByStatus[state.key]?.length ?? 0) > 0);
   const hiddenEmptyCount = allVisibleStates.length - nonEmptyStates.length;

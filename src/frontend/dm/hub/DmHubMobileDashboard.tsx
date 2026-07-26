@@ -16,7 +16,7 @@ export function DmHubMobileDashboard({ dmDisplayName, campaignsCount, activeTabl
     { id: "tables" as const, icon: <Activity size={18} />, title: t("landing.activeTablesNowTitle"), value: activeTablesCount > 0 ? t("landing.activeTablesNowCount", { count: String(activeTablesCount) }) : t("landing.noActiveTablesNow"), context: activeTableStatus },
     { id: "alerts" as const, icon: <Bell size={18} />, title: t("landing.alertsTitle"), value: alertsCount > 0 ? t("landing.alertCount", { count: String(alertsCount) }) : t("landing.noAlertsCompact"), context: null },
     { id: "activity" as const, icon: <Layers size={18} />, title: t("landing.recentActivityTitle"), value: recentActivitySummary ?? t("landing.noActivityCompact"), context: null },
-    { id: "summary" as const, icon: <Activity size={18} />, title: t("landing.summaryGeneralTitle"), value: playtimeLast30DaysLabel, context: null },
+    { id: "summary" as const, icon: <Activity size={18} />, title: t("landing.summaryGeneralTitle"), value: playtimeLast30DaysLabel, context: t("landing.playtime30dLabel") },
     { id: "templates" as const, icon: <Sparkles size={18} />, title: t("landing.templateStripTitle"), value: t("landing.templateCount", { count: String(templatesCount) }), context: null },
   ];
   return <div className="dm-hub-mobile-dashboard dm-panel--ornamented-compact" role="region" aria-label={t("landing.mobileDashboardLabel")} data-dm-hub-panel="mobile-dashboard">

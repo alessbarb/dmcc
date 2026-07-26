@@ -109,6 +109,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     isResolved  ? "rg-card--resolved"  : "",
     hasDirectionToolbar ? "has-direction-toolbar" : "",
     isTableHidden ? "rg-card--table-hidden" : "",
+    isDmOnly ? "rg-card--dm-only" : "",
   ].filter(Boolean).join(" ");
 
   const subtitle = entity.subtitle || (entity.summary && entity.summary.length > 0

@@ -1,0 +1,21 @@
+/* Screen-safe mode (UX audit 2026-07-26, research-driven): blurs dm_only
+   content in Library and Canvas while the DM has the toggle on, instead of
+   relying on the DM remembering not to show these screens while sharing. */
+
+[data-screen-safe-mode="true"] .entity-card--dm-only .entity-card__hero,
+[data-screen-safe-mode="true"] .entity-card--dm-only .entity-card__title,
+[data-screen-safe-mode="true"] .entity-card--dm-only .entity-card__summary,
+[data-screen-safe-mode="true"] .entity-compact-row--dm-only .entity-compact-row__info,
+[data-screen-safe-mode="true"] .rg-card--dm-only .rg-card__name,
+[data-screen-safe-mode="true"] .rg-card--dm-only .rg-card__subtitle,
+[data-screen-safe-mode="true"] .rg-card--dm-only .rg-card__hero {
+  filter: blur(6px);
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-screen-safe-mode="true"] .entity-card--dm-only .entity-card__hero,
+  [data-screen-safe-mode="true"] .rg-card--dm-only .rg-card__hero {
+    transition: filter 0.15s ease;
+  }
+}

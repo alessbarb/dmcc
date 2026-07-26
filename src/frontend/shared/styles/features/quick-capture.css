@@ -25,6 +25,16 @@
   transform: scale(0.93);
 }
 
+/* Auto-hide while the user is actively reading/scrolling down, so the FAB
+   doesn't sit on top of content on the (very common) narrow viewports
+   where it has no dedicated dead space to live in. Reappears on scroll-up
+   or once scrolling stops at/near the top (see useScrollDirection). */
+.quick-capture-fab--hidden {
+  transform: translateY(calc(100% + 24px));
+  box-shadow: none;
+  pointer-events: none;
+}
+
 @media (max-width: 1200px), (hover: none) and (pointer: coarse) {
   .quick-capture-fab {
     display: flex;

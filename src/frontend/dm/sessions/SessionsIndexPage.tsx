@@ -9,20 +9,11 @@ import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 import { StoryThreadsPanel } from "./components/StoryThreadsPanel.js";
 import { useStoryThreads } from "../story/useStoryThreads.js";
 import { SessionPageShell } from "./SessionPageShell.js";
+import { formatSessionCardTitle } from "./formatSessionCardTitle.js";
 import "./session-workspace.css";
 import "./components/session-idle.css";
 import "./components/prepared-session.css";
 import "./components/session-history.css";
-
-function formatSessionCardTitle(
-  session: { number?: number; title: string },
-  t: (key: string, params?: Record<string, string | number>) => string,
-): string {
-  if (!session.number) return session.title;
-  const autoTitlePrefix = t("session.sessionNumber", { number: session.number });
-  if (session.title.startsWith(autoTitlePrefix)) return session.title;
-  return `#${session.number} ${session.title}`;
-}
 
 export function SessionsIndexPage() {
   const { locale, t } = useTranslation();
@@ -183,8 +174,10 @@ export function SessionsIndexPage() {
               <section className="session-list-section" aria-labelledby="prepared-sessions-heading">
                 <div className="session-list-section__header">
                   <div>
-                    <p className="session-section-eyebrow">{preparedSessions.length}</p>
-                    <h3 id="prepared-sessions-heading">{t("sessionPage.preparedSessions")}</h3>
+                    <h3 id="prepared-sessions-heading">
+                      {t("sessionPage.preparedSessions")}
+                      <span className="session-section-eyebrow__count"> · {preparedSessions.length}</span>
+                    </h3>
                   </div>
                 </div>
                 <div className="session-prepared-list">
@@ -250,8 +243,10 @@ export function SessionsIndexPage() {
           <aside className="session-history-panel surface-panel" aria-labelledby="recent-sessions-heading">
             <div className="session-list-section__header">
               <div>
-                <p className="session-section-eyebrow">{recentSessions.length}</p>
-                <h3 id="recent-sessions-heading">{t("sessionPage.previousSessions")}</h3>
+                <h3 id="recent-sessions-heading">
+                  {t("sessionPage.previousSessions")}
+                  <span className="session-section-eyebrow__count"> · {recentSessions.length}</span>
+                </h3>
               </div>
             </div>
             {recentSessions.length > 0 ? (

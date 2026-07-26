@@ -153,6 +153,22 @@
   text-transform: uppercase;
 }
 
+/* These "close" affordances only make sense for the mobile bottom-sheet
+   presentation of these panels (see campaign-navigation-items-responsive.css,
+   max-width: 768px) — outside that breakpoint the panel is a permanent
+   sidebar with nothing to close, so the button did nothing when clicked.
+   Scoped to min-width: 769px (rather than an unconditional rule) so it can
+   never fight the mobile media query on cascade order alone. */
+@media (min-width: 769px) {
+  .canvas-navigator-panel__header .canvas-mobile-sheet-close {
+    display: none;
+  }
+
+  .canvas-palette > .canvas-mobile-sheet-header {
+    display: none;
+  }
+}
+
 .canvas-navigator-search {
   align-items: center;
   background-color: var(--theme-surfaces-interactive);

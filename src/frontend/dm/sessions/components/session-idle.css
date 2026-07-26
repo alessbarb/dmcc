@@ -53,6 +53,13 @@
   text-transform: uppercase;
 }
 
+/* Section count folded into its heading (e.g. "Sesiones preparadas · 8")
+   instead of a disconnected number above it — see phantomSectionCounterContract. */
+.session-section-eyebrow__count {
+  color: var(--theme-text-secondary);
+  font-weight: 600;
+}
+
 .session-create-form {
   display: grid;
   min-width: 0;

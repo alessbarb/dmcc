@@ -5,6 +5,7 @@
 @import "./foundation/accessibility.css";
 @import "./foundation/motion.css";
 @import "./foundation/utilities.css";
+@import "./foundation/screen-safe-mode.css";
 
 @import "./primitives/button.css";
 @import "./primitives/form-control.css";

@@ -83,8 +83,10 @@ export function StoryThreadsPanel({
     <section className="session-list-section surface-panel story-threads-panel" aria-labelledby="story-threads-heading">
       <div className="session-list-section__header">
         <div>
-          <p className="session-section-eyebrow">{activeThreads.length}</p>
-          <h3 id="story-threads-heading">{t("story.threads") || "Hilos Narrativos"}</h3>
+          <h3 id="story-threads-heading">
+            {t("story.threads") || "Hilos Narrativos"}
+            <span className="session-section-eyebrow__count"> · {activeThreads.length}</span>
+          </h3>
         </div>
         <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => setIsCreatingThread(true)}>
           <Plus size={16} /> {t("story.addThread") || "Nuevo hilo"}

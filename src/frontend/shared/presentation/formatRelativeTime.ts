@@ -21,12 +21,12 @@ export function formatRelativeTime(dateInput: string | Date | undefined | null, 
     return t("time.minutesAgo", { count: diffMin }, locale);
   }
   if (diffHour < 24) {
-    return t("time.hoursAgo", { count: diffHour }, locale);
+    return diffHour === 1 ? t("time.hourAgo", {}, locale) : t("time.hoursAgo", { count: diffHour }, locale);
   }
   if (diffDay < 7) {
-    return t("time.daysAgo", { count: diffDay }, locale);
+    return diffDay === 1 ? t("time.dayAgo", {}, locale) : t("time.daysAgo", { count: diffDay }, locale);
   }
-  
+
   const diffWeek = Math.floor(diffDay / 7);
-  return t("time.weeksAgo", { count: diffWeek }, locale);
+  return diffWeek === 1 ? t("time.weekAgo", {}, locale) : t("time.weeksAgo", { count: diffWeek }, locale);
 }

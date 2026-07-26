@@ -114,6 +114,7 @@ const getCanvasKindLabel = (kind: string, t: (key: string) => string) => {
 
 export function CanvasPage() {
   const canvasFlowRef = useRef<CampaignCanvasFlowHandle>(null);
+  const orphanWarningShownForRef = useRef<string | null>(null);
   const { t } = useTranslation();
   const { campaignId } = useParams({ from: "/campaigns/$campaignId/map/canvas" });
   const {
@@ -436,6 +437,7 @@ export function CanvasPage() {
   // Alert anchors or orphans
   useEffect(() => {
     if (!campaignState || canvases.length === 0) return;
+    if (orphanWarningShownForRef.current === activeCampaignId) return;
 
     const allNodes = canvases.flatMap((c: Canvas) => c.nodes || []);
     const allEdges = canvases.flatMap((c: Canvas) => c.edges || []);
@@ -448,6 +450,7 @@ export function CanvasPage() {
     );
 
     if (orphanEntities.length === 0 && orphanRelations.length === 0) return;
+    orphanWarningShownForRef.current = activeCampaignId;
 
     const parts: string[] = [];
     if (orphanEntities.length > 0)

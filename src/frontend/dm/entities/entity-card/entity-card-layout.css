@@ -11,8 +11,12 @@
   filter: grayscale(20%) brightness(85%);
 }
 
-/* Fallback graphic styles based on shapes & typography */
+/* Fallback graphic styles based on shapes & typography.
+   Shorter than the default/image hero (140px) — without a photo to fill
+   the frame, that height was mostly empty space around a single small
+   icon (see B2, UX audit 2026-07-26). */
 .entity-card__hero--no-img {
+  height: 88px;
   background:
     radial-gradient(circle at 50% 50%, var(--card-accent-soft) 0%, transparent 80%),
     repeating-linear-gradient(45deg, color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent) 0px, color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent) 1px, transparent 1px, transparent 6px),

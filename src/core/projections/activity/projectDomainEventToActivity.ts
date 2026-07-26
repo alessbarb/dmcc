@@ -254,18 +254,18 @@ export function projectDomainEventToActivity(event: StoredEvent<Record<string, u
         ...base,
         type: "canvas.updated",
         category: "content",
-        data: { canvasId: payload?.id, title: payload?.title },
+        data: { canvasId: payload?.canvasId, title: payload?.title },
         targetType: "canvas",
-        targetId: nullableString(payload?.id),
+        targetId: nullableString(payload?.canvasId),
       }];
     case "CanvasArchived":
       return [{
         ...base,
         type: "canvas.archived",
         category: "content",
-        data: { canvasId: payload?.id },
+        data: { canvasId: payload?.canvasId },
         targetType: "canvas",
-        targetId: nullableString(payload?.id),
+        targetId: nullableString(payload?.canvasId),
       }];
     case "NotebookCreated":
       return [{

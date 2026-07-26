@@ -3,7 +3,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import type { DmHubCampaignPreparation, DmHubContinuation, DmHubStoryThreadSummary } from "./dmHubTypes.js";
 
 function countLabel(value: number | undefined, label: string) {
-  return value === undefined || value <= 0 ? null : <span className="dm-signal-metric"><strong>{value}</strong>{label}</span>;
+  return value === undefined || value <= 0 ? null : <span key={label} className="dm-signal-metric"><strong>{value}</strong>{label}</span>;
 }
 
 export function DmHubPreparationPanel({ preparation, campaignTitle, onPrepare, onOpenSessions }: { preparation: DmHubCampaignPreparation | null; campaignTitle: string | null; onPrepare: () => void; onOpenSessions: () => void }) {

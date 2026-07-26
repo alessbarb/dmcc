@@ -41,6 +41,24 @@
     display: none;
   }
 
+  /* Back-button and footer-action labels render via <span> just like
+     .nav-item, but their visibility is otherwise driven by React state
+     (sidebarCollapsed), which stays false on tablet unless the user
+     manually collapses. Without this rule their full label renders
+     inside the 52px icon-only rail and wraps letter-by-letter. */
+  .campaign-shell__back-button span,
+  .sidebar-footer__action span {
+    display: none;
+  }
+
+  .campaign-shell__back-button {
+    justify-content: center;
+  }
+
+  .sidebar-footer__action {
+    justify-content: center;
+  }
+
   .sidebar-footer {
     padding: 12px 8px;
   }

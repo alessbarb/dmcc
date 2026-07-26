@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, X, Zap, Play } from "lucide-react";
+import { X, Zap, Play } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { useScrollDirection } from "../../shared/hooks/useScrollDirection.js";
 import { useNavigate } from "@tanstack/react-router";
 import "../../shared/styles/features/quick-capture.css";
 
@@ -27,6 +28,7 @@ function runQuickCaptureAction(operation: Promise<unknown>, errorMessage: string
 
 export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
   const [open, setOpen] = useState(false);
+  const scrollDirection = useScrollDirection();
   const [name, setName] = useState("");
   const [type, setType] = useState<QuickEntityType>("note");
   const [saving, setSaving] = useState(false);
@@ -89,9 +91,11 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={captureLabel}
-        className="quick-capture-fab"
+        className={`quick-capture-fab ${
+          scrollDirection === "down" && !open ? "quick-capture-fab--hidden" : ""
+        }`}
       >
-        <Plus size={22} />
+        <Zap size={22} />
       </button>
 
       {/* Bottom sheet overlay */}

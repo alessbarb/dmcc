@@ -22,6 +22,14 @@
   font-weight: 650;
 }
 
+/* Secondary line under a grouped entry's own (now always-visible)
+   description — see A4, UX audit 2026-07-26. */
+.campaign-history-entry__grouped-note {
+  color: var(--theme-text-secondary);
+  font-size: var(--type-caption);
+  margin: 0;
+}
+
 .campaign-history-entry__toggle {
   justify-self: start;
   margin-top: 4px;

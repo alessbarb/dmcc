@@ -143,10 +143,12 @@ export function PlayerKnowledgeView() {
     <div className="people-knowledge-view">
       <header className="people-knowledge-toolbar surface-panel">
         <div className="people-knowledge-toolbar__copy">
-          {(projection?.players.length ?? 0) > 0 && (
-            <p className="people-section-eyebrow">{projection?.targets.length ?? 0}</p>
-          )}
-          <h2>{t("playerKnowledge.title")}</h2>
+          <h2>
+            {t("playerKnowledge.title")}
+            {(projection?.players.length ?? 0) > 0 && (
+              <span className="people-section-eyebrow__count"> · {projection?.targets.length ?? 0}</span>
+            )}
+          </h2>
           <p>{t("playerKnowledge.subtitle")}</p>
         </div>
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => void load()}>

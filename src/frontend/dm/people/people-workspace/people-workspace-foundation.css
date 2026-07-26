@@ -6,13 +6,12 @@
   gap: 20px;
 }
 
-.people-section-eyebrow {
-  margin: 0 0 6px;
-  color: var(--theme-accents-primary-foreground, var(--theme-accents-primary-foreground));
-  font-size: var(--type-micro);
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+/* Section count folded into its heading (e.g. "Conocimiento · 5") instead
+   of a disconnected number above it — see phantomSectionCounterContract. */
+.people-section-eyebrow__count {
+  color: var(--theme-text-secondary);
+  font-weight: 600;
+  font-size: var(--type-heading-sm);
 }
 
 .people-invitations-hero,

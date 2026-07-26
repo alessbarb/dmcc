@@ -305,6 +305,10 @@ export const en = {
     exportMarkdown: "Export Markdown",
     pageTitle: "Settings and export",
     pageSubtitle: "Manage campaign backups and export your narrative data.",
+    campaignInfoTitle: "Campaign",
+    campaignInfoDescription: "Edit the campaign's name and game system.",
+    campaignInfoSaveSuccess: "Campaign updated.",
+    campaignInfoSaveError: "Couldn't update the campaign.",
     backupsTitle: "Campaign backups",
     backupsDescription:
       "Save local JSON snapshots. These backups include historical event records and restore metadata.",
@@ -970,6 +974,20 @@ export const en = {
     questsHelp: "active quest chains",
     criticalCluesHelp: "unrevealed critical clues",    untitled: "Untitled",
     currentState: "Current campaign state",
+    narrativeState: {
+      secrets: "Secrets",
+      clues: "Clues",
+      objectives: "Objectives",
+      status: {
+        hidden: "hidden",
+        revealed: "revealed",
+        archived: "archived",
+        unresolved: "unresolved",
+        open: "open",
+        blocked: "blocked",
+        completed: "completed",
+      },
+    },
     createdFromTemplate: "Created from {title} v{version}",
     noActiveCampaign: "No active campaign",
     activeSession: "Active session",
@@ -1095,6 +1113,8 @@ export const en = {
     campaignMenuLabel: "Campaign menu",
     closeCampaignMenuLabel: "Close campaign menu",
     mobileTools: "Tools",
+    screenSafeModeOn: "Screen-safe mode",
+    screenSafeModeOff: "Exit screen-safe mode",
     mobileMore: "More",
     mainNavigationLabel: "Main campaign navigation",
     currentContext: "Current campaign context",
@@ -1201,6 +1221,7 @@ export const en = {
   notebooks: {
     title: "Notebooks",
     emptyTree: "No notebooks created yet.",
+    emptyTreeDescription: "Create a notebook to start organizing your campaign.",
     noDescription: "No description.",
     items: "Linked items",
     emptyItems: "No items in this notebook yet.",
@@ -3142,8 +3163,11 @@ export const en = {
   time: {
     secondsAgo: "just now",
     minutesAgo: "{count} min ago",
+    hourAgo: "1 hour ago",
     hoursAgo: "{count} hours ago",
+    dayAgo: "1 day ago",
     daysAgo: "{count} days ago",
+    weekAgo: "1 week ago",
     weeksAgo: "{count} weeks ago"
   },
   activity: {
