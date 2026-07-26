@@ -53,9 +53,9 @@ describe("ornament consumer integration & stacking", () => {
 
   it("integrates NarrativeDivider into real session narrative views", () => {
     const sessionDetailSource = read("src/frontend/dm/sessions/SessionDetailPage.tsx");
-    const overviewSource = read("src/frontend/dm/overview/OverviewPage.tsx");
+    const overviewControlSource = read("src/frontend/dm/overview/components/SessionControlPanel.tsx");
 
     expect(sessionDetailSource).toContain("<NarrativeDivider />");
-    expect(overviewSource).toContain("<NarrativeDivider />");
+    expect(overviewControlSource).toContain("<NarrativeDivider />");
   });
 });

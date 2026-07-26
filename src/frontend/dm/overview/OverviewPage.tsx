@@ -1,36 +1,31 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import {
-  Activity,
-  AlertTriangle,
-  BookOpen,
-  CalendarDays,
   CheckCircle2,
   Download,
-  EyeOff,
-  Flag,
-  Flame,
   GitFork,
-  MapPin,
   Play,
   Plus,
   RefreshCw,
   Search,
   Share2,
-  Users,
 } from "lucide-react";
 import { getCommandCenter, getLiveTable, type CommandCenterResponse, type LiveTableSummary } from "../../shared/api/webProductClient.js";
-import { formatActivity } from "../../shared/presentation/formatActivity.js";
-import { formatRelativeTime } from "../../shared/presentation/formatRelativeTime.js";
 import { useCampaignStore, type Entity } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { CampaignStarterHub } from "../onboarding/CampaignStarterHub.js";
-import { EntityDetailModal } from "../entities/EntityDetailModal.js";
-import { resolveActiveEntity } from "../entities/relations/resolveActiveEntity.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
-import { NarrativeDivider } from "../../shared/components/NarrativeDivider.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
+import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
+import { CampaignStatusStrip } from "./components/CampaignStatusStrip.js";
+import { DashboardCommandBar } from "./components/DashboardCommandBar.js";
+import { AttentionQueue } from "./components/AttentionQueue.js";
+import { NarrativeStateChart } from "./components/NarrativeStateChart.js";
+import { RecentActivityTimeline } from "./components/RecentActivityTimeline.js";
+import { SessionCadenceTimeline } from "./components/SessionCadenceTimeline.js";
+import { SessionControlPanel } from "./components/SessionControlPanel.js";
+import { Pill } from "../../shared/components/Pill.js";
 import "../../shared/styles/features/dashboard-overview.css";
 import "../../shared/styles/features/dm-dashboard.css";
 
@@ -71,89 +66,6 @@ function runCommandCenterAction(operation: Promise<unknown>, errorMessage: strin
   });
 }
 
-function Pill({
-  children,
-  tone = "neutral",
-}: {
-  children: React.ReactNode;
-  tone?: "neutral" | "danger" | "warning" | "good";
-}) {
-  return (
-    <span
-      className={`dashboard-pill dashboard-pill--${tone}`}
-    >
-      {children}
-    </span>
-  );
-}
-
-function MetricCard({
-  icon,
-  label,
-  value,
-  helpText,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  helpText?: string;
-  onClick?: () => void;
-}) {
-  const content = (
-    <>
-      {icon}
-      <p className="dashboard-metric-label">{label}</p>
-      <strong className="dashboard-metric-value">{value}</strong>
-      {helpText && <span className="dashboard-metric-help">{helpText}</span>}
-    </>
-  );
-
-  return (
-    <Card>
-      {onClick ? (
-        <button type="button" className="dashboard-metric-content dashboard-metric-content--clickable" onClick={onClick}>
-          {content}
-        </button>
-      ) : (
-        <div className="dashboard-metric-content">{content}</div>
-      )}
-    </Card>
-  );
-}
-
-function EmptyMessage({ children }: { children: React.ReactNode }) {
-  return <p className="dashboard-empty-message">{children}</p>;
-}
-
-function EntityList({
-  items,
-  empty,
-  onSelect,
-}: {
-  items: Entity[];
-  empty: string;
-  onSelect: (entity: Entity) => void;
-}) {
-  if (items.length === 0) return <EmptyMessage>{empty}</EmptyMessage>;
-
-  return (
-    <div className="dashboard-entity-list">
-      {items.slice(0, 6).map((entity) => (
-        <button
-          key={entity.entityId}
-          type="button"
-          className="dashboard-entity-row"
-          onClick={() => onSelect(entity)}
-        >
-          <span className="dashboard-entity-row__title">{entity.title}</span>
-          {entity.importance && <span className="badge badge-default">{entity.importance}</span>}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export function OverviewPage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const navigate = useNavigate();
@@ -161,8 +73,6 @@ export function OverviewPage() {
   const { t, locale } = useTranslation();
   const {
     campaignState,
-    updateEntity,
-    archiveEntity,
     exportMarkdown,
     setIsEntityModalOpen,
   } = useCampaignStore();
@@ -171,7 +81,6 @@ export function OverviewPage() {
   const [liveTable, setLiveTable] = useState<LiveTableSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
   const [exportingMarkdown, setExportingMarkdown] = useState(false);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
@@ -206,7 +115,6 @@ export function OverviewPage() {
 
   const campaign = campaignState?.campaign ?? commandCenter?.campaign ?? null;
   const entities: Entity[] = campaignState?.entities ?? [];
-  const selectedEntity = selectedEntityId ? resolveActiveEntity(entities, selectedEntityId) : null;
   const sessions = campaignState?.sessions ?? [];
   const activeSession = sessions.find((session) => session.status === "active") ?? null;
   const nextPreparedSession = sessions
@@ -215,13 +123,6 @@ export function OverviewPage() {
       (left, right) =>
         new Date(left.scheduledAt ?? 0).getTime() - new Date(right.scheduledAt ?? 0).getTime(),
     )[0] ?? null;
-
-  const currentLocation = campaign?.currentLocationId
-    ? entities.find((entity) => entity.entityId === campaign.currentLocationId) ?? null
-    : null;
-  const currentQuest = campaign?.currentQuestId
-    ? entities.find((entity) => entity.entityId === campaign.currentQuestId) ?? null
-    : (entities.find((e) => e.entityType === "quest" && e.status === "active" && !e.archived) ?? null);
 
   const npcWarnings: Entity[] = useMemo(() => {
     return entities.filter((e) => {
@@ -398,47 +299,65 @@ export function OverviewPage() {
     }
   };
 
+  const rawSummary = campaign?.summary ?? t("campaignShell.meta.dashboardDescription");
+  const displaySummary = rawSummary.length > 70 ? rawSummary.slice(0, 67) + "..." : rawSummary;
+
+  const workspaceActions = (
+    <>
+      <button
+        className="btn btn-secondary"
+        type="button"
+        onClick={() => {
+          runCommandCenterAction(load(), "No se pudo recargar el centro de mando.");
+        }}
+      >
+        <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
+      </button>
+      <button
+        className="btn btn-secondary"
+        type="button"
+        onClick={() => navigateToCampaignPage("library/list")}
+      >
+        <Search size={16} /> {t("campaignShell.nav.search")}
+      </button>
+      <button
+        className="btn btn-primary"
+        type="button"
+        onClick={() => setLiveTableModalOpen(true)}
+      >
+        <Play size={16} /> {t("dashboard.runSession")}
+      </button>
+    </>
+  );
+
   if (loading && !commandCenter) {
-    return <div className="card dashboard-card dashboard-card--loading">{t("common.loading")}</div>;
+    return (
+      <CampaignWorkspace
+        titleKey="campaignShell.meta.dashboardEyebrow"
+        description={displaySummary}
+        size="wide"
+        variant="operational"
+        actions={workspaceActions}
+      >
+        <div className="dashboard-page">
+          <div className="card dashboard-card dashboard-card--loading">{t("common.loading")}</div>
+        </div>
+      </CampaignWorkspace>
+    );
   }
 
   if (error && !commandCenter) {
     return (
-      <div className="card dashboard-card dashboard-card--error">
-        <p className="dashboard-error-message">{error}</p>
-        <button
-          className="btn btn-secondary"
-          type="button"
-          onClick={() => {
-            runCommandCenterAction(load(), "No se pudo recargar el centro de mando.");
-          }}
-        >
-          <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
-        </button>
-      </div>
-    );
-  }
-
-  const rawSummary = campaign?.summary ?? t("campaignShell.meta.dashboardDescription");
-  const displaySummary = rawSummary.length > 70 ? rawSummary.slice(0, 67) + "..." : rawSummary;
-
-  return (
-    <>
-      <div className="dashboard-page">
-        <header className="dashboard-header">
-          <div>
-            <p className="dashboard-header__eyebrow">
-              {t("campaignShell.meta.dashboardEyebrow")}
-            </p>
-            <h1 className="dashboard-header__title">
-              {campaign?.title ?? t("campaignShell.defaultTitle")}
-            </h1>
-            <p className="dashboard-header__description">
-              {displaySummary}
-            </p>
-          </div>
-
-          <div className="dashboard-header__actions">
+      <CampaignWorkspace
+        titleKey="campaignShell.meta.dashboardEyebrow"
+        description={displaySummary}
+        size="wide"
+        variant="operational"
+        actions={workspaceActions}
+      >
+        <div className="dashboard-page">
+          <div className="card dashboard-card dashboard-card--error">
+            <p className="dashboard-error-message">{error}</p>
             <button
               className="btn btn-secondary"
               type="button"
@@ -448,283 +367,120 @@ export function OverviewPage() {
             >
               <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
             </button>
-            <button
-              className="btn btn-secondary"
-              type="button"
-              onClick={() => navigateToCampaignPage("library/list")}
-            >
-              <Search size={16} /> {t("campaignShell.nav.search")}
-            </button>
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={() => setLiveTableModalOpen(true)}
-            >
-              <Play size={16} /> {t("dashboard.runSession")}
-            </button>
           </div>
-        </header>
-
-        <div className="quick-actions-bar" aria-label={t("dashboard.quickActions")} style={{ marginBottom: "16px" }}>
-          <button
-            className="quick-action-link"
-            type="button"
-            onClick={() => setIsEntityModalOpen(true)}
-          >
-            <Plus size={15} /> <span>{t("campaignShell.newEntity")}</span>
-          </button>
-          <button
-            className="quick-action-link"
-            type="button"
-            onClick={() => navigateToCampaignPage("map/network")}
-          >
-            <GitFork size={15} /> <span>{t("dashboard.viewGraph")}</span>
-          </button>
-          <button
-            className="quick-action-link"
-            type="button"
-            onClick={() => {
-              runCommandCenterAction(
-                navigate({ to: "/player/campaigns/$campaignId/overview", params: { campaignId } }),
-                "No se pudo abrir el portal de jugadores.",
-              );
-            }}
-          >
-            <Share2 size={15} /> <span>{t("dashboard.openPlayerPortal")}</span>
-          </button>
-          <button
-            className="quick-action-link"
-            type="button"
-            onClick={() => {
-              runCommandCenterAction(handleMarkdownExport(), "No se pudo exportar la campaña en Markdown.");
-            }}
-            disabled={exportingMarkdown}
-          >
-            <Download size={15} />
-            <span>
-              {exportingMarkdown
-                ? t("dashboard.exportingMarkdown")
-                : t("dashboard.exportMarkdown")}
-            </span>
-          </button>
         </div>
+      </CampaignWorkspace>
+    );
+  }
 
-        <div className="card dashboard-shortcuts" style={{ marginBottom: "16px" }}>
+  return (
+    <>
+      <CampaignWorkspace
+        titleKey="campaignShell.meta.dashboardEyebrow"
+        description={displaySummary}
+      size="wide"
+      variant="operational"
+      actions={workspaceActions}
+    >
+      <div className="dashboard-page">
+
+        <DashboardCommandBar
+          label={t("dashboard.quickActions")}
+          commands={[
+            { key: "new-entity", label: t("campaignShell.newEntity"), icon: <Plus size={15} />, onClick: () => setIsEntityModalOpen(true) },
+            { key: "view-graph", label: t("dashboard.viewGraph"), icon: <GitFork size={15} />, onClick: () => navigateToCampaignPage("map/network") },
+            {
+              key: "player-portal",
+              label: t("dashboard.openPlayerPortal"),
+              icon: <Share2 size={15} />,
+              onClick: () => {
+                runCommandCenterAction(
+                  navigate({ to: "/player/campaigns/$campaignId/overview", params: { campaignId } }),
+                  "No se pudo abrir el portal de jugadores.",
+                );
+              },
+            },
+            {
+              key: "export-markdown",
+              label: exportingMarkdown ? t("dashboard.exportingMarkdown") : t("dashboard.exportMarkdown"),
+              icon: <Download size={15} />,
+              onClick: () => runCommandCenterAction(handleMarkdownExport(), "No se pudo exportar la campaña en Markdown."),
+              disabled: exportingMarkdown,
+            },
+          ]}
+        />
+
+        <div className="card dashboard-shortcuts dashboard-section-gap">
           <ShortcutsPanel campaignId={campaignId} />
         </div>
 
-        <section aria-labelledby="continuity-section-title" style={{ marginBottom: "24px" }}>
-          <Card ornament="primary" className="dashboard-continuity-panel">
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", padding: "16px 20px" }}>
-              <div style={{ minWidth: "280px", flex: "1 1 500px" }}>
-                <span className="dashboard-header__eyebrow" style={{ display: "block", marginBottom: "4px" }}>
-                  {t("dashboard.nextSessionPrep")}
-                </span>
-                <h2 id="continuity-section-title" style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--theme-text-primary)", margin: "0 0 10px 0", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <CalendarDays size={20} style={{ color: "var(--theme-accents-primary-foreground)" }} />
-                  {activeSession ? (
-                    <span>{t("dashboard.runningSessionTitle", { title: activeSession.title })}</span>
-                  ) : nextPreparedSession ? (
-                    <span>{t("dashboard.nextPreparedSessionTitle", { title: nextPreparedSession.title })}</span>
-                  ) : (
-                    <span>{t("dashboard.noPreparedSessionTitle")}</span>
-                  )}
-                </h2>
-                <NarrativeDivider />
+        <CampaignStatusStrip
+          label={t("dashboard.metricEntities")}
+          metrics={[
+            { key: "entities", label: t("dashboard.metricEntities"), value: commandCenter?.counts.entities ?? entities.length, onClick: () => navigateToCampaignPage("library/list") },
+            { key: "hidden-secrets", label: t("dashboard.unrevealedCriticalSecrets"), value: commandCenter?.counts.hiddenSecrets ?? criticalHiddenSecrets.length, onClick: () => navigateToCampaignPage("library/list") },
+            { key: "quests", label: t("dashboard.quests"), value: commandCenter?.counts.objectives ?? 0, onClick: () => navigateToCampaignPage("library/list") },
+            { key: "sessions", label: t("campaignShell.meta.sessionTitle"), value: commandCenter?.counts.sessions ?? sessions.length, onClick: () => navigateToCampaignPage("sessions") },
+          ]}
+        />
 
-                {lastClosedSession && (commandCenter?.recap || lastClosedSession.summary) && (
-                  <div style={{ marginBottom: "16px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase", color: "var(--theme-text-subtle)", margin: "0 0 6px 0" }}>
-                      {t("dashboard.lastSession")}
-                    </h4>
-                    <p className="dashboard-recap" style={{ margin: 0, fontSize: "0.9rem", color: "var(--theme-text-secondary)", lineHeight: "1.4", maxWidth: "70ch" }}>
-                      {commandCenter?.recap ?? lastClosedSession.summary}
-                    </p>
-                  </div>
-                )}
-
-                {attentionCount > 0 && (
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "12px" }}>
-                    {attentionChips.map((chip) => (
-                      <Pill key={chip.key} tone={chip.tone}>
-                        {chip.label}: {chip.count}
-                      </Pill>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div style={{ minWidth: "200px", flex: "1 1 200px", display: "flex", flexDirection: "column", gap: "10px", alignItems: "flex-start" }}>
-                {activeSession ? (
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={() => setLiveTableModalOpen(true)}
-                    style={{ width: "100%", justifyContent: "center" }}
-                  >
-                    <Play size={16} /> {t("dashboard.runSession")}
-                  </button>
-                ) : nextPreparedSession ? (
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={() => navigateToCampaignPage("sessions")}
-                    style={{ width: "100%", justifyContent: "center" }}
-                  >
-                    <Play size={16} /> {t("dashboard.startSession")}
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={() => navigateToCampaignPage("sessions")}
-                    style={{ width: "100%", justifyContent: "center" }}
-                  >
-                    <Plus size={16} /> {t("dashboard.startSession")}
-                  </button>
-                )}
-                <button
-                  className="btn btn-secondary"
-                  type="button"
-                  onClick={() => navigateToCampaignPage("sessions")}
-                  style={{ width: "100%", justifyContent: "center" }}
-                >
-                  {t("campaignShell.nav.session")}
-                </button>
-                {liveTable && (
-                  <div style={{ marginTop: "6px", width: "100%", textAlign: "center" }}>
-                    <span style={{ fontSize: "var(--type-micro)", color: "var(--theme-text-secondary)", marginRight: "8px" }}>Portal Live:</span>
-                    <Pill tone="good">{liveTable.shortCode}</Pill>
-                  </div>
-                )}
-              </div>
+        <div className="dashboard-command-grid">
+          <section className="dashboard-command-panel" aria-labelledby="narrative-state-title">
+            <div className="dashboard-command-panel__header">
+              <h2 id="narrative-state-title">{t("dashboard.currentState")}</h2>
+              <button type="button" className="btn btn-link btn-sm" onClick={() => navigateToCampaignPage("library/list")}>{t("dashboard.reviewAttention")}</button>
             </div>
-          </Card>
-        </section>
-
-        {campaignState && (
-          <CampaignStarterHub
-            campaignId={campaignId}
-            campaignState={campaignState}
-            setCurrentPage={navigateToCampaignPage}
-          />
-        )}
-
-        <section aria-labelledby="command-center-state-title">
-          <h2 id="command-center-state-title" className="dashboard-section-label">
-            <span>{t("dashboard.currentState")}</span>
-            <span aria-hidden="true" />
-          </h2>
-
-          <div className="dashboard-metrics-grid">
-            <MetricCard
-              icon={<BookOpen size={18} />}
-              label={t("dashboard.metricEntities")}
-              value={entities.length}
-              helpText={t("dashboard.metricEntitiesDetail")}
-              onClick={() => navigateToCampaignPage("library/list")}
-            />
-            <MetricCard
-              icon={<EyeOff size={18} />}
-              label={t("dashboard.unrevealedCriticalClues")}
-              value={criticalHiddenClues.length}
-              helpText={t("dashboard.criticalCluesHelp")}
-              onClick={() => navigateToCampaignPage("library/list")}
-            />
-            <MetricCard
-              icon={<Flame size={18} />}
-              label={t("dashboard.unrevealedCriticalSecrets")}
-              value={criticalHiddenSecrets.length}
-              helpText={t("dashboard.criticalSecretsHelp")}
-              onClick={() => navigateToCampaignPage("library/list")}
-            />
-            <MetricCard
-              icon={<Flag size={20} />}
-              label={t("dashboard.quests")}
-              value={entities.filter((e) => e.entityType === "quest" && !e.archived).length}
-              helpText={t("dashboard.questsHelp")}
-              onClick={() => navigateToCampaignPage("library/list")}
-            />
-          </div>
-
-          <div className="dashboard-state-grid">
-            <Card>
-              <h3 className="dashboard-card__heading">
-                <MapPin size={18} /> {t("dashboard.currentLocation")}
-              </h3>
-              {currentLocation ? (
-                <button
-                  className="dashboard-entity-row"
-                  type="button"
-                  onClick={() => setSelectedEntityId(currentLocation.entityId)}
-                >
-                  <span className="dashboard-entity-row__title">{currentLocation.title}</span>
-                </button>
-              ) : (
-                <EmptyMessage>{t("dashboard.notSet")}</EmptyMessage>
-              )}
-            </Card>
-
-            <Card>
-              <h3 className="dashboard-card__heading">
-                <Flag size={18} /> {t("dashboard.mainQuest")}
-              </h3>
-              {currentQuest ? (
-                <button
-                  className="dashboard-entity-row"
-                  type="button"
-                  onClick={() => setSelectedEntityId(currentQuest.entityId)}
-                >
-                  <span className="dashboard-entity-row__title">{currentQuest.title}</span>
-                </button>
-              ) : (
-                <EmptyMessage>{t("dashboard.noActiveQuest")}</EmptyMessage>
-              )}
-            </Card>
-
-            <Card>
-              <h3 className="dashboard-card__heading">
-                <CalendarDays size={18} /> {t("dashboard.lastSession")}
-              </h3>
-              {lastClosedSession ? (
-                <div className="dashboard-session-summary">
-                  <strong>{lastClosedSession.title}</strong>
-                  {lastClosedSession.summary && (
-                    <span className="dashboard-muted-text">{lastClosedSession.summary}</span>
-                  )}
-                </div>
-              ) : (
-                <EmptyMessage>{t("dashboard.noPreviousSessions")}</EmptyMessage>
-              )}
-            </Card>
-          </div>
-        </section>
-
-        <Card ornament="full" className={`dashboard-attention dashboard-attention--${attentionTone}`}>
-          <div className="dashboard-attention__header">
-            {attentionCount > 0 ? <AlertTriangle size={20} /> : <CheckCircle2 size={20} />}
-            <h2 className="dashboard-attention__title">{t("dashboard.needsAttention")}</h2>
-            <Pill tone={attentionTone}>{attentionCount}</Pill>
-            {attentionCount > 0 && (
-              <button
-                type="button"
-                className="btn btn-sm btn-secondary dashboard-attention__review"
-                onClick={() => navigateToCampaignPage("library/list")}
-              >
-                {t("dashboard.reviewAttention")}
-              </button>
-            )}
-          </div>
-          {attentionCount > 0 ? (
-            <div className="dashboard-attention__items">
-              {attentionChips.map((chip) => (
-                <Pill key={chip.key} tone={chip.tone}>{chip.label}: {chip.count}</Pill>
-              ))}
+            <NarrativeStateChart state={commandCenter?.narrativeState} label={t("dashboard.currentState")} />
+          </section>
+          <section className="dashboard-command-panel" aria-labelledby="attention-queue-title">
+            <div className="dashboard-command-panel__header">
+              <h2 id="attention-queue-title">{t("dashboard.needsAttention")}</h2>
+              <Pill tone={attentionTone}>{attentionCount}</Pill>
             </div>
+            <AttentionQueue
+              items={attentionChips}
+              total={attentionCount}
+              emptyMessage={t("dashboard.allClear")}
+              onSelect={() => navigateToCampaignPage("library/list")}
+            />
+          </section>
+        </div>
+
+        <div className="dashboard-command-grid dashboard-command-grid--secondary">
+          <section className="dashboard-command-panel" aria-labelledby="session-cadence-title">
+            <div className="dashboard-command-panel__header"><h2 id="session-cadence-title">{t("dashboard.lastSession")}</h2><button type="button" className="btn btn-link btn-sm" onClick={() => navigateToCampaignPage("sessions")}>{t("campaignShell.nav.session")}</button></div>
+            <SessionCadenceTimeline sessions={[lastClosedSession, activeSession, nextPreparedSession]} emptyMessage="No sessions yet." />
+          </section>
+          <section className="dashboard-command-panel" aria-labelledby="recent-activity-title">
+            <div className="dashboard-command-panel__header"><h2 id="recent-activity-title">{t("dashboard.recentlyUpdated")}</h2><button type="button" className="btn btn-link btn-sm" onClick={() => navigateToCampaignPage("story/history")}>{t("dashboard.viewHistory")}</button></div>
+            <RecentActivityTimeline items={groupedActivity} locale={locale} emptyMessage={t("dashboard.noRecentChanges")} />
+          </section>
+        </div>
+
+        <SessionControlPanel
+          sectionLabel={t("dashboard.nextSessionPrep")}
+          sectionId="continuity-section-title"
+          title={activeSession ? t("dashboard.runningSessionTitle", { title: activeSession.title }) : nextPreparedSession ? t("dashboard.nextPreparedSessionTitle", { title: nextPreparedSession.title }) : t("dashboard.noPreparedSessionTitle")}
+          recapTitle={t("dashboard.lastSession")}
+          recap={commandCenter?.recap ?? lastClosedSession?.summary}
+          attentionChips={attentionChips}
+          primaryAction={activeSession ? (
+            <button className="btn btn-primary dashboard-continuity-panel__action" type="button" onClick={() => setLiveTableModalOpen(true)}>
+              <Play size={16} /> {t("dashboard.runSession")}
+            </button>
           ) : (
-            <EmptyMessage>{t("dashboard.allClear")}</EmptyMessage>
+            <button className="btn btn-primary dashboard-continuity-panel__action" type="button" onClick={() => navigateToCampaignPage("sessions")}>
+              {nextPreparedSession ? <Play size={16} /> : <Plus size={16} />} {t("dashboard.startSession")}
+            </button>
           )}
-        </Card>
+          secondaryAction={(
+            <button className="btn btn-secondary dashboard-continuity-panel__action" type="button" onClick={() => navigateToCampaignPage("sessions")}>
+              {t("campaignShell.nav.session")}
+            </button>
+          )}
+          liveTableLabel="Portal Live"
+          liveTableCode={liveTable?.shortCode}
+        />
 
         {(preparationChecklist.length > 0 || partialKnowledgeAlerts.length > 0) ? (
           <div className="dashboard-prep-grid">
@@ -765,118 +521,28 @@ export function OverviewPage() {
           </div>
         ) : (
           <Card ornament="standard" className="dashboard-prep-all-clear">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px", gap: "10px", textAlign: "center" }}>
-              <CheckCircle2 size={36} style={{ color: "var(--theme-feedback-success-foreground)" }} />
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 750, color: "var(--theme-text-primary)", margin: 0 }}>
+            <div className="dashboard-prep-all-clear__content">
+              <CheckCircle2 size={36} className="dashboard-prep-all-clear__icon" />
+              <h2 className="dashboard-prep-all-clear__title">
                 {t("dashboard.allClear")}
               </h2>
-              <p style={{ fontSize: "0.88rem", color: "var(--theme-text-secondary)", margin: 0 }}>
+              <p className="dashboard-prep-all-clear__description">
                 {t("dashboard.allPreparedDetail")}
               </p>
             </div>
           </Card>
         )}
 
-        <div className="dashboard-entity-grids">
-          <Card>
-            <h2 className="dashboard-card__heading">
-              <Users size={18} /> {t("dashboard.forgottenNpcs")}
-            </h2>
-            <EntityList
-              items={npcWarnings}
-              empty={t("dashboard.noneMasculine")}
-              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
-            />
-          </Card>
+        {campaignState && (
+          <CampaignStarterHub
+            campaignId={campaignId}
+            campaignState={campaignState}
+            setCurrentPage={navigateToCampaignPage}
+          />
+        )}
 
-          <Card>
-            <h2 className="dashboard-card__heading">
-              <Flag size={18} /> {t("dashboard.blockedQuests")}
-            </h2>
-            <EntityList
-              items={blockedQuests}
-              empty={t("dashboard.noneFeminine")}
-              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
-            />
-          </Card>
-
-          <Card>
-            <h2 className="dashboard-card__heading">
-              <EyeOff size={18} /> {t("whatNowPage.criticalClues")}
-            </h2>
-            <EntityList
-              items={[...criticalHiddenClues, ...preparedClues]}
-              empty={t("whatNowPage.noCriticalClues")}
-              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
-            />
-          </Card>
-
-          <Card>
-            <h2 className="dashboard-card__heading">
-              <Flame size={18} /> {t("whatNowPage.readyConsequences")}
-            </h2>
-            <EntityList
-              items={pendingConsequences}
-              empty={t("whatNowPage.noPendingConsequences")}
-              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
-            />
-          </Card>
-        </div>
-
-        <div style={{ marginTop: "24px" }}>
-          <Card>
-            <h2 className="dashboard-card__heading">
-              <Activity size={18} /> {t("dashboard.recentlyUpdated")}
-            </h2>
-            <div className="dashboard-activity-list">
-              {groupedActivity.map((group) => (
-                <div key={group.key} className="dashboard-activity-item">
-                  <strong>
-                    {formatActivity({ type: group.type, occurredAt: group.latestOccurredAt, data: group.data }, locale)}
-                    {group.count > 1 ? ` ×${group.count}` : ""}
-                  </strong>
-                  <br />
-                  <time dateTime={group.latestOccurredAt} title={new Date(group.latestOccurredAt).toLocaleString(locale)}>
-                    {formatRelativeTime(group.latestOccurredAt, locale)}
-                  </time>
-                </div>
-              ))}
-              {groupedActivity.length === 0 && (
-                <EmptyMessage>{t("dashboard.noRecentChanges")}</EmptyMessage>
-              )}
-              {groupedActivity.length > 0 && (
-                <button
-                  type="button"
-                  className="btn btn-link btn-sm dashboard-activity__view-history"
-                  onClick={() => navigateToCampaignPage("story/history")}
-                >
-                  {t("dashboard.viewHistory")}
-                </button>
-              )}
-            </div>
-          </Card>
-        </div>
       </div>
-
-      {selectedEntity && campaignState && (
-        <EntityDetailModal
-          selectedEntity={selectedEntity}
-          campaignState={campaignState}
-          onClose={() => setSelectedEntityId(null)}
-          onSelectEntity={setSelectedEntityId}
-          onEdit={async (entityId, updates) => {
-            await updateEntity(entityId, updates);
-          }}
-          onArchive={async (entityId) => {
-            await archiveEntity(entityId);
-            setSelectedEntityId(null);
-          }}
-          onVisibilityChange={async (entityId, visibility) => {
-            await updateEntity(entityId, { visibility });
-          }}
-          addToast={addToast}
-        />
-      )}
+    </CampaignWorkspace>
 
       <LiveTableModal
         campaignId={campaignId}
