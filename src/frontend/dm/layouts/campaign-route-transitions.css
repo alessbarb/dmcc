@@ -15,7 +15,7 @@
   animation-delay: 20ms;
 }
 
-.main-content:not(.main-content--canvas) .content-body > * {
+.main-content:not(.main-content--canvas) > * {
   animation: campaignRouteEnter 180ms ease-out both;
   transform-origin: top center;
 }
@@ -71,7 +71,7 @@
   .main-content:not(.main-content--canvas) .content-header,
   .main-content:not(.main-content--canvas) .content-header .page-heading,
   .main-content:not(.main-content--canvas) .content-header .header-actions,
-  .main-content:not(.main-content--canvas) .content-body > *,
+  .main-content:not(.main-content--canvas) > *,
   .main-content--canvas > * {
     animation: none !important;
     transition: none !important;

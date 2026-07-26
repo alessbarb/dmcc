@@ -1,14 +1,14 @@
 import React from "react";
-import { useTranslation } from "../../shared/i18n/useTranslation.js";
-import { WorkspaceTabs, type WorkspaceTab } from "./WorkspaceTabs.js";
+import type { WorkspaceTab } from "./WorkspaceTabs.js";
+import { PageSubshell, type PageSubshellVariant } from "./PageSubshell.js";
 
 export type CampaignWorkspaceSize = "compact" | "standard" | "wide" | "fluid";
-export type CampaignWorkspaceVariant = "standard" | "immersive" | "content" | "master-detail";
+export type CampaignWorkspaceVariant = PageSubshellVariant | "immersive";
 
 interface CampaignWorkspaceProps {
   titleKey: string;
-  descriptionKey: string;
-  eyebrowKey?: string;
+  descriptionKey?: string;
+  description?: string;
   tabs?: WorkspaceTab[];
   actions?: React.ReactNode;
   toolbar?: React.ReactNode;
@@ -20,36 +20,34 @@ interface CampaignWorkspaceProps {
 
 export function CampaignWorkspace({
   titleKey,
-  descriptionKey,
-  eyebrowKey,
+  description,
   tabs,
   actions,
   toolbar,
   children,
-  size = "wide",
+  size = "standard",
   variant = "standard",
-  watermark = "auto",
 }: CampaignWorkspaceProps) {
-  const { t } = useTranslation();
+  const className = [
+    "campaign-workspace",
+    `campaign-workspace--${size}`,
+    `campaign-workspace--${variant}`,
+    "campaign-workspace--fullscreen",
+    toolbar ? "campaign-workspace--has-toolbar" : "",
+  ].filter(Boolean).join(" ");
 
   return (
-    <section
-      className={`campaign-workspace campaign-workspace--${size} campaign-workspace--${variant}`}
-      data-watermark={watermark}
+    <PageSubshell
+      titleKey={titleKey}
+      description={description}
+      variant={variant === "immersive" ? "standard" : variant}
+      className={className}
+      contentClassName="workspace-content campaign-workspace__content"
+      tabs={tabs}
+      actions={actions}
+      toolbar={toolbar}
     >
-      <header className="content-header campaign-workspace__header">
-        <div className="page-heading campaign-workspace__heading">
-          {eyebrowKey && <p className="page-eyebrow">{t(eyebrowKey)}</p>}
-          <h1 className="page-title">{t(titleKey)}</h1>
-          <p className="page-description">{t(descriptionKey)}</p>
-        </div>
-        {actions && <div className="header-actions campaign-workspace__actions">{actions}</div>}
-      </header>
-
-      {tabs && tabs.length > 1 && <WorkspaceTabs tabs={tabs} />}
-      {toolbar && <div className="campaign-workspace__toolbar">{toolbar}</div>}
-
-      <div className="workspace-content campaign-workspace__content">{children}</div>
-    </section>
+      {children}
+    </PageSubshell>
   );
 }

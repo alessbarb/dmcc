@@ -25,6 +25,7 @@ import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.j
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 import { useWorkspaceDensity } from "../../shared/hooks/useWorkspaceDensity.js";
+import { useBodyWatermark, type BodyWatermarkMode } from "../../shared/hooks/useBodyWatermark.js";
 import { formatSystemName } from "../../shared/presentation/formatSystemName.js";
 import "./campaign-route-transitions.css";
 import "../../shared/styles/layout/campaign-navigation.css";
@@ -45,6 +46,16 @@ export function CampaignShell() {
     return path.includes("/map/canvas") || path.includes("/map/network");
   };
   const isImmersive = isImmersiveRoute(pathname);
+  const watermarkMode: BodyWatermarkMode = pathname.includes("/map/network")
+    ? "network"
+    : pathname.includes("/map/canvas")
+      ? "canvas"
+      : pathname.includes("/library/notebooks")
+        ? "notebooks"
+        : pathname.includes("/rules")
+          ? "hidden"
+          : "default";
+  useBodyWatermark(watermarkMode);
   const {
     selectCampaign,
     clearCampaign,
@@ -62,10 +73,17 @@ export function CampaignShell() {
   const [showEnterTransition, setShowEnterTransition] = useState(true);
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
   const [accountModalOpen, setAccountModalOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     () => localStorage.getItem("dmcc-sidebar-collapsed") === "1",
   );
   const workspaceDensity = useWorkspaceDensity();
+
+  useEffect(() => {
+    const syncFullscreenState = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", syncFullscreenState);
+    return () => document.removeEventListener("fullscreenchange", syncFullscreenState);
+  }, []);
 
   const currentSegment = pathname.split("/")[3] ?? "";
   const isDM = activeCampaignRole === "dm";
@@ -187,10 +205,11 @@ export function CampaignShell() {
 
   return (
     <div
-      className={`app-container app-container--campaign-shell ${
+      className={`app-container app-container--campaign-shell app-container--workspace ${
         sidebarCollapsed ? "app-container--sidebar-collapsed" : ""
-      } ${isImmersive ? "app-container--canvas" : ""}`}
+      } ${isImmersive ? "app-container--canvas" : ""} ${isFullscreen ? "app-container--fullscreen" : ""}`}
       data-workspace-density={workspaceDensity}
+      data-shell-fullscreen={isFullscreen ? "true" : "false"}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
@@ -296,13 +315,15 @@ export function CampaignShell() {
 
 
       <main
-        className={`main-content ${isImmersive ? "main-content--canvas" : ""}`}
+        id="campaign-main-workspace"
+        className={`main-content main-content--workspace ${isImmersive ? "main-content--canvas" : ""}`}
         data-tour-id="campaign-main-workspace"
       >
-        {isImmersive ? <Outlet /> : <div className="content-body"><Outlet /></div>}
+        <Outlet />
       </main>
 
       {!isImmersive && <AppFooter />}
+
 
       <EntityCreateModal isOpen={isEntityModalOpen} onClose={() => setIsEntityModalOpen(false)} />
       <RelationCreateModal
