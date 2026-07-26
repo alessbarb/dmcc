@@ -355,7 +355,9 @@ export function CampaignShell() {
       <AccountModal open={accountModalOpen} onClose={() => setAccountModalOpen(false)} />
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 
-      {campaignId && !isImmersive && <QuickCaptureFAB campaignId={campaignId} />}
+      {campaignId && !isImmersive && !pathname.includes("/messages") && (
+        <QuickCaptureFAB campaignId={campaignId} />
+      )}
       {campaignId && (
         <CampaignGuidedTour
           campaignId={campaignId}
