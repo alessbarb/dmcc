@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Check, Copy, Download, FileArchive, Languages, RotateCcw, Upload } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { BookOpen, Check, Copy, Download, FileArchive, Languages, RotateCcw, Upload } from "lucide-react";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore, type Campaign } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
@@ -47,6 +47,29 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const [copiedExportPath, setCopiedExportPath] = useState(false);
   const [lastMarkdownExport, setLastMarkdownExport] = useState<MarkdownExportResult | null>(null);
   const [busyAction, setBusyAction] = useState<"backup" | "json" | "markdown" | null>(null);
+
+  const campaign = store.campaignState?.campaign;
+  const [campaignTitle, setCampaignTitle] = useState(campaign?.title ?? "");
+  const [campaignSystem, setCampaignSystem] = useState(campaign?.system ?? "dnd_5e");
+  const [campaignSaving, setCampaignSaving] = useState(false);
+
+  useEffect(() => {
+    setCampaignTitle(campaign?.title ?? "");
+    setCampaignSystem(campaign?.system ?? "dnd_5e");
+  }, [campaign?.title, campaign?.system]);
+
+  const handleCampaignInfoSave = async () => {
+    if (!campaign || !campaignTitle.trim()) return;
+    setCampaignSaving(true);
+    try {
+      await store.updateCampaign(campaign.campaignId, { title: campaignTitle.trim(), system: campaignSystem });
+      addToast(t("settings.campaignInfoSaveSuccess"), "success");
+    } catch {
+      addToast(t("settings.campaignInfoSaveError"), "error");
+    } finally {
+      setCampaignSaving(false);
+    }
+  };
 
   const handleCopyExportPath = (path: string) => {
     runSettingsAction((async () => {
@@ -117,7 +140,6 @@ export function SettingsPage(props: SettingsPageProps = {}) {
     <CampaignWorkspace
       titleKey="settings.pageTitle"
       descriptionKey="settings.pageSubtitle"
-      size="wide"
       variant="settings"
     >
       <div className="settings-workspace">
@@ -129,6 +151,39 @@ export function SettingsPage(props: SettingsPageProps = {}) {
       </section>
 
       <div className="settings-workspace__grid">
+        {campaign && (
+          <section className="card settings-card">
+            <div className="settings-card__header">
+              <span className="settings-card__icon" aria-hidden="true"><BookOpen size={20} /></span>
+              <h3>{t("settings.campaignInfoTitle")}</h3>
+            </div>
+            <p className="dm-muted-text">{t("settings.campaignInfoDescription")}</p>
+            <div className="form-group">
+              <label className="form-label">{t("landing.campaignTitleLabel")}</label>
+              <input className="form-input" value={campaignTitle} onChange={(e) => setCampaignTitle(e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">{t("landing.systemLabel")}</label>
+              <select className="form-select" value={campaignSystem} onChange={(e) => setCampaignSystem(e.target.value)}>
+                <option value="dnd_5e">{t("landing.systemDnD")}</option>
+                <option value="pathfinder_2e">Pathfinder 2e</option>
+                <option value="shadowdark">Shadowdark</option>
+                <option value="custom">{t("landing.systemCustom")}</option>
+              </select>
+            </div>
+            <div className="settings-card__actions">
+              <button
+                className="btn btn-primary"
+                disabled={campaignSaving || !campaignTitle.trim()}
+                onClick={() => void handleCampaignInfoSave()}
+              >
+                <Check size={16} />
+                {campaignSaving ? t("common.loading") : t("common.save")}
+              </button>
+            </div>
+          </section>
+        )}
+
         <section className="card settings-card">
           <div className="settings-card__header">
             <span className="settings-card__icon" aria-hidden="true"><RotateCcw size={20} /></span>

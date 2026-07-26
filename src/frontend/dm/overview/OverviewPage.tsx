@@ -335,7 +335,6 @@ export function OverviewPage() {
       <CampaignWorkspace
         titleKey="campaignShell.meta.dashboardEyebrow"
         description={displaySummary}
-        size="wide"
         variant="operational"
         actions={workspaceActions}
       >
@@ -351,7 +350,6 @@ export function OverviewPage() {
       <CampaignWorkspace
         titleKey="campaignShell.meta.dashboardEyebrow"
         description={displaySummary}
-        size="wide"
         variant="operational"
         actions={workspaceActions}
       >
@@ -378,10 +376,9 @@ export function OverviewPage() {
       <CampaignWorkspace
         titleKey="campaignShell.meta.dashboardEyebrow"
         description={displaySummary}
-      size="wide"
-      variant="operational"
-      actions={workspaceActions}
-    >
+        variant="operational"
+        actions={workspaceActions}
+      >
       <div className="dashboard-page">
 
         <DashboardCommandBar

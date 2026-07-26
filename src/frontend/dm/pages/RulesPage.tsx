@@ -155,7 +155,7 @@ export function RulesPage() {
   }
 
   return (
-    <CampaignWorkspace titleKey="nav.rules" variant="content" size="fluid">
+    <CampaignWorkspace titleKey="nav.rules" variant="content">
       <div className="rules-page">
         <div className="rules-layout">
         <aside className="rules-sidebar card" aria-label={t("rules.category")}>

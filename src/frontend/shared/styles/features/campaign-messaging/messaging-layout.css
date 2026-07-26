@@ -1,4 +1,21 @@
 .campaign-messaging { display: grid; grid-template-rows: auto minmax(320px, 1fr) auto; min-height: min(720px, calc(100vh - 220px)); overflow: hidden; }
+
+.campaign-messaging--full-bleed {
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.campaign-messaging--full-bleed:hover { transform: none; }
+
+.campaign-messaging--full-bleed .campaign-messaging__content { padding: 0 clamp(16px, 3vw, 40px); }
+
+.campaign-messaging--full-bleed .campaign-messaging__footer { padding: 14px clamp(16px, 3vw, 40px) clamp(16px, 2vw, 24px) clamp(16px, 3vw, 40px); }
 .campaign-messaging__header { display: flex; gap: 12px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--theme-borders-default); }
 .campaign-messaging__icon { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: var(--theme-surfaces-raised); }
 .campaign-messaging__title { margin: 0; }

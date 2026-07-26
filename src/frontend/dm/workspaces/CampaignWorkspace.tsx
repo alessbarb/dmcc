@@ -2,7 +2,6 @@ import React from "react";
 import type { WorkspaceTab } from "./WorkspaceTabs.js";
 import { PageSubshell, type PageSubshellVariant } from "./PageSubshell.js";
 
-export type CampaignWorkspaceSize = "compact" | "standard" | "wide" | "fluid";
 export type CampaignWorkspaceVariant = PageSubshellVariant | "immersive";
 
 interface CampaignWorkspaceProps {
@@ -13,7 +12,6 @@ interface CampaignWorkspaceProps {
   actions?: React.ReactNode;
   toolbar?: React.ReactNode;
   children: React.ReactNode;
-  size?: CampaignWorkspaceSize;
   variant?: CampaignWorkspaceVariant;
   watermark?: "auto" | "hidden";
 }
@@ -25,12 +23,10 @@ export function CampaignWorkspace({
   actions,
   toolbar,
   children,
-  size = "standard",
   variant = "standard",
 }: CampaignWorkspaceProps) {
   const className = [
     "campaign-workspace",
-    `campaign-workspace--${size}`,
     `campaign-workspace--${variant}`,
     "campaign-workspace--fullscreen",
     toolbar ? "campaign-workspace--has-toolbar" : "",

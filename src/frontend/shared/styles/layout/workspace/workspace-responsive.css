@@ -143,9 +143,6 @@
   }
 }
 :root {
-  --dmcc-page-compact: 760px;
-  --dmcc-page-standard: 1080px;
-  --dmcc-page-wide: 1280px;
   --dmcc-surface-1: color-mix(in srgb, var(--theme-surfaces-base) 92%, transparent);
   --dmcc-surface-2: color-mix(in srgb, var(--theme-surfaces-base) 82%, var(--theme-surfaces-canvas));
   --dmcc-border-subtle: color-mix(in srgb, var(--theme-borders-default) 55%, transparent);
@@ -155,9 +152,4 @@
   --dmcc-radius-panel: 12px;
   --dmcc-radius-control: 8px;
   --dmcc-control-height: 42px;
-}
-
-.campaign-workspace--compact {
-  max-width: var(--dmcc-page-compact);
-  margin-inline: auto;
 }

@@ -1,7 +1,5 @@
 import React from "react";
 import { WorkspaceTabs, type WorkspaceTab } from "./WorkspaceTabs.js";
-import { WorkspaceFullscreenButton } from "../../shared/components/WorkspaceFullscreenButton.js";
-import { useWorkspaceFullscreen } from "../../shared/hooks/useWorkspaceFullscreen.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 export interface PageSubshellProps {
@@ -14,7 +12,6 @@ export interface PageSubshellProps {
   children: React.ReactNode;
   className?: string;
   contentClassName?: string;
-  showFullscreenButton?: boolean;
 }
 
 export type PageSubshellVariant =
@@ -27,7 +24,7 @@ export type PageSubshellVariant =
   | "content"
   | "master-detail";
 
-/** Shared page-level boundary for title, navigation, actions and workspace fullscreen. */
+/** Shared page-level boundary for title, navigation, and actions. */
 export function PageSubshell({
   titleKey,
   description,
@@ -38,16 +35,13 @@ export function PageSubshell({
   children,
   className = "",
   contentClassName = "",
-  showFullscreenButton = true,
 }: PageSubshellProps) {
   const { t } = useTranslation();
-  const { workspaceRef, isFullscreen, toggleFullscreen } = useWorkspaceFullscreen<HTMLElement>();
   const rootClassName = ["workspace-shell", "page-subshell", `page-subshell--${variant}`, className].filter(Boolean).join(" ");
   const contentClasses = ["workspace-shell__content", contentClassName].filter(Boolean).join(" ");
 
   return (
     <section
-      ref={workspaceRef}
       className={rootClassName}
       data-subshell-variant={variant}
       aria-labelledby={titleKey ? "workspace-page-title" : undefined}
@@ -58,18 +52,10 @@ export function PageSubshell({
           {description && <p className="workspace-shell__description">{description}</p>}
         </header>
       )}
-      {(tabs && tabs.length > 1) || actions || showFullscreenButton ? (
+      {(tabs && tabs.length > 1) || actions ? (
         <div className="workspace-shell__navigation">
           {tabs && tabs.length > 1 && <WorkspaceTabs tabs={tabs} />}
-          <div className="workspace-shell__navigation-actions">
-            {actions}
-            {showFullscreenButton && (
-              <WorkspaceFullscreenButton
-                isFullscreen={isFullscreen}
-                onToggle={() => void toggleFullscreen()}
-              />
-            )}
-          </div>
+          {actions && <div className="workspace-shell__navigation-actions">{actions}</div>}
         </div>
       ) : null}
       {toolbar && <div className="workspace-shell__toolbar">{toolbar}</div>}

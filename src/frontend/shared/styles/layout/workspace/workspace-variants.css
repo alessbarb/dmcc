@@ -1,29 +1,3 @@
-
-
-.campaign-workspace--compact {
-  max-width: var(--dmcc-page-compact);
-  margin-inline: auto;
-  gap: 12px;
-}
-
-.campaign-workspace--compact .campaign-workspace__header {
-  padding-bottom: 10px;
-}
-
-.campaign-workspace--standard {
-  max-width: var(--dmcc-page-standard);
-  margin-inline: auto;
-}
-
-.campaign-workspace--wide {
-  max-width: var(--dmcc-page-wide);
-  margin-inline: auto;
-}
-
-.campaign-workspace--fluid {
-  max-width: none;
-}
-
 .campaign-workspace--immersive {
   gap: 12px;
 }
@@ -34,13 +8,6 @@
 
 .campaign-workspace--content {
   gap: 20px;
-}
-
-.campaign-workspace--content .campaign-workspace__content {
-  padding: 16px;
-  background: var(--theme-surfaces-panel);
-  border-radius: var(--theme-radius-panel);
-  border: 1px solid var(--theme-borders-default);
 }
 
 .campaign-workspace--master-detail {

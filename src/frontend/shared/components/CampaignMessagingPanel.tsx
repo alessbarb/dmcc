@@ -38,7 +38,7 @@ interface PendingMessage {
   createdAt: string;
   status: "sending" | "failed";
 }
-interface CampaignMessagingPanelProps { campaignId: string; dmMode?: boolean }
+interface CampaignMessagingPanelProps { campaignId: string; dmMode?: boolean; fullBleed?: boolean }
 
 function mergeMessages(...collections: CampaignMessage[][]): CampaignMessage[] {
   const byId = new Map<string, CampaignMessage>();
@@ -70,7 +70,7 @@ function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
+export function CampaignMessagingPanel({ campaignId, dmMode = false, fullBleed = false }: CampaignMessagingPanelProps) {
   const { t, locale } = useTranslation();
   const [payload, setPayload] = useState<MessagingPayload>({ participants: [], messages: [], pageInfo: { hasMore: false, nextCursor: null } });
   const [content, setContent] = useState("");
@@ -275,11 +275,13 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   };
 
   return (
-    <section className="card campaign-messaging">
-      <header className="campaign-messaging__header">
-        <div className="campaign-messaging__icon"><MessageCircle size={21} /></div>
-        <div><h2 className="campaign-messaging__title">{t("playerPortal.messaging.heading")}</h2><p className="campaign-messaging__subtitle">{t(dmMode ? "playerPortal.messaging.dmSubtitle" : "playerPortal.messaging.playerSubtitle")}</p></div>
-      </header>
+    <section className={fullBleed ? "campaign-messaging campaign-messaging--full-bleed" : "card campaign-messaging"}>
+      {!fullBleed && (
+        <header className="campaign-messaging__header">
+          <div className="campaign-messaging__icon"><MessageCircle size={21} /></div>
+          <div><h2 className="campaign-messaging__title">{t("playerPortal.messaging.heading")}</h2><p className="campaign-messaging__subtitle">{t(dmMode ? "playerPortal.messaging.dmSubtitle" : "playerPortal.messaging.playerSubtitle")}</p></div>
+        </header>
+      )}
 
       <div className="campaign-messaging__content">
         <div ref={listRef} className="campaign-messaging__list" role="log" aria-live="polite" aria-relevant="additions text" onScroll={handleScroll}>

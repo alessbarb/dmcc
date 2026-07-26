@@ -62,22 +62,6 @@
   min-height: 450px;
 }
 
-.campaign-workspace--map-tool:fullscreen {
-  width: 100vw;
-  height: 100dvh;
-  min-height: 100dvh;
-  padding: 0;
-  background: var(--theme-surfaces-canvas);
-}
-
-.campaign-workspace--map-tool:fullscreen .workspace-shell__navigation {
-  padding-inline: clamp(18px, 2vw, 32px);
-}
-
-.campaign-workspace--map-tool:fullscreen .workspace-shell__content {
-  height: 100%;
-}
-
 @media (max-width: 760px) {
   .campaign-workspace--map-tool {
     min-height: calc(100dvh - 72px);

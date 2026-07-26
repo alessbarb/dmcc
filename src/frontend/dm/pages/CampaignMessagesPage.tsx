@@ -9,10 +9,9 @@ export function CampaignMessagesPage() {
     <CampaignWorkspace
       titleKey="campaignShell.meta.messagesTitle"
       variant="content"
-      size="fluid"
     >
       <div className="campaign-messages-page">
-        <CampaignMessagingPanel campaignId={campaignId} dmMode />
+        <CampaignMessagingPanel campaignId={campaignId} dmMode fullBleed />
       </div>
     </CampaignWorkspace>
   );

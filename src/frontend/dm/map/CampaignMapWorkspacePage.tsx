@@ -31,7 +31,6 @@ export function CampaignMapWorkspacePage() {
       className={`campaign-workspace--map-tool ${isCanvas ? "campaign-workspace--canvas" : ""} ${isNetwork ? "campaign-workspace--network" : ""}`}
       contentClassName="campaign-workspace--map-tool__content"
       tabs={tabs}
-      showFullscreenButton
     >
       <Outlet />
     </PageSubshell>

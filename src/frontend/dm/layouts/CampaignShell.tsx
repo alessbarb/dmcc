@@ -4,6 +4,8 @@ import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
+  Eye,
+  EyeOff,
   LogOut,
   User,
 } from "lucide-react";
@@ -25,6 +27,7 @@ import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.j
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 import { useWorkspaceDensity } from "../../shared/hooks/useWorkspaceDensity.js";
+import { useScreenSafeModeStore } from "../../shared/stores/screenSafeModeStore.js";
 import { useBodyWatermark, type BodyWatermarkMode } from "../../shared/hooks/useBodyWatermark.js";
 import { formatSystemName } from "../../shared/presentation/formatSystemName.js";
 import "./campaign-route-transitions.css";
@@ -78,6 +81,8 @@ export function CampaignShell() {
     () => localStorage.getItem("dmcc-sidebar-collapsed") === "1",
   );
   const workspaceDensity = useWorkspaceDensity();
+  const screenSafeMode = useScreenSafeModeStore((s) => s.enabled);
+  const toggleScreenSafeMode = useScreenSafeModeStore((s) => s.toggle);
 
   useEffect(() => {
     const syncFullscreenState = () => setIsFullscreen(Boolean(document.fullscreenElement));
@@ -210,6 +215,7 @@ export function CampaignShell() {
       } ${isImmersive ? "app-container--canvas" : ""} ${isFullscreen ? "app-container--fullscreen" : ""}`}
       data-workspace-density={workspaceDensity}
       data-shell-fullscreen={isFullscreen ? "true" : "false"}
+      data-screen-safe-mode={screenSafeMode ? "true" : "false"}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
@@ -277,6 +283,16 @@ export function CampaignShell() {
 
         <div className={`sidebar-footer ${sidebarCollapsed ? "sidebar-footer--collapsed" : ""}`}>
           <div className="sidebar-footer__actions">
+            <button
+              className={`btn btn-sm sidebar-footer__action ${screenSafeMode ? "btn-primary" : "btn-secondary"}`}
+              type="button"
+              onClick={toggleScreenSafeMode}
+              title={screenSafeMode ? t("campaignShell.screenSafeModeOff") : t("campaignShell.screenSafeModeOn")}
+              aria-pressed={screenSafeMode}
+            >
+              {screenSafeMode ? <EyeOff size={14} /> : <Eye size={14} />}
+              {!sidebarCollapsed && (screenSafeMode ? t("campaignShell.screenSafeModeOff") : t("campaignShell.screenSafeModeOn"))}
+            </button>
             <button
               className="btn btn-secondary btn-sm sidebar-footer__action"
               type="button"

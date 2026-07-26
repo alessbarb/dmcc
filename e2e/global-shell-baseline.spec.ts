@@ -144,43 +144,6 @@ test("captures the DM global-shell baseline across routes and viewports", async 
   await testInfo.attach("global-shell-baseline.json", { path: reportPath, contentType: "application/json" });
 });
 
-test("keeps the global shell contract while entering and leaving workspace fullscreen", async ({ page }) => {
-  const { campaignId } = await createCampaign(page);
-  await page.goto(`/campaigns/${campaignId}/overview`, { waitUntil: "domcontentloaded" });
-  const fullscreenButton = page.locator(".workspace-fullscreen-button").first();
-  await expect(fullscreenButton).toBeVisible();
-
-  await fullscreenButton.click();
-  await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(true);
-  await expect.poll(() => page.locator(".app-container--campaign-shell").getAttribute("data-shell-fullscreen")).toBe("true");
-  await expect(page.locator("h1")).toBeVisible();
-  await expect(page.locator(".app-footer")).toBeHidden();
-  await expect.poll(() => page.locator(".campaign-workspace__content").evaluate((element) => getComputedStyle(element).overflowY)).toBe("auto");
-
-  await fullscreenButton.click();
-  await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(false);
-  await expect.poll(() => page.locator(".app-container--campaign-shell").getAttribute("data-shell-fullscreen")).toBe("false");
-
-  for (const route of ["map/canvas", "map/network"]) {
-    await page.goto(`/campaigns/${campaignId}/${route}`, { waitUntil: "domcontentloaded" });
-    const immersiveFullscreenButton = page.locator(".workspace-fullscreen-button").first();
-    await expect(immersiveFullscreenButton).toBeVisible();
-    await immersiveFullscreenButton.click();
-    await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(true);
-    await expect(page.locator(".workspace-shell__content")).toBeVisible();
-    const contentSize = await page.locator(".workspace-shell__content").evaluate((element) => ({
-      height: element.getBoundingClientRect().height,
-      overflowY: getComputedStyle(element).overflowY,
-    }));
-    expect(contentSize.height).toBeGreaterThan(0);
-    // Canvas and graph own their internal pan/scroll surface; the page subshell
-    // must clip it rather than becoming a second competing scroll container.
-    expect(contentSize.overflowY).toBe("hidden");
-    await immersiveFullscreenButton.click();
-    await expect.poll(() => page.evaluate(() => Boolean(document.fullscreenElement))).toBe(false);
-  }
-});
-
 test("validates the operational DM command center across desktop and mobile", async ({ page }, testInfo) => {
   test.setTimeout(60_000);
   const { campaignId } = await createCampaign(page);
@@ -304,5 +267,4 @@ test("exposes the declared page-subshell variants before page-specific migration
 
   await page.goto(`/campaigns/${campaignId}/sessions/${sessionId}`, { waitUntil: "domcontentloaded" });
   await expect(page.locator(".workspace-tabs .workspace-tab")).toHaveCount(3);
-  await expect(page.locator(".workspace-fullscreen-button")).toBeVisible();
 });
