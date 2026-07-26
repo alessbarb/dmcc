@@ -2095,6 +2095,8 @@ export const de: TranslationDictionary = {
     title: "Spieler und Charaktere",
     invitePlayer: "Spieler einladen",
     playerInvitations: "Spielereinladungen",
+    manageInvitations: "Verwalten",
+
     localNetworkActive: "Lokales Netzwerk aktiv:",
     shareInvitationLink: "Teile diesen Link mit dem Spieler (72 Std. gültig):",
     invitationExpiresOn: "Läuft ab am {date}",

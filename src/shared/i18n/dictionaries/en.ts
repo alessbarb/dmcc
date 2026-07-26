@@ -2166,6 +2166,8 @@ export const en = {
     title: "Players and characters",
     invitePlayer: "Invite player",
     playerInvitations: "Player invitations",
+    manageInvitations: "Manage",
+
     localNetworkActive: "Local network active:",
     shareInvitationLink: "Share this link with the player (valid 72h):",
     invitationExpiresOn: "Expires on {date}",
