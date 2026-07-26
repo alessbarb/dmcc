@@ -419,6 +419,9 @@ export function OverviewPage() {
     );
   }
 
+  const rawSummary = campaign?.summary ?? t("campaignShell.meta.dashboardDescription");
+  const displaySummary = rawSummary.length > 70 ? rawSummary.slice(0, 67) + "..." : rawSummary;
+
   return (
     <>
       <div className="dashboard-page">
@@ -431,7 +434,7 @@ export function OverviewPage() {
               {campaign?.title ?? t("campaignShell.defaultTitle")}
             </h1>
             <p className="dashboard-header__description">
-              {campaign?.summary ?? t("campaignShell.meta.dashboardDescription")}
+              {displaySummary}
             </p>
           </div>
 
@@ -462,9 +465,142 @@ export function OverviewPage() {
           </div>
         </header>
 
-        <div className="card dashboard-shortcuts">
+        <div className="quick-actions-bar" aria-label={t("dashboard.quickActions")} style={{ marginBottom: "16px" }}>
+          <button
+            className="quick-action-link"
+            type="button"
+            onClick={() => setIsEntityModalOpen(true)}
+          >
+            <Plus size={15} /> <span>{t("campaignShell.newEntity")}</span>
+          </button>
+          <button
+            className="quick-action-link"
+            type="button"
+            onClick={() => navigateToCampaignPage("map/network")}
+          >
+            <GitFork size={15} /> <span>{t("dashboard.viewGraph")}</span>
+          </button>
+          <button
+            className="quick-action-link"
+            type="button"
+            onClick={() => {
+              runCommandCenterAction(
+                navigate({ to: "/player/campaigns/$campaignId/overview", params: { campaignId } }),
+                "No se pudo abrir el portal de jugadores.",
+              );
+            }}
+          >
+            <Share2 size={15} /> <span>{t("dashboard.openPlayerPortal")}</span>
+          </button>
+          <button
+            className="quick-action-link"
+            type="button"
+            onClick={() => {
+              runCommandCenterAction(handleMarkdownExport(), "No se pudo exportar la campaña en Markdown.");
+            }}
+            disabled={exportingMarkdown}
+          >
+            <Download size={15} />
+            <span>
+              {exportingMarkdown
+                ? t("dashboard.exportingMarkdown")
+                : t("dashboard.exportMarkdown")}
+            </span>
+          </button>
+        </div>
+
+        <div className="card dashboard-shortcuts" style={{ marginBottom: "16px" }}>
           <ShortcutsPanel campaignId={campaignId} />
         </div>
+
+        <section aria-labelledby="continuity-section-title" style={{ marginBottom: "24px" }}>
+          <Card ornament="primary" className="dashboard-continuity-panel">
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", padding: "16px 20px" }}>
+              <div style={{ minWidth: "280px", flex: "1 1 500px" }}>
+                <span className="dashboard-header__eyebrow" style={{ display: "block", marginBottom: "4px" }}>
+                  {t("dashboard.nextSessionPrep")}
+                </span>
+                <h2 id="continuity-section-title" style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--theme-text-primary)", margin: "0 0 10px 0", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <CalendarDays size={20} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+                  {activeSession ? (
+                    <span>{t("dashboard.runningSessionTitle", { title: activeSession.title })}</span>
+                  ) : nextPreparedSession ? (
+                    <span>{t("dashboard.nextPreparedSessionTitle", { title: nextPreparedSession.title })}</span>
+                  ) : (
+                    <span>{t("dashboard.noPreparedSessionTitle")}</span>
+                  )}
+                </h2>
+                <NarrativeDivider />
+
+                {lastClosedSession && (commandCenter?.recap || lastClosedSession.summary) && (
+                  <div style={{ marginBottom: "16px" }}>
+                    <h4 style={{ fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase", color: "var(--theme-text-subtle)", margin: "0 0 6px 0" }}>
+                      {t("dashboard.lastSession")}
+                    </h4>
+                    <p className="dashboard-recap" style={{ margin: 0, fontSize: "0.9rem", color: "var(--theme-text-secondary)", lineHeight: "1.4", maxWidth: "70ch" }}>
+                      {commandCenter?.recap ?? lastClosedSession.summary}
+                    </p>
+                  </div>
+                )}
+
+                {attentionCount > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "12px" }}>
+                    {attentionChips.map((chip) => (
+                      <Pill key={chip.key} tone={chip.tone}>
+                        {chip.label}: {chip.count}
+                      </Pill>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ minWidth: "200px", flex: "1 1 200px", display: "flex", flexDirection: "column", gap: "10px", alignItems: "flex-start" }}>
+                {activeSession ? (
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={() => setLiveTableModalOpen(true)}
+                    style={{ width: "100%", justifyContent: "center" }}
+                  >
+                    <Play size={16} /> {t("dashboard.runSession")}
+                  </button>
+                ) : nextPreparedSession ? (
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={() => navigateToCampaignPage("sessions")}
+                    style={{ width: "100%", justifyContent: "center" }}
+                  >
+                    <Play size={16} /> {t("dashboard.startSession")}
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={() => navigateToCampaignPage("sessions")}
+                    style={{ width: "100%", justifyContent: "center" }}
+                  >
+                    <Plus size={16} /> {t("dashboard.startSession")}
+                  </button>
+                )}
+                <button
+                  className="btn btn-secondary"
+                  type="button"
+                  onClick={() => navigateToCampaignPage("sessions")}
+                  style={{ width: "100%", justifyContent: "center" }}
+                >
+                  {t("campaignShell.nav.session")}
+                </button>
+                {liveTable && (
+                  <div style={{ marginTop: "6px", width: "100%", textAlign: "center" }}>
+                    <span style={{ fontSize: "var(--type-micro)", color: "var(--theme-text-secondary)", marginRight: "8px" }}>Portal Live:</span>
+                    <Pill tone="good">{liveTable.shortCode}</Pill>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Card>
+        </section>
 
         {campaignState && (
           <CampaignStarterHub
@@ -590,46 +726,56 @@ export function OverviewPage() {
           )}
         </Card>
 
-        <div className="dashboard-prep-grid">
-          <Card ornament="accent">
-            <h2 className="dashboard-card__heading">
-              <CheckCircle2 size={18} /> {t("whatNowPage.prepTitle")}
-            </h2>
-            {preparationChecklist.length === 0 ? (
-              <EmptyMessage>{t("dashboard.noPreparedClues")}</EmptyMessage>
-            ) : (
-              <div className="dashboard-checklist">
-                {preparationChecklist.map((item) => (
-                  <label key={item.id} className="dashboard-checklist__item">
-                    <input
-                      type="checkbox"
-                      checked={completedTasks.includes(item.id)}
-                      onChange={() => toggleChecklistTask(item.id)}
-                    />
-                    <span className={`dashboard-checklist__label ${completedTasks.includes(item.id) ? "is-complete" : ""}`}>
-                      {item.label}
-                    </span>
-                  </label>
-                ))}
-              </div>
+        {(preparationChecklist.length > 0 || partialKnowledgeAlerts.length > 0) ? (
+          <div className="dashboard-prep-grid">
+            {preparationChecklist.length > 0 && (
+              <Card ornament="accent">
+                <h2 className="dashboard-card__heading">
+                  <CheckCircle2 size={18} /> {t("whatNowPage.prepTitle")}
+                </h2>
+                <div className="dashboard-checklist">
+                  {preparationChecklist.map((item) => (
+                    <label key={item.id} className="dashboard-checklist__item">
+                      <input
+                        type="checkbox"
+                        checked={completedTasks.includes(item.id)}
+                        onChange={() => toggleChecklistTask(item.id)}
+                      />
+                      <span className={`dashboard-checklist__label ${completedTasks.includes(item.id) ? "is-complete" : ""}`}>
+                        {item.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </Card>
             )}
-          </Card>
 
-          <Card ornament="accent">
-            <h2 className="dashboard-card__heading">
-              <Share2 size={18} /> {t("whatNowPage.confusionRisks")}
-            </h2>
-            {partialKnowledgeAlerts.length === 0 ? (
-              <EmptyMessage>{t("whatNowPage.noConfusionRisks")}</EmptyMessage>
-            ) : (
-              <div className="dashboard-risk-list">
-                {partialKnowledgeAlerts.map((alert, index) => (
-                  <div key={index} className="dashboard-risk-item">{alert.message}</div>
-                ))}
-              </div>
+            {partialKnowledgeAlerts.length > 0 && (
+              <Card ornament="accent">
+                <h2 className="dashboard-card__heading">
+                  <Share2 size={18} /> {t("whatNowPage.confusionRisks")}
+                </h2>
+                <div className="dashboard-risk-list">
+                  {partialKnowledgeAlerts.map((alert, index) => (
+                    <div key={index} className="dashboard-risk-item">{alert.message}</div>
+                  ))}
+                </div>
+              </Card>
             )}
+          </div>
+        ) : (
+          <Card ornament="standard" className="dashboard-prep-all-clear">
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px", gap: "10px", textAlign: "center" }}>
+              <CheckCircle2 size={36} style={{ color: "var(--theme-feedback-success-foreground)" }} />
+              <h2 style={{ fontSize: "1.1rem", fontWeight: 750, color: "var(--theme-text-primary)", margin: 0 }}>
+                {t("dashboard.allClear")}
+              </h2>
+              <p style={{ fontSize: "0.88rem", color: "var(--theme-text-secondary)", margin: 0 }}>
+                {t("dashboard.allPreparedDetail")}
+              </p>
+            </div>
           </Card>
-        </div>
+        )}
 
         <div className="dashboard-entity-grids">
           <Card>
@@ -677,25 +823,7 @@ export function OverviewPage() {
           </Card>
         </div>
 
-        <div className="dashboard-session-grid">
-          <Card>
-            <h2 className="dashboard-card__heading">
-              <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
-            </h2>
-            <p className="dashboard-recap">
-              {commandCenter?.recap ?? lastClosedSession?.summary ?? t("dashboard.noPreviousSessions")}
-            </p>
-            <NarrativeDivider />
-            {activeSession ? (
-              <Pill tone="good">{t("dashboard.runningSessionTitle", { title: activeSession.title })}</Pill>
-            ) : nextPreparedSession ? (
-              <Pill tone="good">{t("dashboard.nextPreparedSessionTitle", { title: nextPreparedSession.title })}</Pill>
-            ) : (
-              <Pill>{t("dashboard.noPreparedSessionTitle")}</Pill>
-            )}
-            {liveTable && <div className="dashboard-live-table"><Pill tone="good">{liveTable.shortCode}</Pill></div>}
-          </Card>
-
+        <div style={{ marginTop: "24px" }}>
           <Card>
             <h2 className="dashboard-card__heading">
               <Activity size={18} /> {t("dashboard.recentlyUpdated")}
@@ -728,70 +856,6 @@ export function OverviewPage() {
             </div>
           </Card>
         </div>
-
-        <section aria-labelledby="command-center-actions-title">
-          <h2 id="command-center-actions-title" className="dashboard-section-label">
-            <span>{t("dashboard.quickActions")}</span>
-            <span aria-hidden="true" />
-          </h2>
-          <div className="dashboard-quick-actions">
-            <button
-              className="btn btn-primary dashboard-quick-action dashboard-quick-action--theme-accents-primary-foreground"
-              type="button"
-              onClick={() => navigateToCampaignPage("sessions")}
-            >
-              <Play size={20} /> <span>{t("dashboard.startSession")}</span>
-            </button>
-            <button
-              className="btn btn-secondary dashboard-quick-action"
-              type="button"
-              onClick={() => setIsEntityModalOpen(true)}
-            >
-              <Plus size={20} /> <span>{t("campaignShell.newEntity")}</span>
-            </button>
-            <button
-              className="btn btn-secondary dashboard-quick-action"
-              type="button"
-              onClick={() => navigateToCampaignPage("map/network")} // Network tab under map
-            >
-              <GitFork size={20} /> <span>{t("dashboard.viewGraph")}</span>
-            </button>
-            <button
-              className="btn btn-secondary dashboard-quick-action"
-              type="button"
-              onClick={() => navigateToCampaignPage("library/list")} // List tab under library
-            >
-              <Search size={20} /> <span>{t("dashboard.globalSearch")}</span>
-            </button>
-            <button
-              className="btn btn-secondary dashboard-quick-action"
-              type="button"
-              onClick={() => {
-                runCommandCenterAction(
-                  navigate({ to: "/player/campaigns/$campaignId/overview", params: { campaignId } }),
-                  "No se pudo abrir el portal de jugadores.",
-                );
-              }}
-            >
-              <Share2 size={20} /> <span>{t("dashboard.openPlayerPortal")}</span>
-            </button>
-            <button
-              className="btn btn-secondary dashboard-quick-action"
-              type="button"
-              onClick={() => {
-                runCommandCenterAction(handleMarkdownExport(), "No se pudo exportar la campaña en Markdown.");
-              }}
-              disabled={exportingMarkdown}
-            >
-              <Download size={20} />
-              <span>
-                {exportingMarkdown
-                  ? t("dashboard.exportingMarkdown")
-                  : t("dashboard.exportMarkdown")}
-              </span>
-            </button>
-          </div>
-        </section>
       </div>
 
       {selectedEntity && campaignState && (

@@ -71,10 +71,10 @@ const IconMap: Record<string, LucideIcon> = {
 
 const CATEGORIES = [
   { id: "all", labelKey: "campaignHistory.categories.all", icon: Layers },
-  { id: "session", labelKey: "campaignHistory.categories.session", icon: Calendar },
-  { id: "content", labelKey: "campaignHistory.categories.content", icon: Plus },
-  { id: "knowledge", labelKey: "campaignHistory.categories.knowledge", icon: Info },
   { id: "story", labelKey: "campaignHistory.categories.story", icon: BookOpen },
+  { id: "session", labelKey: "campaignHistory.categories.session", icon: Calendar },
+  { id: "knowledge", labelKey: "campaignHistory.categories.knowledge", icon: Info },
+  { id: "content", labelKey: "campaignHistory.categories.content", icon: Plus },
   { id: "people", labelKey: "campaignHistory.categories.people", icon: UserCheck },
   { id: "collaboration", labelKey: "campaignHistory.categories.collaboration", icon: Settings },
   { id: "operation", labelKey: "campaignHistory.categories.operation", icon: Wrench },
@@ -93,6 +93,23 @@ export function CampaignHistoryView() {
   const [, startTransition] = useTransition();
 
   const [expandedGroupIds, setExpandedGroupIds] = useState<Record<string, boolean>>({});
+  const [includeTechnical, setIncludeTechnical] = useState(false);
+
+  const visibleCategories = useMemo(() => {
+    return CATEGORIES.filter((c) => {
+      if (!includeTechnical) {
+        return c.id !== "operation" && c.id !== "collaboration";
+      }
+      return true;
+    });
+  }, [includeTechnical]);
+
+  const handleTechnicalToggle = (checked: boolean) => {
+    setIncludeTechnical(checked);
+    if (!checked && (category === "operation" || category === "collaboration")) {
+      setCategory("all");
+    }
+  };
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroupIds((prev) => ({
@@ -108,7 +125,14 @@ export function CampaignHistoryView() {
       entries: typeof entries;
     }> = [];
 
-    for (const entry of entries) {
+    const filtered = entries.filter((entry) => {
+      if (!includeTechnical) {
+        return entry.category !== "operation" && entry.category !== "collaboration";
+      }
+      return true;
+    });
+
+    for (const entry of filtered) {
       const lastGroup = groups[groups.length - 1];
       if (lastGroup && lastGroup.type === entry.type) {
         lastGroup.entries.push(entry);
@@ -121,7 +145,7 @@ export function CampaignHistoryView() {
       }
     }
     return groups;
-  }, [entries]);
+  }, [entries, includeTechnical]);
 
   const fetchHistory = async (selectedCategory: string, cursor?: string) => {
     try {
@@ -172,7 +196,7 @@ export function CampaignHistoryView() {
       <div className="campaign-history__layout">
         <aside className="campaign-history__filters" aria-label={t("campaignHistory.categoriesLabel")}>
           <h2 className="campaign-history__filters-title">{t("campaignHistory.categoriesLabel")}</h2>
-          {CATEGORIES.map((candidate) => {
+          {visibleCategories.map((candidate) => {
             const CategoryIcon = candidate.icon;
             const selected = category === candidate.id;
             return (
@@ -188,6 +212,18 @@ export function CampaignHistoryView() {
               </button>
             );
           })}
+
+          <div className="campaign-history__tech-toggle" style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid var(--theme-borders-default)" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.82rem", cursor: "pointer", color: "var(--theme-text-secondary)" }}>
+              <input
+                type="checkbox"
+                style={{ cursor: "pointer" }}
+                checked={includeTechnical}
+                onChange={(e) => handleTechnicalToggle(e.target.checked)}
+              />
+              <span>{t("campaignHistory.includeTechnical")}</span>
+            </label>
+          </div>
         </aside>
 
         <section className="campaign-history__content">

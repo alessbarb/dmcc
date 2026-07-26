@@ -994,6 +994,8 @@ export const es: TranslationDictionary = {
     noPreviousSessions: "Sin sesiones anteriores",
     needsAttention: "Qué requiere atención",
     allClear: "Todo en orden — no hay alertas activas",
+    allPreparedDetail: "Todo preparado y listo para la próxima sesión.",
+
     reviewAttention: "Revisar",
     forgottenNpcs: "PNJs olvidados",
     noneMasculine: "Ninguno",
@@ -3201,6 +3203,8 @@ export const es: TranslationDictionary = {
   },
 
   campaignHistory: {
+    includeTechnical: "Incluir actividad técnica",
+
     title: "Crónica de campaña",
     subtitle: "Hitos narrativos y actividad de campaña ordenados cronológicamente. Los datos técnicos permanecen disponibles sin interferir con la lectura principal.",
     categoriesLabel: "Categorías",

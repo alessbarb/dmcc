@@ -982,6 +982,8 @@ export const en = {
     noPreviousSessions: "No previous sessions",
     needsAttention: "Needs attention",
     allClear: "Everything is in order — no active alerts",
+    allPreparedDetail: "Everything is prepared and ready for the next session.",
+
     reviewAttention: "Review",
     forgottenNpcs: "Forgotten NPCs",
     noneMasculine: "None",
@@ -3170,6 +3172,8 @@ export const en = {
   },
 
   campaignHistory: {
+    includeTechnical: "Include technical activity",
+
     title: "Campaign chronicle",
     subtitle: "Narrative milestones and campaign activity in chronological order. Technical data remains available without interrupting the main reading flow.",
     categoriesLabel: "Categories",
