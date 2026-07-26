@@ -226,9 +226,9 @@ export function CampaignShell() {
             type="button"
             onClick={exitCampaign}
             title={t("nav.backToHub")}
-            className={`btn btn-secondary btn-sm campaign-shell__back-button ${sidebarCollapsed ? "campaign-shell__back-button--collapsed" : ""}`}
+            className={`campaign-shell__back-button ${sidebarCollapsed ? "campaign-shell__back-button--collapsed" : ""}`}
           >
-            <ArrowLeft size={13} />
+            <ArrowLeft size={16} />
             {!sidebarCollapsed && <span>{t("nav.backToHub")}</span>}
           </button>
 

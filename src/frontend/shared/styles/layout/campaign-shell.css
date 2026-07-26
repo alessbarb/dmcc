@@ -150,12 +150,42 @@
 }
 
 .campaign-shell__back-button {
+  display: flex;
   width: 100%;
+  align-items: center;
   justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 10px 16px;
+  color: var(--theme-text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: var(--theme-shapes-radius-medium);
+  background: transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.campaign-shell__back-button svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.campaign-shell__back-button:hover,
+.campaign-shell__back-button:focus-visible {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-surfaces-interactive-hover);
+  border-color: var(--theme-borders-default);
+  outline: 0;
 }
 
 .campaign-shell__back-button--collapsed {
   justify-content: center;
+  margin-bottom: 0;
+  padding: 10px;
 }
 
 .sidebar-toggle {
