@@ -6,6 +6,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { LanguageSelector } from "../../shared/i18n/LanguageSelector.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
+import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
 import "./settingsPage.css";
 
 type MarkdownExportResult = {
@@ -113,12 +114,11 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   };
 
   return (
-    <div className="settings-workspace">
-      <header className="settings-workspace__header">
-        <div>
-          <h2>{t("settings.pageTitle")}</h2>
-        </div>
-      </header>
+    <CampaignWorkspace
+      titleKey="settings.pageTitle"
+      descriptionKey="settings.pageSubtitle"
+      size="wide"
+    >
 
       <section className="settings-workspace__language" aria-label={t("settings.pageTitle")}>
         <div className="settings-card__header">
@@ -177,6 +177,6 @@ export function SettingsPage(props: SettingsPageProps = {}) {
           )}
         </section>
       </div>
-    </div>
+    </CampaignWorkspace>
   );
 }

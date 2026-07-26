@@ -38,6 +38,7 @@ import { getCampaignHistory, type CampaignHistoryResponse } from "../../../share
 import { getActivityVisualConfig } from "../../../../core/projections/activity/activityPresentation.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
+import { CampaignWorkspace } from "../../workspaces/CampaignWorkspace.js";
 import "./campaignHistory.css";
 
 const IconMap: Record<string, LucideIcon> = {
@@ -185,13 +186,11 @@ export function CampaignHistoryView() {
   };
 
   return (
-    <div className="campaign-history">
-      <header className="campaign-history__header">
-        <div>
-          <h1>{t("campaignHistory.title")}</h1>
-          <p>{t("campaignHistory.subtitle")}</p>
-        </div>
-      </header>
+    <CampaignWorkspace
+      titleKey="campaignHistory.title"
+      descriptionKey="campaignHistory.subtitle"
+      size="wide"
+    >
 
       <div className="campaign-history__layout">
         <aside className="campaign-history__filters" aria-label={t("campaignHistory.categoriesLabel")}>
@@ -372,6 +371,6 @@ export function CampaignHistoryView() {
           )}
         </section>
       </div>
-    </div>
+    </CampaignWorkspace>
   );
 }
