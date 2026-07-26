@@ -32,6 +32,7 @@ export function LibraryWorkspacePage() {
       titleKey="campaignShell.meta.libraryTitle"
       descriptionKey="campaignShell.meta.libraryDescription"
       tabs={tabs}
+      variant="library"
     >
       <Outlet />
     </CampaignWorkspace>

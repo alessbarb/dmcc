@@ -28,6 +28,12 @@ interface KnowledgeProjection {
   targets: Array<Omit<KnowledgeItem, "visible" | "reason">>;
 }
 
+type KnowledgeTargetFilter = "all" | KnowledgeItem["targetType"];
+
+function isKnowledgeTargetFilter(value: string): value is KnowledgeTargetFilter {
+  return value === "all" || value === "entity" || value === "fact" || value === "relation" || value === "clue" || value === "objective";
+}
+
 const REASON_LABEL_KEYS: Record<KnowledgeItem["reason"], string> = {
   public: "playerKnowledge.reasonPublic",
   all_players: "playerKnowledge.reasonAllPlayers",
@@ -52,7 +58,7 @@ export function PlayerKnowledgeView() {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [visibilityFilter, setVisibilityFilter] = useState<"all" | "visible" | "hidden">("all");
-  const [typeFilter, setTypeFilter] = useState<"all" | "entity" | "fact" | "relation" | "clue" | "objective">("all");
+  const [typeFilter, setTypeFilter] = useState<KnowledgeTargetFilter>("all");
   const [visibleCount, setVisibleCount] = useState(50);
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
 
@@ -180,11 +186,12 @@ export function PlayerKnowledgeView() {
             </label>
             <div className="people-filter-group" role="group" aria-label={t("playerKnowledge.filterTypeLabel")}>
               <select
-                className="btn btn-sm btn-secondary"
+                className="btn btn-sm btn-secondary people-filter-select"
                 value={typeFilter}
-                onChange={(event) => setTypeFilter(event.target.value as any)}
+                onChange={(event) => {
+                  if (isKnowledgeTargetFilter(event.target.value)) setTypeFilter(event.target.value);
+                }}
                 aria-label={t("playerKnowledge.filterTypeLabel")}
-                style={{ padding: "4px 8px", minHeight: "32px", fontSize: "0.82rem", border: "1px solid var(--theme-borders-default)", background: "var(--theme-surfaces-interactive)", color: "var(--theme-text-primary)", cursor: "pointer" }}
               >
                 <option value="all">{t("playerKnowledge.filterTypeAll")}</option>
                 <option value="entity">{t("playerKnowledge.filterTypeEntity")}</option>
@@ -232,22 +239,12 @@ export function PlayerKnowledgeView() {
                         <button
                           type="button"
                           onClick={() => handleTargetClick(target)}
-                          className="btn-link"
-                          style={{
-                            padding: 0,
-                            border: "none",
-                            background: "none",
-                            textAlign: "left",
-                            cursor: "pointer",
-                            display: "block",
-                            width: "100%",
-                            color: "inherit",
-                          }}
+                          className="btn-link people-knowledge-table__target-button"
                         >
-                          <strong style={{ display: "block", color: "var(--theme-accents-primary-foreground)", textDecoration: "underline" }}>
+                          <strong className="people-knowledge-table__target-title">
                             {target.title}
                           </strong>
-                          {target.subtitle && <span style={{ fontSize: "var(--type-micro)", color: "var(--theme-text-secondary)" }}>{target.subtitle}</span>}
+                          {target.subtitle && <span className="people-knowledge-table__target-subtitle">{target.subtitle}</span>}
                         </button>
                       </td>
                       {projection?.players.map((player) => {

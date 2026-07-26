@@ -33,6 +33,7 @@ export function PeopleWorkspacePage() {
       titleKey="campaignShell.meta.peopleTitle"
       descriptionKey="campaignShell.meta.peopleDescription"
       tabs={tabs}
+      variant="operational"
     >
       <Outlet />
     </CampaignWorkspace>

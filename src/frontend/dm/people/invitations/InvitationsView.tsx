@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { CalendarClock, Check, Clock, Copy, Link2, Plus, Trash2, Users } from "lucide-react";
+import { CalendarClock, Check, Clock, Copy, Plus, Trash2, Users } from "lucide-react";
 import { apiFetch } from "../../../shared/api/apiClient.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
@@ -185,42 +185,28 @@ export function InvitationsView() {
 
   return (
     <div className="people-invitations-view">
-      <section className="people-invitations-hero surface-panel">
-        <div className="people-invitations-hero__icon" aria-hidden="true"><Link2 size={26} /></div>
-        <div className="people-invitations-hero__copy">
-          <p className="people-section-eyebrow">{invitations.length}</p>
-          <h2>{t("players.playerInvitations")}</h2>
-          <p>{t("players.shareInvitationLink")}</p>
+      <h2 className="workspace-shell__title">{t("players.playerInvitations")}</h2>
+      <div className="people-knowledge-toolbar people-knowledge-toolbar--compact surface-panel">
+        <div className="people-knowledge-toolbar__metrics">
+          <span>{t("boards.total")}: <strong>{invitations.length}</strong></span>
+          <span>{t("players.invitationStatusActive")}: <strong className="people-knowledge-toolbar__accent">{activeCount}</strong></span>
+          <span>{t("players.invitationStatusRevoked")} / {t("players.invitationStatusExpired")}: <strong>{inactiveCount}</strong></span>
+          <span className="people-knowledge-toolbar__metric-with-icon">
+            <Users size={13} aria-hidden="true" />
+            {t("campaignShell.nav.players")}: <strong>{totalUses}</strong>
+          </span>
         </div>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary btn-sm"
           type="button"
           onClick={() => runPlayersAction(handleCreateInvite(), "No se pudo crear la invitación.")}
           disabled={inviteLoading}
           aria-busy={inviteLoading}
         >
-          <Plus size={16} />
+          <Plus size={15} />
           {inviteLoading ? t("players.creatingInvitation") : t("players.createInvitationLink")}
         </button>
-      </section>
-
-      {invitations.length > 0 && (
-        <div className="card people-invitations-summary" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px", padding: "12px 16px" }} aria-live="polite">
-          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
-            {t("boards.total")}: <strong>{invitations.length}</strong>
-          </span>
-          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
-            {t("players.invitationStatusActive")}: <strong style={{ color: "var(--theme-accents-primary-foreground)" }}>{activeCount}</strong>
-          </span>
-          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
-            {t("players.invitationStatusRevoked")} / {t("players.invitationStatusExpired")}: <strong>{inactiveCount}</strong>
-          </span>
-          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "6px" }}>
-            <Users size={14} aria-hidden="true" />
-            {t("campaignShell.nav.players")}: <strong>{totalUses}</strong>
-          </span>
-        </div>
-      )}
+      </div>
 
       {invitationError && <div className="people-inline-error surface-panel" role="alert">{invitationError}</div>}
 

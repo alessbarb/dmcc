@@ -5,6 +5,7 @@ import { getSessionNarrativeMap, reviewSessionInference } from "../../../shared/
 import { readApiError } from "../../../shared/api/apiClient.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { SessionNarrativeMapCanvas } from "./SessionNarrativeMapCanvas.js";
+import { SessionPageShell } from "../SessionPageShell.js";
 import type { SessionProjection, SessionProjectionNode } from "@core/domain/session/projection/sessionProjectionTypes.js";
 import "../session-workspace.css";
 
@@ -59,23 +60,23 @@ export function SessionNarrativeMapPage() {
 
   if (error) {
     return (
-      <div className="session-page">
+      <SessionPageShell>
         <p>{t("sessionPage.sessionNotFound")}</p>
-      </div>
+      </SessionPageShell>
     );
   }
 
   if (!projection) {
     return (
-      <div className="session-page">
+      <SessionPageShell>
         <p>{t("common.loading")}</p>
-      </div>
+      </SessionPageShell>
     );
   }
 
   return (
-    <div className="session-page session-narrative-map-page">
+    <SessionPageShell className="session-narrative-map-page">
       <SessionNarrativeMapCanvas projection={projection} onReview={handleReview} />
-    </div>
+    </SessionPageShell>
   );
 }

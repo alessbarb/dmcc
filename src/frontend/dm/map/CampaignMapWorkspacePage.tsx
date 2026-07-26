@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
 import { Outlet, useParams, useRouterState } from "@tanstack/react-router";
-import { WorkspaceTabs } from "../workspaces/WorkspaceTabs.js";
-import { useBodyWatermark } from "../../shared/hooks/useBodyWatermark.js";
-import { GitFork, LayoutGrid, Maximize2, Minimize2 } from "lucide-react";
+import { PageSubshell } from "../workspaces/PageSubshell.js";
+import { GitFork, LayoutGrid } from "lucide-react";
 import "./mapWorkspace.css";
 
 export function CampaignMapWorkspacePage() {
@@ -10,29 +9,6 @@ export function CampaignMapWorkspacePage() {
   const routerState = useRouterState();
   const isCanvas = routerState.location.pathname.includes("/map/canvas");
   const isNetwork = routerState.location.pathname.includes("/map/network");
-  useBodyWatermark(isNetwork ? "network" : "canvas");
-  const workspaceRef = useRef<HTMLDivElement>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  useEffect(() => {
-    const syncFullscreenState = () => setIsFullscreen(document.fullscreenElement === workspaceRef.current);
-    document.addEventListener("fullscreenchange", syncFullscreenState);
-    return () => document.removeEventListener("fullscreenchange", syncFullscreenState);
-  }, []);
-
-  const toggleFullscreen = useCallback(async () => {
-    const workspace = workspaceRef.current;
-    if (!workspace) return;
-
-    if (document.fullscreenElement === workspace) {
-      await document.exitFullscreen();
-      return;
-    }
-
-    if (document.fullscreenElement) await document.exitFullscreen();
-    await workspace.requestFullscreen({ navigationUI: "hide" });
-  }, []);
-
   const tabs = [
     {
       id: "canvas",
@@ -49,27 +25,15 @@ export function CampaignMapWorkspacePage() {
   ];
 
   return (
-    <div
-      ref={workspaceRef}
-      className={`campaign-workspace campaign-workspace--map-tool ${isCanvas ? "campaign-workspace--canvas" : ""} ${isNetwork ? "campaign-workspace--network" : ""}`}
+    <PageSubshell
+      titleKey="campaignShell.meta.mapTitle"
+      variant="canvas"
+      className={`campaign-workspace--map-tool ${isCanvas ? "campaign-workspace--canvas" : ""} ${isNetwork ? "campaign-workspace--network" : ""}`}
+      contentClassName="campaign-workspace--map-tool__content"
+      tabs={tabs}
+      showFullscreenButton
     >
-      <div className="campaign-workspace--map-tool__tabs">
-        <WorkspaceTabs tabs={tabs} />
-        {isNetwork ? (
-          <button
-            type="button"
-            className="map-workspace-fullscreen-button"
-            onClick={() => void toggleFullscreen()}
-            aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
-            title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
-          >
-            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-          </button>
-        ) : null}
-      </div>
-      <div className="campaign-workspace--map-tool__content">
-        <Outlet />
-      </div>
-    </div>
+      <Outlet />
+    </PageSubshell>
   );
 }

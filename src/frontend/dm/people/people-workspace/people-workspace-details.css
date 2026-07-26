@@ -62,6 +62,31 @@
   background: var(--theme-surfaces-base);
 }
 
+.people-knowledge-table__target-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.people-knowledge-table__target-title,
+.people-knowledge-table__target-subtitle {
+  display: block;
+}
+
+.people-knowledge-table__target-title {
+  color: var(--theme-accents-primary-foreground);
+  text-decoration: underline;
+}
+
+.people-knowledge-table__target-subtitle {
+  color: var(--theme-text-secondary);
+  font-size: var(--type-micro);
+}
+
 .people-knowledge-table th.people-knowledge-table__target,
 .people-knowledge-table td.people-knowledge-table__target {
   text-align: left;

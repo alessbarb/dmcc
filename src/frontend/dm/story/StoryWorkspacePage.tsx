@@ -20,6 +20,7 @@ export function StoryWorkspacePage() {
       titleKey="campaignShell.meta.storyTitle"
       descriptionKey="campaignShell.meta.storyDescription"
       tabs={tabs}
+      variant="narrative"
     >
       <Outlet />
     </CampaignWorkspace>

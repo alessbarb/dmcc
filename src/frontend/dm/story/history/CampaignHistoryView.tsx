@@ -38,7 +38,6 @@ import { getCampaignHistory, type CampaignHistoryResponse } from "../../../share
 import { getActivityVisualConfig } from "../../../../core/projections/activity/activityPresentation.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
-import { CampaignWorkspace } from "../../workspaces/CampaignWorkspace.js";
 import "./campaignHistory.css";
 
 const IconMap: Record<string, LucideIcon> = {
@@ -186,13 +185,8 @@ export function CampaignHistoryView() {
   };
 
   return (
-    <CampaignWorkspace
-      titleKey="campaignHistory.title"
-      descriptionKey="campaignHistory.subtitle"
-      size="wide"
-    >
-
-      <div className="campaign-history__layout">
+      <div className="campaign-history">
+        <div className="campaign-history__layout">
         <aside className="campaign-history__filters" aria-label={t("campaignHistory.categoriesLabel")}>
           <h2 className="campaign-history__filters-title">{t("campaignHistory.categoriesLabel")}</h2>
           {visibleCategories.map((candidate) => {
@@ -212,11 +206,11 @@ export function CampaignHistoryView() {
             );
           })}
 
-          <div className="campaign-history__tech-toggle" style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid var(--theme-borders-default)" }}>
-            <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.82rem", cursor: "pointer", color: "var(--theme-text-secondary)" }}>
+          <div className="campaign-history__tech-toggle">
+            <label className="campaign-history__tech-label">
               <input
                 type="checkbox"
-                style={{ cursor: "pointer" }}
+                className="campaign-history__tech-checkbox"
                 checked={includeTechnical}
                 onChange={(e) => handleTechnicalToggle(e.target.checked)}
               />
@@ -371,6 +365,6 @@ export function CampaignHistoryView() {
           )}
         </section>
       </div>
-    </CampaignWorkspace>
+      </div>
   );
 }

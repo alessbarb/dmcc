@@ -6,6 +6,7 @@ import { readApiError } from "../../../shared/api/apiClient.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { SessionConsequenceChainCanvas } from "./SessionConsequenceChainCanvas.js";
 import { relationTypeForPromotion } from "./promotableInferenceRules.js";
+import { SessionPageShell } from "../SessionPageShell.js";
 import type { SessionProjection, SessionProjectionEdge, SessionProjectionNode } from "@core/domain/session/projection/sessionProjectionTypes.js";
 import "../session-workspace.css";
 
@@ -88,23 +89,23 @@ export function SessionConsequenceChainPage() {
 
   if (error) {
     return (
-      <div className="session-page">
+      <SessionPageShell>
         <p>{t("sessionPage.sessionNotFound")}</p>
-      </div>
+      </SessionPageShell>
     );
   }
 
   if (!projection) {
     return (
-      <div className="session-page">
+      <SessionPageShell>
         <p>{t("common.loading")}</p>
-      </div>
+      </SessionPageShell>
     );
   }
 
   return (
-    <div className="session-page session-consequence-chain-page">
+    <SessionPageShell className="session-consequence-chain-page">
       <SessionConsequenceChainCanvas projection={projection} onReview={handleReview} onPromote={handlePromote} />
-    </div>
+    </SessionPageShell>
   );
 }

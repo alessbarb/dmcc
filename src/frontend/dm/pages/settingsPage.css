@@ -51,6 +51,10 @@
   gap: 12px;
 }
 
+.settings-workspace__language .settings-card__header {
+  min-width: 0;
+}
+
 .settings-card__icon {
   width: 42px;
   height: 42px;
@@ -130,5 +134,35 @@
   .settings-card__actions .btn,
   .settings-export-result__actions .btn {
     width: 100%;
+  }
+
+  .settings-workspace__language .settings-card__header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .settings-workspace__language .settings-card__header > :last-child {
+    flex: 1 1 calc(100% - 54px);
+    min-width: 0;
+  }
+
+  .settings-workspace__language .language-selector {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .settings-workspace__language .language-selector__label {
+    flex: 1 1 160px;
+  }
+
+  .settings-workspace__language .language-selector__toggle {
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .settings-workspace__language .language-selector__toggle::-webkit-scrollbar {
+    display: none;
   }
 }

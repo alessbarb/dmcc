@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { Clock, Link2, Plus, ShieldCheck, User, Users } from "lucide-react";
+import { Clock, Link2, Plus, ShieldCheck, User } from "lucide-react";
 import type { PlayerProfile } from "../../../shared/stores/campaignStore.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -26,6 +26,19 @@ interface CampaignInvitation {
   revokedAt: string | null;
   createdAt: string;
   status: CampaignInvitationStatus;
+}
+
+function isCampaignInvitation(value: unknown): value is CampaignInvitation {
+  if (!value || typeof value !== "object") return false;
+  const candidate = Object.fromEntries(Object.entries(value));
+  return typeof candidate.invitationId === "string"
+    && typeof candidate.role === "string"
+    && typeof candidate.maxUses === "number"
+    && typeof candidate.usesCount === "number"
+    && typeof candidate.expiresAt === "string"
+    && (candidate.revokedAt === null || typeof candidate.revokedAt === "string")
+    && typeof candidate.createdAt === "string"
+    && (candidate.status === "active" || candidate.status === "exhausted" || candidate.status === "expired" || candidate.status === "revoked");
 }
 
 function errorMessage(err: unknown): string {
@@ -59,7 +72,7 @@ export function GroupView() {
       })
       .then((data: unknown) => {
         if (data && typeof data === "object" && "invitations" in data && Array.isArray(data.invitations)) {
-          setInvitations(data.invitations as CampaignInvitation[]);
+          setInvitations(data.invitations.filter(isCampaignInvitation));
         }
       })
       .catch((err) => {
@@ -107,26 +120,18 @@ export function GroupView() {
 
   return (
     <div className="group-view-workspace">
-      <header className="group-view-summary surface-panel">
-        <div className="group-view-summary__identity">
-          <span className="group-view-summary__icon" aria-hidden="true">
-            <Users size={24} />
-          </span>
-          <div>
-            <p className="group-view-summary__eyebrow">{t("campaignShell.nav.players")}</p>
-            <div className="group-view-summary__metrics" aria-live="polite">
-              <span><strong>{players.length}</strong> {t("campaignShell.nav.players")}</span>
-              <span><strong>{portalPlayers.length}</strong> {t("players.portalHeading")}</span>
-              {dmInbox.total > 0 && <span className="group-view-summary__pending"><strong>{dmInbox.total}</strong></span>}
-            </div>
-          </div>
+      <div className="people-knowledge-toolbar people-knowledge-toolbar--compact surface-panel">
+        <div className="people-knowledge-toolbar__metrics">
+          <span>{t("campaignShell.nav.players")}: <strong>{players.length}</strong></span>
+          <span>{t("players.portalHeading")}: <strong>{portalPlayers.length}</strong></span>
+          {dmInbox.total > 0 && <span className="group-view-summary__pending"><strong>{dmInbox.total}</strong></span>}
         </div>
         {players.length > 0 && (
-          <button type="button" className="btn btn-primary" onClick={openCreateModal}>
-            <Plus size={16} /> {t("players.addPlayer")}
+          <button type="button" className="btn btn-primary btn-sm" onClick={openCreateModal}>
+            <Plus size={15} /> {t("players.addPlayer")}
           </button>
         )}
-      </header>
+      </div>
 
       <DmPlayerInbox items={dmInbox} />
 
@@ -171,60 +176,30 @@ export function GroupView() {
           )}
 
           {activeInvitations.length > 0 && (
-            <div className="group-active-invitations" style={{ marginTop: "24px" }}>
-              <h3 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", color: "var(--theme-text-primary)" }}>
+            <div className="group-active-invitations">
+              <h3 className="group-active-invitations__heading">
                 <Link2 size={16} />
                 {t("players.activeInvitations")}
               </h3>
-              <div style={{ display: "grid", gap: "10px", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))" }}>
+              <div className="group-active-invitations__grid">
                 {activeInvitations.map((inv) => (
-                  <div
-                    key={inv.invitationId}
-                    className="card"
-                    style={{
-                      padding: "12px 14px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      background: "var(--theme-surfaces-base)",
-                      border: "1px solid var(--theme-borders-default)",
-                      borderRadius: "8px",
-                      boxShadow: "var(--theme-shadows-small)"
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0, flex: 1 }}>
-                      <Clock size={16} style={{ color: "var(--theme-text-secondary)", flexShrink: 0 }} />
-                      <div style={{ minWidth: 0, flex: 1 }}>
-                        <span style={{ fontWeight: 650, fontSize: "0.875rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", display: "block" }}>
+                  <div key={inv.invitationId} className="group-active-invitations__card card">
+                    <div className="group-active-invitations__main">
+                      <Clock size={16} className="group-active-invitations__clock" />
+                      <div className="group-active-invitations__copy">
+                        <span className="group-active-invitations__title">
                           {t("players.invitationFallback", { id: inv.invitationId.length > 6 ? inv.invitationId.slice(-6) : inv.invitationId })}
                         </span>
-                        <span
-                          className="people-status-badge is-active"
-                          style={{
-                            marginTop: "2px",
-                            padding: "1px 6px",
-                            fontSize: "10px",
-                            border: "1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 50%, transparent)",
-                            background: "color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent)",
-                            color: "var(--theme-accents-primary-foreground)",
-                            borderRadius: "999px",
-                            display: "inline-block"
-                          }}
-                        >
+                        <span className="people-status-badge is-active group-active-invitations__status">
                           {t("players.invitationStatusActive")}
                         </span>
                       </div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-                      <span style={{ fontSize: "var(--type-micro)", color: "var(--theme-text-secondary)" }}>
+                    <div className="group-active-invitations__actions">
+                      <span className="group-active-invitations__count">
                         {inv.usesCount} / {inv.maxUses}
                       </span>
-                      <button
-                        type="button"
-                        className="btn btn-xs btn-secondary"
-                        onClick={goToInvitations}
-                        style={{ padding: "4px 8px", fontSize: "0.75rem" }}
-                      >
+                      <button type="button" className="btn btn-xs btn-secondary group-active-invitations__manage" onClick={goToInvitations}>
                         {t("players.manageInvitations")}
                       </button>
                     </div>

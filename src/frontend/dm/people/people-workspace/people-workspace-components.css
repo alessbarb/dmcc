@@ -53,6 +53,36 @@
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+.people-knowledge-toolbar--compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: auto;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+}
+
+.people-knowledge-toolbar__metrics {
+  display: flex;
+  align-items: center;
+  gap: 8px 18px;
+  flex-wrap: wrap;
+  color: var(--theme-text-secondary);
+  font-size: 0.85rem;
+}
+
+.people-knowledge-toolbar__accent {
+  color: var(--theme-accents-primary-foreground);
+}
+
+.people-knowledge-toolbar__metric-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .people-knowledge-filters {
   display: flex;
   align-items: center;
@@ -72,4 +102,14 @@
   border-radius: var(--theme-shapes-radius-medium, 10px);
   background: var(--theme-surfaces-base);
   color: var(--theme-text-secondary);
+}
+
+.people-filter-select {
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--theme-borders-default);
+  background: var(--theme-surfaces-interactive);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  font-size: 0.82rem;
 }

@@ -8,6 +8,7 @@ import { errorMessage, runSessionAction } from "./sessionFormSubmit.js";
 import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 import { StoryThreadsPanel } from "./components/StoryThreadsPanel.js";
 import { useStoryThreads } from "../story/useStoryThreads.js";
+import { SessionPageShell } from "./SessionPageShell.js";
 import "./session-workspace.css";
 import "./components/session-idle.css";
 import "./components/prepared-session.css";
@@ -118,7 +119,7 @@ export function SessionsIndexPage() {
   };
 
   return (
-    <div className="session-page">
+    <SessionPageShell>
       <div className="session-idle-workspace">
         {activeSession && (
           <section className="session-list-section surface-panel">
@@ -280,6 +281,6 @@ export function SessionsIndexPage() {
           </aside>
         </div>
       </div>
-    </div>
+    </SessionPageShell>
   );
 }

@@ -14,6 +14,7 @@ import { ActiveSessionPrepPanel } from "./components/ActiveSessionPrepPanel.js";
 import { QuickCaptureBar } from "./components/QuickCaptureBar.js";
 import { SessionEventFeed } from "./components/SessionEventFeed.js";
 import { SessionQuickActions, type ActionId } from "./components/SessionQuickActions.js";
+import { SessionPageShell } from "./SessionPageShell.js";
 import "./session-workspace.css";
 import "./components/session-idle.css";
 import "./components/prepared-session.css";
@@ -41,12 +42,12 @@ export function SessionDetailPage() {
 
   if (!session) {
     return (
-      <div className="session-page">
+      <SessionPageShell>
         <p>{t("sessionPage.sessionNotFound")}</p>
         <Link to="/campaigns/$campaignId/sessions" params={{ campaignId: campaignId ?? "" }} className="btn btn-secondary btn-sm">
           {t("sessionPage.backToSessions")}
         </Link>
-      </div>
+      </SessionPageShell>
     );
   }
 
@@ -99,7 +100,7 @@ export function SessionDetailPage() {
     };
 
     return (
-      <div className="session-page">
+      <SessionPageShell>
         <div className="prepared-session-card__actions">
           <button type="button" className="btn btn-primary btn-sm" onClick={() => runSessionAction(handleActivate(), "No se pudo activar la sesión preparada.")}>
             <Play size={14} /> {t("sessionPage.activatePreparedSessionButton")}
@@ -130,13 +131,13 @@ export function SessionDetailPage() {
           closedSessions={sessions.filter((s) => s.status === "closed")}
           focusStepId={focusStepId}
         />
-      </div>
+      </SessionPageShell>
     );
   }
 
   if (session.status === "active") {
     return (
-      <div className="session-page session-active-workspace">
+      <SessionPageShell className="session-active-workspace">
         <SessionStatusBar activeSession={session} />
         <Link to="/campaigns/$campaignId/sessions/$sessionId/map" params={{ campaignId: campaignId ?? "", sessionId: session.sessionId }} className="btn btn-secondary btn-sm">
           <Waypoints size={14} /> {t("sessionNarrativeMap.title")}
@@ -169,12 +170,12 @@ export function SessionDetailPage() {
           setCurrentPage={setCurrentPage}
           addToast={addToast}
         />
-      </div>
+      </SessionPageShell>
     );
   }
 
   return (
-    <div className="session-page">
+    <SessionPageShell>
       <section className="session-history-item ornamented-frame">
         <h2>{session.number ? `#${session.number} ` : ""}{session.title}</h2>
         {session.summary && <p>{session.summary}</p>}
@@ -191,6 +192,6 @@ export function SessionDetailPage() {
           <GitFork size={14} /> {t("sessionConsequenceChain.title")}
         </Link>
       </section>
-    </div>
+    </SessionPageShell>
   );
 }

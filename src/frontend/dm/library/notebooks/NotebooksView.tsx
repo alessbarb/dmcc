@@ -23,7 +23,6 @@ import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useCampaignShortcuts } from "../../shortcuts/useCampaignShortcuts.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
-import { useBodyWatermark } from "../../../shared/hooks/useBodyWatermark.js";
 import { ContextMenu, type ContextMenuItem } from "../../../shared/components/ContextMenu.js";
 import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
 import { formatRelativeTime } from "../../../shared/presentation/formatRelativeTime.js";
@@ -43,7 +42,6 @@ function errorMessage(error: unknown, fallback: string): string {
 }
 
 export function NotebooksView() {
-  useBodyWatermark("notebooks");
   const { t, locale } = useTranslation();
   const { addToast } = useToast();
   const campaignState = useCampaignStore((state) => state.campaignState);

@@ -15,7 +15,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { RULE_CATEGORY_IDS } from "@shared/rules/categories.js";
 import { formatRuleCategory } from "../../shared/presentation/formatRuleCategory.js";
-import { useBodyWatermark } from "../../shared/hooks/useBodyWatermark.js";
+import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
 import "./rulesPage.css";
 import "../../shared/styles/features/rules-workspace.css";
 
@@ -44,7 +44,6 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 };
 
 export function RulesPage() {
-  useBodyWatermark("hidden");
   const { t, locale } = useTranslation();
   const initialParameters = useRef(new URLSearchParams(window.location.search));
   const targetRuleId = initialParameters.current.get("ruleId");
@@ -156,8 +155,9 @@ export function RulesPage() {
   }
 
   return (
-    <div className="rules-page">
-      <div className="rules-layout">
+    <CampaignWorkspace titleKey="nav.rules" variant="content" size="fluid">
+      <div className="rules-page">
+        <div className="rules-layout">
         <aside className="rules-sidebar card" aria-label={t("rules.category")}>
           <label htmlFor="rules-search" className="rules-page__field">
             <span className="form-label">{t("rules.searchInRules")}</span>
@@ -258,7 +258,8 @@ export function RulesPage() {
             </div>
           )}
         </main>
+        </div>
       </div>
-    </div>
+    </CampaignWorkspace>
   );
 }

@@ -46,6 +46,11 @@ body[data-watermark="network"] .watermark {
     var(--theme-surfaces-canvas);
 }
 
+.network-workspace-view--immersive,
+.network-workspace-view--immersive > .network-flow-workspace {
+  min-height: 0;
+}
+
 .network-flow-workspace {
   position: relative;
   display: grid;

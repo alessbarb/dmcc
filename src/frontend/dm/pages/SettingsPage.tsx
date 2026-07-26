@@ -118,9 +118,10 @@ export function SettingsPage(props: SettingsPageProps = {}) {
       titleKey="settings.pageTitle"
       descriptionKey="settings.pageSubtitle"
       size="wide"
+      variant="settings"
     >
-
-      <section className="settings-workspace__language" aria-label={t("settings.pageTitle")}>
+      <div className="settings-workspace">
+        <section className="settings-workspace__language" aria-label={t("settings.pageTitle")}>
         <div className="settings-card__header">
           <span className="settings-card__icon" aria-hidden="true"><Languages size={20} /></span>
           <LanguageSelector />
@@ -176,6 +177,7 @@ export function SettingsPage(props: SettingsPageProps = {}) {
             </div>
           )}
         </section>
+      </div>
       </div>
     </CampaignWorkspace>
   );

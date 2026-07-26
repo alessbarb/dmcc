@@ -116,6 +116,25 @@
   font-size: var(--type-micro);
 }
 
+.campaign-history__tech-toggle {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--theme-borders-default);
+}
+
+.campaign-history__tech-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.campaign-history__tech-checkbox {
+  cursor: pointer;
+}
+
 .campaign-history__load-more {
   display: flex;
   justify-content: center;
