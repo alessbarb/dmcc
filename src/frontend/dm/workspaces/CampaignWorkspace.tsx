@@ -3,7 +3,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { WorkspaceTabs, type WorkspaceTab } from "./WorkspaceTabs.js";
 
 export type CampaignWorkspaceSize = "compact" | "standard" | "wide" | "fluid";
-export type CampaignWorkspaceVariant = "standard" | "immersive";
+export type CampaignWorkspaceVariant = "standard" | "immersive" | "content" | "master-detail";
 
 interface CampaignWorkspaceProps {
   titleKey: string;
