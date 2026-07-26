@@ -2616,6 +2616,14 @@ export const en = {
     import: "Imported",
   },
   playerKnowledge: {
+    filterTypeAll: "All",
+    filterTypeEntity: "Entities",
+    filterTypeFact: "Facts",
+    filterTypeRelation: "Relations",
+    filterTypeClue: "Clues",
+    filterTypeObjective: "Objectives",
+    filterTypeLabel: "Filter by type",
+
     title: "Player knowledge",
     subtitle: "What each PC can see compared to what the DM knows",
     noPlayers: "No players in this campaign yet",

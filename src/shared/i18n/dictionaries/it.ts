@@ -2525,6 +2525,14 @@ export const it: TranslationDictionary = {
     import: "Importato",
   },
   playerKnowledge: {
+    filterTypeAll: "Tutti",
+    filterTypeEntity: "Entità",
+    filterTypeFact: "Fatti",
+    filterTypeRelation: "Relazioni",
+    filterTypeClue: "Indizi",
+    filterTypeObjective: "Obiettivi",
+    filterTypeLabel: "Filtra per tipo",
+
     title: "Conoscenza dei giocatori",
     subtitle: "Cosa può vedere ogni PG rispetto a ciò che il Master sa",
     noPlayers: "Ancora nessun giocatore in questa campagna",

@@ -5,6 +5,8 @@ import { apiFetch, readApiError } from "../../../shared/api/apiClient.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { CompactEmptyState } from "../../../shared/components/CompactEmptyState.js";
+import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
+import { useToast } from "../../../shared/hooks/useToast.js";
 
 interface KnowledgeItem {
   targetType: "entity" | "fact" | "relation" | "clue" | "objective";
@@ -39,13 +41,45 @@ export function PlayerKnowledgeView() {
   const { t } = useTranslation();
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const navigate = useNavigate();
-  const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
+  const store = useCampaignStore();
+  const { addToast } = useToast();
+  const activeCampaignId = store.activeCampaignId;
+  const campaignState = store.campaignState;
+  const entities = campaignState?.entities ?? [];
+
   const [projection, setProjection] = useState<KnowledgeProjection | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [visibilityFilter, setVisibilityFilter] = useState<"all" | "visible" | "hidden">("all");
+  const [typeFilter, setTypeFilter] = useState<"all" | "entity" | "fact" | "relation" | "clue" | "objective">("all");
   const [visibleCount, setVisibleCount] = useState(50);
+  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
+
+  const selectedEntity = useMemo(() => {
+    if (!selectedEntityId) return null;
+    return entities.find((e) => e.entityId === selectedEntityId) ?? null;
+  }, [entities, selectedEntityId]);
+
+  const handleTargetClick = (target: Omit<KnowledgeItem, "visible" | "reason">) => {
+    let entity = entities.find((e) => e.entityId === target.targetId);
+    if (!entity) {
+      const fact = (campaignState?.facts ?? []).find((f) => f.factId === target.targetId);
+      if (fact && fact.relatedEntityIds.length > 0) {
+        const entityId = fact.relatedEntityIds[0];
+        entity = entities.find((e) => e.entityId === entityId);
+      }
+    }
+    if (!entity) {
+      const rel = (campaignState?.relations ?? []).find((r) => r.relationId === target.targetId);
+      if (rel) {
+        entity = entities.find((e) => e.entityId === rel.sourceEntityId);
+      }
+    }
+    if (entity) {
+      setSelectedEntityId(entity.entityId);
+    }
+  };
 
   const load = async () => {
     if (!activeCampaignId) return;
@@ -78,6 +112,7 @@ export function PlayerKnowledgeView() {
   const filteredTargets = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase();
     return (projection?.targets ?? []).filter((target) => {
+      if (typeFilter !== "all" && target.targetType !== typeFilter) return false;
       if (normalizedQuery && !`${target.title} ${target.subtitle ?? ""}`.toLocaleLowerCase().includes(normalizedQuery)) return false;
       if (visibilityFilter === "all") return true;
       const visibleToAnyPlayer = (projection?.players ?? []).some((player) =>
@@ -85,11 +120,11 @@ export function PlayerKnowledgeView() {
       );
       return visibilityFilter === "visible" ? visibleToAnyPlayer : !visibleToAnyPlayer;
     });
-  }, [knowledgeByPlayer, projection, query, visibilityFilter]);
+  }, [knowledgeByPlayer, projection, query, visibilityFilter, typeFilter]);
 
   useEffect(() => {
     setVisibleCount(50);
-  }, [query, visibilityFilter]);
+  }, [query, visibilityFilter, typeFilter]);
 
   const visibleTargets = filteredTargets.slice(0, visibleCount);
   const hasMoreTargets = filteredTargets.length > visibleCount;
@@ -143,6 +178,22 @@ export function PlayerKnowledgeView() {
                 aria-label={t("common.search")}
               />
             </label>
+            <div className="people-filter-group" role="group" aria-label={t("playerKnowledge.filterTypeLabel")}>
+              <select
+                className="btn btn-sm btn-secondary"
+                value={typeFilter}
+                onChange={(event) => setTypeFilter(event.target.value as any)}
+                aria-label={t("playerKnowledge.filterTypeLabel")}
+                style={{ padding: "4px 8px", minHeight: "32px", fontSize: "0.82rem", border: "1px solid var(--theme-borders-default)", background: "var(--theme-surfaces-interactive)", color: "var(--theme-text-primary)", cursor: "pointer" }}
+              >
+                <option value="all">{t("playerKnowledge.filterTypeAll")}</option>
+                <option value="entity">{t("playerKnowledge.filterTypeEntity")}</option>
+                <option value="fact">{t("playerKnowledge.filterTypeFact")}</option>
+                <option value="relation">{t("playerKnowledge.filterTypeRelation")}</option>
+                <option value="clue">{t("playerKnowledge.filterTypeClue")}</option>
+                <option value="objective">{t("playerKnowledge.filterTypeObjective")}</option>
+              </select>
+            </div>
             <div className="people-filter-group" role="group" aria-label={t("playerKnowledge.visible")}>
               <button type="button" className={`btn btn-sm ${visibilityFilter === "all" ? "btn-primary" : "btn-secondary"}`} onClick={() => setVisibilityFilter("all")}>
                 <Users size={14} /> {projection?.targets.length ?? 0}
@@ -178,8 +229,26 @@ export function PlayerKnowledgeView() {
                   {visibleTargets.map((target) => (
                     <tr key={`${target.targetType}:${target.targetId}`}>
                       <td className="people-knowledge-table__target">
-                        <strong>{target.title}</strong>
-                        {target.subtitle && <span>{target.subtitle}</span>}
+                        <button
+                          type="button"
+                          onClick={() => handleTargetClick(target)}
+                          className="btn-link"
+                          style={{
+                            padding: 0,
+                            border: "none",
+                            background: "none",
+                            textAlign: "left",
+                            cursor: "pointer",
+                            display: "block",
+                            width: "100%",
+                            color: "inherit",
+                          }}
+                        >
+                          <strong style={{ display: "block", color: "var(--theme-accents-primary-foreground)", textDecoration: "underline" }}>
+                            {target.title}
+                          </strong>
+                          {target.subtitle && <span style={{ fontSize: "var(--type-micro)", color: "var(--theme-text-secondary)" }}>{target.subtitle}</span>}
+                        </button>
                       </td>
                       {projection?.players.map((player) => {
                         const item = knowledgeByPlayer.get(player.playerId)?.get(`${target.targetType}:${target.targetId}`);
@@ -209,6 +278,25 @@ export function PlayerKnowledgeView() {
             </div>
           )}
         </>
+      )}
+      {selectedEntity && campaignState && (
+        <EntityDetailModal
+          selectedEntity={selectedEntity}
+          campaignState={campaignState}
+          onClose={() => setSelectedEntityId(null)}
+          onSelectEntity={setSelectedEntityId}
+          onEdit={async (entityId, updates) => {
+            await store.updateEntity(entityId, updates);
+          }}
+          onArchive={async (entityId) => {
+            await store.archiveEntity(entityId);
+            setSelectedEntityId(null);
+          }}
+          onVisibilityChange={async (entityId, visibility) => {
+            await store.updateEntity(entityId, { visibility });
+          }}
+          addToast={addToast}
+        />
       )}
     </div>
   );

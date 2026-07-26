@@ -2526,6 +2526,14 @@ export const de: TranslationDictionary = {
     import: "Importiert",
   },
   playerKnowledge: {
+    filterTypeAll: "Alle",
+    filterTypeEntity: "Entitäten",
+    filterTypeFact: "Fakten",
+    filterTypeRelation: "Beziehungen",
+    filterTypeClue: "Hinweise",
+    filterTypeObjective: "Ziele",
+    filterTypeLabel: "Nach Typ filtern",
+
     title: "Spielerwissen",
     subtitle: "Was jeder SC sehen kann im Vergleich zu dem, was der SL weiß",
     noPlayers: "Noch keine Spieler in dieser Kampagne",

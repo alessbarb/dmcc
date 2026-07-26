@@ -2536,6 +2536,14 @@ export const fr: TranslationDictionary = {
     import: "Importé",
   },
   playerKnowledge: {
+    filterTypeAll: "Tous",
+    filterTypeEntity: "Entités",
+    filterTypeFact: "Faits",
+    filterTypeRelation: "Relations",
+    filterTypeClue: "Indices",
+    filterTypeObjective: "Objectifs",
+    filterTypeLabel: "Filtrer par type",
+
     title: "Connaissance des joueurs",
     subtitle: "Ce que chaque PJ peut voir par rapport à ce que le MJ sait",
     noPlayers: "Pas encore de joueurs dans cette campagne",
