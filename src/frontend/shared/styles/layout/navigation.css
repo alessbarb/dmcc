@@ -85,6 +85,8 @@
 .nav-item svg {
   width: 18px;
   height: 18px;
+  max-width: none;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {

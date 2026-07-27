@@ -19,6 +19,11 @@
     transform var(--transition-fast);
 }
 
+.btn svg {
+  max-width: none;
+  flex-shrink: 0;
+}
+
 .btn-primary {
   color: var(--theme-accents-primary-on-accent);
   background: var(--theme-accents-primary-foreground);
