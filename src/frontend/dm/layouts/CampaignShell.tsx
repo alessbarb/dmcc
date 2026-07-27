@@ -169,6 +169,7 @@ export function CampaignShell() {
         data-tour-id={`campaign-nav-${path}`}
         onClick={() => handleNavClick(path)}
         title={sidebarCollapsed ? t(labelKey) : undefined}
+        aria-label={sidebarCollapsed ? t(labelKey) : undefined}
         aria-current={currentSegment === path ? "page" : undefined}
       >
         <Icon size={16} />
@@ -226,6 +227,7 @@ export function CampaignShell() {
             type="button"
             onClick={exitCampaign}
             title={t("nav.backToHub")}
+            aria-label={sidebarCollapsed ? t("nav.backToHub") : undefined}
             className={`campaign-shell__back-button ${sidebarCollapsed ? "campaign-shell__back-button--collapsed" : ""}`}
           >
             <ArrowLeft size={16} />
@@ -288,6 +290,7 @@ export function CampaignShell() {
               type="button"
               onClick={toggleScreenSafeMode}
               title={screenSafeMode ? t("campaignShell.screenSafeModeOff") : t("campaignShell.screenSafeModeOn")}
+              aria-label={sidebarCollapsed ? (screenSafeMode ? t("campaignShell.screenSafeModeOff") : t("campaignShell.screenSafeModeOn")) : undefined}
               aria-pressed={screenSafeMode}
             >
               {screenSafeMode ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -298,6 +301,7 @@ export function CampaignShell() {
               type="button"
               onClick={() => setAccountModalOpen(true)}
               title={t("account.title")}
+              aria-label={sidebarCollapsed ? t("account.title") : undefined}
             >
               <User size={14} /> {!sidebarCollapsed && t("account.title")}
             </button>
@@ -306,6 +310,7 @@ export function CampaignShell() {
               type="button"
               onClick={() => void handleSignOutDm()}
               title={t("nav.signOut")}
+              aria-label={sidebarCollapsed ? t("nav.signOut") : undefined}
             >
               <LogOut size={14} /> {!sidebarCollapsed && t("nav.signOut")}
             </button>
