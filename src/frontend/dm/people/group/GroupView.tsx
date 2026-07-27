@@ -139,7 +139,6 @@ export function GroupView() {
         <section className="group-view-section master-detail-layout__sidebar" aria-labelledby="group-directory-heading">
           <header className="group-view-section__header">
             <div>
-              <p className="group-view-section__eyebrow">{players.length}</p>
               <h2 id="group-directory-heading">
                 <User size={18} aria-hidden="true" />
                 {t("campaignShell.nav.players")}
@@ -214,7 +213,6 @@ export function GroupView() {
           <section className="group-view-section group-view-section--portal master-detail-layout__content" aria-labelledby="group-portal-heading">
             <header className="group-view-section__header">
               <div>
-                <p className="group-view-section__eyebrow">{portalPlayers.length}</p>
                 <h2 id="group-portal-heading">
                   <ShieldCheck size={18} aria-hidden="true" />
                   {t("players.portalHeading")}
