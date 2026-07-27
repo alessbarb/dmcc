@@ -168,6 +168,9 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
+    /* Fade the trailing edge so a partially-visible tab reads as "more to
+       scroll to" rather than a hard, silent clip (see UI/UX audit M6). */
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
   }
 
   .workspace-shell__navigation .workspace-tabs::-webkit-scrollbar {

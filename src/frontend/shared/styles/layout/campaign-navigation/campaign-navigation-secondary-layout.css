@@ -137,8 +137,12 @@
 
   .mobile-dock__item span {
     max-width: 100%;
+    display: -webkit-box;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-align: center;
+    white-space: normal;
   }
 }
