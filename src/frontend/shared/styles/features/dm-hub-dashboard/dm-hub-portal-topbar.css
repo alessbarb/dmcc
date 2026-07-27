@@ -82,6 +82,7 @@
     flex: 1 1 auto;
     overflow-x: auto;
     scrollbar-width: none;
+    mask-image: linear-gradient(to right, transparent 0, black 10px, black calc(100% - 10px), transparent 100%);
   }
 
   .dm-hub-root .language-pill::-webkit-scrollbar {
@@ -90,6 +91,7 @@
 
   .dm-hub-root .language-pill__btn {
     padding: 5px 8px;
+    min-height: 44px;
     font-size: var(--type-micro);
     flex: 0 0 auto;
   }

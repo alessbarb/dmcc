@@ -22,15 +22,27 @@
 
   .portal-topbar__actions {
     gap: 8px;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .language-pill {
     padding: 3px;
     gap: 1px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, transparent 0, black 10px, black calc(100% - 10px), transparent 100%);
+  }
+
+  .language-pill::-webkit-scrollbar {
+    display: none;
   }
 
   .language-pill__btn {
     padding: 5px 8px;
+    min-height: 44px;
+    flex: 0 0 auto;
     font-size: 0.66rem;
   }
 
