@@ -203,9 +203,19 @@ const AdminGameSystemSettingsPageLazy = React.lazy(() =>
   import("./admin/gameSystems/GameSystemSettingsPage.js").then((module) => ({ default: module.GameSystemSettingsPage })),
 );
 
+function PageLoadingFallback() {
+  const { t } = useTranslation();
+  return (
+    <div className="page-loading">
+      <div className="page-loading__spinner" />
+      <span>{t("common.loading")}</span>
+    </div>
+  );
+}
+
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
-    return <Suspense fallback={<div className="page-loading">Loading...</div>}><Component /></Suspense>;
+    return <Suspense fallback={<PageLoadingFallback />}><Component /></Suspense>;
   };
 }
 
