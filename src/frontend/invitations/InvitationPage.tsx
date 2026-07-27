@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ArrowLeft, LogIn, Ticket, UserPlus } from "lucide-react";
-import { apiFetch, readApiError } from "../shared/api/apiClient.js";
+import { apiFetch } from "../shared/api/apiClient.js";
 import { fetchSession } from "../shared/auth/authClient.js";
 import { rememberAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
@@ -30,7 +30,7 @@ export function InvitationPage() {
       apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}`),
       fetchSession(),
     ]).then(async ([previewResponse, session]) => {
-      if (!previewResponse.ok) throw new Error(await readApiError(previewResponse, t("invitations.errorInvalid")));
+      if (!previewResponse.ok) throw new Error(t("invitations.errorInvalid"));
       setPreview(await previewResponse.json());
       setAuthenticated(session.sessionValid);
     }).catch((cause: unknown) => {
@@ -48,7 +48,7 @@ export function InvitationPage() {
     setError(null);
     try {
       const response = await apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}/accept`, { init: { method: "POST" } });
-      if (!response.ok) throw new Error(await readApiError(response, t("invitations.errorAccept")));
+      if (!response.ok) throw new Error(t("invitations.errorAccept"));
       const result = await response.json();
       const destination = result.portal === "dm" ? "/dm" : "/player";
       void navigate({ to: destination });
