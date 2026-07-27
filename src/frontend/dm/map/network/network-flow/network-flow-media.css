@@ -50,6 +50,13 @@
 
   .network-explorer-modes .btn {
     max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .network-explorer-modes .btn > :last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .network-flow-layout-controls {
