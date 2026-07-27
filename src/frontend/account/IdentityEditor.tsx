@@ -39,7 +39,7 @@ export function IdentityEditor({
     };
   }, [isFormDirty]);
 
-  const previewName = useMemo(() => displayName.trim() || identity.displayName || "Unnamed user", [displayName, identity.displayName]);
+  const previewName = useMemo(() => displayName.trim() || identity.displayName || t("account.identity.unnamedUser"), [displayName, identity.displayName, t]);
   const previewEmail = email.trim() || identity.email;
 
   return (
@@ -54,7 +54,7 @@ export function IdentityEditor({
             )}
           </div>
           <div className="account-profile-preview-copy">
-            <span className="account-role-pill">Private account</span>
+            <span className="account-role-pill">{t("account.identity.privateAccountPill")}</span>
             <h2 id="private-identity-title">{previewName}</h2>
             <p>{previewEmail}</p>
             <small>{t("account.identity.subtitle")}</small>
@@ -62,11 +62,11 @@ export function IdentityEditor({
         </div>
 
         <div className="account-helper-card">
-          <h3>What lives here</h3>
+          <h3>{t("account.identity.whatLivesHere.title")}</h3>
           <ul className="account-bullet-list">
-            <li>Your sign-in email and display name.</li>
-            <li>Your private avatar — reused as the base for DM and player profiles.</li>
-            <li>Email changes require your current password.</li>
+            <li>{t("account.identity.whatLivesHere.emailAndName")}</li>
+            <li>{t("account.identity.whatLivesHere.avatar")}</li>
+            <li>{t("account.identity.whatLivesHere.emailChange")}</li>
           </ul>
         </div>
       </div>

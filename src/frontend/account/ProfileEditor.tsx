@@ -65,20 +65,20 @@ export function ProfileEditor({
     <section className="account-section-stack">
       <div className="account-split-hero">
         <div className="account-helper-card">
-          <span className="account-role-pill">{profileType === "dm" ? "DM profile" : "Player profile"}</span>
-          <h3>{draft.displayName || (profileType === "dm" ? "Unnamed DM" : "Unnamed player")}</h3>
+          <span className="account-role-pill">{profileType === "dm" ? t("account.profile.dmPill") : t("account.profile.playerPill")}</span>
+          <h3>{draft.displayName || (profileType === "dm" ? t("account.profile.unnamedDm") : t("account.profile.unnamedPlayer"))}</h3>
           <p>
             {profileType === "dm"
-              ? "This is your reusable public-facing DM identity."
-              : `This identity is only used for ${contextLabel || "this campaign"}.`}
+              ? t("account.profile.dmDescription")
+              : t("account.profile.playerDescription", { context: contextLabel || t("account.profile.defaultContext") })}
           </p>
         </div>
         <div className="account-helper-card muted">
-          <h3>Visibility snapshot</h3>
+          <h3>{t("account.profile.visibility.title")}</h3>
           <ul className="account-bullet-list compact">
-            <li>{visibleSummary} profile fields visible beyond private mode.</li>
-            <li>Publication: <strong>{draft.publicationState}</strong></li>
-            <li>Handle: <strong>{draft.publicHandle || "—"}</strong></li>
+            <li>{t("account.profile.visibility.fieldsVisible", { count: String(visibleSummary) })}</li>
+            <li>{t("account.profile.publication")}: <strong>{t(`account.profile.publicationOptions.${draft.publicationState}`)}</strong></li>
+            <li>{t("account.profile.publicHandle")}: <strong>{draft.publicHandle || t("account.profile.visibility.none")}</strong></li>
           </ul>
         </div>
       </div>

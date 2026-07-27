@@ -44,17 +44,6 @@ const audiences: Record<SocialField, ProfileAudience[]> = {
   contact: ALL_AUDIENCES,
 };
 
-const MODULE_DESCRIPTIONS: Record<AccountModuleId, string> = {
-  account: "Private identity, sign-in email and your base account details.",
-  "dm-profile": "How you appear when acting as DM across campaigns.",
-  "player-profiles": "Per-campaign player profiles, one identity for each table you join.",
-  privacy: "Preview what each audience can actually see.",
-  appearance: "Theme, typography and accessibility preferences for this workspace.",
-  notifications: "Internal alerts and campaign-related signal preferences.",
-  security: "Password, recovery codes and active sessions.",
-  data: "Export or permanently remove your personal account data.",
-};
-
 function getInitials(name?: string, email?: string) {
   const source = (name?.trim() || email?.trim() || "U").replace(/\s+/g, " ");
   const words = source.split(" ").filter(Boolean);
@@ -88,6 +77,11 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
       }
       return false;
     },
+    // The native browser "leave site?" prompt can't run shouldBlockFn (it has
+    // no access to our dirty flag), so it would fire on every hard navigation
+    // or tab close even with nothing unsaved. The in-app confirm() above
+    // already covers SPA navigation while genuinely dirty.
+    enableBeforeUnload: false,
   });
 
   const [active, setActive] = useState<AccountModuleId>(MODULE_IDS[0]);
@@ -149,12 +143,12 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
   const stats = useMemo(() => {
     if (!aggregate) return [] as Array<{ label: string; value: string }>;
     return [
-      { label: "DM campaigns", value: String(dmMemberships.length) },
-      { label: "Player campaigns", value: String(activeMemberships.length) },
-      { label: "Player profiles", value: String(aggregate.playerProfiles.length) },
-      { label: "Archived links", value: String(archivedMemberships.length) },
+      { label: t("account.stats.dmCampaigns"), value: String(dmMemberships.length) },
+      { label: t("account.stats.playerCampaigns"), value: String(activeMemberships.length) },
+      { label: t("account.stats.playerProfiles"), value: String(aggregate.playerProfiles.length) },
+      { label: t("account.stats.archivedLinks"), value: String(archivedMemberships.length) },
     ];
-  }, [aggregate, dmMemberships.length, activeMemberships.length, archivedMemberships.length]);
+  }, [aggregate, dmMemberships.length, activeMemberships.length, archivedMemberships.length, t]);
 
   const moduleTitle = useMemo(() => {
     const labels: Record<AccountModuleId, string> = {
@@ -177,14 +171,14 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
           <p className="account-page-eyebrow">DM Campaign Companion</p>
           <h1>{t("account.title")}</h1>
           <p className="account-page-subtitle">
-            A single account for your private identity, your DM presence and your player-facing profiles.
+            {t("account.header.subtitle")}
           </p>
         </div>
         <div className="account-header-actions">
           {aggregate ? (
             <>
-              <button type="button" className="btn-secondary" onClick={() => setActive("security")}>Security</button>
-              <button type="button" className="btn-secondary" onClick={() => setActive("data")}>Your data</button>
+              <button type="button" className="btn-secondary" onClick={() => setActive("security")}>{t("account.header.security")}</button>
+              <button type="button" className="btn-secondary" onClick={() => setActive("data")}>{t("account.header.yourData")}</button>
             </>
           ) : null}
           {surface === "modal" && onRequestClose ? (
@@ -192,7 +186,7 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
               type="button"
               className="account-modal-close"
               onClick={onRequestClose}
-              aria-label="Close account management"
+              aria-label={t("account.header.closeAria")}
             >
               <X size={18} />
             </button>
@@ -201,7 +195,7 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
       </header>
 
       {aggregate ? (
-        <section className="account-overview-card" aria-label="Account overview">
+        <section className="account-overview-card" aria-label={t("account.overview.ariaLabel")}>
           <div className="account-overview-identity">
             <div className="account-avatar-shell">
               {aggregate.account.avatarUrl ? (
@@ -217,10 +211,10 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
               </div>
               <p>{aggregate.account.email}</p>
               <div className="account-quick-links">
-                <button type="button" className="account-quick-link" onClick={() => setActive("account")}>Private identity</button>
-                <button type="button" className="account-quick-link" onClick={() => setActive("dm-profile")}>DM profile</button>
-                <button type="button" className="account-quick-link" onClick={() => setActive("player-profiles")}>Player profiles</button>
-                <button type="button" className="account-quick-link" onClick={() => setActive("privacy")}>Privacy preview</button>
+                <button type="button" className="account-quick-link" onClick={() => setActive("account")}>{t("account.quickLinks.identity")}</button>
+                <button type="button" className="account-quick-link" onClick={() => setActive("dm-profile")}>{t("account.quickLinks.dmProfile")}</button>
+                <button type="button" className="account-quick-link" onClick={() => setActive("player-profiles")}>{t("account.quickLinks.playerProfiles")}</button>
+                <button type="button" className="account-quick-link" onClick={() => setActive("privacy")}>{t("account.quickLinks.privacyPreview")}</button>
               </div>
             </div>
           </div>
@@ -249,13 +243,13 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
             }}
           />
           {aggregate ? (
-            <section className="account-sidebar-card" aria-label="Membership summary">
-              <h3>Current footprint</h3>
+            <section className="account-sidebar-card" aria-label={t("account.sidebar.membershipSummaryAria")}>
+              <h3>{t("account.footprint.title")}</h3>
               <ul className="account-mini-list">
-                <li><span>DM campaigns</span><strong>{dmMemberships.length}</strong></li>
-                <li><span>Player campaigns</span><strong>{activeMemberships.length}</strong></li>
-                <li><span>Archived / revoked</span><strong>{archivedMemberships.length}</strong></li>
-                <li><span>DM profile</span><strong>{aggregate.dmProfile ? "Ready" : "Pending"}</strong></li>
+                <li><span>{t("account.footprint.dmCampaigns")}</span><strong>{dmMemberships.length}</strong></li>
+                <li><span>{t("account.footprint.playerCampaigns")}</span><strong>{activeMemberships.length}</strong></li>
+                <li><span>{t("account.footprint.archivedRevoked")}</span><strong>{archivedMemberships.length}</strong></li>
+                <li><span>{t("account.footprint.dmProfile")}</span><strong>{aggregate.dmProfile ? t("account.footprint.ready") : t("account.footprint.pending")}</strong></li>
               </ul>
             </section>
           ) : null}
@@ -264,9 +258,9 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
         <main id={`account-module-${active}`} tabIndex={-1} className="account-main-shell">
           <div className="account-module-header">
             <div>
-              <p className="account-module-eyebrow">Settings module</p>
+              <p className="account-module-eyebrow">{t("account.module.eyebrow")}</p>
               <h2>{moduleTitle}</h2>
-              <p>{MODULE_DESCRIPTIONS[active]}</p>
+              <p>{t(`account.module.descriptions.${active}`)}</p>
             </div>
           </div>
 
@@ -297,7 +291,7 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
               />
             ) : (
               <div className="account-empty-state">
-                <p>Prepare your public-facing DM profile before receiving a DM membership.</p>
+                <p>{t("account.dmProfileEmpty.description")}</p>
                 <button
                   type="button"
                   onClick={() => {
@@ -325,7 +319,7 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
                     });
                   }}
                 >
-                  Create DM Profile
+                  {t("account.dmProfileEmpty.createBtn")}
                 </button>
               </div>
             )
@@ -392,14 +386,14 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
                           <div className="account-card-info">
                             <div className="account-card-topline">
                               <strong>{membership.campaignTitle || membership.campaignId}</strong>
-                              <span className={`account-card-badge ${profile ? "ready" : "pending"}`}>{profile ? "Profile ready" : "Profile missing"}</span>
+                              <span className={`account-card-badge ${profile ? "ready" : "pending"}`}>{profile ? t("account.playerCampaigns.profileReady") : t("account.playerCampaigns.profileMissing")}</span>
                             </div>
                             {profile ? (
                               <span className="account-card-meta">
                                 {profile.displayName} {profile.pronouns ? `(${profile.pronouns})` : ""}
                               </span>
                             ) : (
-                              <span className="account-card-meta italic">No profile created</span>
+                              <span className="account-card-meta italic">{t("account.playerCampaigns.noProfileCreated")}</span>
                             )}
                           </div>
                           <button
