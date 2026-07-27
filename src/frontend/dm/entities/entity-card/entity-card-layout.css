@@ -7,6 +7,29 @@
   transition: filter 0.2s;
 }
 
+/* Fallback icon stays hidden while a hero image is present; the inline
+   onError handler adds --broken-img when the src 404s, which swaps the
+   two so the card never shows an empty/broken <img> box. */
+.entity-card__hero--img .entity-card__hero-icon-wrapper {
+  display: none;
+}
+
+.entity-card__hero--broken-img {
+  height: 88px;
+  background:
+    radial-gradient(circle at 50% 50%, var(--card-accent-soft) 0%, transparent 80%),
+    repeating-linear-gradient(45deg, color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent) 0px, color-mix(in srgb, var(--theme-text-on-media) 1.5%, transparent) 1px, transparent 1px, transparent 6px),
+    linear-gradient(180deg, var(--theme-surfaces-raised) 0%, var(--theme-surfaces-canvas) 100%);
+}
+
+.entity-card__hero--broken-img .entity-card__hero-img {
+  display: none;
+}
+
+.entity-card__hero--broken-img .entity-card__hero-icon-wrapper {
+  display: flex;
+}
+
 .entity-card__hero-img--dm-only {
   filter: grayscale(20%) brightness(85%);
 }

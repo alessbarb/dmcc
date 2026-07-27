@@ -365,17 +365,19 @@ export function EntityListView() {
             hasRealImage ? "entity-card__hero--img" : "entity-card__hero--no-img"
           ].filter(Boolean).join(" ")}
         >
-          {hasRealImage ? (
+          {hasRealImage && (
             <img
               src={customImageUrl}
               alt=""
               className={`entity-card__hero-img ${isDmOnly ? "entity-card__hero-img--dm-only" : ""}`}
+              onError={(event) => {
+                event.currentTarget.closest(".entity-card__hero")?.classList.add("entity-card__hero--broken-img");
+              }}
             />
-          ) : (
-            <div className="entity-card__hero-icon-wrapper">
-              <IconComponent className="entity-card__hero-icon" size={cfg.heroStyle === "portrait" ? 36 : 28} />
-            </div>
           )}
+          <div className="entity-card__hero-icon-wrapper">
+            <IconComponent className="entity-card__hero-icon" size={cfg.heroStyle === "portrait" ? 36 : 28} />
+          </div>
           {isDmOnly && (
             <span className="entity-card__dm-only-badge">
               <EyeOff size={11} /> {formatVisibility("dm_only", locale)}
