@@ -23,8 +23,8 @@ export function DmHubSummaryPanel({ campaigns, sessionsCount, completedCampaigns
     <section className="dm-panel dm-panel--ornamented-standard" data-dm-hub-panel="summary">
       <div className="dm-panel__header"><h2 className="dm-panel__title">{t("landing.summaryGeneralTitle")}</h2></div>
       <div className="dm-summary-primary"><span className="dm-summary-primary__value">{primary.value}</span><span className="dm-summary-primary__label">{primary.label}</span></div>
-      <div className="dm-summary-grid">
-        {items.map((item, index) => <div key={index} className="dm-summary-item"><span className="dm-summary-item__value">{item.value}</span><span className="dm-summary-item__label">{item.label}</span></div>)}
+      <div className="dm-signal-metrics">
+        {items.map((item, index) => <span key={index} className="dm-signal-metric"><strong>{item.value}</strong> {item.label}</span>)}
       </div>
     </section>
   );

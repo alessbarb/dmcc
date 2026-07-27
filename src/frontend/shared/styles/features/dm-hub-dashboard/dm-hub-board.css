@@ -19,6 +19,23 @@
 
 .dm-hub-board__right-grid > div > .dm-panel { padding: 14px 16px; }
 
+/* The summary panel's row height is set by whichever sibling shares its grid
+   row (auto-track sizing ignores overflow:hidden items' own content size),
+   so its three stat metrics must stay on a single line — wrapping to a 2nd
+   line needs more height than the row ever grants, clipping it silently
+   (see UI/UX audit A2). */
+.dm-hub-board__right-grid > div > .dm-panel[data-dm-hub-panel="summary"] .dm-signal-metrics {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.dm-hub-board__right-grid > div > .dm-panel[data-dm-hub-panel="summary"] .dm-signal-metric {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .dm-hub-signal-panel .dm-panel__header { margin-bottom: 8px; }
 .dm-preparation-layout { display: grid; grid-template-columns: minmax(180px, .85fr) minmax(0, 1.4fr) auto; align-items: center; gap: 14px; }
 .dm-preparation-next, .dm-continuation { display: flex; min-width: 0; flex-direction: column; gap: 3px; }

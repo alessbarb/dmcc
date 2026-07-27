@@ -23,7 +23,7 @@
 
 .dm-summary-item {
   min-height: 0;
-  padding: 10px 12px;
+  padding: 6px 12px;
   border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
   border-radius: 8px;
   background: color-mix(in srgb, var(--theme-text-on-media) 2.5%, transparent);
