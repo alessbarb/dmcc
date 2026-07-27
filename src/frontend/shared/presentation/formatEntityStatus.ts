@@ -23,5 +23,14 @@ export function formatEntityStatus(status: string | undefined | null, locale?: S
     return boardTranslated;
   }
 
+  // Legacy/orphaned status values (e.g. imported from an older campaign
+  // template revision) have no translation entry. Showing the raw key
+  // title-cased leaks an untranslated English-looking string into the UI;
+  // fall back to the same localized "no status" label used elsewhere.
+  const unknownLabel = t("boards.unknownStatus", {}, locale);
+  if (unknownLabel !== "boards.unknownStatus") {
+    return unknownLabel;
+  }
+
   return status.replace(/\b\w/g, c => c.toUpperCase());
 }

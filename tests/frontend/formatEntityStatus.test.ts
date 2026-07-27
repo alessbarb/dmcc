@@ -21,7 +21,11 @@ describe("formatEntityStatus", () => {
     expect(formatEntityStatus("revealed_to_one", "es")).toBe("Revelada a uno");
   });
 
-  it("still falls back to a capitalized raw value for truly unknown statuses", () => {
-    expect(formatEntityStatus("unmapped", "en")).toBe("Unmapped");
+  it("falls back to the localized 'no status' label for truly unknown/legacy statuses", () => {
+    // A bare capitalized raw value (e.g. "Open") reads as an untranslated
+    // English leak; unknown/legacy status keys should resolve to the same
+    // localized placeholder used elsewhere instead (see UI/UX audit A3).
+    expect(formatEntityStatus("unmapped", "en")).toBe("No status");
+    expect(formatEntityStatus("open", "es")).toBe("Sin estado");
   });
 });
