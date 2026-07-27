@@ -88,7 +88,10 @@
     min-width: 0;
     height: auto;
     min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--mobile-dock-height) - env(safe-area-inset-bottom));
-    padding-bottom: calc(var(--mobile-dock-height) + env(safe-area-inset-bottom));
+    /* Clears the dock *and* the Quick Capture FAB that floats above it, so
+       scrolling to the end of a list never leaves its last card partly
+       hidden under the FAB (see UI/UX audit M8). */
+    padding-bottom: calc(var(--mobile-dock-height) + 52px + 20px + env(safe-area-inset-bottom));
     overflow: visible;
   }
 
