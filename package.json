@@ -78,7 +78,7 @@
     "@fastify/cors": "^11.3.0",
     "@fastify/helmet": "^13.1.0",
     "@fastify/rate-limit": "^11.1.0",
-    "@fastify/static": "^10.1.0",
+    "@fastify/static": "^10.1.2",
     "@tanstack/react-router": "^1.170.17",
     "@xyflow/react": "^12.11.2",
     "argon2": "^0.44.0",
